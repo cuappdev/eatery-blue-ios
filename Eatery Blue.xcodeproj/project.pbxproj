@@ -14,6 +14,8 @@
 		5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4C2774F37100AD0E27 /* VDivider.swift */; };
 		5D0CDC4F2774FDAE00AD0E27 /* CafeMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */; };
 		5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC502775040800AD0E27 /* HDivider.swift */; };
+		5D0CDC532775059500AD0E27 /* CafeMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC522775059500AD0E27 /* CafeMenuCategoryView.swift */; };
+		5D0CDC55277505B400AD0E27 /* CafeMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -68,6 +70,8 @@
 		5D0CDC4C2774F37100AD0E27 /* VDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VDivider.swift; sourceTree = "<group>"; };
 		5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuHeaderView.swift; sourceTree = "<group>"; };
 		5D0CDC502775040800AD0E27 /* HDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDivider.swift; sourceTree = "<group>"; };
+		5D0CDC522775059500AD0E27 /* CafeMenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuCategoryView.swift; sourceTree = "<group>"; };
+		5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuItemView.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -136,8 +140,10 @@
 				5D86518C2773CBFB000338D4 /* Info.plist */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
-				5DF5F7EA2774D8FE001ADCDC /* CafeViewController.swift */,
+				5D0CDC522775059500AD0E27 /* CafeMenuCategoryView.swift */,
 				5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */,
+				5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */,
+				5DF5F7EA2774D8FE001ADCDC /* CafeViewController.swift */,
 				5DDAD4742773D70900CC98DD /* CarouselCardView.swift */,
 				5DF5F7E027742280001ADCDC /* CarouselCardViewCompact.swift */,
 				5DF5F7D327740182001ADCDC /* CarouselView.swift */,
@@ -260,6 +266,7 @@
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* CarouselCardView.swift in Sources */,
+				5D0CDC532775059500AD0E27 /* CafeMenuCategoryView.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
 				5DF5F7E72774C800001ADCDC /* CardView.swift in Sources */,
@@ -281,6 +288,7 @@
 				5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */,
 				5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */,
 				5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */,
+				5D0CDC55277505B400AD0E27 /* CafeMenuItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

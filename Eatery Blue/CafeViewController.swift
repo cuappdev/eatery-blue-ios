@@ -9,6 +9,12 @@ import UIKit
 
 class CafeViewController: UIViewController {
 
+    private static let priceNumberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter
+    }()
+
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
@@ -40,10 +46,9 @@ class CafeViewController: UIViewController {
 
     private func setUpScrollView() {
         scrollView.backgroundColor = .white
-        scrollView.contentInsetAdjustmentBehavior = .never
-
         scrollView.alwaysBounceVertical = true
         scrollView.addSubview(stackView)
+
         setUpStackView()
     }
 
@@ -73,6 +78,11 @@ class CafeViewController: UIViewController {
         stackView.setCustomSpacing(0, after: stackView.arrangedSubviews.last!)
         addSearchBar()
         addThinSpacer()
+
+        for menuCategory in cafe.menu.categories {
+            addMenuCategory(menuCategory)
+            addMediumSpacer()
+        }
     }
 
     private func addHeaderImageView(imageUrl: URL?) {
@@ -193,6 +203,13 @@ class CafeViewController: UIViewController {
         stackView.addArrangedSubview(spacer)
     }
 
+    private func addMediumSpacer() {
+        let spacer = UIView()
+        spacer.height(8)
+        spacer.backgroundColor = UIColor(named: "Gray00")
+        stackView.addArrangedSubview(spacer)
+    }
+
     private func addMenuHeaderView() {
         let menuHeaderView = CafeMenuHeaderView()
         menuHeaderView.titleLabel.text = "Full Menu"
@@ -215,6 +232,37 @@ class CafeViewController: UIViewController {
         let container = ContainerView(content: spacer)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.addArrangedSubview(container)
+    }
+
+    private func addMenuCategory(_ menuCategory: MenuCategory) {
+        let categoryView = CafeMenuCategoryView()
+        categoryView.titleLabel.text = menuCategory.category
+        categoryView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+
+        for item in menuCategory.items {
+            let itemView = CafeMenuItemView()
+            itemView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            itemView.titleLabel.text = item.name
+
+            if let price = item.price {
+                itemView.priceLabel.text = CafeViewController
+                    .priceNumberFormatter
+                    .string(from: NSNumber(value: Double(price) / 100))
+            } else {
+                itemView.priceLabel.text = ""
+            }
+
+            if let description = item.description {
+                itemView.descriptionLabel.isHidden = false
+                itemView.descriptionLabel.text = description
+            } else {
+                itemView.descriptionLabel.isHidden = true
+            }
+
+            categoryView.addItemView(itemView)
+        }
+
+        stackView.addArrangedSubview(categoryView)
     }
 
 }
