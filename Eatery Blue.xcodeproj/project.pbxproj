@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */; };
 		5D0CDC452774E7EA00AD0E27 /* PillButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC442774E7EA00AD0E27 /* PillButtonStackView.swift */; };
+		5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */; };
+		5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */; };
+		5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4C2774F37100AD0E27 /* VDivider.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -58,6 +61,9 @@
 /* Begin PBXFileReference section */
 		5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButtonView.swift; sourceTree = "<group>"; };
 		5D0CDC442774E7EA00AD0E27 /* PillButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButtonStackView.swift; sourceTree = "<group>"; };
+		5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingDataView.swift; sourceTree = "<group>"; };
+		5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingCellView.swift; sourceTree = "<group>"; };
+		5D0CDC4C2774F37100AD0E27 /* VDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VDivider.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -148,7 +154,10 @@
 				5DF5F7E42774BEE3001ADCDC /* SearchRecentItemView.swift */,
 				5DF5F7E22774BEAD001ADCDC /* SearchRecentsView.swift */,
 				5DDAD4852773F10900CC98DD /* TestingViewController.swift */,
+				5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */,
+				5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */,
 				5DF5F7D5277404C8001ADCDC /* UIFont+FontWeight.swift */,
+				5D0CDC4C2774F37100AD0E27 /* VDivider.swift */,
 			);
 			path = "Eatery Blue";
 			sourceTree = "<group>";
@@ -239,6 +248,7 @@
 				5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */,
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5DDAD47B2773DC4600CC98DD /* ProfileViewController.swift in Sources */,
+				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* CafeViewController.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
@@ -251,7 +261,9 @@
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* PillButtonStackView.swift in Sources */,
 				5DDAD4862773F10900CC98DD /* TestingViewController.swift in Sources */,
+				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
 				5DF5F7E92774C8A9001ADCDC /* CardStackView.swift in Sources */,
+				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont+FontWeight.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,

@@ -67,6 +67,7 @@ class CafeViewController: UIViewController {
         stackView.setCustomSpacing(8, after: stackView.arrangedSubviews.last!)
         addShortDescriptionLabel(cafe)
         addButtons(cafe)
+        addTimingView(cafe)
     }
 
     private func addHeaderImageView(imageUrl: URL?) {
@@ -104,6 +105,7 @@ class CafeViewController: UIViewController {
 
     private func addButtons(_ cafe: Cafe) {
         let buttonStackView = PillButtonStackView()
+        buttonStackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
         let buttonOrderOnline = PillButtonView()
         buttonStackView.addPillButton(buttonOrderOnline)
@@ -124,6 +126,59 @@ class CafeViewController: UIViewController {
         buttonDirections.titleLabel.text = "Get directions"
 
         stackView.addArrangedSubview(buttonStackView)
+    }
+
+    private func addTimingView(_ cafe: Cafe) {
+        let timingView = TimingDataView()
+        timingView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        timingView.addCellView(createHoursCell(cafe))
+        timingView.addCellView(createWaitTimeCell(cafe))
+
+        stackView.addArrangedSubview(timingView)
+    }
+
+    private func createHoursCell(_ cafe: Cafe) -> TimingCellView {
+        let cell = TimingCellView()
+        cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+
+        cell.titleLabel.textColor = UIColor(named: "Gray05")
+        let text = NSMutableAttributedString()
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(named: "Clock")
+        text.append(NSAttributedString(attachment: attachment))
+        text.append(NSAttributedString(string: " Hours"))
+        cell.titleLabel.attributedText = text
+
+        cell.statusLabel.textColor = UIColor(named: "EateryGreen")
+        cell.statusLabel.text = "Open until 5:30 PM"
+
+        return cell
+    }
+
+    private func createWaitTimeCell(_ cafe: Cafe) -> TimingCellView {
+        let cell = TimingCellView()
+        cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+
+        cell.titleLabel.textColor = UIColor(named: "Gray05")
+        let text = NSMutableAttributedString()
+        let attachment = NSTextAttachment()
+        let watchImage = UIImage(named: "Watch")
+        attachment.bounds = CGRect(
+            x: 0,
+            y: (cell.titleLabel.font.capHeight - (watchImage?.size.height ?? 0)).rounded() / 2,
+            width: watchImage?.size.width ?? 0,
+            height: watchImage?.size.height ?? 0
+        )
+        attachment.image = watchImage
+        text.append(NSAttributedString(attachment: attachment))
+        text.append(NSAttributedString(string: " Wait Time"))
+        cell.titleLabel.attributedText = text
+
+        cell.statusLabel.textColor = UIColor(named: "Black")
+        cell.statusLabel.text = "12-15 minutes"
+
+        return cell
     }
 
 }
