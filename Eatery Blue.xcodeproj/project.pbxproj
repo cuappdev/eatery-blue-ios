@@ -16,6 +16,8 @@
 		5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC502775040800AD0E27 /* HDivider.swift */; };
 		5D0CDC532775059500AD0E27 /* CafeMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC522775059500AD0E27 /* CafeMenuCategoryView.swift */; };
 		5D0CDC55277505B400AD0E27 /* CafeMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */; };
+		5D0CDC572775256D00AD0E27 /* CafeMenuNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC562775256D00AD0E27 /* CafeMenuNavigationView.swift */; };
+		5D0CDC592775346600AD0E27 /* PillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC582775346600AD0E27 /* PillView.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -72,6 +74,8 @@
 		5D0CDC502775040800AD0E27 /* HDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDivider.swift; sourceTree = "<group>"; };
 		5D0CDC522775059500AD0E27 /* CafeMenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuCategoryView.swift; sourceTree = "<group>"; };
 		5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuItemView.swift; sourceTree = "<group>"; };
+		5D0CDC562775256D00AD0E27 /* CafeMenuNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuNavigationView.swift; sourceTree = "<group>"; };
+		5D0CDC582775346600AD0E27 /* PillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillView.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				5D0CDC522775059500AD0E27 /* CafeMenuCategoryView.swift */,
 				5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */,
 				5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */,
+				5D0CDC562775256D00AD0E27 /* CafeMenuNavigationView.swift */,
 				5DF5F7EA2774D8FE001ADCDC /* CafeViewController.swift */,
 				5DDAD4742773D70900CC98DD /* CarouselCardView.swift */,
 				5DF5F7E027742280001ADCDC /* CarouselCardViewCompact.swift */,
@@ -160,6 +165,7 @@
 				5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */,
 				5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */,
 				5D0CDC442774E7EA00AD0E27 /* PillButtonStackView.swift */,
+				5D0CDC582775346600AD0E27 /* PillView.swift */,
 				5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */,
 				5DF5F7D127740140001ADCDC /* PillFilterToggleView.swift */,
 				5DDAD4762773DA9800CC98DD /* RootViewController.swift */,
@@ -268,6 +274,7 @@
 				5DDAD4752773D70900CC98DD /* CarouselCardView.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* CafeMenuCategoryView.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
+				5D0CDC592775346600AD0E27 /* PillView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
 				5DF5F7E72774C800001ADCDC /* CardView.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* CafeMenuHeaderView.swift in Sources */,
@@ -282,6 +289,7 @@
 				5DF5F7D6277404C8001ADCDC /* UIFont+FontWeight.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
+				5D0CDC572775256D00AD0E27 /* CafeMenuNavigationView.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* CarouselCardViewCompact.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterToggleView.swift in Sources */,

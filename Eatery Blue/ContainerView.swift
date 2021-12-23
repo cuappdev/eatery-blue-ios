@@ -11,17 +11,13 @@ class ContainerView<Content: UIView>: UIView {
 
     let clippingView = UIView()
 
-    var content: Content? {
+    var content: Content {
         willSet {
-            if let content = content {
-                content.removeFromSuperview()
-            }
+            content.removeFromSuperview()
         }
         didSet {
-            if let content = content {
-                clippingView.addSubview(content)
-                content.edges(to: layoutMarginsGuide)
-            }
+            clippingView.addSubview(content)
+            content.edges(to: layoutMarginsGuide)
         }
     }
 
@@ -56,20 +52,22 @@ class ContainerView<Content: UIView>: UIView {
         }
     }
 
-    convenience init(content: Content?) {
-        self.init()
+    init(content: Content) {
+        self.content = content
+
+        super.init(frame: .null)
 
         self.layoutMargins = .zero
 
         addSubview(clippingView)
         clippingView.edges(to: self)
 
-        self.content = content
+        clippingView.addSubview(content)
+        content.edges(to: layoutMarginsGuide)
+    }
 
-        if let content = content {
-            clippingView.addSubview(content)
-            content.edges(to: layoutMarginsGuide)
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
 }

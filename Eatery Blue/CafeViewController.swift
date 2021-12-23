@@ -15,6 +15,7 @@ class CafeViewController: UIViewController {
         return formatter
     }()
 
+    private let navigationView = CafeMenuNavigationView()
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
@@ -42,11 +43,15 @@ class CafeViewController: UIViewController {
 
         view.addSubview(scrollView)
         setUpScrollView()
+
+        view.addSubview(navigationView)
+        setUpNavigationView()
     }
 
     private func setUpScrollView() {
         scrollView.backgroundColor = .white
         scrollView.alwaysBounceVertical = true
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.addSubview(stackView)
 
         setUpStackView()
@@ -59,7 +64,23 @@ class CafeViewController: UIViewController {
         stackView.spacing = 12
     }
 
+    private func setUpNavigationView() {
+        navigationView.favoriteButton.content.image = Bool.random()
+            ? UIImage(named: "FavoriteSelected")
+            : UIImage(named: "FavoriteUnselected")
+
+        navigationView.backButton.on(UITapGestureRecognizer()) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }
+
+        navigationView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 12, right: 16)
+    }
+
     private func setUpConstraints() {
+        navigationView.edgesToSuperview(excluding: .bottom)
+
         scrollView.edgesToSuperview()
 
         stackView.edgesToSuperview()
@@ -79,9 +100,29 @@ class CafeViewController: UIViewController {
         addSearchBar()
         addThinSpacer()
 
-        for menuCategory in cafe.menu.categories {
+        for menuCategory in cafe.menu.categories[..<(cafe.menu.categories.count - 1)] {
             addMenuCategory(menuCategory)
             addMediumSpacer()
+        }
+
+        if let last = cafe.menu.categories.last {
+            addMenuCategory(last)
+        }
+
+        addHugeSpacer()
+
+        navigationView.titleLabel.text = cafe.name
+        for menuCategory in cafe.menu.categories {
+            navigationView.addCategory(menuCategory.category) {
+                print(menuCategory.category)
+            }
+        }
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            self.navigationView.selectCategory(atIndex: Int.random(in: 0..<cafe.menu.categories.count), animated: true)
         }
     }
 
@@ -263,6 +304,12 @@ class CafeViewController: UIViewController {
         }
 
         stackView.addArrangedSubview(categoryView)
+    }
+
+    private func addHugeSpacer() {
+        let spacer = UIView()
+        stackView.addArrangedSubview(spacer)
+        spacer.height(to: view, multiplier: 0.5)
     }
 
 }
