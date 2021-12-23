@@ -51,7 +51,7 @@ class CafeViewController: UIViewController {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = 16
+        stackView.spacing = 12
     }
 
     private func setUpConstraints() {
@@ -68,6 +68,11 @@ class CafeViewController: UIViewController {
         addShortDescriptionLabel(cafe)
         addButtons(cafe)
         addTimingView(cafe)
+        addThickSpacer()
+        addMenuHeaderView()
+        stackView.setCustomSpacing(0, after: stackView.arrangedSubviews.last!)
+        addSearchBar()
+        addThinSpacer()
     }
 
     private func addHeaderImageView(imageUrl: URL?) {
@@ -179,6 +184,45 @@ class CafeViewController: UIViewController {
         cell.statusLabel.text = "12-15 minutes"
 
         return cell
+    }
+
+    private func addThickSpacer() {
+        let spacer = UIView()
+        spacer.height(16)
+        spacer.backgroundColor = UIColor(named: "Gray00")
+        stackView.addArrangedSubview(spacer)
+    }
+
+    private func addMenuHeaderView() {
+        let menuHeaderView = CafeMenuHeaderView()
+        menuHeaderView.titleLabel.text = "Full Menu"
+        menuHeaderView.subtitleLabel.text = "7:00 AM - 8:30 PM"
+        menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.addArrangedSubview(menuHeaderView)
+    }
+
+    private func addSearchBar() {
+        let searchBar = UISearchBar()
+        searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        searchBar.delegate = self
+        searchBar.backgroundImage = UIImage()
+        searchBar.placeholder = "Search the menu..."
+        stackView.addArrangedSubview(searchBar)
+    }
+
+    private func addThinSpacer() {
+        let spacer = HDivider()
+        let container = ContainerView(content: spacer)
+        container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.addArrangedSubview(container)
+    }
+
+}
+
+extension CafeViewController: UISearchBarDelegate {
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        false
     }
 
 }

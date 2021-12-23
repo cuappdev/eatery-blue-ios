@@ -41,7 +41,7 @@ class CarouselView: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "ForwardButton")
+        buttonImageView.image = UIImage(named: "ButtonForwardChevron")
     }
 
     private func setUpScrollView() {

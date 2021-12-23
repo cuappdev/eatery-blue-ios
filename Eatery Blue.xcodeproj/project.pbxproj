@@ -12,6 +12,8 @@
 		5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */; };
 		5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */; };
 		5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4C2774F37100AD0E27 /* VDivider.swift */; };
+		5D0CDC4F2774FDAE00AD0E27 /* CafeMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */; };
+		5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC502775040800AD0E27 /* HDivider.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -64,6 +66,8 @@
 		5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingDataView.swift; sourceTree = "<group>"; };
 		5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingCellView.swift; sourceTree = "<group>"; };
 		5D0CDC4C2774F37100AD0E27 /* VDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VDivider.swift; sourceTree = "<group>"; };
+		5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuHeaderView.swift; sourceTree = "<group>"; };
+		5D0CDC502775040800AD0E27 /* HDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDivider.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +137,7 @@
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
 				5DF5F7EA2774D8FE001ADCDC /* CafeViewController.swift */,
+				5D0CDC4E2774FDAE00AD0E27 /* CafeMenuHeaderView.swift */,
 				5DDAD4742773D70900CC98DD /* CarouselCardView.swift */,
 				5DF5F7E027742280001ADCDC /* CarouselCardViewCompact.swift */,
 				5DF5F7D327740182001ADCDC /* CarouselView.swift */,
@@ -142,6 +147,7 @@
 				5DDAD4702773D3DC00CC98DD /* Eatery.swift */,
 				5DF5F7E82774C8A9001ADCDC /* CardStackView.swift */,
 				5DF5F7E62774C800001ADCDC /* CardView.swift */,
+				5D0CDC502775040800AD0E27 /* HDivider.swift */,
 				5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */,
 				5D8651922773CD5A000338D4 /* HomeViewController.swift */,
 				5DDAD4782773DC1600CC98DD /* MenusViewController.swift */,
@@ -249,6 +255,7 @@
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5DDAD47B2773DC4600CC98DD /* ProfileViewController.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
+				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* CafeViewController.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
@@ -256,6 +263,7 @@
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
 				5DF5F7E72774C800001ADCDC /* CardView.swift in Sources */,
+				5D0CDC4F2774FDAE00AD0E27 /* CafeMenuHeaderView.swift in Sources */,
 				5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */,
 				5DDAD4792773DC1600CC98DD /* MenusViewController.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
