@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/23/21.
 //
 
+import os.log
 import UIKit
 
 class CafeViewController: UIViewController {
@@ -18,6 +19,10 @@ class CafeViewController: UIViewController {
     private let navigationView = CafeMenuNavigationView()
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    private var categoryViews: [CafeMenuCategoryView] = []
+
+    private var headerView: UIView?
+    private var navigationTriggerView: UIView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,9 +56,12 @@ class CafeViewController: UIViewController {
     private func setUpScrollView() {
         scrollView.backgroundColor = .white
         scrollView.alwaysBounceVertical = true
+        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.scrollIndicatorInsets = .zero
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.addSubview(stackView)
+        scrollView.delegate = self
 
+        scrollView.addSubview(stackView)
         setUpStackView()
     }
 
@@ -69,8 +77,8 @@ class CafeViewController: UIViewController {
             ? UIImage(named: "FavoriteSelected")
             : UIImage(named: "FavoriteUnselected")
 
-        navigationView.backButton.on(UITapGestureRecognizer()) { [weak self] _ in
-            self?.navigationController?.popViewController(animated: true)
+        navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
+            navigationController?.popViewController(animated: true)
         }
 
         navigationView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -90,6 +98,7 @@ class CafeViewController: UIViewController {
     func setUp(cafe: Cafe) {
         addHeaderImageView(imageUrl: cafe.imageUrl)
         addNameLabel(cafe.name)
+        navigationTriggerView = stackView.arrangedSubviews.last
         stackView.setCustomSpacing(8, after: stackView.arrangedSubviews.last!)
         addShortDescriptionLabel(cafe)
         addButtons(cafe)
@@ -112,17 +121,11 @@ class CafeViewController: UIViewController {
         addHugeSpacer()
 
         navigationView.titleLabel.text = cafe.name
-        for menuCategory in cafe.menu.categories {
-            navigationView.addCategory(menuCategory.category) {
-                print(menuCategory.category)
+        for (i, menuCategory) in cafe.menu.categories.enumerated() {
+            navigationView.addCategory(menuCategory.category) { [self] in
+                let offset = categoryViews[i].frame.minY - navigationView.frame.height - 50
+                scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
             }
-        }
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            self.navigationView.selectCategory(atIndex: Int.random(in: 0..<cafe.menu.categories.count), animated: true)
         }
     }
 
@@ -135,6 +138,8 @@ class CafeViewController: UIViewController {
         imageView.kf.setImage(with: imageUrl)
 
         stackView.addArrangedSubview(imageView)
+
+        headerView = imageView
     }
 
     private func addNameLabel(_ name: String) {
@@ -303,13 +308,14 @@ class CafeViewController: UIViewController {
             categoryView.addItemView(itemView)
         }
 
+        categoryViews.append(categoryView)
         stackView.addArrangedSubview(categoryView)
     }
 
     private func addHugeSpacer() {
         let spacer = UIView()
         stackView.addArrangedSubview(spacer)
-        spacer.height(to: view, multiplier: 0.5)
+        spacer.height(to: view)
     }
 
 }
@@ -318,6 +324,77 @@ extension CafeViewController: UISearchBarDelegate {
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         false
+    }
+
+}
+
+extension CafeViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        handleHeaderImageScaling(scrollView)
+        handleNavigationViewTrigger(scrollView)
+        handleNavigationViewCategory(scrollView)
+    }
+
+    private func handleHeaderImageScaling(_ scrollView: UIScrollView) {
+        guard let header = headerView, header.bounds != .zero else { return }
+
+        let offset = scrollView.contentOffset.y
+
+        // We want to scale the header about its bottom center.
+        // 1. Translate bottom center point to the center of the view
+        // 2. Apply scale about new center
+        // 3. Translate center back to bottom center
+
+        let translateTransform = CGAffineTransform(translationX: 0, y: -header.bounds.height / 2)
+
+        // Uniform scale such that the top of the image is at the top of the screen
+        let bottomOfImageViewToTopOfView = -offset + header.bounds.height
+        let scale = max(1, bottomOfImageViewToTopOfView / header.bounds.height)
+        let scaleTransfom = CGAffineTransform(scaleX: scale, y: scale)
+
+        let transform = translateTransform
+            .concatenating(scaleTransfom)
+            .concatenating(translateTransform.inverted())
+
+        header.transform = transform
+    }
+
+    private func handleNavigationViewTrigger(_ scrollView: UIScrollView) {
+        // Use trigger.bounds != zero as a proxy for whether it has been laid out
+        guard let trigger = navigationTriggerView, trigger.bounds != .zero else { return }
+
+        let offset = scrollView.contentOffset.y + scrollView.contentInset.top
+        let criticalPoint = trigger.convert(trigger.bounds, to: scrollView).minY
+
+        let shouldFadeIn = offset > criticalPoint
+        if shouldFadeIn != (navigationView.fadeInProgress == 1) {
+            navigationView.setFadeInProgress(shouldFadeIn ? 1 : 0, animated: true)
+            RootViewController.setStatusBarStyle(shouldFadeIn ? .darkContent : .lightContent)
+        }
+    }
+
+    private func handleNavigationViewCategory(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y + scrollView.contentInset.top
+
+        // We define a cursor that the user is looking at 50px below the navigation view in the scroll view's
+        // coordinate system.
+        let cursorPosition = offset + navigationView.frame.height + 50
+
+        // The selected category is the menu category view that is under the cursor position
+        let categoryView = stackView.arrangedSubviews.first { view in
+            guard let categoryView = view as? CafeMenuCategoryView else { return false }
+            return categoryView.frame.minY <= cursorPosition && cursorPosition <= categoryView.frame.maxY
+        } as? CafeMenuCategoryView
+
+        if let categoryView = categoryView {
+            guard let index = categoryViews.firstIndex(of: categoryView) else {
+                os_log("%@: could not find index of %@ in categoryViews", self, categoryView)
+                return
+            }
+
+            navigationView.highlightCategory(atIndex: index, animated: true)
+        }
     }
 
 }

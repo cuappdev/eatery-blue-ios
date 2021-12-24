@@ -72,12 +72,11 @@ class RootViewController: UIViewController {
             forName: RootViewController.statusBarStyleNotification,
             object: nil,
             queue: nil
-        ) { [weak self] notification in
-            guard let self = self else { return }
+        ) { [self] notification in
             guard let style = notification.userInfo?["statusBarStyle"] as? UIStatusBarStyle else { return }
 
-            self.thePreferredStatusBarStyle = style
-            self.setNeedsStatusBarAppearanceUpdate()
+            thePreferredStatusBarStyle = style
+            setNeedsStatusBarAppearanceUpdate()
         }
     }
 

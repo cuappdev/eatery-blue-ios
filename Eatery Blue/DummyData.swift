@@ -23,7 +23,7 @@ enum DummyData {
         latitude: 0,
         longitude: 0,
         menu: Menu(categories: [
-            MenuCategory(category: "Enchilads", items: [
+            MenuCategory(category: "Enchiladas", items: [
                 MenuItem(
                     healthy: false,
                     name: "Chicken",

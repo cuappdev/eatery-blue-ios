@@ -30,6 +30,12 @@ class HomeViewController: UIViewController {
         setUpConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        RootViewController.setStatusBarStyle(.lightContent)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -146,10 +152,9 @@ class HomeViewController: UIViewController {
             \(favorite.building ?? "--") · \(favorite.menuSummary ?? "--")
             """
 
-            cardView.on(UITapGestureRecognizer()) { [weak self] _ in
-                guard let self = self else { return }
+            cardView.on(UITapGestureRecognizer()) { [self] _ in
                 cardView.imageView.hero.id = "headerImageView"
-                self.pushViewController(for: favorite)
+                pushViewController(for: favorite)
             }
 
             carouselView.addCardView(cardView)
@@ -185,10 +190,9 @@ class HomeViewController: UIViewController {
             subtitle.append(NSAttributedString(string: "4-7 min wait"))
             cardView.subtitleLabel.attributedText = subtitle
 
-            cardView.on(UITapGestureRecognizer()) { [weak self] _ in
-                guard let self = self else { return }
+            cardView.on(UITapGestureRecognizer()) { [self] _ in
                 cardView.imageView.hero.id = "headerImageView"
-                self.pushViewController(for: eatery)
+                pushViewController(for: eatery)
             }
 
             allEateriesView.addCardView(cardView)

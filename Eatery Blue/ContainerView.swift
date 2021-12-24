@@ -40,9 +40,9 @@ class ContainerView<Content: UIView>: UIView {
         }
     }
 
-    var shadowOpacity: Float = 0 {
+    var shadowOpacity: Double = 0 {
         didSet {
-            layer.shadowOpacity = shadowOpacity
+            layer.shadowOpacity = Float(shadowOpacity)
         }
     }
 

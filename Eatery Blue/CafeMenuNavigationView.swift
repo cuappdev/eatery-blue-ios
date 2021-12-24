@@ -20,13 +20,18 @@ class CafeMenuNavigationView: UIView {
     let categoriesForeground = UIStackView()
     let foregroundMask = PillView()
 
+    private let divider = HDivider()
+
+    private(set) var fadeInProgress: Double = 0
+    private(set) var highlightedCategoryIndex: Int = 0
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         setUpSelf()
         setUpConstraints()
 
-        setFadeInProgress(1)
+        setFadeInProgress(fadeInProgress)
     }
 
     required init?(coder: NSCoder) {
@@ -48,6 +53,8 @@ class CafeMenuNavigationView: UIView {
 
         addSubview(scrollView)
         setUpScrollView()
+
+        addSubview(divider)
     }
 
     private func setUpBackgroundView() {
@@ -128,6 +135,8 @@ class CafeMenuNavigationView: UIView {
 
         setUpCategoriesStackViewConstraints(categoriesBackground)
         setUpCategoriesStackViewConstraints(categoriesForeground)
+
+        divider.edgesToSuperview(excluding: .top)
     }
 
     private func setUpCategoriesStackViewConstraints(_ stackView: UIStackView) {
@@ -137,10 +146,24 @@ class CafeMenuNavigationView: UIView {
 
     func setFadeInProgress(_ progress: Double) {
         backgroundView.alpha = progress
-        backButton.shadowOpacity = 0.25 * Float(1 - progress)
-        favoriteButton.shadowOpacity = 0.25 * Float(1 - progress)
+        backButton.shadowOpacity = 0.25 * (1 - progress)
+        favoriteButton.shadowOpacity = 0.25 * (1 - progress)
         titleLabel.alpha = progress
         scrollView.alpha = progress
+        divider.alpha = progress
+    }
+
+    func setFadeInProgress(_ progress: Double, animated: Bool) {
+        let progress = max(0, min(1, progress))
+        self.fadeInProgress = progress
+
+        if animated {
+            UIView.animate(withDuration: 0.125) {
+                self.setFadeInProgress(progress)
+            }
+        } else {
+            setFadeInProgress(progress)
+        }
     }
 
     func addCategory(_ title: String, onTap: (() -> Void)? = nil) {
@@ -165,15 +188,25 @@ class CafeMenuNavigationView: UIView {
         foregroundContainer.isUserInteractionEnabled = false
     }
 
-    func selectCategory(atIndex i: Int, animated: Bool) {
-        let action: () -> Void = {
-            self.foregroundMask.frame = self.categoriesForeground.arrangedSubviews[i].frame
-        }
+    func highlightCategory(atIndex i: Int, animated: Bool) {
         if animated {
-            UIView.animate(withDuration: 0.25, animations: action)
+            UIView.animate(withDuration: 0.15) {
+                self.highlightCategory(atIndex: i)
+            }
         } else {
-            action()
+            highlightCategory(atIndex: i)
         }
+    }
+
+    func highlightCategory(atIndex i: Int) {
+        highlightedCategoryIndex = i
+        foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        highlightCategory(atIndex: highlightedCategoryIndex)
     }
 
 }
