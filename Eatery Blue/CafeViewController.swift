@@ -165,10 +165,10 @@ class CafeViewController: UIViewController {
     }
 
     private func addButtons(_ cafe: Cafe) {
-        let buttonStackView = PillButtonStackView()
+        let buttonStackView = CafePillButtonStackView()
         buttonStackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
-        let buttonOrderOnline = PillButtonView()
+        let buttonOrderOnline = CafePillButtonView()
         buttonStackView.addPillButton(buttonOrderOnline)
         buttonOrderOnline.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         buttonOrderOnline.backgroundColor = UIColor(named: "EateryBlue")
@@ -177,7 +177,7 @@ class CafeViewController: UIViewController {
         buttonOrderOnline.titleLabel.textColor = .white
         buttonOrderOnline.titleLabel.text = "Order online"
 
-        let buttonDirections = PillButtonView()
+        let buttonDirections = CafePillButtonView()
         buttonStackView.addPillButton(buttonDirections)
         buttonDirections.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         buttonDirections.backgroundColor = UIColor(named: "Gray00")

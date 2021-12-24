@@ -52,6 +52,8 @@ class ContainerView<Content: UIView>: UIView {
         }
     }
 
+    private var isPill: Bool = false
+
     init(content: Content) {
         self.content = content
 
@@ -66,8 +68,21 @@ class ContainerView<Content: UIView>: UIView {
         content.edges(to: layoutMarginsGuide)
     }
 
+    convenience init(pillContent: Content) {
+        self.init(content: pillContent)
+        self.isPill = true
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if isPill {
+            cornerRadius = min(clippingView.bounds.width, clippingView.bounds.height) / 2
+        }
     }
 
 }

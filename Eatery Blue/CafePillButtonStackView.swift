@@ -1,5 +1,5 @@
 //
-//  PillButtonStackView.swift
+//  CafePillButtonStackView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PillButtonStackView: UIView {
+class CafePillButtonStackView: UIView {
 
     let stackView = UIStackView()
 
@@ -38,7 +38,7 @@ class PillButtonStackView: UIView {
         stackView.edges(to: layoutMarginsGuide)
     }
 
-    func addPillButton(_ view: PillButtonView) {
+    func addPillButton(_ view: CafePillButtonView) {
         stackView.addArrangedSubview(view)
     }
 

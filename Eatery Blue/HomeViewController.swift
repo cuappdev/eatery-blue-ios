@@ -113,14 +113,23 @@ class HomeViewController: UIViewController {
     private func setUpFiltersView() {
         filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
-        let toggleView = PillFilterToggleView()
-        toggleView.label.text = "Under 10 min"
-        var isHighlighted = false
-        toggleView.on(UITapGestureRecognizer()) { [weak toggleView] _ in
-            toggleView?.setHighlighted(isHighlighted)
-            isHighlighted.toggle()
+        let shortFilter = PillFilterButtonView()
+        shortFilter.label.text = "Under 10 min"
+        shortFilter.on(UITapGestureRecognizer()) { [weak shortFilter] _ in
+            guard let shortFilter = shortFilter else { return }
+            shortFilter.setHighlighted(!shortFilter.isHighlighted)
         }
-        filtersView.addToggle(toggleView)
+        filtersView.addButton(shortFilter)
+
+        let paymentMethods = PillFilterButtonView()
+        paymentMethods.label.text = "Payment Methods"
+        paymentMethods.imageView.isHidden = false
+        paymentMethods.on(UITapGestureRecognizer()) { [self] _ in
+            let viewController = PaymentMethodsViewController()
+            viewController.setUpSheetPresentation()
+            present(viewController, animated: true)
+        }
+        filtersView.addButton(paymentMethods)
     }
 
     private func removeAllCarouselViews() {

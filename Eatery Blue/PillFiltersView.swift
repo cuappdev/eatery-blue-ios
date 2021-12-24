@@ -50,8 +50,8 @@ class PillFiltersView: UIView {
         stackView.height(to: self)
     }
 
-    func addToggle(_ toggleView: PillFilterToggleView) {
-        stackView.addArrangedSubview(toggleView)
+    func addButton(_ buttonView: PillFilterButtonView) {
+        stackView.addArrangedSubview(buttonView)
     }
 
 }

@@ -1,5 +1,5 @@
 //
-//  PillButtonView.swift
+//  CafePillButtonView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PillButtonView: UIView {
+class CafePillButtonView: UIView {
 
     private let container = UIView()
     let imageView = UIImageView()

@@ -46,7 +46,7 @@ class CafeMenuHeaderView: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "ButtonDownChevron")
+        buttonImageView.image = UIImage(named: "ButtonChevronDown")
     }
 
     private func setUpConstraints() {

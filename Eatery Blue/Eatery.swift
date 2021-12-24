@@ -90,3 +90,10 @@ struct MenuItem: Codable {
     let price: Int?
 
 }
+
+enum PaymentMethod: Codable {
+    case mealSwipes
+    case brbs
+    case cash
+    case credit
+}
