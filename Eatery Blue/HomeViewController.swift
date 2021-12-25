@@ -125,7 +125,7 @@ class HomeViewController: UIViewController {
         paymentMethods.label.text = "Payment Methods"
         paymentMethods.imageView.isHidden = false
         paymentMethods.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = PaymentMethodsViewController()
+            let viewController = PaymentMethodsFilterViewController()
             viewController.setUpSheetPresentation()
             present(viewController, animated: true)
         }

@@ -7,232 +7,165 @@
 
 import UIKit
 
-class PaymentMethodsViewController: UIViewController {
+class PaymentMethodsViewController: SheetViewController {
 
-    private let stackView = UIStackView()
+    private let mealSwipesImageView = UIImageView()
+    private let brbsImageView = UIImageView()
+    private let cashOrCardImageView = UIImageView()
+    private let descriptionLabel = UILabel()
 
-    private let mealSwipesView = PaymentMethodView()
-    private let brbsView = PaymentMethodView()
-    private let cashAndCreditView = PaymentMethodView()
-    var selectedPaymentMethods: Set<PaymentMethod> = []
+    private(set) var paymentMethods: Set<PaymentMethod> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpView()
-        setUpConstraints()
-
-        setUpSheetPresentation()
-    }
-
-    private func setUpView() {
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 16
-        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-
-        view.addSubview(stackView)
         setUpStackView()
+        setPaymentMethods(paymentMethods)
     }
 
     private func setUpStackView() {
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 12
-
-        view.addSubview(stackView)
-        addHeader()
-        addPaymentMethodToggles()
-        addPillButton(title: "Show results") { [self] in
+        stackView.spacing = 24
+        addHeader(title: "Payment Methods")
+        addImageViews()
+        addDescriptionLabel()
+        addPillButton(title: "Close", style: .regular) { [self] in
             dismiss(animated: true)
-        }
-        addTextButton(title: "Reset") { [self] in
-            selectedPaymentMethods = []
-            setPaymentMethodViewsFromSelectedPaymentMethods()
         }
     }
 
-    private func addHeader() {
-        let header = UIStackView()
-        header.axis = .horizontal
-
-        let titleLabel = UILabel()
-        header.addArrangedSubview(titleLabel)
-        titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
-        titleLabel.text = "Payment Methods"
-
-        let cancelButton = UIImageView()
-        cancelButton.isUserInteractionEnabled = true
-        header.addArrangedSubview(cancelButton)
-        cancelButton.image = UIImage(named: "ButtonClose")
-        cancelButton.on(UITapGestureRecognizer()) { [self] _ in
-            dismiss(animated: true)
-        }
-
-        cancelButton.width(40)
-        cancelButton.height(40)
-
-        stackView.addArrangedSubview(header)
-    }
-
-    private func addPaymentMethodToggles() {
+    private func addImageViews() {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.distribution = .equalCentering
+        stack.distribution = .fillEqually
         stack.alignment = .fill
 
-        stack.addArrangedSubview(mealSwipesView)
-        mealSwipesView.label.text = "Meal swipes"
-        mealSwipesView.on(UITapGestureRecognizer()) { [self] _ in
-            if selectedPaymentMethods.contains(.mealSwipes) {
-                selectedPaymentMethods.remove(.mealSwipes)
-            } else {
-                selectedPaymentMethods.insert(.mealSwipes)
-            }
+        stack.addArrangedSubview(mealSwipesImageView)
+        mealSwipesImageView.contentMode = .scaleAspectFit
+        mealSwipesImageView.image = UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate)
+        mealSwipesImageView.height(48)
 
-            setPaymentMethodViewsFromSelectedPaymentMethods()
-        }
+        stack.addArrangedSubview(brbsImageView)
+        brbsImageView.contentMode = .scaleAspectFit
+        brbsImageView.image = UIImage(named: "BRBs")?.withRenderingMode(.alwaysTemplate)
+        brbsImageView.height(48)
 
-        stack.addArrangedSubview(brbsView)
-        brbsView.label.text = "BRBs"
-        brbsView.on(UITapGestureRecognizer()) { [self] _ in
-            if selectedPaymentMethods.contains(.brbs) {
-                selectedPaymentMethods.remove(.brbs)
-            } else {
-                selectedPaymentMethods.insert(.brbs)
-            }
-
-            setPaymentMethodViewsFromSelectedPaymentMethods()
-        }
-
-        stack.addArrangedSubview(cashAndCreditView)
-        cashAndCreditView.label.text = "Cash or credit"
-        cashAndCreditView.on(UITapGestureRecognizer()) { [self] _ in
-            if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
-                selectedPaymentMethods.remove(.cash)
-                selectedPaymentMethods.remove(.credit)
-            } else {
-                selectedPaymentMethods.insert(.cash)
-                selectedPaymentMethods.insert(.credit)
-            }
-
-            setPaymentMethodViewsFromSelectedPaymentMethods()
-        }
-
-        mealSwipesView.width(to: brbsView)
-        mealSwipesView.width(to: cashAndCreditView)
+        stack.addArrangedSubview(cashOrCardImageView)
+        cashOrCardImageView.contentMode = .scaleAspectFit
+        cashOrCardImageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
+        cashOrCardImageView.height(48)
 
         let container = ContainerView(content: stack)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.addArrangedSubview(container)
-
-        setPaymentMethodViewsFromSelectedPaymentMethods()
     }
 
-    private func addPillButton(title: String, action: @escaping () -> Void) {
-        let titleLabel = UILabel()
-        titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textAlignment = .center
-        titleLabel.text = title
-        titleLabel.textColor = .white
-
-        let container = ContainerView(pillContent: titleLabel)
-        container.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
-        container.clippingView.backgroundColor = UIColor(named: "EateryBlue")
-        container.on(UITapGestureRecognizer()) { _ in
-            action()
-        }
-        stackView.addArrangedSubview(container)
+    private func addDescriptionLabel() {
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.font = .preferredFont(for: .subheadline, weight: .regular)
+        stackView.addArrangedSubview(descriptionLabel)
     }
 
-    private func addTextButton(title: String, action: @escaping () -> Void) {
-        let titleLabel = UILabel()
-        titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.text = title
-        titleLabel.textColor = UIColor(named: "Black")
-        titleLabel.textAlignment = .center
+    func setPaymentMethods(_ paymentMethods: Set<PaymentMethod>) {
+        self.paymentMethods = paymentMethods
 
-        let container = ContainerView(content: titleLabel)
-        container.on(UITapGestureRecognizer()) { _ in
-            action()
-        }
-        stackView.addArrangedSubview(container)
+        mealSwipesImageView.tintColor = paymentMethods.contains(.mealSwipes)
+            ? UIColor(named: "EateryBlue")
+            : UIColor(named: "Gray05")
+
+        brbsImageView.tintColor = paymentMethods.contains(.brbs)
+            ? UIColor(named: "EateryRed")
+            : UIColor(named: "Gray05")
+
+        cashOrCardImageView.tintColor = paymentMethods.contains(.cash) && paymentMethods.contains(.credit)
+            ? UIColor(named: "EateryGreen")
+            : UIColor(named: "Gray05")
+
+        descriptionLabel.attributedText = getAttributedString(paymentMethods)
     }
 
-    private func setUpConstraints() {
-        stackView.edges(to: view.layoutMarginsGuide)
-    }
+    private func getAttributedString(_ paymentMethods: Set<PaymentMethod>) -> NSAttributedString {
+        let strings = getAttributedStrings(paymentMethods)
 
-    func setUpSheetPresentation() {
-        transitioningDelegate = self
-        modalPresentationStyle = .custom
-    }
+        let result = NSMutableAttributedString()
 
-    override func viewSafeAreaInsetsDidChange() {
-        view.layoutMargins = UIEdgeInsets(top: 24, left: 16, bottom: view.safeAreaInsets.bottom, right: 16)
-    }
+        switch strings.count {
+        case 1:
+            result.append(NSAttributedString(string: "Pay with "))
+            result.append(strings[0])
+            result.append(NSAttributedString(string: "."))
 
-    private func setPaymentMethodViewsFromSelectedPaymentMethods() {
-        if selectedPaymentMethods.contains(.mealSwipes) {
-            mealSwipesView.imageView.image = UIImage(named: "MealSwipesSelected")
-            mealSwipesView.label.textColor = UIColor(named: "EateryBlue")
-        } else {
-            mealSwipesView.imageView.image = UIImage(named: "MealSwipesUnselected")
-            mealSwipesView.label.textColor = UIColor(named: "Gray05")
-        }
+        case 2:
+            result.append(NSAttributedString(string: "Pay with "))
+            result.append(strings[0])
+            result.append(NSAttributedString(string: " or "))
+            result.append(strings[1])
+            result.append(NSAttributedString(string: "."))
 
-        if selectedPaymentMethods.contains(.brbs) {
-            brbsView.imageView.image = UIImage(named: "BRBsSelected")
-            brbsView.label.textColor = UIColor(named: "EateryRed")
-        } else {
-            brbsView.imageView.image = UIImage(named: "BRBsUnselected")
-            brbsView.label.textColor = UIColor(named: "Gray05")
+        case 3:
+            result.append(NSAttributedString(string: "Pay with "))
+            result.append(strings[0])
+            result.append(NSAttributedString(string: ", "))
+            result.append(strings[1])
+            result.append(NSAttributedString(string: " or "))
+            result.append(strings[2])
+            result.append(NSAttributedString(string: "."))
+
+        default:
+            result.append(NSAttributedString(string: "We're not quite sure how to pay at this eatery..."))
         }
 
-        if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
-            cashAndCreditView.imageView.image = UIImage(named: "CashSelected")
-            cashAndCreditView.label.textColor = UIColor(named: "EateryGreen")
-        } else {
-            cashAndCreditView.imageView.image = UIImage(named: "CashUnselected")
-            cashAndCreditView.label.textColor = UIColor(named: "Gray05")
+        return result
+    }
+
+    private func getAttributedStrings(_ paymentMethods: Set<PaymentMethod>) -> [NSAttributedString] {
+        var result: [NSAttributedString] = []
+
+        if paymentMethods.contains(.mealSwipes) {
+            let attributedString = NSMutableAttributedString()
+            let attachment = NSTextAttachment(
+                image: UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate),
+                scaledToMatch: descriptionLabel.font
+            )
+            attributedString.append(NSAttributedString(attachment: attachment))
+            attributedString.append(NSAttributedString(string: " Meal swipes"))
+            attributedString.addAttributes(
+                [.foregroundColor: UIColor(named: "EateryBlue") as Any],
+                range: NSRange(location: 0, length: attributedString.length)
+            )
+            result.append(attributedString)
         }
-    }
 
-}
+        if paymentMethods.contains(.brbs) {
+            let attributedString = NSMutableAttributedString()
+            let attachment = NSTextAttachment(
+                image: UIImage(named: "BRBs")?.withRenderingMode(.alwaysTemplate),
+                scaledToMatch: descriptionLabel.font
+            )
+            attributedString.append(NSAttributedString(attachment: attachment))
+            attributedString.append(NSAttributedString(string: " BRBs"))
+            attributedString.addAttributes(
+                [.foregroundColor: UIColor(named: "EateryRed") as Any],
+                range: NSRange(location: 0, length: attributedString.length)
+            )
+            result.append(attributedString)
+        }
 
-extension PaymentMethodsViewController: UIViewControllerTransitioningDelegate {
+        if paymentMethods.contains(.cash), paymentMethods.contains(.credit) {
+            let attributedString = NSMutableAttributedString()
+            let attachment = NSTextAttachment(
+                image: UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate),
+                scaledToMatch: descriptionLabel.font
+            )
+            attributedString.append(NSAttributedString(attachment: attachment))
+            attributedString.append(NSAttributedString(string: " Cash or credit"))
+            attributedString.addAttributes(
+                [.foregroundColor: UIColor(named: "EateryGreen") as Any],
+                range: NSRange(location: 0, length: attributedString.length)
+            )
+            result.append(attributedString)
+        }
 
-    func presentationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController?,
-        source: UIViewController
-    ) -> UIPresentationController? {
-        let height = view.systemLayoutSizeFitting(
-            CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .defaultLow
-        ).height
-        
-        return SheetPresentationController(
-            presentedViewController: presented,
-            presenting: presenting,
-            height: height
-        )
-    }
-
-    func animationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController,
-        source: UIViewController
-    ) -> UIViewControllerAnimatedTransitioning? {
-        SheetPresentationAnimationController(isPresenting: true)
-    }
-
-    func animationController(
-        forDismissed dismissed: UIViewController
-    ) -> UIViewControllerAnimatedTransitioning? {
-        SheetPresentationAnimationController(isPresenting: false)
+        return result
     }
 
 }

@@ -18,7 +18,7 @@
 		5D0CDC55277505B400AD0E27 /* CafeMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */; };
 		5D0CDC572775256D00AD0E27 /* CafeMenuNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC562775256D00AD0E27 /* CafeMenuNavigationView.swift */; };
 		5D0CDC592775346600AD0E27 /* PillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC582775346600AD0E27 /* PillView.swift */; };
-		5D0CDC602776324800AD0E27 /* PaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC5F2776324800AD0E27 /* PaymentMethodsViewController.swift */; };
+		5D0CDC602776324800AD0E27 /* PaymentMethodsFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterViewController.swift */; };
 		5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
@@ -33,6 +33,7 @@
 		5DDAD47B2773DC4600CC98DD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */; };
 		5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */; };
 		5DDAD4862773F10900CC98DD /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4852773F10900CC98DD /* TestingViewController.swift */; };
+		5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */; };
 		5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7C22773FCC4001ADCDC /* Hero */; };
 		5DF5F7C92773FCEC001ADCDC /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7C82773FCEC001ADCDC /* TinyConstraints */; };
 		5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7CB2773FD09001ADCDC /* Tactile */; };
@@ -51,7 +52,9 @@
 		5DF5F7E92774C8A9001ADCDC /* CardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5F7E82774C8A9001ADCDC /* CardStackView.swift */; };
 		5DF5F7EB2774D8FE001ADCDC /* CafeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5F7EA2774D8FE001ADCDC /* CafeViewController.swift */; };
 		5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938CE27764F48008ED0A1 /* SheetPresentationAnimationController.swift */; };
-		5DF938D1277662CC008ED0A1 /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D0277662CC008ED0A1 /* PaymentMethodView.swift */; };
+		5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */; };
+		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
+		5DF938D527768DDC008ED0A1 /* PaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -80,7 +83,7 @@
 		5D0CDC54277505B400AD0E27 /* CafeMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuItemView.swift; sourceTree = "<group>"; };
 		5D0CDC562775256D00AD0E27 /* CafeMenuNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMenuNavigationView.swift; sourceTree = "<group>"; };
 		5D0CDC582775346600AD0E27 /* PillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillView.swift; sourceTree = "<group>"; };
-		5D0CDC5F2776324800AD0E27 /* PaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewController.swift; sourceTree = "<group>"; };
+		5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsFilterViewController.swift; sourceTree = "<group>"; };
 		5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationController.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 		5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillFiltersView.swift; sourceTree = "<group>"; };
 		5DDAD4852773F10900CC98DD /* TestingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
+		5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAttachment.swift; sourceTree = "<group>"; };
 		5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchViewController.swift; sourceTree = "<group>"; };
 		5DF5F7D127740140001ADCDC /* PillFilterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillFilterButtonView.swift; sourceTree = "<group>"; };
 		5DF5F7D327740182001ADCDC /* CarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselView.swift; sourceTree = "<group>"; };
@@ -110,7 +114,9 @@
 		5DF5F7E82774C8A9001ADCDC /* CardStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStackView.swift; sourceTree = "<group>"; };
 		5DF5F7EA2774D8FE001ADCDC /* CafeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeViewController.swift; sourceTree = "<group>"; };
 		5DF938CE27764F48008ED0A1 /* SheetPresentationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationAnimationController.swift; sourceTree = "<group>"; };
-		5DF938D0277662CC008ED0A1 /* PaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodView.swift; sourceTree = "<group>"; };
+		5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodFilterView.swift; sourceTree = "<group>"; };
+		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
+		5DF938D427768DDC008ED0A1 /* PaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,8 +178,10 @@
 				5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */,
 				5D8651922773CD5A000338D4 /* HomeViewController.swift */,
 				5DDAD4782773DC1600CC98DD /* MenusViewController.swift */,
-				5D0CDC5F2776324800AD0E27 /* PaymentMethodsViewController.swift */,
-				5DF938D0277662CC008ED0A1 /* PaymentMethodView.swift */,
+				5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */,
+				5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterViewController.swift */,
+				5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */,
+				5DF938D427768DDC008ED0A1 /* PaymentMethodsViewController.swift */,
 				5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */,
 				5D0CDC582775346600AD0E27 /* PillView.swift */,
 				5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */,
@@ -183,6 +191,7 @@
 				5DF5F7E22774BEAD001ADCDC /* SearchRecentsView.swift */,
 				5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */,
 				5DF938CE27764F48008ED0A1 /* SheetPresentationAnimationController.swift */,
+				5DF938D227768B84008ED0A1 /* SheetViewController.swift */,
 				5DDAD4852773F10900CC98DD /* TestingViewController.swift */,
 				5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */,
 				5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */,
@@ -281,10 +290,11 @@
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* CafeViewController.swift in Sources */,
-				5DF938D1277662CC008ED0A1 /* PaymentMethodView.swift in Sources */,
+				5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
-				5D0CDC602776324800AD0E27 /* PaymentMethodsViewController.swift in Sources */,
+				5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */,
+				5D0CDC602776324800AD0E27 /* PaymentMethodsFilterViewController.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* CarouselCardView.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* CafeMenuCategoryView.swift in Sources */,
@@ -295,7 +305,9 @@
 				5D0CDC4F2774FDAE00AD0E27 /* CafeMenuHeaderView.swift in Sources */,
 				5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */,
 				5DDAD4792773DC1600CC98DD /* MenusViewController.swift in Sources */,
+				5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
+				5DF938D527768DDC008ED0A1 /* PaymentMethodsViewController.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* CafePillButtonStackView.swift in Sources */,
 				5DDAD4862773F10900CC98DD /* TestingViewController.swift in Sources */,
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,

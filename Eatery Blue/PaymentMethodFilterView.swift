@@ -1,5 +1,5 @@
 //
-//  PaymentMethodView.swift
+//  PaymentMethodFilterView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/24/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PaymentMethodView: UIView {
+class PaymentMethodFilterView: UIView {
 
     let imageView = UIImageView()
     let label = UILabel()

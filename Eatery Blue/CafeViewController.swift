@@ -97,6 +97,7 @@ class CafeViewController: UIViewController {
 
     func setUp(cafe: Cafe) {
         addHeaderImageView(imageUrl: cafe.imageUrl)
+        addPaymentMethodsView(headerView: stackView.arrangedSubviews.last, paymentMethods: [.credit, .brbs, .cash])
         addNameLabel(cafe.name)
         navigationTriggerView = stackView.arrangedSubviews.last
         stackView.setCustomSpacing(8, after: stackView.arrangedSubviews.last!)
@@ -140,6 +141,71 @@ class CafeViewController: UIViewController {
         stackView.addArrangedSubview(imageView)
 
         headerView = imageView
+    }
+
+    private func addPaymentMethodsView(headerView: UIView?, paymentMethods: Set<PaymentMethod>) {
+        guard let headerView = headerView else {
+            return
+        }
+
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 12
+        stack.distribution = .fill
+        stack.alignment = .fill
+
+        if paymentMethods.contains(.mealSwipes) {
+            let imageView = UIImageView()
+            imageView.image = UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate)
+            imageView.tintColor = UIColor(named: "EateryBlue")
+            imageView.contentMode = .scaleAspectFit
+            imageView.width(24)
+            imageView.height(24)
+            stack.addArrangedSubview(imageView)
+        }
+
+        if paymentMethods.contains(.brbs) {
+            let imageView = UIImageView()
+            imageView.image = UIImage(named: "BRBs")?.withRenderingMode(.alwaysTemplate)
+            imageView.tintColor = UIColor(named: "EateryRed")
+            imageView.contentMode = .scaleAspectFit
+            imageView.width(24)
+            imageView.height(24)
+            stack.addArrangedSubview(imageView)
+        }
+
+        if paymentMethods.contains(.cash), paymentMethods.contains(.credit) {
+            let imageView = UIImageView()
+            imageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
+            imageView.tintColor = UIColor(named: "EateryGreen")
+            imageView.contentMode = .scaleAspectFit
+            imageView.width(24)
+            imageView.height(24)
+            stack.addArrangedSubview(imageView)
+        }
+
+        let container = ContainerView(pillContent: stack)
+
+        // We add the payment methods as a regular subview of the stackView since it does not obey the regular layout
+        // of a stack view.
+        stackView.addSubview(container)
+
+        container.layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        container.clippingView.backgroundColor = .white
+        container.shadowColor = UIColor(named: "Black")
+        container.shadowOffset = CGSize(width: 0, height: 4)
+        container.shadowOpacity = 0.25
+        container.shadowRadius = 4
+
+        container.trailingToSuperview(offset: 16)
+        container.bottom(to: headerView, offset: -16)
+
+        container.on(UITapGestureRecognizer()) { [self] _ in
+            let viewController = PaymentMethodsViewController()
+            viewController.setUpSheetPresentation()
+            viewController.setPaymentMethods(paymentMethods)
+            present(viewController, animated: true)
+        }
     }
 
     private func addNameLabel(_ name: String) {
@@ -205,9 +271,9 @@ class CafeViewController: UIViewController {
 
         cell.titleLabel.textColor = UIColor(named: "Gray05")
         let text = NSMutableAttributedString()
-        let attachment = NSTextAttachment()
-        attachment.image = UIImage(named: "Clock")
-        text.append(NSAttributedString(attachment: attachment))
+        text.append(NSAttributedString(
+            attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: cell.titleLabel.font))
+        )
         text.append(NSAttributedString(string: " Hours"))
         cell.titleLabel.attributedText = text
 
@@ -223,16 +289,9 @@ class CafeViewController: UIViewController {
 
         cell.titleLabel.textColor = UIColor(named: "Gray05")
         let text = NSMutableAttributedString()
-        let attachment = NSTextAttachment()
-        let watchImage = UIImage(named: "Watch")
-        attachment.bounds = CGRect(
-            x: 0,
-            y: (cell.titleLabel.font.capHeight - (watchImage?.size.height ?? 0)).rounded() / 2,
-            width: watchImage?.size.width ?? 0,
-            height: watchImage?.size.height ?? 0
+        text.append(NSAttributedString(
+            attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font))
         )
-        attachment.image = watchImage
-        text.append(NSAttributedString(attachment: attachment))
         text.append(NSAttributedString(string: " Wait Time"))
         cell.titleLabel.attributedText = text
 
