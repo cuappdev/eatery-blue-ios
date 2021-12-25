@@ -98,6 +98,7 @@ class CafeViewController: UIViewController {
     func setUp(cafe: Cafe) {
         addHeaderImageView(imageUrl: cafe.imageUrl)
         addPaymentMethodsView(headerView: stackView.arrangedSubviews.last, paymentMethods: [.credit, .brbs, .cash])
+        addPlaceDecorationIcon(headerView: stackView.arrangedSubviews.last)
         addNameLabel(cafe.name)
         navigationTriggerView = stackView.arrangedSubviews.last
         stackView.setCustomSpacing(8, after: stackView.arrangedSubviews.last!)
@@ -206,6 +207,27 @@ class CafeViewController: UIViewController {
             viewController.setPaymentMethods(paymentMethods)
             present(viewController, animated: true)
         }
+    }
+
+    private func addPlaceDecorationIcon(headerView: UIView?) {
+        guard let headerView = headerView else {
+            return
+        }
+
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = UIColor(named: "Gray05")
+
+        let container = ContainerView(pillContent: imageView)
+        container.clippingView.backgroundColor = .white
+
+        stackView.addSubview(container)
+
+        container.leadingToSuperview(offset: 20)
+        container.width(40)
+        container.height(40)
+        container.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        container.centerY(to: headerView, headerView.bottomAnchor)
     }
 
     private func addNameLabel(_ name: String) {

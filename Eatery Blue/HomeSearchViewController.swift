@@ -105,7 +105,8 @@ class HomeSearchViewController: UIViewController {
         for recentSearch in recentSearches {
             let itemView = SearchRecentItemView()
             itemView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            itemView.imageView.image = UIImage(named: recentSearch.icon)
+            itemView.imageView.image = UIImage(named: recentSearch.icon)?.withRenderingMode(.alwaysTemplate)
+            itemView.imageView.tintColor = UIColor(named: "EateryBlue")
             itemView.titleLabel.text = recentSearch.title
 
             if let subtitle = recentSearch.subtitle {

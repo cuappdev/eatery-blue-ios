@@ -191,10 +191,11 @@ class HomeViewController: UIViewController {
             subtitle.append(NSAttributedString(string: " · "))
             subtitle.append(NSAttributedString(string: "Meal swipes allowed"))
             subtitle.append(NSAttributedString(string: "\n"))
-            let watchImage = NSTextAttachment()
-            watchImage.image = UIImage(named: "Watch")
-            subtitle.append(NSAttributedString(attachment: watchImage))
-            subtitle.append(NSAttributedString(string: "12 min walk"))
+            subtitle.append(NSAttributedString(attachment: NSTextAttachment(
+                image: UIImage(named: "Watch"),
+                scaledToMatch: cardView.subtitleLabel.font
+            )))
+            subtitle.append(NSAttributedString(string: " 12 min walk"))
             subtitle.append(NSAttributedString(string: " · "))
             subtitle.append(NSAttributedString(string: "4-7 min wait"))
             cardView.subtitleLabel.attributedText = subtitle
