@@ -9,11 +9,11 @@ import UIKit
 
 class VDivider: UIView {
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(width: CGFloat = 1) {
+        super.init(frame: .zero)
 
-        width(1)
-        backgroundColor = UIColor(named: "Gray00")
+        self.width(width)
+        self.backgroundColor = UIColor(named: "Gray00")
     }
 
     required init?(coder: NSCoder) {

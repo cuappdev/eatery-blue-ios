@@ -54,7 +54,7 @@ class SheetViewController: UIViewController {
         stackView.edges(to: view.layoutMarginsGuide)
     }
 
-    func addHeader(title: String) {
+    func addHeader(title: String, image: UIImage? = nil) {
         let header = UIStackView()
         header.axis = .horizontal
 
@@ -62,7 +62,17 @@ class SheetViewController: UIViewController {
         header.addArrangedSubview(titleLabel)
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
         titleLabel.textColor = UIColor(named: "Black")
-        titleLabel.text = title
+
+        let attributedText = NSMutableAttributedString()
+        if let image = image {
+            attributedText.append(NSAttributedString(attachment: NSTextAttachment(
+                image: image,
+                scaledToMatch: titleLabel.font
+            )))
+            attributedText.append(NSAttributedString(string: " "))
+        }
+        attributedText.append(NSAttributedString(string: title))
+        titleLabel.attributedText = attributedText
 
         let cancelButton = UIImageView()
         cancelButton.isUserInteractionEnabled = true
@@ -117,7 +127,35 @@ class SheetViewController: UIViewController {
         }
         stackView.addArrangedSubview(container)
     }
-    
+
+    func addTextSection(title: String?, description: String?) {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.distribution = .fill
+        stack.alignment = .fill
+        stack.spacing = 4
+
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.textColor = UIColor(named: "Gray05")
+        titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
+        stack.addArrangedSubview(titleLabel)
+
+        let descriptionLabel = UILabel()
+        descriptionLabel.text = description
+        descriptionLabel.textColor = UIColor(named: "Black")
+        descriptionLabel.font = .preferredFont(for: .body, weight: .semibold)
+        stack.addArrangedSubview(descriptionLabel)
+
+        stackView.addArrangedSubview(stack)
+    }
+
+    func setCustomSpacing(_ spacing: CGFloat) {
+        if let last = stackView.arrangedSubviews.last {
+            stackView.setCustomSpacing(spacing, after: last)
+        }
+    }
+
     override func viewSafeAreaInsetsDidChange() {
         view.layoutMargins = UIEdgeInsets(top: 24, left: 16, bottom: view.safeAreaInsets.bottom, right: 16)
     }

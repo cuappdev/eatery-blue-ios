@@ -302,6 +302,12 @@ class CafeViewController: UIViewController {
         cell.statusLabel.textColor = UIColor(named: "EateryGreen")
         cell.statusLabel.text = "Open until 5:30 PM"
 
+        cell.on(UITapGestureRecognizer()) { [self] _ in
+            let viewController = HoursSheetViewController()
+            viewController.setUpSheetPresentation()
+            present(viewController, animated: true)
+        }
+
         return cell
     }
 
@@ -319,6 +325,12 @@ class CafeViewController: UIViewController {
 
         cell.statusLabel.textColor = UIColor(named: "Black")
         cell.statusLabel.text = "12-15 minutes"
+
+        cell.on(UITapGestureRecognizer()) { [self] _ in
+            let viewController = WaitTimeSheetViewController()
+            viewController.setUpSheetPresentation()
+            present(viewController, animated: true)
+        }
 
         return cell
     }

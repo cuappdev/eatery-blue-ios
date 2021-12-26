@@ -34,6 +34,10 @@
 		5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */; };
 		5DDAD4862773F10900CC98DD /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4852773F10900CC98DD /* TestingViewController.swift */; };
 		5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */; };
+		5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304922777830F00E2C9A4 /* HoursSheetViewController.swift */; };
+		5DF304952777870F00E2C9A4 /* WaitTimeSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304942777870F00E2C9A4 /* WaitTimeSheetViewController.swift */; };
+		5DF3049727778A7600E2C9A4 /* WaitTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3049627778A7600E2C9A4 /* WaitTimeView.swift */; };
+		5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3049827778FE100E2C9A4 /* WaitTimeCell.swift */; };
 		5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7C22773FCC4001ADCDC /* Hero */; };
 		5DF5F7C92773FCEC001ADCDC /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7C82773FCEC001ADCDC /* TinyConstraints */; };
 		5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7CB2773FD09001ADCDC /* Tactile */; };
@@ -101,6 +105,10 @@
 		5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillFiltersView.swift; sourceTree = "<group>"; };
 		5DDAD4852773F10900CC98DD /* TestingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAttachment.swift; sourceTree = "<group>"; };
+		5DF304922777830F00E2C9A4 /* HoursSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoursSheetViewController.swift; sourceTree = "<group>"; };
+		5DF304942777870F00E2C9A4 /* WaitTimeSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimeSheetViewController.swift; sourceTree = "<group>"; };
+		5DF3049627778A7600E2C9A4 /* WaitTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimeView.swift; sourceTree = "<group>"; };
+		5DF3049827778FE100E2C9A4 /* WaitTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimeCell.swift; sourceTree = "<group>"; };
 		5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchViewController.swift; sourceTree = "<group>"; };
 		5DF5F7D127740140001ADCDC /* PillFilterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillFilterButtonView.swift; sourceTree = "<group>"; };
 		5DF5F7D327740182001ADCDC /* CarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselView.swift; sourceTree = "<group>"; };
@@ -177,6 +185,7 @@
 				5D0CDC502775040800AD0E27 /* HDivider.swift */,
 				5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */,
 				5D8651922773CD5A000338D4 /* HomeViewController.swift */,
+				5DF304922777830F00E2C9A4 /* HoursSheetViewController.swift */,
 				5DDAD4782773DC1600CC98DD /* MenusViewController.swift */,
 				5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */,
 				5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterViewController.swift */,
@@ -197,6 +206,9 @@
 				5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */,
 				5DF5F7D5277404C8001ADCDC /* UIFont+FontWeight.swift */,
 				5D0CDC4C2774F37100AD0E27 /* VDivider.swift */,
+				5DF3049827778FE100E2C9A4 /* WaitTimeCell.swift */,
+				5DF304942777870F00E2C9A4 /* WaitTimeSheetViewController.swift */,
+				5DF3049627778A7600E2C9A4 /* WaitTimeView.swift */,
 			);
 			path = "Eatery Blue";
 			sourceTree = "<group>";
@@ -303,6 +315,7 @@
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
 				5DF5F7E72774C800001ADCDC /* CardView.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* CafeMenuHeaderView.swift in Sources */,
+				5DF304952777870F00E2C9A4 /* WaitTimeSheetViewController.swift in Sources */,
 				5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */,
 				5DDAD4792773DC1600CC98DD /* MenusViewController.swift in Sources */,
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */,
@@ -312,8 +325,11 @@
 				5DDAD4862773F10900CC98DD /* TestingViewController.swift in Sources */,
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
 				5DF5F7E92774C8A9001ADCDC /* CardStackView.swift in Sources */,
+				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
+				5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont+FontWeight.swift in Sources */,
+				5DF3049727778A7600E2C9A4 /* WaitTimeView.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* CafeMenuNavigationView.swift in Sources */,
@@ -470,6 +486,7 @@
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
@@ -499,6 +516,7 @@
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
