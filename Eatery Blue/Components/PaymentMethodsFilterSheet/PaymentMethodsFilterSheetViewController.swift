@@ -1,5 +1,5 @@
 //
-//  PaymentMethodsFilterViewController.swift
+//  PaymentMethodsFilterSheetViewController.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/24/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PaymentMethodsFilterViewController: SheetViewController {
+class PaymentMethodsFilterSheetViewController: SheetViewController {
 
     private let mealSwipesView = PaymentMethodFilterView()
     private let brbsView = PaymentMethodFilterView()

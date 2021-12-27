@@ -34,8 +34,6 @@ class DiningHallViewController: EateryViewController {
 
         if let index = Schedule(diningHall.diningHallEvents).onDay(Day()).indexOfSalientEvent() {
             selectedEventIndex = index
-        } else if let index = Schedule(diningHall.diningHallEvents).indexOfSalientEvent() {
-            selectedEventIndex = index
         } else {
             selectedEventIndex = nil
         }

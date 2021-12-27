@@ -1,5 +1,5 @@
 //
-//  PaymentMethodsViewController.swift
+//  PaymentMethodsSheetViewController.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/24/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PaymentMethodsViewController: SheetViewController {
+class PaymentMethodsSheetViewController: SheetViewController {
 
     private let mealSwipesImageView = UIImageView()
     private let brbsImageView = UIImageView()
@@ -62,6 +62,7 @@ class PaymentMethodsViewController: SheetViewController {
     private func addDescriptionLabel() {
         descriptionLabel.textAlignment = .center
         descriptionLabel.font = .preferredFont(for: .subheadline, weight: .regular)
+        descriptionLabel.numberOfLines = 0
         stackView.addArrangedSubview(descriptionLabel)
     }
 
@@ -106,7 +107,7 @@ class PaymentMethodsViewController: SheetViewController {
             result.append(strings[0])
             result.append(NSAttributedString(string: ", "))
             result.append(strings[1])
-            result.append(NSAttributedString(string: " or "))
+            result.append(NSAttributedString(string: ", or "))
             result.append(strings[2])
             result.append(NSAttributedString(string: "."))
 

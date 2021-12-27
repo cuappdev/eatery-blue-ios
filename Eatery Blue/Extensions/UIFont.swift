@@ -1,5 +1,5 @@
 //
-//  UIFont+FontWeight.swift
+//  UIFont.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/22/21.

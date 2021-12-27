@@ -171,7 +171,7 @@ class EateryViewController: UIViewController {
         container.bottom(to: headerView, offset: -16)
 
         container.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = PaymentMethodsViewController()
+            let viewController = PaymentMethodsSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setPaymentMethods(paymentMethods)
             present(viewController, animated: true)
