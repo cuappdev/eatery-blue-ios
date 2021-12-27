@@ -1,13 +1,13 @@
 //
-//  EateryPillButtonView.swift
+//  ReportIssueButtonView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/23/21.
+//  Created by William Ma on 12/27/21.
 //
 
 import UIKit
 
-class EateryPillButtonView: UIView {
+class ReportIssueButtonView: UIView {
 
     private let container = UIView()
     let imageView = UIImageView()
@@ -25,6 +25,9 @@ class EateryPillButtonView: UIView {
     }
 
     private func setUpSelf() {
+        backgroundColor = UIColor(named: "Gray00")
+        layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+
         addSubview(container)
         setUpContainer()
     }
@@ -39,10 +42,14 @@ class EateryPillButtonView: UIView {
 
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "Report")?.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = UIColor(named: "Black")
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .body, weight: .semibold)
+        titleLabel.font = .preferredFont(for: .footnote, weight: .semibold)
+        titleLabel.text = "Report an issue"
+        titleLabel.textColor = UIColor(named: "Black")
     }
 
     private func setUpConstraints() {
@@ -52,8 +59,8 @@ class EateryPillButtonView: UIView {
         container.top(to: layoutMarginsGuide)
         container.bottom(to: layoutMarginsGuide)
 
-        imageView.width(24)
-        imageView.height(24)
+        imageView.width(16)
+        imageView.height(16)
         imageView.centerYToSuperview()
         imageView.leadingToSuperview()
         imageView.topToSuperview(relation: .equalOrGreater)

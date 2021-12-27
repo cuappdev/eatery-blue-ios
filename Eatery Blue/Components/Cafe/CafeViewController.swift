@@ -38,7 +38,7 @@ class CafeViewController: EateryViewController {
         addShortDescriptionLabel(cafe)
         addButtons(cafe)
         addTimingView(cafe)
-        addThickSpacer()
+        addSpacer(height: 16)
         addMenuHeaderView(
             title: "Full Menu",
             subtitle: EateryFormatter.default.formatSchedule(cafe.schedule().onDay(Day()))
@@ -52,15 +52,17 @@ class CafeViewController: EateryViewController {
 
             for menuCategory in categories[..<(categories.count - 1)] {
                 addMenuCategory(menuCategory)
-                addMediumSpacer()
+                addSpacer(height: 8)
             }
 
             if let last = categories.last {
                 addMenuCategory(last)
             }
-
-            addHugeSpacer()
         }
+
+        addSpacer(height: 8)
+        addReportIssueView()
+        addViewProportionalSpacer(multiplier: 0.5)
     }
 
 }

@@ -54,7 +54,7 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpScrollView() {
-        scrollView.backgroundColor = .white
+        scrollView.backgroundColor = UIColor(named: "Gray00")
         scrollView.alwaysBounceVertical = true
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.scrollIndicatorInsets = .zero
@@ -66,6 +66,7 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpStackView() {
+        stackView.backgroundColor = .white
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -304,18 +305,18 @@ class EateryViewController: UIViewController {
         return cell
     }
 
-    func addThickSpacer() {
+    func addSpacer(height: CGFloat, color: UIColor? = UIColor(named: "Gray00")) {
         let spacer = UIView()
-        spacer.height(16)
-        spacer.backgroundColor = UIColor(named: "Gray00")
+        spacer.height(height)
+        spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
     }
 
-    func addMediumSpacer() {
+    func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor(named: "Gray00")) {
         let spacer = UIView()
-        spacer.height(8)
-        spacer.backgroundColor = UIColor(named: "Gray00")
+        spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
+        spacer.height(to: view, multiplier: multiplier)
     }
 
     func addMenuHeaderView(title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
@@ -377,15 +378,29 @@ class EateryViewController: UIViewController {
         stackView.addArrangedSubview(categoryView)
     }
 
-    func addHugeSpacer() {
-        let spacer = UIView()
-        stackView.addArrangedSubview(spacer)
-        spacer.height(to: view)
+    func addReportIssueView() {
+        let view = ReportIssueView()
+        view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        view.button.on(UITapGestureRecognizer()) { _ in
+
+        }
+        stackView.addArrangedSubview(view)
     }
 
     func scrollToCategoryView(at index: Int) {
         let offset = categoryViews[index].frame.minY - navigationView.frame.height - 50
         scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        scrollView.contentInset = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: view.safeAreaInsets.bottom,
+            right: 0
+        )
     }
 
 }

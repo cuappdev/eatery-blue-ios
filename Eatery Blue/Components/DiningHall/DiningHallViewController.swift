@@ -54,7 +54,7 @@ class DiningHallViewController: EateryViewController {
         addShortDescriptionLabel(diningHall)
         addButtons(diningHall)
         addTimingView(diningHall)
-        addThickSpacer()
+        addSpacer(height: 16)
 
         setUpMenuFromState()
     }
@@ -125,15 +125,17 @@ class DiningHallViewController: EateryViewController {
 
             for menuCategory in categories[..<(categories.count - 1)] {
                 addMenuCategory(menuCategory)
-                addMediumSpacer()
+                addSpacer(height: 8)
             }
 
             if let last = categories.last {
                 addMenuCategory(last)
             }
-
-            addHugeSpacer()
         }
+
+        addSpacer(height: 8)
+        addReportIssueView()
+        addViewProportionalSpacer(multiplier: 0.5)
     }
 
 }

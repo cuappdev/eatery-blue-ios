@@ -182,7 +182,7 @@ enum DummyData {
             ]),
             MenuCategory(category: "Hot Traditional Station - Entrees", items: [
                 MenuItem(healthy: false, name: "Pasta Primavera"),
-                MenuItem(healthy: true, name: "Honey SOy Baked Chicken with Peppers")
+                MenuItem(healthy: true, name: "Honey Soy Baked Chicken with Peppers")
             ]),
             MenuCategory(category: "Hot Tranditional Station - Sides", items: [
                 MenuItem(healthy: false, name: "Potato Tots"),
