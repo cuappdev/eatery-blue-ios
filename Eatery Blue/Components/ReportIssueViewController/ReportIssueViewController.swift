@@ -36,7 +36,7 @@ class ReportIssueViewController: UIViewController {
     private let issueDescriptionView = IssueDescriptionView()
     private let submitButton = ContainerView(pillContent: UILabel())
 
-    private var selectedIssueType: IssueType?
+    private(set) var selectedIssueType: IssueType?
 
     private var isSubmitting: Bool = false
     private var submitEnabled: Bool {
@@ -106,7 +106,7 @@ class ReportIssueViewController: UIViewController {
         stackView.addArrangedSubview(issueTypeButton)
 
         issueTypeButton.on(UITapGestureRecognizer()) { [self] _ in
-            let alertController = UIAlertController(title: "Type of issue", message: nil, preferredStyle: .actionSheet)
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             for choice in IssueType.allCases {
                 alertController.addAction(UIAlertAction(title: choice.description, style: .default) { [self] _ in
                     selectedIssueType = choice
@@ -209,6 +209,10 @@ class ReportIssueViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in
             dismiss(animated: true)
         }
+    }
+
+    func setSelectedIssueType(_ issueType: IssueType) {
+        selectedIssueType = issueType
     }
 
 }

@@ -24,7 +24,10 @@ class HoursSheetViewController: SheetViewController {
         addPillButton(title: "Close", style: .regular) { [self] in
             dismiss(animated: true)
         }
-        addTextButton(title: "Report an issue") {
+        addTextButton(title: "Report an issue") { [self] in
+            let viewController = ReportIssueViewController()
+            viewController.setSelectedIssueType(.incorrectHours)
+            present(viewController, animated: true)
         }
     }
 

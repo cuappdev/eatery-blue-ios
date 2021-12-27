@@ -181,7 +181,7 @@ class WaitTimeView: UIView {
         let result: UIView?
 
         if child === self {
-            result = stackView.hitTest(convert(point, to: stackView), with: event)
+            result = stackView.hitTest(convert(point, to: stackView), with: event) ?? scrollView
         } else {
             result = child
         }
