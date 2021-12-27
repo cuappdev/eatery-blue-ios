@@ -47,6 +47,7 @@ class CarouselView: UIView {
     private func setUpScrollView() {
         scrollView.alwaysBounceHorizontal = true
         scrollView.clipsToBounds = false
+        scrollView.showsHorizontalScrollIndicator = false
 
         scrollView.addSubview(stackView)
         setUpStackView()

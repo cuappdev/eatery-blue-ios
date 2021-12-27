@@ -1,5 +1,5 @@
 //
-//  CafeMenuNavigationView.swift
+//  EateryNavigationView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CafeMenuNavigationView: UIView {
+class EateryNavigationView: UIView {
 
     let backgroundView = UIView()
 
@@ -23,7 +23,7 @@ class CafeMenuNavigationView: UIView {
     private let divider = HDivider()
 
     private(set) var fadeInProgress: Double = 0
-    private(set) var highlightedCategoryIndex: Int = 0
+    private(set) var highlightedCategoryIndex: Int? = nil
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,6 +87,7 @@ class CafeMenuNavigationView: UIView {
 
     private func setUpScrollView() {
         scrollView.bounces = false
+        scrollView.showsHorizontalScrollIndicator = false
 
         scrollView.addSubview(categoriesBackground)
         setUpCategoriesStackView(categoriesBackground)
@@ -173,6 +174,9 @@ class CafeMenuNavigationView: UIView {
         backgroundContainer.content.text = title
         foregroundContainer.content.text = backgroundContainer.content.text
 
+        backgroundContainer.content.font = .preferredFont(for: .footnote, weight: .semibold)
+        foregroundContainer.content.font = .preferredFont(for: .footnote, weight: .medium)
+
         backgroundContainer.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
         foregroundContainer.layoutMargins = backgroundContainer.layoutMargins
 
@@ -182,31 +186,50 @@ class CafeMenuNavigationView: UIView {
         categoriesBackground.addArrangedSubview(backgroundContainer)
         categoriesForeground.addArrangedSubview(foregroundContainer)
 
+        backgroundContainer.width(to: foregroundContainer)
+
         backgroundContainer.on(UITapGestureRecognizer()) { _ in
             onTap?()
         }
         foregroundContainer.isUserInteractionEnabled = false
     }
 
+    func removeAllCategories() {
+        for view in categoriesBackground.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+
+        for view in categoriesForeground.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+
+        foregroundMask.frame = .zero
+        highlightedCategoryIndex = nil
+    }
+
     func highlightCategory(atIndex i: Int, animated: Bool) {
-        if animated {
-            UIView.animate(withDuration: 0.15) {
-                self.highlightCategory(atIndex: i)
+        if highlightedCategoryIndex != nil, animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.beginFromCurrentState, .curveEaseOut]) {
+                self.highlightCategory(atIndex: i, animateScrollView: false)
             }
         } else {
             highlightCategory(atIndex: i)
         }
     }
 
-    func highlightCategory(atIndex i: Int) {
+    func highlightCategory(atIndex i: Int, animateScrollView: Bool = false) {
         highlightedCategoryIndex = i
         foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
+
+        scrollView.scrollRectToVisible(foregroundMask.frame, animated: animateScrollView)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        highlightCategory(atIndex: highlightedCategoryIndex)
+        if let i = highlightedCategoryIndex {
+            highlightCategory(atIndex: i)
+        }
     }
 
 }

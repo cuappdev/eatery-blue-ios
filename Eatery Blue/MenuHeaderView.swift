@@ -1,5 +1,5 @@
 //
-//  CafeMenuHeaderView.swift
+//  MenuHeaderView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CafeMenuHeaderView: UIView {
+class MenuHeaderView: UIView {
 
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
@@ -47,6 +47,7 @@ class CafeMenuHeaderView: UIView {
 
     private func setUpButtonImageView() {
         buttonImageView.image = UIImage(named: "ButtonChevronDown")
+        buttonImageView.isUserInteractionEnabled = true
     }
 
     private func setUpConstraints() {

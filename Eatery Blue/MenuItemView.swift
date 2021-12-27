@@ -1,5 +1,5 @@
 //
-//  CafeMenuItemView.swift
+//  MenuItemView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CafeMenuItemView: UIView {
+class MenuItemView: UIView {
 
     let stackView = UIStackView()
     let titleLabel = UILabel()

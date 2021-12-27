@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CafeMenuCategoryView: UIView {
+class MenuCategoryView: UIView {
 
     let titleLabel = UILabel()
     let stackView = UIStackView()
@@ -49,7 +49,7 @@ class CafeMenuCategoryView: UIView {
         stackView.edges(to: layoutMarginsGuide, excluding: .top)
     }
 
-    func addItemView(_ itemView: CafeMenuItemView) {
+    func addItemView(_ itemView: MenuItemView) {
         if !stackView.arrangedSubviews.isEmpty {
             stackView.addArrangedSubview(HDivider())
         }

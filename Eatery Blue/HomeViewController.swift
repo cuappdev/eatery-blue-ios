@@ -43,8 +43,15 @@ class HomeViewController: UIViewController {
             self.removeAllCarouselViews()
             self.allEateriesView.removeFromSuperview()
 
-            self.addFavoritesCarouselView()
-            self.addAllEateriesView([DummyData.macs])
+            self.addFavoritesCarouselView(favorites: [
+                DummyData.rpcc, DummyData.macs
+            ])
+            self.addAllEateriesView([
+                DummyData.macs,
+                DummyData.macsClosed,
+                DummyData.macsOpenSoon,
+                DummyData.macsClosingSoon
+            ])
         }
     }
 
@@ -140,13 +147,13 @@ class HomeViewController: UIViewController {
         carouselViews.removeAll()
     }
 
-    private func addFavoritesCarouselView() {
+    private func addFavoritesCarouselView(favorites: [Eatery]) {
         let carouselView = CarouselView()
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.scrollView.contentInset = carouselView.layoutMargins
         carouselView.titleLabel.text = "Favorite Eateries"
 
-        for favorite in [DummyData.macs] {
+        for favorite in favorites {
             let cardView = CarouselCardView()
             cardView.imageView.kf.setImage(
                 with: favorite.imageUrl,
@@ -223,6 +230,11 @@ class HomeViewController: UIViewController {
         case let cafe as Cafe:
             let viewController = CafeViewController()
             viewController.setUp(cafe: cafe)
+            navigationController?.pushViewController(viewController, animated: true)
+
+        case let diningHall as DiningHall:
+            let viewController = DiningHallViewController()
+            viewController.setUp(diningHall: diningHall)
             navigationController?.pushViewController(viewController, animated: true)
 
         default:

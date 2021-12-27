@@ -1,15 +1,16 @@
 //
-//  CafePillButtonStackView.swift
+//  DayPickerView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/23/21.
+//  Created by William Ma on 12/26/21.
 //
 
 import UIKit
 
-class CafePillButtonStackView: UIView {
+class DayPickerView: UIView {
 
     let stackView = UIStackView()
+    private(set) var cells: [DayPickerCell] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,17 +30,17 @@ class CafePillButtonStackView: UIView {
 
     private func setUpStackView() {
         stackView.axis = .horizontal
-        stackView.alignment = .fill
         stackView.distribution = .fillEqually
-        stackView.spacing = 12
+        stackView.alignment = .fill
     }
 
     private func setUpConstraints() {
         stackView.edges(to: layoutMarginsGuide)
     }
 
-    func addPillButton(_ view: CafePillButtonView) {
-        stackView.addArrangedSubview(view)
+    func addCell(_ cell: DayPickerCell) {
+        stackView.addArrangedSubview(cell)
+        cells.append(cell)
     }
 
 }

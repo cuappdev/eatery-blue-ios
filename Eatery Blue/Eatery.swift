@@ -4,68 +4,146 @@
 //
 //  Created by William Ma on 12/22/21.
 //
+//  This file is intended to house pure data structs relating to eateries. 
 
+import os.log
 import Foundation
 
-protocol Eatery: Codable {
-
-    var name: String { get }
-    var building: String? { get }
-    var imageUrl: URL? { get }
-    var menuSummary: String? { get }
-
-}
-
-struct Cafe: Eatery {
-
-    let name: String
-    let campusArea: String
-    let building: String?
-    let events: [CafeEvent]
-    let latitude: Double
-    let longitude: Double
-    let menu: Menu
-    let menuSummary: String?
-    let imageUrl: URL?
-
-}
-
-struct Day: Codable {
+// A day, specifically in New York timezone
+struct Day: Codable, Hashable {
 
     let year: Int
     let month: Int
     let day: Int
 
+    init(date: Date = Date()) {
+        let components = Calendar.eatery.dateComponents([.year, .month, .day], from: date)
+        self.year = components.year ?? 0
+        self.month = components.month ?? 0
+        self.day = components.day ?? 0
+    }
+
+    init(year: Int, month: Int, day: Int) {
+        self.year = year
+        self.month = month
+        self.day = day
+    }
+
+    func date(hour: Int? = nil, minute: Int? = nil) -> Date {
+        let components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute)
+
+        guard let date = Calendar.eatery.date(from: components) else {
+            os_log(.fault, "Day: could not form date from components %@", String(reflecting: components))
+            return Date()
+        }
+
+        return date
+    }
+
+    func addingDays(_ days: Int) -> Day {
+        let currentDate = date()
+
+        guard let date = Calendar.eatery.date(byAdding: .day, value: days, to: currentDate) else {
+            os_log(.fault, "Day: could not add %d days to %@", days, String(reflecting: currentDate))
+            return self
+        }
+
+        return Day(date: date)
+    }
+
+    func startOfWeek() -> Day {
+        let components = DateComponents(weekday: 0)
+
+        guard let date = Calendar.eatery.nextDate(
+            after: date(),
+            matching: components,
+            matchingPolicy: .nextTime,
+            direction: .backward
+        ) else {
+            os_log(.fault, "Day: could not find start of week for %@", String(reflecting: self))
+            return self
+        }
+
+        return Day(date: date)
+    }
+
+    func weekday() -> Int {
+        Calendar.eatery.component(.weekday, from: date())
+    }
+
 }
 
-struct CafeEvent: Codable {
+// To deal with different time zones, we should only ever perform arithmetic and comparisons using the start and end
+// timestamps, which are UTC Unix epoch timestamps. Think carefully about different timezones when using the
+// canonicalDay, as tempting (and convenient) as it may be.
 
-    let canonicalDate: Day
-    let startTimestamp: Int
-    let endTimestamp: Int
+class Event {
+
+    let canonicalDay: Day
+    let startTimestamp: TimeInterval
+    let endTimestamp: TimeInterval
+
+    var startDate: Date {
+        Date(timeIntervalSince1970: startTimestamp)
+    }
+
+    var endDate: Date {
+        Date(timeIntervalSince1970: endTimestamp)
+    }
+
+    init(canonicalDay: Day, startTimestamp: TimeInterval, endTimestamp: TimeInterval) {
+        self.canonicalDay = canonicalDay
+        self.startTimestamp = startTimestamp
+        self.endTimestamp = endTimestamp
+    }
 
 }
 
-struct DiningHall: Eatery, Codable {
+class Eatery {
 
-    let name: String
-    let campusArea: String
-    let events: [DiningHallEvent]
-    let latitude: Double
-    let longitude: Double
-    let building: String?
-    let menuSummary: String?
-    let imageUrl: URL?
+    var name: String = ""
+    var building: String?
+    var imageUrl: URL?
+    var menuSummary: String?
+    var paymentMethods: Set<PaymentMethod> = []
+
+    func schedule() -> Schedule<Event> {
+        Schedule()
+    }
 
 }
 
-struct DiningHallEvent: Codable {
+class Cafe: Eatery {
 
-    let description: String
-    let canonicalDate: Day
-    let startTimestamp: Int
-    let endTimestamp: Int
-    let menu: Menu
+    var campusArea: String?
+    var cafeEvents: [Event] = []
+    var latitude: Double?
+    var longitude: Double?
+    var menu: Menu?
+
+    override func schedule() -> Schedule<Event> {
+        Schedule(cafeEvents)
+    }
+
+}
+
+class DiningHall: Eatery {
+
+    var campusArea: String?
+    var diningHallEvents: [DiningHallEvent] = []
+    var latitude: Double?
+    var longitude: Double?
+
+    override func schedule() -> Schedule<Event> {
+        Schedule(diningHallEvents)
+    }
+
+}
+
+class DiningHallEvent: Event {
+
+    var description: String?
+    var menu: Menu?
 
 }
 
@@ -89,11 +167,20 @@ struct MenuItem: Codable {
     let description: String?
     let price: Int?
 
+    init(healthy: Bool, name: String, description: String? = nil, price: Int? = nil) {
+        self.healthy = healthy
+        self.name = name
+        self.description = description
+        self.price = price
+    }
+
 }
 
 enum PaymentMethod: Codable {
+
     case mealSwipes
     case brbs
     case cash
     case credit
+
 }
