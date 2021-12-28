@@ -11,9 +11,10 @@ class EateryNavigationView: UIView {
 
     let backgroundView = UIView()
 
-    let backButton = ContainerView(content: UIImageView())
+    let normalNavigationBar = UIView()
+    let backButton = ContainerView(pillContent: UIImageView())
     let titleLabel = UILabel()
-    let favoriteButton = ContainerView(content: UIImageView())
+    let favoriteButton = ContainerView(pillContent: UIImageView())
 
     let scrollView = UIScrollView()
     let categoriesBackground = UIStackView()
@@ -42,14 +43,8 @@ class EateryNavigationView: UIView {
         addSubview(backgroundView)
         setUpBackgroundView()
 
-        addSubview(backButton)
-        setUpBackButton()
-
-        addSubview(titleLabel)
-        setUpTitleLabel()
-
-        addSubview(favoriteButton)
-        setUpFavoriteButton()
+        addSubview(normalNavigationBar)
+        setUpNormalNavigationBar()
 
         addSubview(scrollView)
         setUpScrollView()
@@ -61,9 +56,19 @@ class EateryNavigationView: UIView {
         backgroundView.backgroundColor = .white
     }
 
+    private func setUpNormalNavigationBar() {
+        normalNavigationBar.addSubview(backButton)
+        setUpBackButton()
+
+        normalNavigationBar.addSubview(titleLabel)
+        setUpTitleLabel()
+
+        normalNavigationBar.addSubview(favoriteButton)
+        setUpFavoriteButton()
+    }
+
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")
-        backButton.cornerRadius = 20
         backButton.shadowColor = UIColor(named: "Black")
         backButton.shadowOffset = CGSize(width: 0, height: 4)
         backButton.backgroundColor = .white
@@ -71,14 +76,13 @@ class EateryNavigationView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .title3, weight: .semibold)
+        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         titleLabel.textColor = UIColor(named: "Black")
         titleLabel.textAlignment = .center
     }
 
     private func setUpFavoriteButton() {
         favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-        favoriteButton.cornerRadius = 20
         favoriteButton.shadowColor = UIColor(named: "Black")
         favoriteButton.shadowOffset = CGSize(width: 0, height: 4)
         favoriteButton.backgroundColor = .white
@@ -114,22 +118,26 @@ class EateryNavigationView: UIView {
     private func setUpConstraints() {
         backgroundView.edgesToSuperview()
 
-        backButton.top(to: layoutMarginsGuide)
-        backButton.leading(to: layoutMarginsGuide)
+        normalNavigationBar.edges(to: layoutMarginsGuide, excluding: .bottom)
+        normalNavigationBar.height(44)
+
+        backButton.centerYToSuperview()
+        backButton.leadingToSuperview()
         backButton.width(40)
         backButton.height(40)
 
-        titleLabel.leadingToTrailing(of: backButton)
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.height(40)
-        titleLabel.trailingToLeading(of: favoriteButton)
+        titleLabel.leadingToTrailing(of: backButton, offset: 8, relation: .equalOrGreater)
+        titleLabel.topToSuperview()
+        titleLabel.bottomToSuperview()
+        titleLabel.centerXToSuperview()
+        titleLabel.trailingToLeading(of: favoriteButton, offset: 8, relation: .equalOrLess)
 
-        favoriteButton.top(to: layoutMarginsGuide)
-        favoriteButton.trailing(to: layoutMarginsGuide)
+        favoriteButton.centerYToSuperview()
+        favoriteButton.trailingToSuperview()
         favoriteButton.width(40)
         favoriteButton.height(40)
 
-        scrollView.topToBottom(of: titleLabel, offset: 12)
+        scrollView.topToBottom(of: normalNavigationBar, offset: 12)
         scrollView.leadingToSuperview()
         scrollView.trailingToSuperview()
         scrollView.bottom(to: layoutMarginsGuide)

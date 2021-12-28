@@ -64,7 +64,7 @@ class ListViewController: UIViewController {
 
     private func setUpNavigationView() {
         navigationView.delegate = self
-        navigationView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
 
         navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
             navigationController?.popViewController(animated: true)
@@ -207,12 +207,12 @@ class ListViewController: UIViewController {
     }
 
     private func updateScrollViewContentInset() {
-        let topOffset = view.convert(navigationView.titleLabel.bounds, from: navigationView.titleLabel).maxY + 8
+        let topOffset = view.convert(navigationView.normalNavigationBar.bounds, from: navigationView.normalNavigationBar).maxY
         scrollView.contentInset = UIEdgeInsets(top: topOffset, left: 0, bottom: 0, right: 0)
     }
 
     private func updateFiltersViewTransform() {
-        let filterPosition = view.convert(navigationView.filterPlaceholder.frame, from: navigationView).minY
+        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
         let spacerPosition = view.convert(filterSpacerView.frame, from: stackView).minY
 
         let transform = CGAffineTransform(
@@ -232,7 +232,7 @@ extension ListViewController: UIScrollViewDelegate {
     }
 
     private func updateNavigationViewFadeInProgress() {
-        let filterPosition = view.convert(navigationView.filterPlaceholder.frame, from: navigationView).minY
+        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
         let spacerPosition = view.convert(filterSpacerView.frame, from: stackView).minY
 
         if spacerPosition < filterPosition {

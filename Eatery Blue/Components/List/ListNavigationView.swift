@@ -17,6 +17,7 @@ class ListNavigationView: UIView {
 
     let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
 
+    let normalNavigationBar = UIView()
     let backButton = ContainerView(content: UIImageView())
     let titleLabel = UILabel()
     let searchButton = ContainerView(content: UIImageView())
@@ -47,14 +48,8 @@ class ListNavigationView: UIView {
         addSubview(blurView)
         setUpBlurView()
 
-        addSubview(backButton)
-        setUpBackButton()
-
-        addSubview(titleLabel)
-        setUpTitleLabel()
-
-        addSubview(searchButton)
-        setUpSearchButton()
+        addSubview(normalNavigationBar)
+        setUpNormalNavigationBar()
 
         addSubview(filterPlaceholder)
         addSubview(filtersView)
@@ -65,6 +60,17 @@ class ListNavigationView: UIView {
         setFadeInProgress(fadeInProgress)
     }
 
+    private func setUpNormalNavigationBar() {
+        normalNavigationBar.addSubview(backButton)
+        setUpBackButton()
+
+        normalNavigationBar.addSubview(titleLabel)
+        setUpTitleLabel()
+
+        normalNavigationBar.addSubview(searchButton)
+        setUpSearchButton()
+    }
+
     private func setUpBlurView() {
         blurView.alpha = 1
     }
@@ -72,18 +78,18 @@ class ListNavigationView: UIView {
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
         backButton.content.tintColor = UIColor(named: "Black")
-        backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        backButton.content.contentMode = .scaleAspectFit
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .title3, weight: .semibold)
+        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         titleLabel.textAlignment = .center
     }
 
     private func setUpSearchButton() {
         searchButton.content.image = UIImage(named: "Search")?.withRenderingMode(.alwaysTemplate)
         searchButton.content.tintColor = UIColor(named: "Black")
-        searchButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        searchButton.content.contentMode = .scaleAspectFit
     }
 
     private func setUpSeparator() {
@@ -93,22 +99,26 @@ class ListNavigationView: UIView {
     private func setUpConstraints() {
         blurView.edgesToSuperview()
 
-        backButton.width(40)
-        backButton.height(40)
-        backButton.top(to: layoutMarginsGuide)
-        backButton.leading(to: layoutMarginsGuide)
+        normalNavigationBar.height(44)
+        normalNavigationBar.edges(to: layoutMarginsGuide, excluding: .bottom)
 
-        titleLabel.leadingToTrailing(of: backButton, offset: 8)
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.trailingToLeading(of: searchButton, offset: -8)
-        titleLabel.bottom(to: backButton)
+        backButton.width(24)
+        backButton.height(44)
+        backButton.centerYToSuperview()
+        backButton.leadingToSuperview()
 
-        searchButton.width(40)
-        searchButton.height(40)
-        searchButton.top(to: layoutMarginsGuide)
-        searchButton.trailing(to: layoutMarginsGuide)
+        titleLabel.leadingToTrailing(of: backButton, offset: 8, relation: .equalOrGreater)
+        titleLabel.topToSuperview()
+        titleLabel.centerXToSuperview()
+        titleLabel.bottomToSuperview()
+        titleLabel.trailingToLeading(of: searchButton, offset: 8, relation: .equalOrLess)
 
-        filterPlaceholder.topToBottom(of: backButton, offset: 16)
+        searchButton.width(24)
+        searchButton.height(44)
+        searchButton.centerYToSuperview()
+        searchButton.trailingToSuperview()
+
+        filterPlaceholder.topToBottom(of: normalNavigationBar, offset: 12)
         filterPlaceholder.leadingToSuperview()
         filterPlaceholder.trailingToSuperview()
         filterPlaceholder.bottom(to: layoutMarginsGuide)

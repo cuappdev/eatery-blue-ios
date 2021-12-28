@@ -11,6 +11,7 @@ import Kingfisher
 
 class HomeViewController: UIViewController {
 
+    private let navigationView = HomeNavigationView()
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let searchBar = UISearchBar()
@@ -53,6 +54,8 @@ class HomeViewController: UIViewController {
                 DummyData.macsClosingSoon
             ])
         }
+
+        updateScrollViewContentInset()
     }
 
     private func setUpNavigation() {
@@ -61,32 +64,23 @@ class HomeViewController: UIViewController {
             image: UIImage(named: "Home"),
             selectedImage: UIImage(named: "HomeSelected")
         )
-        navigationController?.navigationBar.prefersLargeTitles = true
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(named: "EateryBlue")
-        appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-        navigationController?.delegate = self
-
-        navigationItem.title = "Eatery"
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     private func setUpView() {
         view.addSubview(scrollView)
         setUpScrollView()
+
+        view.addSubview(navigationView)
+        setUpNavigationView()
     }
 
     private func setUpScrollView() {
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.delegate = self
 
         scrollView.addSubview(stackView)
         setUpStackView()
@@ -136,6 +130,19 @@ class HomeViewController: UIViewController {
             present(viewController, animated: true)
         }
         filtersView.addButton(paymentMethods)
+    }
+
+    private func setUpNavigationView() {
+        navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
+
+        navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
+            let searchViewController = HomeSearchViewController()
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(searchViewController, animated: true)
+        }
+
+        navigationView.bottomToTop(of: stackView, priority: .defaultLow)
+        navigationView.bottomToTop(of: stackView, relation: .equalOrGreater)
     }
 
     private func removeAllCarouselViews() {
@@ -227,6 +234,8 @@ class HomeViewController: UIViewController {
 
         stackView.edgesToSuperview()
         stackView.width(to: view)
+
+        navigationView.edgesToSuperview(excluding: .bottom)
     }
 
     private func pushViewController(for eatery: Eatery) {
@@ -248,6 +257,17 @@ class HomeViewController: UIViewController {
         }
     }
 
+    private func updateScrollViewContentInset() {
+        scrollView.contentInset.top = navigationView.computeFullyExpandedHeight()
+        scrollView.contentInset.bottom = view.safeAreaInsets.bottom
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        updateScrollViewContentInset()
+    }
+
 }
 
 extension HomeViewController: UISearchBarDelegate {
@@ -262,18 +282,80 @@ extension HomeViewController: UISearchBarDelegate {
 
 }
 
-extension HomeViewController: UINavigationControllerDelegate {
+extension HomeViewController: UIScrollViewDelegate {
 
-    func navigationController(
-        _ navigationController: UINavigationController,
-        willShow viewController: UIViewController,
-        animated: Bool
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        let hideNavigationBar = viewController is EateryViewController
-            || viewController is ListViewController
-            || viewController is HomeSearchViewController
+        guard let superview = scrollView.superview else {
+            return
+        }
 
-        navigationController.setNavigationBarHidden(hideNavigationBar, animated: animated)
+        let currentPosition = scrollView.contentOffset.y
+        let decelerationRate = scrollView.decelerationRate.rawValue
+        var finalPosition = currentPosition + velocity.y * decelerationRate / (1 - decelerationRate)
+        let navigationBarNormalPosition = -superview.convert(
+            CGPoint(x: 0, y: navigationView.computeNormalHeight()),
+            from: navigationView
+        ).y
+        let navigationBarExpandedPosition = -superview.convert(
+            CGPoint(x: 0, y: navigationView.computeFullyExpandedHeight()),
+            from: navigationView
+        ).y
+
+        if navigationBarExpandedPosition <= finalPosition && finalPosition <= navigationBarNormalPosition {
+            // Snap to the expanded position or normal position, whichever is closer
+            let distanceToExpandedPosition = abs(finalPosition - navigationBarExpandedPosition)
+            let distanceToNormalPosition = abs(finalPosition - navigationBarNormalPosition)
+
+            if distanceToExpandedPosition < distanceToNormalPosition {
+                finalPosition = navigationBarExpandedPosition
+            } else {
+                finalPosition = navigationBarNormalPosition
+            }
+        }
+
+        targetContentOffset.pointee = CGPoint(x: 0, y: finalPosition)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        handleNavigationView()
+        handleLogo()
+    }
+
+    private func handleNavigationView() {
+        guard let superview = scrollView.superview else {
+            return
+        }
+
+        let currentPosition = scrollView.contentOffset.y
+        let navigationBarNormalPosition = -superview.convert(
+            CGPoint(x: 0, y: navigationView.computeNormalHeight()),
+            from: navigationView
+        ).y
+
+        // If the current position is about to eclipse the navigation bar normal position, fade in the normal bar
+        if currentPosition > navigationBarNormalPosition - 16 {
+            navigationView.setFadeInProgress(1, animated: true)
+        } else {
+            navigationView.setFadeInProgress(0, animated: true)
+        }
+    }
+
+    private func handleLogo() {
+        let deltaFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
+        let fadeDistance = 44.0
+        let transform = CGAffineTransform(
+            translationX: 0,
+            y: max(-fadeDistance, -deltaFromTop)
+        )
+        navigationView.logoView.transform = transform
+
+        let progress = max(0, min(1, 1 - deltaFromTop / fadeDistance))
+        navigationView.logoView.alpha = progress
+        navigationView.largeTitleLabel.alpha = progress
     }
 
 }

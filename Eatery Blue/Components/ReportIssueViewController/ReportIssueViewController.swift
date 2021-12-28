@@ -58,6 +58,12 @@ class ReportIssueViewController: UIViewController {
     }
 
     private func setUpView() {
+        view.layoutMargins = UIEdgeInsets(
+            top: 16,
+            left: 16,
+            bottom: 16,
+            right: 16
+        )
         view.backgroundColor = .white
 
         view.addSubview(stackView)
@@ -149,17 +155,6 @@ class ReportIssueViewController: UIViewController {
             issueTypeButton.label.textColor = UIColor(named: "Gray05")
             issueTypeButton.label.font = .preferredFont(for: .subheadline, weight: .medium)
         }
-    }
-
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-
-        view.layoutMargins = UIEdgeInsets(
-            top: 16,
-            left: 16,
-            bottom: 16,
-            right: 16
-        )
     }
 
     @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
