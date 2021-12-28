@@ -192,10 +192,10 @@ class ReportIssueViewController: UIViewController {
 
     private func updateSubmitButtonFromState() {
         if submitEnabled {
-            submitButton.clippingView.backgroundColor = UIColor(named: "EateryBlue")
+            submitButton.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
             submitButton.content.textColor = .white
         } else {
-            submitButton.clippingView.backgroundColor = UIColor(named: "Gray00")
+            submitButton.cornerRadiusView.backgroundColor = UIColor(named: "Gray00")
             submitButton.content.textColor = UIColor(named: "Gray03")
         }
     }

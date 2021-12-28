@@ -74,7 +74,7 @@ class WaitTimeView: UIView {
         waitTimeLabel.content.font = .preferredFont(for: .caption2, weight: .semibold)
         waitTimeLabel.content.textColor = .white
         waitTimeLabel.cornerRadius = 4
-        waitTimeLabel.clippingView.backgroundColor = UIColor(named: "EateryBlue")
+        waitTimeLabel.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
         waitTimeLabel.layoutMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         waitTimeLabel.alpha = 0
     }

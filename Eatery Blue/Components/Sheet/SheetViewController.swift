@@ -106,11 +106,11 @@ class SheetViewController: UIViewController {
         switch style {
         case .regular:
             titleLabel.textColor = UIColor(named: "Black")
-            container.clippingView.backgroundColor = UIColor(named: "Gray00")
+            container.cornerRadiusView.backgroundColor = UIColor(named: "Gray00")
 
         case .prominent:
             titleLabel.textColor = .white
-            container.clippingView.backgroundColor = UIColor(named: "EateryBlue")
+            container.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
         }
     }
 

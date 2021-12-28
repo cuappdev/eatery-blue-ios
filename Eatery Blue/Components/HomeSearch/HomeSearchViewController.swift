@@ -25,7 +25,6 @@ class HomeSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(true, animated: animated)
         RootViewController.setStatusBarStyle(.darkContent)
     }
 
@@ -41,7 +40,6 @@ class HomeSearchViewController: UIViewController {
 
         RootViewController.setStatusBarStyle(.lightContent)
         searchBar.setShowsCancelButton(false, animated: false)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     private func setUpView() {

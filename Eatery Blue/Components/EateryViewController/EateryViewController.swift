@@ -34,18 +34,10 @@ class EateryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        RootViewController.setStatusBarStyle(.lightContent)
     }
 
     private func setUpView() {
-        hero.isEnabled = true
-
         view.addSubview(scrollView)
         setUpScrollView()
 
@@ -103,8 +95,7 @@ class EateryViewController: UIViewController {
 
     func addHeaderImageView(imageUrl: URL?) {
         let imageView = UIImageView()
-        imageView.hero.id = "headerImageView"
-        imageView.aspectRatio(375 / 240)
+         imageView.aspectRatio(375 / 240)
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.kf.setImage(with: imageUrl)
@@ -162,7 +153,7 @@ class EateryViewController: UIViewController {
         stackView.addSubview(container)
 
         container.layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        container.clippingView.backgroundColor = .white
+        container.cornerRadiusView.backgroundColor = .white
         container.shadowColor = UIColor(named: "Black")
         container.shadowOffset = CGSize(width: 0, height: 4)
         container.shadowOpacity = 0.25
@@ -189,7 +180,7 @@ class EateryViewController: UIViewController {
         imageView.tintColor = UIColor(named: "Gray05")
 
         let container = ContainerView(pillContent: imageView)
-        container.clippingView.backgroundColor = .white
+        container.cornerRadiusView.backgroundColor = .white
 
         stackView.addSubview(container)
 
@@ -417,12 +408,12 @@ extension EateryViewController: UISearchBarDelegate {
 extension EateryViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        handleHeaderImageScaling(scrollView)
-        handleNavigationViewTrigger(scrollView)
-        handleNavigationViewCategory(scrollView)
+        handleHeaderImageScaling()
+        handleNavigationViewTrigger()
+        handleNavigationViewCategory()
     }
 
-    private func handleHeaderImageScaling(_ scrollView: UIScrollView) {
+    private func handleHeaderImageScaling() {
         guard let header = headerView, header.bounds != .zero else { return }
 
         let offset = scrollView.contentOffset.y
@@ -446,7 +437,7 @@ extension EateryViewController: UIScrollViewDelegate {
         header.transform = transform
     }
 
-    private func handleNavigationViewTrigger(_ scrollView: UIScrollView) {
+    private func handleNavigationViewTrigger() {
         // Use trigger.bounds != zero as a proxy for whether it has been laid out
         guard let trigger = navigationTriggerView, trigger.bounds != .zero else { return }
 
@@ -460,7 +451,7 @@ extension EateryViewController: UIScrollViewDelegate {
         }
     }
 
-    private func handleNavigationViewCategory(_ scrollView: UIScrollView) {
+    private func handleNavigationViewCategory() {
         let offset = scrollView.contentOffset.y + scrollView.contentInset.top
 
         // We define a cursor that the user is looking at 50px below the navigation view in the scroll view's

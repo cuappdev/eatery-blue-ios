@@ -1,5 +1,5 @@
 //
-//  CardStackView.swift
+//  EateryCardStackView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CardStackView: UIView {
+class EateryCardStackView: UIView {
 
     let titleLabel = UILabel()
     let stackView = UIStackView()
@@ -47,13 +47,8 @@ class CardStackView: UIView {
         stackView.edges(to: layoutMarginsGuide, excluding: .top)
     }
 
-    func addCardView(_ cardView: CardView) {
-        let container = ContainerView(content: cardView)
-        container.cornerRadius = 8
-        container.shadowRadius = 4
-        container.shadowOffset = CGSize(width: 0, height: 4)
-        container.shadowColor = UIColor(named: "ShadowLight")
-        container.shadowOpacity = 0.25
+    func addCardView(_ cardView: EateryCardView) {
+        let container = EateryCardView.wrapVisualEffects(cardView)
         container.height(216)
         stackView.addArrangedSubview(container)
     }

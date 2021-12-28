@@ -177,4 +177,26 @@ class EateryFormatter {
         }
     }
 
+    func formatEatery(_ eatery: Eatery, font: UIFont) -> NSAttributedString {
+        let text = NSMutableAttributedString()
+        text.append(NSAttributedString(string: eatery.building ?? "--"))
+        text.append(NSAttributedString(string: " · "))
+        text.append(NSAttributedString(string: "Meal swipes allowed"))
+        text.addAttribute(.font, value: font, range: NSRange(location: 0, length: text.length))
+        return text
+    }
+
+    func formatTimingInfo(_ eatery: Eatery, font: UIFont) -> NSAttributedString {
+        let text = NSMutableAttributedString()
+        text.append(NSAttributedString(attachment: NSTextAttachment(
+            image: UIImage(named: "Watch"),
+            scaledToMatch: font
+        )))
+        text.append(NSAttributedString(string: " 12 min walk"))
+        text.append(NSAttributedString(string: " · "))
+        text.append(NSAttributedString(string: "4-7 min wait"))
+        text.addAttribute(.font, value: font, range: NSRange(location: 0, length: text.length))
+        return text
+    }
+
 }

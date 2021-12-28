@@ -66,7 +66,7 @@ class EateryNavigationView: UIView {
         backButton.cornerRadius = 20
         backButton.shadowColor = UIColor(named: "Black")
         backButton.shadowOffset = CGSize(width: 0, height: 4)
-        backButton.clippingView.backgroundColor = .white
+        backButton.backgroundColor = .white
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 
@@ -81,7 +81,7 @@ class EateryNavigationView: UIView {
         favoriteButton.cornerRadius = 20
         favoriteButton.shadowColor = UIColor(named: "Black")
         favoriteButton.shadowOffset = CGSize(width: 0, height: 4)
-        favoriteButton.clippingView.backgroundColor = .white
+        favoriteButton.backgroundColor = .white
         favoriteButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 

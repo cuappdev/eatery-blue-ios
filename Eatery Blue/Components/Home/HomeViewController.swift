@@ -16,7 +16,7 @@ class HomeViewController: UIViewController {
     private let searchBar = UISearchBar()
     private let filtersView = PillFiltersView()
     private var carouselViews = [CarouselView]()
-    private let allEateriesView = CardStackView()
+    private let allEateriesView = EateryCardStackView()
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
@@ -74,8 +74,7 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
 
-        navigationController?.hero.isEnabled = true
-        navigationController?.hero.navigationAnimationType = .fade
+        navigationController?.delegate = self
 
         navigationItem.title = "Eatery"
     }
@@ -169,7 +168,6 @@ class HomeViewController: UIViewController {
             """
 
             cardView.on(UITapGestureRecognizer()) { [self] _ in
-                cardView.imageView.hero.id = "headerImageView"
                 pushViewController(for: favorite)
             }
 
@@ -179,6 +177,17 @@ class HomeViewController: UIViewController {
         carouselViews.append(carouselView)
         stackView.addArrangedSubview(carouselView)
         stackView.setCustomSpacing(24, after: carouselView)
+
+        carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
+            let viewController = ListViewController()
+            viewController.setUp(
+                favorites,
+                title: "Favorite Eateries"
+            )
+
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     private func addAllEateriesView(_ eateries: [Eatery]) {
@@ -189,26 +198,21 @@ class HomeViewController: UIViewController {
         }
 
         for eatery in eateries {
-            let cardView = CardView()
+            let cardView = EateryCardView()
             cardView.imageView.kf.setImage(with: eatery.imageUrl)
             cardView.titleLabel.text = eatery.name
 
-            let subtitle = NSMutableAttributedString()
-            subtitle.append(NSAttributedString(string: eatery.building ?? "--"))
-            subtitle.append(NSAttributedString(string: " · "))
-            subtitle.append(NSAttributedString(string: "Meal swipes allowed"))
-            subtitle.append(NSAttributedString(string: "\n"))
-            subtitle.append(NSAttributedString(attachment: NSTextAttachment(
-                image: UIImage(named: "Watch"),
-                scaledToMatch: cardView.subtitleLabel.font
-            )))
-            subtitle.append(NSAttributedString(string: " 12 min walk"))
-            subtitle.append(NSAttributedString(string: " · "))
-            subtitle.append(NSAttributedString(string: "4-7 min wait"))
-            cardView.subtitleLabel.attributedText = subtitle
+            cardView.subtitleLabel1.attributedText = EateryFormatter.default.formatEatery(
+                eatery,
+                font: cardView.subtitleLabel1.font
+            )
+
+            cardView.subtitleLabel2.attributedText = EateryFormatter.default.formatTimingInfo(
+                eatery,
+                font: cardView.subtitleLabel1.font
+            )
 
             cardView.on(UITapGestureRecognizer()) { [self] _ in
-                cardView.imageView.hero.id = "headerImageView"
                 pushViewController(for: eatery)
             }
 
@@ -230,11 +234,13 @@ class HomeViewController: UIViewController {
         case let cafe as Cafe:
             let viewController = CafeViewController()
             viewController.setUp(cafe: cafe)
+            navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(viewController, animated: true)
 
         case let diningHall as DiningHall:
             let viewController = DiningHallViewController()
             viewController.setUp(diningHall: diningHall)
+            navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(viewController, animated: true)
 
         default:
@@ -248,9 +254,26 @@ extension HomeViewController: UISearchBarDelegate {
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         let searchViewController = HomeSearchViewController()
+        navigationController?.hero.isEnabled = true
+        navigationController?.hero.navigationAnimationType = .fade
         navigationController?.pushViewController(searchViewController, animated: true)
-
         return false
+    }
+
+}
+
+extension HomeViewController: UINavigationControllerDelegate {
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let hideNavigationBar = viewController is EateryViewController
+            || viewController is ListViewController
+            || viewController is HomeSearchViewController
+
+        navigationController.setNavigationBarHidden(hideNavigationBar, animated: animated)
     }
 
 }

@@ -107,13 +107,13 @@ class MenuPickerSheetViewController: SheetViewController {
 
             if i == selectedDayIndex {
                 cell.dayLabel.content.textColor = .white
-                cell.dayLabel.clippingView.backgroundColor = UIColor(named: "Black")
+                cell.dayLabel.cornerRadiusView.backgroundColor = UIColor(named: "Black")
             } else if day == Day() {
                 cell.dayLabel.content.textColor = UIColor(named: "EateryBlue")
-                cell.dayLabel.clippingView.backgroundColor = nil
+                cell.dayLabel.cornerRadiusView.backgroundColor = nil
             } else {
                 cell.dayLabel.content.textColor = UIColor(named: "Black")
-                cell.dayLabel.clippingView.backgroundColor = nil
+                cell.dayLabel.cornerRadiusView.backgroundColor = nil
             }
         }
     }

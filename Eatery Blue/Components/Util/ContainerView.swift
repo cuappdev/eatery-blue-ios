@@ -7,24 +7,36 @@
 
 import UIKit
 
+// Applies the following transformations to the content view
+//  1. content inset based on layoutMargins
+//  2. corner radius crop (if cornerRadius is non-zero)
+//  3. shadow
+// 
 class ContainerView<Content: UIView>: UIView {
 
-    let clippingView = UIView()
+    let cornerRadiusView = UIView()
+
+    override var backgroundColor: UIColor? {
+        didSet {
+            cornerRadiusView.backgroundColor = backgroundColor
+            super.backgroundColor = nil
+        }
+    }
 
     var content: Content {
         willSet {
             content.removeFromSuperview()
         }
         didSet {
-            clippingView.addSubview(content)
+            cornerRadiusView.addSubview(content)
             content.edges(to: layoutMarginsGuide)
         }
     }
 
     var cornerRadius: CGFloat = 0 {
         didSet {
-            clippingView.clipsToBounds = true
-            clippingView.layer.cornerRadius = cornerRadius
+            cornerRadiusView.clipsToBounds = cornerRadius != 0
+            cornerRadiusView.layer.cornerRadius = cornerRadius
         }
     }
 
@@ -53,18 +65,20 @@ class ContainerView<Content: UIView>: UIView {
     }
 
     private var isPill: Bool = false
+    var interceptsHitTests: Bool = false
 
     init(content: Content) {
         self.content = content
 
         super.init(frame: .null)
 
-        self.layoutMargins = .zero
+        insetsLayoutMarginsFromSafeArea = false
+        layoutMargins = .zero
 
-        addSubview(clippingView)
-        clippingView.edges(to: self)
+        addSubview(cornerRadiusView)
+        cornerRadiusView.edges(to: self)
 
-        clippingView.addSubview(content)
+        cornerRadiusView.addSubview(content)
         content.edges(to: layoutMarginsGuide)
     }
 
@@ -81,8 +95,16 @@ class ContainerView<Content: UIView>: UIView {
         super.layoutSubviews()
 
         if isPill {
-            cornerRadius = min(clippingView.bounds.width, clippingView.bounds.height) / 2
+            cornerRadius = min(cornerRadiusView.bounds.width, cornerRadiusView.bounds.height) / 2
         }
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if interceptsHitTests {
+            return self
+        }
+
+        return super.hitTest(point, with: event)
     }
 
 }
