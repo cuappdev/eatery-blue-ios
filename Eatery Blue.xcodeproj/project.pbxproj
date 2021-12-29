@@ -233,7 +233,6 @@
 				5DDAD4782773DC1600CC98DD /* MenusViewController.swift */,
 				5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */,
 				5DF304BB27797D4200E2C9A4 /* Cafe */,
-				5DF304BF27797E3B00E2C9A4 /* DiningHall */,
 				5DF304D5277AA96300E2C9A4 /* EateryCard */,
 				5DF304BA27797D3C00E2C9A4 /* EateryViewController */,
 				5DF304BC27797D7E00E2C9A4 /* Home */,
@@ -356,13 +355,6 @@
 				5DF304A627791E6300E2C9A4 /* MenuPickerSheetViewController.swift */,
 			);
 			path = MenuPickerSheet;
-			sourceTree = "<group>";
-		};
-		5DF304BF27797E3B00E2C9A4 /* DiningHall */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DiningHall;
 			sourceTree = "<group>";
 		};
 		5DF304C027797E4500E2C9A4 /* WaitTimeSheet */ = {

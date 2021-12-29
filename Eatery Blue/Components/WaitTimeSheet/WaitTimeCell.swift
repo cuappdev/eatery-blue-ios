@@ -47,7 +47,7 @@ class WaitTimeCell: UIView {
     private func setUpBar() {
         bar.layer.cornerRadius = 8
         bar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        bar.backgroundColor = UIColor(named: "BlueMedium")
+        bar.backgroundColor = UIColor(named: "EateryBlueMedium")
     }
 
     private func setUpConstraints() {

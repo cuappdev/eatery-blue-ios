@@ -9,6 +9,12 @@ import UIKit
 
 class EateryModelController: EateryViewController {
 
+    private let weekdayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE"
+        return formatter
+    }()
+
     private var eatery: Eatery?
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
@@ -92,32 +98,35 @@ class EateryModelController: EateryViewController {
     }
 
     private func setUpMenuFromState() {
-        guard let eatery = eatery, let event = selectedEvent else {
+        guard let event = selectedEvent else {
+            addMenuHeaderView(
+                title: "Closed Today",
+                subtitle: "Choose a different date to see menu"
+            ) { [self] in
+                presentMenuPicker()
+            }
+            addSpacer(height: 16)
+            addReportIssueView()
+            addViewProportionalSpacer(multiplier: 0.5)
             return
         }
 
+        let title: String
+        if event.canonicalDay == Day() {
+            title = event.description ?? "Full Menu"
+        } else {
+            title = "\(weekdayFormatter.string(from: event.canonicalDay.date())) \(event.description ?? "Menu")"
+        }
+
         addMenuHeaderView(
-            title: event.description ?? "Menu",
+            title: title,
             subtitle: EateryFormatter.default.formatEventTime(event)
         ) { [self] in
-            let viewController = MenuPickerSheetViewController()
-            viewController.setUpSheetPresentation()
-            viewController.delegate = self
-
-            var menuChoices: [MenuPickerSheetViewController.MenuChoice] = []
-            for event in eatery.events {
-                menuChoices.append(MenuPickerSheetViewController.MenuChoice(
-                    description: event.description ?? "Event",
-                    event: event
-                ))
-            }
-
-            viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
-
-            present(viewController, animated: true)
+            presentMenuPicker()
         }
         setCustomSpacing(0)
         addSearchBar()
+        setCustomSpacing(0)
         addThinSpacer()
 
         if let menu = event.menu {
@@ -136,6 +145,28 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 8)
         addReportIssueView()
         addViewProportionalSpacer(multiplier: 0.5)
+    }
+
+    private func presentMenuPicker() {
+        guard let eatery = eatery else {
+            return
+        }
+
+        let viewController = MenuPickerSheetViewController()
+        viewController.setUpSheetPresentation()
+        viewController.delegate = self
+
+        var menuChoices: [MenuPickerSheetViewController.MenuChoice] = []
+        for event in eatery.events {
+            menuChoices.append(MenuPickerSheetViewController.MenuChoice(
+                description: event.description ?? "Event",
+                event: event
+            ))
+        }
+
+        viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
+
+        present(viewController, animated: true)
     }
 
 }

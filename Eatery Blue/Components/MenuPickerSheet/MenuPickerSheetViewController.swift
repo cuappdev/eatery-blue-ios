@@ -73,9 +73,7 @@ class MenuPickerSheetViewController: SheetViewController {
             cell.weekdayLabel.text = weekdayFormatter.string(from: day.date()).uppercased()
             cell.dayLabel.content.text = "\(day.day)"
             cell.on(UITapGestureRecognizer()) { [self] _ in
-                selectedDayIndex = i
-                updateDayPickerCellsFromState()
-                updateMenuChoiceViewsFromState()
+                didTapDayPickerCellAt(at: i)
             }
             dayPickerView.addCell(cell)
         }
@@ -105,15 +103,32 @@ class MenuPickerSheetViewController: SheetViewController {
         for (i, cell) in dayPickerView.cells.enumerated() {
             let day = days[i]
 
-            if i == selectedDayIndex {
-                cell.dayLabel.content.textColor = .white
-                cell.dayLabel.cornerRadiusView.backgroundColor = UIColor(named: "Black")
-            } else if day == Day() {
-                cell.dayLabel.content.textColor = UIColor(named: "EateryBlue")
-                cell.dayLabel.cornerRadiusView.backgroundColor = nil
+            let isSelected = i == selectedDayIndex
+            let isToday = day == Day()
+            let isDisabled = filterMenuChoices(on: day).isEmpty
+
+            if isToday {
+                if isSelected {
+                    cell.dayLabel.content.textColor = .white
+                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
+                } else if isDisabled {
+                    cell.dayLabel.content.textColor = UIColor(named: "EateryBlueMedium")
+                    cell.dayLabel.cornerRadiusView.backgroundColor = nil
+                } else {
+                    cell.dayLabel.content.textColor = UIColor(named: "EateryBlue")
+                    cell.dayLabel.cornerRadiusView.backgroundColor = nil
+                }
             } else {
-                cell.dayLabel.content.textColor = UIColor(named: "Black")
-                cell.dayLabel.cornerRadiusView.backgroundColor = nil
+                if isSelected {
+                    cell.dayLabel.content.textColor = .white
+                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor(named: "Black")
+                } else if isDisabled {
+                    cell.dayLabel.content.textColor = UIColor(named: "Gray03")
+                    cell.dayLabel.cornerRadiusView.backgroundColor = nil
+                } else {
+                    cell.dayLabel.content.textColor = UIColor(named: "Black")
+                    cell.dayLabel.cornerRadiusView.backgroundColor = nil
+                }
             }
         }
     }
@@ -131,18 +146,20 @@ class MenuPickerSheetViewController: SheetViewController {
     }
 
     private func addMenuChoiceViews() {
-        for i in 0..<maxMenuChoices() {
-            if i != 0 {
-                stackView.addArrangedSubview(HDivider())
-            }
+        if maxMenuChoices() != 1 {
+            for i in 0..<maxMenuChoices() {
+                if i != 0 {
+                    stackView.addArrangedSubview(HDivider())
+                }
 
-            let menuChoiceView = MenuChoiceView()
-            menuChoiceView.layoutMargins = .zero
-            stackView.addArrangedSubview(menuChoiceView)
-            menuChoiceView.on(UITapGestureRecognizer()) { [self] _ in
-                didSelectMenuChoiceView(at: i)
+                let menuChoiceView = MenuChoiceView()
+                menuChoiceView.layoutMargins = .zero
+                stackView.addArrangedSubview(menuChoiceView)
+                menuChoiceView.on(UITapGestureRecognizer()) { [self] _ in
+                    didTapMenuChoiceView(at: i)
+                }
+                menuChoiceViews.append(menuChoiceView)
             }
-            menuChoiceViews.append(menuChoiceView)
         }
 
         updateMenuChoiceViewsFromState()
@@ -169,14 +186,35 @@ class MenuPickerSheetViewController: SheetViewController {
                 }
 
             } else {
-                view.descriptionLabel.text = "-"
-                view.timeLabel.text = "-"
+                view.descriptionLabel.text = " "
+                view.timeLabel.text = " "
                 view.imageView.image = nil
             }
         }
     }
 
-    private func didSelectMenuChoiceView(at index: Int) {
+    private func didTapDayPickerCellAt(at index: Int) {
+        let menuChoicesOnDay = filterMenuChoices(on: days[index])
+
+        if menuChoicesOnDay.isEmpty {
+            return
+        }
+
+        if selectedDayIndex == index {
+            return
+        }
+
+        selectedDayIndex = index
+
+        if let menuChoice = menuChoicesOnDay.first {
+            selectedMenuIndex = menuChoices.firstIndex { $0 === menuChoice }
+        }
+
+        updateDayPickerCellsFromState()
+        updateMenuChoiceViewsFromState()
+    }
+
+    private func didTapMenuChoiceView(at index: Int) {
         guard let dayIndex = selectedDayIndex else {
             return
         }

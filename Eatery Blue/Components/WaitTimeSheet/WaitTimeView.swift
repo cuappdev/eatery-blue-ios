@@ -129,7 +129,7 @@ class WaitTimeView: UIView {
 
     func dehighlightCells() {
         if let previousIndex = highlightIndex {
-            cells[previousIndex].bar.backgroundColor = UIColor(named: "BlueMedium")
+            cells[previousIndex].bar.backgroundColor = UIColor(named: "EateryBlueMedium")
         }
         highlightIndex = nil
 
@@ -143,7 +143,7 @@ class WaitTimeView: UIView {
         }
 
         if let previousIndex = highlightIndex {
-            cells[previousIndex].bar.backgroundColor = UIColor(named: "BlueMedium")
+            cells[previousIndex].bar.backgroundColor = UIColor(named: "EateryBlueMedium")
         }
         highlightIndex = index
 

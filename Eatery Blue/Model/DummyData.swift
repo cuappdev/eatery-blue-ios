@@ -39,20 +39,14 @@ enum DummyData {
         macs.name = "Mac's Café"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
-        macs.events = [
+        macs.events = (1..<6).map { offset in
             Event(
-                canonicalDay: Day(),
-                startTimestamp: Date().timeIntervalSince1970 - 60 * 60,
-                endTimestamp: Date().timeIntervalSince1970 + 60 * 60,
-                menu: macsMenu
-            ),
-            Event(
-                canonicalDay: Day(),
-                startTimestamp: Date().timeIntervalSince1970 + 120 * 60,
-                endTimestamp: Date().timeIntervalSince1970 + 180 * 60,
+                canonicalDay: Day().addingDays(offset),
+                startTimestamp: Day().addingDays(offset).date(hour: 7, minute: 0).timeIntervalSince1970,
+                endTimestamp: Day().addingDays(offset).date(hour: 17, minute: 30).timeIntervalSince1970,
                 menu: macsMenu
             )
-        ]
+        }
         macs.latitude = 0
         macs.longitude = 0
         macs.menuSummary = "Flatbreads, salads, pasta"
@@ -203,8 +197,13 @@ enum DummyData {
         )
         dinner.description = "Dinner"
 
+        var breakfastTomorrow = breakfast
+        breakfastTomorrow.canonicalDay = breakfast.canonicalDay.addingDays(1)
+        breakfastTomorrow.startTimestamp = breakfast.startTimestamp + 24 * 60 * 60
+        breakfastTomorrow.endTimestamp = breakfast.endTimestamp + 24 * 60 * 60
+
         eatery.events = [
-            breakfast, lunch, dinner
+            breakfast, lunch, dinner, breakfastTomorrow
         ]
         return eatery
     }()

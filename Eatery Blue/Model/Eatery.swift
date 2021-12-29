@@ -79,9 +79,9 @@ struct Day: Codable, Hashable {
 
 struct Event {
 
-    let canonicalDay: Day
-    let startTimestamp: TimeInterval
-    let endTimestamp: TimeInterval
+    var canonicalDay: Day
+    var startTimestamp: TimeInterval
+    var endTimestamp: TimeInterval
     var description: String?
     var menu: Menu?
 
