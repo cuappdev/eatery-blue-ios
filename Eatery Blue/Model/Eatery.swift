@@ -77,7 +77,7 @@ struct Day: Codable, Hashable {
 // timestamps, which are UTC Unix epoch timestamps. Think carefully about different timezones when using the
 // canonicalDay, as tempting (and convenient) as it may be.
 
-class Event {
+struct Event {
 
     let canonicalDay: Day
     let startTimestamp: TimeInterval
@@ -109,7 +109,7 @@ class Event {
 
 }
 
-class Eatery {
+struct Eatery {
 
     var name: String = ""
     var building: String?
@@ -126,40 +126,6 @@ class Eatery {
     }
 
 }
-
-//class Cafe: Eatery {
-//
-//    var campusArea: String?
-//    var cafeEvents: [Event] = []
-//    var latitude: Double?
-//    var longitude: Double?
-//    var menu: Menu?
-//
-//    override func schedule() -> Schedule<Event> {
-//        Schedule(cafeEvents)
-//    }
-//
-//}
-//
-//class DiningHall: Eatery {
-//
-//    var campusArea: String?
-//    var diningHallEvents: [DiningHallEvent] = []
-//    var latitude: Double?
-//    var longitude: Double?
-//
-//    override func schedule() -> Schedule<Event> {
-//        Schedule(diningHallEvents)
-//    }
-//
-//}
-//
-//class DiningHallEvent: Event {
-//
-//    var description: String?
-//    var menu: Menu?
-//
-//}
 
 struct Menu: Codable {
 

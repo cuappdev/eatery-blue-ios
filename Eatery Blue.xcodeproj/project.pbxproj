@@ -208,10 +208,10 @@
 		5DF304B227797BBA00E2C9A4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5DDAD4702773D3DC00CC98DD /* Eatery.swift */,
 				5DDAD4722773D57A00CC98DD /* DummyData.swift */,
-				5DF3049E2778382D00E2C9A4 /* EateryPresentation.swift */,
+				5DDAD4702773D3DC00CC98DD /* Eatery.swift */,
 				5DF304FE277CC15B00E2C9A4 /* EateryFilter.swift */,
+				5DF3049E2778382D00E2C9A4 /* EateryPresentation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -302,10 +302,10 @@
 		5DF304BA27797D3C00E2C9A4 /* EateryViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */,
 				5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */,
 				5D0CDC422774E5F400AD0E27 /* EateryPillButtonView.swift */,
 				5D0CDC442774E7EA00AD0E27 /* EateryPillButtonStackView.swift */,
+				5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */,
 				5DF5F7EA2774D8FE001ADCDC /* EateryViewController.swift */,
 				5D0CDC522775059500AD0E27 /* MenuCategoryView.swift */,
 				5D0CDC4E2774FDAE00AD0E27 /* MenuHeaderView.swift */,

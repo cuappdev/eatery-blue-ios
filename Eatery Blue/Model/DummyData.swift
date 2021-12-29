@@ -35,7 +35,7 @@ enum DummyData {
     ])
 
     static let macs: Eatery = {
-        let macs = Eatery()
+        var macs = Eatery()
         macs.name = "Mac's Café"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
@@ -62,7 +62,7 @@ enum DummyData {
     }()
 
     static let macsOpenSoon: Eatery = {
-        let macs = Eatery()
+        var macs = Eatery()
         macs.name = "Mac's Café - Open Soon"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
@@ -83,7 +83,7 @@ enum DummyData {
     }()
 
     static let macsClosed: Eatery = {
-        let macs = Eatery()
+        var macs = Eatery()
         macs.name = "Mac's Café - Closed"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
@@ -104,7 +104,7 @@ enum DummyData {
     }()
 
     static let macsClosingSoon: Eatery = {
-        let macs = Eatery()
+        var macs = Eatery()
         macs.name = "Mac's Café - Closing Soon"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
@@ -125,7 +125,7 @@ enum DummyData {
     }()
 
     static let rpcc: Eatery = {
-        let eatery = Eatery()
+        var eatery = Eatery()
         eatery.name = "RPCC"
         eatery.paymentMethods = [.cash, .credit, .brbs, .mealSwipes]
         eatery.campusArea = "North"
@@ -135,7 +135,7 @@ enum DummyData {
         eatery.menuSummary = "Cornell Dining"
         eatery.imageUrl = URL(string: "https://resizer.otstatic.com/v2/photos/wide-huge/1/31826674.jpg")
 
-        let breakfast = Event(
+        var breakfast = Event(
             canonicalDay: Day(),
             startTimestamp: Day().date(hour: 7, minute: 0).timeIntervalSince1970,
             endTimestamp: Day().date(hour: 10, minute: 30).timeIntervalSince1970
@@ -166,7 +166,7 @@ enum DummyData {
             ])
         ])
 
-        let lunch = Event(
+        var lunch = Event(
             canonicalDay: Day(),
             startTimestamp: Day().date(hour: 10, minute: 30).timeIntervalSince1970,
             endTimestamp: Day().date(hour: 14, minute: 30).timeIntervalSince1970
@@ -196,7 +196,7 @@ enum DummyData {
             ])
         ])
 
-        let dinner = Event(
+        var dinner = Event(
             canonicalDay: Day(),
             startTimestamp: Day().date(hour: 17, minute: 0).timeIntervalSince1970,
             endTimestamp: Day().date(hour: 19, minute: 30).timeIntervalSince1970
