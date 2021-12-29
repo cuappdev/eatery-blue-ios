@@ -51,6 +51,11 @@ class RootViewController: UIViewController {
             menusNavigationController,
             profileNavigationController
         ], animated: false)
+
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithDefaultBackground()
+        theTabBarController.tabBar.standardAppearance = tabBarAppearance
+        theTabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance
     }
 
     static let statusBarStyleNotification = Notification.Name("RootViewController.statusBarStyleNotification")
