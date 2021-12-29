@@ -11,9 +11,9 @@ class RootViewController: UIViewController {
 
     private let theTabBarController = UITabBarController()
 
-    private let homeViewController = HomeViewController()
-    private let menusViewController = MenusViewController()
-    private let profileViewController = ProfileViewController()
+    private let home = HomeModelController()
+    private let menus = MenusViewController()
+    private let profile = ProfileViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +28,9 @@ class RootViewController: UIViewController {
         theTabBarController.view.edgesToSuperview()
         theTabBarController.didMove(toParent: self)
 
-        let homeNavigationController = UINavigationController(rootViewController: homeViewController)
+        let homeNavigationController = UINavigationController(rootViewController: home)
 
-        let menusNavigationController = UINavigationController(rootViewController: menusViewController)
+        let menusNavigationController = UINavigationController(rootViewController: menus)
         menusNavigationController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "Calendar"),
@@ -38,7 +38,7 @@ class RootViewController: UIViewController {
         )
         menusNavigationController.navigationBar.prefersLargeTitles = true
 
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        let profileNavigationController = UINavigationController(rootViewController: profile)
         profileNavigationController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "User"),

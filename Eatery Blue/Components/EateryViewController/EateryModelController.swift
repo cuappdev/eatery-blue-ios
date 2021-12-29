@@ -38,8 +38,9 @@ class EateryModelController: EateryViewController {
             return
         }
 
-        if let index = Schedule(eatery.events).onDay(Day()).indexOfSalientEvent() {
-            selectedEventIndex = index
+        let scheduleToday = Schedule(eatery.events).onDay(Day())
+        if let index = scheduleToday.indexOfSalientEvent() {
+            selectedEventIndex = eatery.events.firstIndex { $0 === scheduleToday.events[index] }
         } else {
             selectedEventIndex = nil
         }

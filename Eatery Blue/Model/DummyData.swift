@@ -197,10 +197,13 @@ enum DummyData {
         )
         dinner.description = "Dinner"
 
-        var breakfastTomorrow = breakfast
-        breakfastTomorrow.canonicalDay = breakfast.canonicalDay.addingDays(1)
-        breakfastTomorrow.startTimestamp = breakfast.startTimestamp + 24 * 60 * 60
-        breakfastTomorrow.endTimestamp = breakfast.endTimestamp + 24 * 60 * 60
+        let breakfastTomorrow = Event(
+            canonicalDay: breakfast.canonicalDay.addingDays(1),
+            startTimestamp: breakfast.startTimestamp + 24 * 60 * 60,
+            endTimestamp: breakfast.endTimestamp + 24 * 60 * 60,
+            description: nil,
+            menu: breakfast.menu
+        )
 
         eatery.events = [
             breakfast, lunch, dinner, breakfastTomorrow

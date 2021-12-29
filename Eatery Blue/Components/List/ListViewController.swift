@@ -187,13 +187,11 @@ class ListViewController: UIViewController {
     }
 
     private func addCardView(_ view: EateryCardView) {
-        let container = EateryCardView.wrapVisualEffects(view)
-        container.height(216)
+        view.height(216)
 
-        let layoutContainer = ContainerView(content: container)
-        layoutContainer.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-        stackView.addArrangedSubview(layoutContainer)
+        let cell = EateryCardCell(cardView: view)
+        cell.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.addArrangedSubview(cell)
     }
 
     private func updateScrollViewContentInset() {

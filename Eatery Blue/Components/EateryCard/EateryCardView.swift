@@ -9,16 +9,6 @@ import UIKit
 
 class EateryCardView: UIView {
 
-    static func wrapVisualEffects(_ cardView: UIView) -> UIView {
-        let container = ContainerView(content: cardView)
-        container.cornerRadius = 8
-        container.shadowRadius = 4
-        container.shadowOffset = CGSize(width: 0, height: 4)
-        container.shadowColor = UIColor(named: "ShadowLight")
-        container.shadowOpacity = 0.25
-        return container
-    }
-
     let imageView = UIImageView()
 
     let labelStackView = UIStackView() 

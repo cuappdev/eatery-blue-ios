@@ -11,13 +11,25 @@ import Kingfisher
 
 class HomeViewController: UIViewController {
 
-    private let navigationView = HomeNavigationView()
-    private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
-    private let searchBar = UISearchBar()
-    private let filtersView = PillFiltersView()
-    private var carouselViews = [CarouselView]()
-    private let allEateriesView = EateryCardStackView()
+    struct EateryCollection {
+        var title: String
+        var description: String?
+        var eateries: [Eatery]
+    }
+
+    enum Cell {
+        case searchBar
+        case filterView(buttons: [PillFilterButtonView])
+        case carouselView(collection: EateryCollection)
+        case titleLabel(title: String)
+        case eateryCard(eatery: Eatery)
+    }
+
+    let navigationView = HomeNavigationView()
+    let tableView = UITableView()
+    private let tableHeaderView = UIView()
+
+    var cells: [Cell] = []
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
@@ -40,30 +52,6 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        DispatchQueue.main.asyncAfter(deadline: .now()) { [self] in
-            removeAllCarouselViews()
-            allEateriesView.removeFromSuperview()
-
-            addCarouselView(title: "Favorite Eateries", description: nil, eateries: [
-                DummyData.rpcc, DummyData.macs
-            ])
-
-            addCarouselView(
-                title: "Lunch on the Go",
-                description: "Grab a quick bite on the way to (skipping) your classes",
-                eateries: [
-                    DummyData.rpcc, DummyData.macs
-                ]
-            )
-
-            addAllEateriesView([
-                DummyData.macs,
-                DummyData.macsClosed,
-                DummyData.macsOpenSoon,
-                DummyData.macsClosingSoon
-            ])
-        }
-
         updateScrollViewContentInset()
     }
 
@@ -77,68 +65,29 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpView() {
-        view.addSubview(scrollView)
-        setUpScrollView()
+        view.addSubview(tableView)
+        setUpTableView()
 
         view.addSubview(navigationView)
         setUpNavigationView()
     }
 
-    private func setUpScrollView() {
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.alwaysBounceVertical = true
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.delegate = self
+    private func setUpTableView() {
+        tableView.showsVerticalScrollIndicator = false
+        tableView.alwaysBounceVertical = true
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = 44
 
-        scrollView.addSubview(stackView)
-        setUpStackView()
-    }
+        tableView.tableHeaderView = tableHeaderView
+        tableView.tableFooterView = UIView()
+        tableView.allowsSelection = false
 
-    private func setUpStackView() {
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-
-        stackView.spacing = 12
-
-        stackView.addArrangedSubview(searchBar)
-        // Deal with UISearchBar's permanent 8px spacing
-        stackView.setCustomSpacing(4, after: searchBar)
-        setUpSearchBar()
-
-        stackView.addArrangedSubview(filtersView)
-        setUpFiltersView()
-    }
-
-    private func setUpSearchBar() {
-        searchBar.delegate = self
-        searchBar.placeholder = "Search for grub..."
-        searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        searchBar.backgroundImage = UIImage()
-        searchBar.hero.id = "searchBar"
-    }
-
-    private func setUpFiltersView() {
-        filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-        let shortFilter = PillFilterButtonView()
-        shortFilter.label.text = "Under 10 min"
-        shortFilter.on(UITapGestureRecognizer()) { [weak shortFilter] _ in
-            guard let shortFilter = shortFilter else { return }
-            shortFilter.setHighlighted(!shortFilter.isHighlighted)
-        }
-        filtersView.addButton(shortFilter)
-
-        let paymentMethods = PillFilterButtonView()
-        paymentMethods.label.text = "Payment Methods"
-        paymentMethods.imageView.isHidden = false
-        paymentMethods.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = PaymentMethodsFilterSheetViewController()
-            viewController.setUpSheetPresentation()
-            present(viewController, animated: true)
-        }
-        filtersView.addButton(paymentMethods)
+        tableView.register(CarouselTableViewCell.self, forCellReuseIdentifier: "carouselView")
+        tableView.register(EateryCardTableViewCell.self, forCellReuseIdentifier: "eateryCard")
     }
 
     private func setUpNavigationView() {
@@ -150,105 +99,17 @@ class HomeViewController: UIViewController {
             navigationController?.pushViewController(searchViewController, animated: true)
         }
 
-        navigationView.bottomToTop(of: stackView, priority: .defaultLow)
-        navigationView.bottomToTop(of: stackView, relation: .equalOrGreater)
-    }
-
-    private func removeAllCarouselViews() {
-        for view in carouselViews {
-            view.removeFromSuperview()
-        }
-
-        carouselViews.removeAll()
-    }
-
-    private func addCarouselView(title: String, description: String?, eateries: [Eatery]) {
-        let carouselView = CarouselView()
-        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        carouselView.scrollView.contentInset = carouselView.layoutMargins
-        carouselView.titleLabel.text = title
-
-        for eatery in eateries {
-            let cardView = CarouselCardView()
-            cardView.imageView.kf.setImage(
-                with: eatery.imageUrl,
-                options: [
-                    .processor(DownsamplingImageProcessor(size: CGSize(width: 343, height: 127))),
-                    .scaleFactor(UIScreen.main.scale),
-                    .cacheOriginalImage
-                ]
-            )
-            cardView.titleLabel.text = eatery.name
-            cardView.subtitleLabel.text = """
-            \(eatery.building ?? "--") · \(eatery.menuSummary ?? "--")
-            """
-
-            cardView.on(UITapGestureRecognizer()) { [self] _ in
-                pushViewController(for: eatery)
-            }
-
-            carouselView.addCardView(cardView)
-        }
-
-        carouselViews.append(carouselView)
-        stackView.addArrangedSubview(carouselView)
-        stackView.setCustomSpacing(24, after: carouselView)
-
-        carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = ListViewController()
-            viewController.setUp(
-                eateries,
-                title: title,
-                description: description
-            )
-
-            navigationController?.hero.isEnabled = false
-            navigationController?.pushViewController(viewController, animated: true)
-        }
-    }
-
-    private func addAllEateriesView(_ eateries: [Eatery]) {
-        allEateriesView.titleLabel.text = "All Eateries"
-        allEateriesView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        for subview in allEateriesView.stackView.arrangedSubviews {
-            subview.removeFromSuperview()
-        }
-
-        for eatery in eateries {
-            let cardView = EateryCardView()
-            cardView.imageView.kf.setImage(with: eatery.imageUrl)
-            cardView.titleLabel.text = eatery.name
-
-            cardView.subtitleLabel1.attributedText = EateryFormatter.default.formatEatery(
-                eatery,
-                font: cardView.subtitleLabel1.font
-            )
-
-            cardView.subtitleLabel2.attributedText = EateryFormatter.default.formatTimingInfo(
-                eatery,
-                font: cardView.subtitleLabel1.font
-            )
-
-            cardView.on(UITapGestureRecognizer()) { [self] _ in
-                pushViewController(for: eatery)
-            }
-
-            allEateriesView.addCardView(cardView)
-        }
-
-        stackView.addArrangedSubview(allEateriesView)
+        navigationView.bottomToTop(of: tableHeaderView, priority: .defaultLow)
+        navigationView.bottomToTop(of: tableHeaderView, relation: .equalOrGreater)
     }
 
     private func setUpConstraints() {
-        scrollView.edgesToSuperview()
-
-        stackView.edgesToSuperview()
-        stackView.width(to: view)
+        tableView.edgesToSuperview()
 
         navigationView.edgesToSuperview(excluding: .bottom)
     }
 
-    private func pushViewController(for eatery: Eatery) {
+    func pushViewController(for eatery: Eatery) {
         let viewController = EateryModelController()
         viewController.setUp(eatery: eatery)
         navigationController?.hero.isEnabled = false
@@ -256,8 +117,8 @@ class HomeViewController: UIViewController {
     }
 
     private func updateScrollViewContentInset() {
-        scrollView.contentInset.top = navigationView.computeFullyExpandedHeight()
-        scrollView.contentInset.bottom = view.safeAreaInsets.bottom
+        tableView.contentInset.top = navigationView.computeFullyExpandedHeight()
+        tableView.contentInset.bottom = view.safeAreaInsets.bottom
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -277,6 +138,139 @@ extension HomeViewController: UISearchBarDelegate {
         navigationController?.pushViewController(searchViewController, animated: true)
         return false
     }
+
+}
+
+extension HomeViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        cells.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellType = cells[indexPath.row]
+        switch cellType {
+        case .searchBar:
+            let searchBar = UISearchBar()
+            searchBar.delegate = self
+            searchBar.placeholder = "Search for grub..."
+            searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            searchBar.backgroundImage = UIImage()
+            searchBar.hero.id = "searchBar"
+
+            let cell = ClearTableViewCell()
+            cell.contentView.addSubview(searchBar)
+            searchBar.edgesToSuperview()
+            return cell
+
+        case .filterView(buttons: let filterButtons):
+            let filtersView = PillFiltersView()
+            filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+            for filterButton in filterButtons {
+                filtersView.addButton(filterButton)
+            }
+
+            let cell = ClearTableViewCell()
+            cell.contentView.addSubview(filtersView)
+            filtersView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+            return cell
+
+        case .titleLabel(title: let title):
+            let label = UILabel()
+            label.text = title
+            label.font = .preferredFont(for: .title2, weight: .semibold)
+
+            let container = ContainerView(content: label)
+            container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+
+            let cell = ClearTableViewCell()
+            cell.contentView.addSubview(container)
+            container.edgesToSuperview()
+            return cell
+
+        case .carouselView(collection: let collection):
+            let carouselView = CarouselView()
+            carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            carouselView.scrollView.contentInset = carouselView.layoutMargins
+            carouselView.titleLabel.text = collection.title
+
+            for eatery in collection.eateries {
+                let cardView = CarouselCardView()
+                cardView.imageView.kf.setImage(
+                    with: eatery.imageUrl,
+                    options: [
+                        .backgroundDecode
+                    ]
+                )
+                cardView.titleLabel.text = eatery.name
+                cardView.subtitleLabel.text = """
+                \(eatery.building ?? "--") · \(eatery.menuSummary ?? "--")
+                """
+
+                cardView.on(UITapGestureRecognizer()) { [self] _ in
+                    pushViewController(for: eatery)
+                }
+
+                carouselView.addCardView(cardView)
+            }
+
+            carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
+                let viewController = ListViewController()
+                viewController.setUp(
+                    collection.eateries,
+                    title: collection.title,
+                    description: collection.description
+                )
+
+                navigationController?.hero.isEnabled = false
+                navigationController?.pushViewController(viewController, animated: true)
+            }
+
+            let cell = ClearTableViewCell()
+            cell.contentView.addSubview(carouselView)
+            cell.contentView.clipsToBounds = false
+            cell.contentView.backgroundColor = nil
+            cell.backgroundView = UIView()
+            cell.backgroundView?.backgroundColor = nil
+            cell.backgroundColor = nil
+            cell.clipsToBounds = false
+            carouselView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+            return cell
+
+        case .eateryCard(eatery: let eatery):
+            let cardView = EateryCardView()
+            cardView.imageView.kf.setImage(
+                with: eatery.imageUrl,
+                options: [
+                    .backgroundDecode
+                ]
+            )
+            cardView.titleLabel.text = eatery.name
+            cardView.subtitleLabel1.attributedText = EateryFormatter.default.formatEatery(
+                eatery,
+                font: cardView.subtitleLabel1.font
+            )
+            cardView.subtitleLabel2.attributedText = EateryFormatter.default.formatTimingInfo(
+                eatery,
+                font: cardView.subtitleLabel2.font
+            )
+
+            cardView.on(UITapGestureRecognizer()) { [self] _ in
+                pushViewController(for: eatery)
+            }
+
+            cardView.height(216)
+
+            let cell = EateryCardTableViewCell(cardView: cardView)
+            cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            return cell
+        }
+    }
+
+}
+
+extension HomeViewController: UITableViewDelegate {
 
 }
 
@@ -324,11 +318,11 @@ extension HomeViewController: UIScrollViewDelegate {
     }
 
     private func handleNavigationView() {
-        guard let superview = scrollView.superview else {
+        guard let superview = tableView.superview else {
             return
         }
 
-        let currentPosition = scrollView.contentOffset.y
+        let currentPosition = tableView.contentOffset.y
         let navigationBarNormalPosition = -superview.convert(
             CGPoint(x: 0, y: navigationView.computeNormalHeight()),
             from: navigationView
@@ -343,7 +337,7 @@ extension HomeViewController: UIScrollViewDelegate {
     }
 
     private func handleLogo() {
-        let deltaFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
+        let deltaFromTop = tableView.contentOffset.y + tableView.contentInset.top
         let fadeDistance = 44.0
         let transform = CGAffineTransform(
             translationX: 0,

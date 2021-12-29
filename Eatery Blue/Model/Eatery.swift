@@ -77,7 +77,7 @@ struct Day: Codable, Hashable {
 // timestamps, which are UTC Unix epoch timestamps. Think carefully about different timezones when using the
 // canonicalDay, as tempting (and convenient) as it may be.
 
-struct Event {
+class Event {
 
     var canonicalDay: Day
     var startTimestamp: TimeInterval
@@ -109,7 +109,7 @@ struct Event {
 
 }
 
-struct Eatery {
+class Eatery {
 
     var name: String = ""
     var building: String?

@@ -26,6 +26,8 @@ class CarouselView: UIView {
     }
 
     private func setUpSelf() {
+        insetsLayoutMarginsFromSafeArea = false
+
         addSubview(titleLabel)
         setUpTitleLabel()
 
@@ -75,7 +77,7 @@ class CarouselView: UIView {
         scrollView.topToBottom(of: titleLabel, offset: 12)
         scrollView.leadingToSuperview()
         scrollView.trailingToSuperview()
-        scrollView.bottom(to: self, self.layoutMarginsGuide.bottomAnchor)
+        scrollView.bottom(to: layoutMarginsGuide, layoutMarginsGuide.bottomAnchor)
         scrollView.height(186)
 
         stackView.edgesToSuperview()
@@ -91,6 +93,12 @@ class CarouselView: UIView {
         container.shadowOpacity = 0.25
         container.width(295)
         stackView.addArrangedSubview(container)
+    }
+
+    func resetCards() {
+        for view in stackView.arrangedSubviews {
+            view.removeFromSuperview()
+        }
     }
 
 }

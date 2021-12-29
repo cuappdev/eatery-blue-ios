@@ -33,6 +33,7 @@ class PillFilterButtonView: UIView {
         setHighlighted(isHighlighted)
 
         layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+        insetsLayoutMarginsFromSafeArea = false
     }
 
     private func setUpStackView() {

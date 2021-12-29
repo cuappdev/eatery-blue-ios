@@ -48,9 +48,9 @@ class EateryCardStackView: UIView {
     }
 
     func addCardView(_ cardView: EateryCardView) {
-        let container = EateryCardView.wrapVisualEffects(cardView)
-        container.height(216)
-        stackView.addArrangedSubview(container)
+        let cell = EateryCardCell(cardView: cardView)
+        cell.height(216)
+        stackView.addArrangedSubview(cell)
     }
 
 }
