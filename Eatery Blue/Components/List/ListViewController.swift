@@ -152,20 +152,9 @@ class ListViewController: UIViewController {
     }
 
     private func pushViewController(for eatery: Eatery) {
-        switch eatery {
-        case let cafe as Cafe:
-            let viewController = CafeViewController()
-            viewController.setUp(cafe: cafe)
-            navigationController?.pushViewController(viewController, animated: true)
-
-        case let diningHall as DiningHall:
-            let viewController = DiningHallViewController()
-            viewController.setUp(diningHall: diningHall)
-            navigationController?.pushViewController(viewController, animated: true)
-
-        default:
-            os_log(.error, "Unexpected eatery type %s", String(reflecting: eatery))
-        }
+        let viewController = EateryModelController()
+        viewController.setUp(eatery: eatery)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func addTitleLabel(_ title: String) {
@@ -182,6 +171,7 @@ class ListViewController: UIViewController {
     private func addDescriptionLabel(_ description: String) {
         let label = UILabel()
         label.text = description
+        label.numberOfLines = 0
         label.font = .preferredFont(for: .body, weight: .medium)
         label.textColor = UIColor(named: "Gray06")
 

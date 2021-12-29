@@ -16,7 +16,7 @@ class HoursSheetViewController: SheetViewController {
         return formatter
     }()
 
-    func setUp(_ schedule: Schedule<Event>) {
+    func setUp(_ schedule: Schedule) {
         addHeader(title: "Hours", image: UIImage(named: "Clock"))
         addStatusLabel(EateryFormatter.default.formatStatus(schedule.currentStatus()))
         addSchedule(schedule)
@@ -31,7 +31,7 @@ class HoursSheetViewController: SheetViewController {
         }
     }
 
-    private func addSchedule(_ schedule: Schedule<Event>) {
+    private func addSchedule(_ schedule: Schedule) {
         let current = Day()
 
         var dayToDescription: [Day: String] = [:]

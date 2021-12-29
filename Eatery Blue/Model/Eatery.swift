@@ -82,6 +82,8 @@ class Event {
     let canonicalDay: Day
     let startTimestamp: TimeInterval
     let endTimestamp: TimeInterval
+    var description: String?
+    var menu: Menu?
 
     var startDate: Date {
         Date(timeIntervalSince1970: startTimestamp)
@@ -91,10 +93,18 @@ class Event {
         Date(timeIntervalSince1970: endTimestamp)
     }
 
-    init(canonicalDay: Day, startTimestamp: TimeInterval, endTimestamp: TimeInterval) {
+    init(
+        canonicalDay: Day,
+        startTimestamp: TimeInterval,
+        endTimestamp: TimeInterval,
+        description: String? = nil,
+        menu: Menu? = nil
+    ) {
         self.canonicalDay = canonicalDay
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
+        self.description = description
+        self.menu = menu
     }
 
 }
@@ -106,46 +116,50 @@ class Eatery {
     var imageUrl: URL?
     var menuSummary: String?
     var paymentMethods: Set<PaymentMethod> = []
-
-    func schedule() -> Schedule<Event> {
-        Schedule()
-    }
-
-}
-
-class Cafe: Eatery {
-
     var campusArea: String?
-    var cafeEvents: [Event] = []
-    var latitude: Double?
-    var longitude: Double?
-    var menu: Menu?
-
-    override func schedule() -> Schedule<Event> {
-        Schedule(cafeEvents)
-    }
-
-}
-
-class DiningHall: Eatery {
-
-    var campusArea: String?
-    var diningHallEvents: [DiningHallEvent] = []
+    var events: [Event] = []
     var latitude: Double?
     var longitude: Double?
 
-    override func schedule() -> Schedule<Event> {
-        Schedule(diningHallEvents)
+    var schedule: Schedule {
+        Schedule(events)
     }
 
 }
 
-class DiningHallEvent: Event {
-
-    var description: String?
-    var menu: Menu?
-
-}
+//class Cafe: Eatery {
+//
+//    var campusArea: String?
+//    var cafeEvents: [Event] = []
+//    var latitude: Double?
+//    var longitude: Double?
+//    var menu: Menu?
+//
+//    override func schedule() -> Schedule<Event> {
+//        Schedule(cafeEvents)
+//    }
+//
+//}
+//
+//class DiningHall: Eatery {
+//
+//    var campusArea: String?
+//    var diningHallEvents: [DiningHallEvent] = []
+//    var latitude: Double?
+//    var longitude: Double?
+//
+//    override func schedule() -> Schedule<Event> {
+//        Schedule(diningHallEvents)
+//    }
+//
+//}
+//
+//class DiningHallEvent: Event {
+//
+//    var description: String?
+//    var menu: Menu?
+//
+//}
 
 struct Menu: Codable {
 

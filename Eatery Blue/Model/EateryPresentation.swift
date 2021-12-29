@@ -18,23 +18,19 @@ enum EateryStatus {
 
 }
 
-struct Schedule<EventType: Event>: ExpressibleByArrayLiteral {
+struct Schedule {
 
-    let events: [EventType]
+    let events: [Event]
 
     var isEmpty: Bool {
         events.isEmpty
     }
 
-    init(_ array: [EventType]) {
+    init(_ array: [Event]) {
         self.events = array
     }
 
-    init(arrayLiteral elements: EventType...) {
-        self.events = elements
-    }
-
-    func at(_ date: Date) -> EventType? {
+    func at(_ date: Date) -> Event? {
         if let i = indexOfEvent(at: date) {
             return events[i]
         } else {
@@ -53,7 +49,7 @@ struct Schedule<EventType: Event>: ExpressibleByArrayLiteral {
         indexOfEvent(at: Date())
     }
 
-    func current() -> EventType? {
+    func current() -> Event? {
         at(Date())
     }
 
@@ -73,7 +69,7 @@ struct Schedule<EventType: Event>: ExpressibleByArrayLiteral {
         }?.offset
     }
 
-    func nextEvent(_ date: Date = Date()) -> EventType? {
+    func nextEvent(_ date: Date = Date()) -> Event? {
         if let index = indexOfNextEvent(date) {
             return events[index]
         } else {
@@ -169,7 +165,7 @@ class EateryFormatter {
         "\(timeFormatter.string(from: event.startDate)) - \(timeFormatter.string(from: event.endDate))"
     }
 
-    func formatSchedule<T: Event>(_ schedule: Schedule<T>) -> String {
+    func formatSchedule(_ schedule: Schedule) -> String {
         if schedule.isEmpty {
             return "Closed"
         } else {

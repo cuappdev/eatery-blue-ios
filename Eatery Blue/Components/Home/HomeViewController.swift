@@ -40,14 +40,23 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.removeAllCarouselViews()
-            self.allEateriesView.removeFromSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now()) { [self] in
+            removeAllCarouselViews()
+            allEateriesView.removeFromSuperview()
 
-            self.addFavoritesCarouselView(favorites: [
+            addCarouselView(title: "Favorite Eateries", description: nil, eateries: [
                 DummyData.rpcc, DummyData.macs
             ])
-            self.addAllEateriesView([
+
+            addCarouselView(
+                title: "Lunch on the Go",
+                description: "Grab a quick bite on the way to (skipping) your classes",
+                eateries: [
+                    DummyData.rpcc, DummyData.macs
+                ]
+            )
+
+            addAllEateriesView([
                 DummyData.macs,
                 DummyData.macsClosed,
                 DummyData.macsOpenSoon,
@@ -153,29 +162,29 @@ class HomeViewController: UIViewController {
         carouselViews.removeAll()
     }
 
-    private func addFavoritesCarouselView(favorites: [Eatery]) {
+    private func addCarouselView(title: String, description: String?, eateries: [Eatery]) {
         let carouselView = CarouselView()
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.scrollView.contentInset = carouselView.layoutMargins
-        carouselView.titleLabel.text = "Favorite Eateries"
+        carouselView.titleLabel.text = title
 
-        for favorite in favorites {
+        for eatery in eateries {
             let cardView = CarouselCardView()
             cardView.imageView.kf.setImage(
-                with: favorite.imageUrl,
+                with: eatery.imageUrl,
                 options: [
                     .processor(DownsamplingImageProcessor(size: CGSize(width: 343, height: 127))),
                     .scaleFactor(UIScreen.main.scale),
                     .cacheOriginalImage
                 ]
             )
-            cardView.titleLabel.text = favorite.name
+            cardView.titleLabel.text = eatery.name
             cardView.subtitleLabel.text = """
-            \(favorite.building ?? "--") · \(favorite.menuSummary ?? "--")
+            \(eatery.building ?? "--") · \(eatery.menuSummary ?? "--")
             """
 
             cardView.on(UITapGestureRecognizer()) { [self] _ in
-                pushViewController(for: favorite)
+                pushViewController(for: eatery)
             }
 
             carouselView.addCardView(cardView)
@@ -188,8 +197,9 @@ class HomeViewController: UIViewController {
         carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
             let viewController = ListViewController()
             viewController.setUp(
-                favorites,
-                title: "Favorite Eateries"
+                eateries,
+                title: title,
+                description: description
             )
 
             navigationController?.hero.isEnabled = false
@@ -239,22 +249,10 @@ class HomeViewController: UIViewController {
     }
 
     private func pushViewController(for eatery: Eatery) {
-        switch eatery {
-        case let cafe as Cafe:
-            let viewController = CafeViewController()
-            viewController.setUp(cafe: cafe)
-            navigationController?.hero.isEnabled = false
-            navigationController?.pushViewController(viewController, animated: true)
-
-        case let diningHall as DiningHall:
-            let viewController = DiningHallViewController()
-            viewController.setUp(diningHall: diningHall)
-            navigationController?.hero.isEnabled = false
-            navigationController?.pushViewController(viewController, animated: true)
-
-        default:
-            os_log(.error, "Unexpected eatery type %s", String(reflecting: eatery))
-        }
+        let viewController = EateryModelController()
+        viewController.setUp(eatery: eatery)
+        navigationController?.hero.isEnabled = false
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func updateScrollViewContentInset() {

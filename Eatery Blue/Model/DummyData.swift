@@ -34,97 +34,98 @@ enum DummyData {
         ])
     ])
 
-    static let macs: Cafe = {
-        let macs = Cafe()
+    static let macs: Eatery = {
+        let macs = Eatery()
         macs.name = "Mac's Café"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
-        macs.cafeEvents = [
+        macs.events = [
             Event(
                 canonicalDay: Day(),
                 startTimestamp: Date().timeIntervalSince1970 - 60 * 60,
-                endTimestamp: Date().timeIntervalSince1970 + 60 * 60
+                endTimestamp: Date().timeIntervalSince1970 + 60 * 60,
+                menu: macsMenu
             ),
             Event(
                 canonicalDay: Day(),
                 startTimestamp: Date().timeIntervalSince1970 + 120 * 60,
-                endTimestamp: Date().timeIntervalSince1970 + 180 * 60
+                endTimestamp: Date().timeIntervalSince1970 + 180 * 60,
+                menu: macsMenu
             )
         ]
         macs.latitude = 0
         macs.longitude = 0
-        macs.menu = macsMenu
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
         return macs
     }()
 
-    static let macsOpenSoon: Cafe = {
-        let macs = Cafe()
+    static let macsOpenSoon: Eatery = {
+        let macs = Eatery()
         macs.name = "Mac's Café - Open Soon"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
-        macs.cafeEvents = [
+        macs.events = [
             Event(
                 canonicalDay: Day(),
                 startTimestamp: Date().timeIntervalSince1970 + 30 * 60,
-                endTimestamp: Date().timeIntervalSince1970 + 60 * 60
+                endTimestamp: Date().timeIntervalSince1970 + 60 * 60,
+                menu: macsMenu
             )
         ]
         macs.latitude = 0
         macs.longitude = 0
-        macs.menu = macsMenu
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
         return macs
     }()
 
-    static let macsClosed: Cafe = {
-        let macs = Cafe()
+    static let macsClosed: Eatery = {
+        let macs = Eatery()
         macs.name = "Mac's Café - Closed"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
-        macs.cafeEvents = [
+        macs.events = [
             Event(
                 canonicalDay: Day(),
                 startTimestamp: Date().timeIntervalSince1970 - 180 * 60,
-                endTimestamp: Date().timeIntervalSince1970 - 120 * 60
+                endTimestamp: Date().timeIntervalSince1970 - 120 * 60,
+                menu: macsMenu
             )
         ]
         macs.latitude = 0
         macs.longitude = 0
-        macs.menu = macsMenu
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
         return macs
     }()
 
-    static let macsClosingSoon: Cafe = {
-        let macs = Cafe()
+    static let macsClosingSoon: Eatery = {
+        let macs = Eatery()
         macs.name = "Mac's Café - Closing Soon"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
-        macs.cafeEvents = [
+        macs.events = [
             Event(
                 canonicalDay: Day(),
                 startTimestamp: Date().timeIntervalSince1970 - 30 * 60,
-                endTimestamp: Date().timeIntervalSince1970 + 30 * 60
+                endTimestamp: Date().timeIntervalSince1970 + 30 * 60,
+                menu: macsMenu
             )
         ]
         macs.latitude = 0
         macs.longitude = 0
-        macs.menu = macsMenu
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
         return macs
     }()
 
-    static let rpcc: DiningHall = {
-        let eatery = DiningHall()
+    static let rpcc: Eatery = {
+        let eatery = Eatery()
         eatery.name = "RPCC"
         eatery.paymentMethods = [.cash, .credit, .brbs, .mealSwipes]
         eatery.campusArea = "North"
@@ -134,7 +135,7 @@ enum DummyData {
         eatery.menuSummary = "Cornell Dining"
         eatery.imageUrl = URL(string: "https://resizer.otstatic.com/v2/photos/wide-huge/1/31826674.jpg")
 
-        let breakfast = DiningHallEvent(
+        let breakfast = Event(
             canonicalDay: Day(),
             startTimestamp: Day().date(hour: 7, minute: 0).timeIntervalSince1970,
             endTimestamp: Day().date(hour: 10, minute: 30).timeIntervalSince1970
@@ -165,7 +166,7 @@ enum DummyData {
             ])
         ])
 
-        let lunch = DiningHallEvent(
+        let lunch = Event(
             canonicalDay: Day(),
             startTimestamp: Day().date(hour: 10, minute: 30).timeIntervalSince1970,
             endTimestamp: Day().date(hour: 14, minute: 30).timeIntervalSince1970
@@ -195,14 +196,14 @@ enum DummyData {
             ])
         ])
 
-        let dinner = DiningHallEvent(
+        let dinner = Event(
             canonicalDay: Day(),
             startTimestamp: Day().date(hour: 17, minute: 0).timeIntervalSince1970,
             endTimestamp: Day().date(hour: 19, minute: 30).timeIntervalSince1970
         )
         dinner.description = "Dinner"
 
-        eatery.diningHallEvents = [
+        eatery.events = [
             breakfast, lunch, dinner
         ]
         return eatery

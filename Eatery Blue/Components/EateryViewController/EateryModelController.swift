@@ -1,5 +1,5 @@
 //
-//  DiningHallViewController.swift
+//  EateryModelController.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/26/21.
@@ -7,53 +7,53 @@
 
 import UIKit
 
-class DiningHallViewController: EateryViewController {
+class EateryModelController: EateryViewController {
 
-    private var diningHall: DiningHall?
+    private var eatery: Eatery?
     private var selectedEventIndex: Int?
-    private var selectedEvent: DiningHallEvent? {
+    private var selectedEvent: Event? {
         if let index = selectedEventIndex {
-            return diningHall?.diningHallEvents[index]
+            return eatery?.events[index]
         } else {
             return nil
         }
     }
 
-    func setUp(diningHall: DiningHall) {
-        self.diningHall = diningHall
+    func setUp(eatery: Eatery) {
+        self.eatery = eatery
         resetSelectedEventIndex()
 
-        setUpNavigationView(diningHall)
-        setUpStackView(diningHall)
+        setUpNavigationView(eatery)
+        setUpStackView(eatery)
     }
 
     private func resetSelectedEventIndex() {
-        guard let diningHall = diningHall else {
+        guard let eatery = eatery else {
             return
         }
 
-        if let index = Schedule(diningHall.diningHallEvents).onDay(Day()).indexOfSalientEvent() {
+        if let index = Schedule(eatery.events).onDay(Day()).indexOfSalientEvent() {
             selectedEventIndex = index
         } else {
             selectedEventIndex = nil
         }
     }
 
-    private func setUpNavigationView(_ diningHall: DiningHall) {
-        navigationView.titleLabel.text = diningHall.name
+    private func setUpNavigationView(_ eatery: Eatery) {
+        navigationView.titleLabel.text = eatery.name
         updateNavigationViewFromState()
     }
 
-    private func setUpStackView(_ diningHall: DiningHall) {
-        addHeaderImageView(imageUrl: diningHall.imageUrl)
-        addPaymentMethodsView(headerView: stackView.arrangedSubviews.last, paymentMethods: diningHall.paymentMethods)
+    private func setUpStackView(_ eatery: Eatery) {
+        addHeaderImageView(imageUrl: eatery.imageUrl)
+        addPaymentMethodsView(headerView: stackView.arrangedSubviews.last, paymentMethods: eatery.paymentMethods)
         addPlaceDecorationIcon(headerView: stackView.arrangedSubviews.last)
-        addNameLabel(diningHall.name)
+        addNameLabel(eatery.name)
         navigationTriggerView = stackView.arrangedSubviews.last
         setCustomSpacing(8)
-        addShortDescriptionLabel(diningHall)
-        addButtons(diningHall)
-        addTimingView(diningHall)
+        addShortDescriptionLabel(eatery)
+        addButtons(eatery)
+        addTimingView(eatery)
         addSpacer(height: 16)
 
         setUpMenuFromState()
@@ -92,7 +92,7 @@ class DiningHallViewController: EateryViewController {
     }
 
     private func setUpMenuFromState() {
-        guard let diningHall = diningHall, let event = selectedEvent else {
+        guard let eatery = eatery, let event = selectedEvent else {
             return
         }
 
@@ -105,7 +105,7 @@ class DiningHallViewController: EateryViewController {
             viewController.delegate = self
 
             var menuChoices: [MenuPickerSheetViewController.MenuChoice] = []
-            for event in diningHall.diningHallEvents {
+            for event in eatery.events {
                 menuChoices.append(MenuPickerSheetViewController.MenuChoice(
                     description: event.description ?? "Event",
                     event: event
@@ -140,7 +140,7 @@ class DiningHallViewController: EateryViewController {
 
 }
 
-extension DiningHallViewController: MenuPickerSheetViewControllerDelegate {
+extension EateryModelController: MenuPickerSheetViewControllerDelegate {
 
     func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) {
         selectedEventIndex = index
