@@ -35,7 +35,7 @@ enum EateryStatus {
 
     static func indexOfNextEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
         index(events) { event in
-            event.endDate < date && (day != nil ? event.canonicalDay == day : true)
+            date <= event.startDate && (day != nil ? event.canonicalDay == day : true)
         } min: { lhs, rhs in
             lhs.startDate < rhs.startDate
         }
@@ -51,7 +51,7 @@ enum EateryStatus {
 
     static func indexOfPreviousEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
         index(events) { event in
-            date < event.startDate && (day != nil ? event.canonicalDay == day : true)
+            event.endDate <= date && (day != nil ? event.canonicalDay == day : true)
         } min: { lhs, rhs in
             rhs.endDate < lhs.endDate
         }

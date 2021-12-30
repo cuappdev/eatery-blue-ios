@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/29/21.
 //
 
+import Combine
 import UIKit
 
 class HomeModelController: HomeViewController {
@@ -25,6 +26,8 @@ class HomeModelController: HomeViewController {
     private let filtersView = PillFiltersView()
     private let filterButtons = FilterButtons()
 
+    private var cancellables: Set<AnyCancellable> = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,7 +35,20 @@ class HomeModelController: HomeViewController {
 
         updateCellsFromState()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in
+        updateStateFromNetworking()
+    }
+
+    private func updateStateFromNetworking() {
+        Networking.default.fetchEateries().sink { completion in
+            switch completion {
+            case .failure(let error):
+                print(error)
+
+            case .finished:
+                return
+            }
+
+        } receiveValue: { [self] eateries in
             eateryCollections = [
                 EateryCollection(
                     title: "Favorite Eateries",
@@ -50,16 +66,9 @@ class HomeModelController: HomeViewController {
                 ),
             ]
 
-            allEateries = [
-                DummyData.rpcc,
-                DummyData.macs,
-                DummyData.macsClosed,
-                DummyData.macsOpenSoon,
-                DummyData.macsClosingSoon
-            ] + Array(repeating: DummyData.macs, count: 50)
-
+            allEateries = eateries
             updateCellsFromState()
-        }
+        }.store(in: &cancellables)
     }
 
     private func setUpFiltersView() {

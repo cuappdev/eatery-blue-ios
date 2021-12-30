@@ -39,7 +39,7 @@ class EateryModelController: EateryViewController {
             return
         }
 
-        if let index = EateryStatus.indexOfSalientEvent(eatery.events) {
+        if let index = EateryStatus.indexOfSalientEvent(eatery.events, on: Day()) {
             selectedEventIndex = index
         }
     }

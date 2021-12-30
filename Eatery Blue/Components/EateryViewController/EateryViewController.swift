@@ -106,7 +106,7 @@ class EateryViewController: UIViewController {
     }
 
     func addPaymentMethodsView(headerView: UIView?, paymentMethods: Set<PaymentMethod>) {
-        guard let headerView = headerView else {
+        guard let headerView = headerView, !paymentMethods.isEmpty else {
             return
         }
 
