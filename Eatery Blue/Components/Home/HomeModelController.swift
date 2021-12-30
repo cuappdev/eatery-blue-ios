@@ -9,12 +9,25 @@ import UIKit
 
 class HomeModelController: HomeViewController {
 
-    private var selectedFilters: Set<EateryFilter> = []
+    private struct FilterButtons {
+        let under10Minutes = PillFilterButtonView()
+        let paymentMethods = PillFilterButtonView()
+        let favorites = PillFilterButtonView()
+        let north = PillFilterButtonView()
+        let west = PillFilterButtonView()
+        let central = PillFilterButtonView()
+    }
+
+    private var filter = EateryFilter()
     private var eateryCollections: [EateryCollection] = []
     private var allEateries: [Eatery] = []
 
+    private let filterButtons = FilterButtons()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setUpFilterButtons()
 
         updateCellsFromState()
 
@@ -37,6 +50,7 @@ class HomeModelController: HomeViewController {
             ]
 
             allEateries = [
+                DummyData.rpcc,
                 DummyData.macs,
                 DummyData.macsClosed,
                 DummyData.macsOpenSoon,
@@ -47,37 +61,94 @@ class HomeModelController: HomeViewController {
         }
     }
 
-    private func addFilters() {
-        var buttons: [PillFilterButtonView] = []
+    private func setUpFilterButtons() {
+        setUpFilterButtonUnder10Minutes()
+        setUpFilterButtonPaymentMethods()
+        setUpFilterButtonFavorites()
+        setUpFilterButtonNorth()
+        setUpFilterButtonWest()
+        setUpFilterButtonCentral()
+    }
 
-        let shortFilter = PillFilterButtonView()
-        shortFilter.label.text = "Under 10 min"
-        shortFilter.on(UITapGestureRecognizer()) { [weak shortFilter] _ in
-            guard let shortFilter = shortFilter else { return }
-            shortFilter.setHighlighted(!shortFilter.isHighlighted)
+    private func setUpFilterButtonUnder10Minutes() {
+        let button = filterButtons.under10Minutes
+        button.label.text = "Under 10 min"
+        button.on(UITapGestureRecognizer()) { [self] _ in
+            filter.under10MinutesEnabled.toggle()
+            updateFilterButtonsFromState()
+            updateCellsFromState()
         }
-        buttons.append(shortFilter)
+    }
 
-        let paymentMethods = PillFilterButtonView()
-        paymentMethods.label.text = "Payment Methods"
-        paymentMethods.imageView.isHidden = false
-        paymentMethods.on(UITapGestureRecognizer()) { [self] _ in
+    private func setUpFilterButtonPaymentMethods() {
+        let paymentMethod = filterButtons.paymentMethods
+        paymentMethod.label.text = "Payment Methods"
+        paymentMethod.imageView.isHidden = false
+        paymentMethod.on(UITapGestureRecognizer()) { [self] _ in
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
+            viewController.setSelectedPaymentMethods(filter.paymentMethods)
+            viewController.delegate = self
             present(viewController, animated: true)
         }
-        buttons.append(paymentMethods)
+    }
 
-        cells.append(.filterView(buttons: buttons))
+    private func setUpFilterButtonFavorites() {
+        let button = filterButtons.favorites
+        button.label.text = "Favorites"
+        button.on(UITapGestureRecognizer()) { [self] _ in
+            filter.favoriteEnabled.toggle()
+            updateFilterButtonsFromState()
+            updateCellsFromState()
+        }
+    }
+
+    private func setUpFilterButtonNorth() {
+        let button = filterButtons.north
+        button.label.text = "North"
+        button.on(UITapGestureRecognizer()) { [self] _ in
+            filter.north.toggle()
+            updateFilterButtonsFromState()
+            updateCellsFromState()
+        }
+    }
+
+    private func setUpFilterButtonWest() {
+        let button = filterButtons.west
+        button.label.text = "West"
+        button.on(UITapGestureRecognizer()) { [self] _ in
+            filter.west.toggle()
+            updateFilterButtonsFromState()
+            updateCellsFromState()
+        }
+    }
+
+
+    private func setUpFilterButtonCentral() {
+        let button = filterButtons.central
+        button.label.text = "Central"
+        button.on(UITapGestureRecognizer()) { [self] _ in
+            filter.central.toggle()
+            updateFilterButtonsFromState()
+            updateCellsFromState()
+        }
     }
 
     private func updateCellsFromState() {
         cells = []
 
         cells.append(.searchBar)
-        addFilters()
 
-        if selectedFilters.isEmpty {
+        cells.append(.filterView(buttons: [
+            filterButtons.under10Minutes,
+            filterButtons.paymentMethods,
+            filterButtons.favorites,
+            filterButtons.north,
+            filterButtons.west,
+            filterButtons.central
+        ]))
+
+        if !filter.isEnabled {
             for collection in eateryCollections {
                 cells.append(.carouselView(collection: collection))
             }
@@ -89,9 +160,47 @@ class HomeModelController: HomeViewController {
             for eatery in allEateries {
                 cells.append(.eateryCard(eatery: eatery))
             }
+
+        } else {
+            let predicate = filter.predicate()
+            let filteredEateries = allEateries.filter(predicate.isSatisfiedBy(_:))
+            for eatery in filteredEateries {
+                cells.append(.eateryCard(eatery: eatery))
+            }
         }
 
         tableView.reloadData()
+    }
+
+    private func updateFilterButtonsFromState() {
+        filterButtons.under10Minutes.setHighlighted(filter.under10MinutesEnabled)
+        filterButtons.favorites.setHighlighted(filter.favoriteEnabled)
+        filterButtons.north.setHighlighted(filter.north)
+        filterButtons.west.setHighlighted(filter.west)
+        filterButtons.central.setHighlighted(filter.central)
+
+        if filter.paymentMethods.isEmpty {
+            filterButtons.paymentMethods.setHighlighted(false)
+            filterButtons.paymentMethods.label.text = "Payment Methods"
+        } else {
+            filterButtons.paymentMethods.setHighlighted(true)
+            filterButtons.paymentMethods.label.text = EateryFormatter.default.formatPaymentMethods(filter.paymentMethods)
+        }
+    }
+
+}
+
+extension HomeModelController: PaymentMethodsFilterSheetViewControllerDelegate {
+
+    func paymentMethodsFilterSheetViewController(
+        _ viewController: PaymentMethodsFilterSheetViewController,
+        didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
+    ) {
+        filter.paymentMethods = paymentMethods
+
+        updateFilterButtonsFromState()
+        updateCellsFromState()
+        viewController.dismiss(animated: true)
     }
 
 }

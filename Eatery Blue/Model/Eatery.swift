@@ -10,7 +10,11 @@ import os.log
 import Foundation
 
 // A day, specifically in New York timezone
-struct Day: Codable, Hashable {
+struct Day: Codable, Comparable, Hashable {
+
+    static func < (lhs: Day, rhs: Day) -> Bool {
+        return lhs.year < rhs.year && lhs.month < rhs.month && lhs.day < rhs.day
+    }
 
     let year: Int
     let month: Int
@@ -77,7 +81,7 @@ struct Day: Codable, Hashable {
 // timestamps, which are UTC Unix epoch timestamps. Think carefully about different timezones when using the
 // canonicalDay, as tempting (and convenient) as it may be.
 
-class Event {
+struct Event: Codable, Hashable {
 
     var canonicalDay: Day
     var startTimestamp: TimeInterval
@@ -109,7 +113,7 @@ class Event {
 
 }
 
-class Eatery {
+struct Eatery: Codable, Hashable {
 
     var name: String = ""
     var building: String?
@@ -121,26 +125,22 @@ class Eatery {
     var latitude: Double?
     var longitude: Double?
 
-    var schedule: Schedule {
-        Schedule(events)
-    }
-
 }
 
-struct Menu: Codable {
+struct Menu: Codable, Hashable {
 
     let categories: [MenuCategory]
 
 }
 
-struct MenuCategory: Codable {
+struct MenuCategory: Codable, Hashable {
 
     let category: String
     let items: [MenuItem]
 
 }
 
-struct MenuItem: Codable {
+struct MenuItem: Codable, Hashable {
 
     let healthy: Bool
     let name: String
@@ -156,7 +156,7 @@ struct MenuItem: Codable {
 
 }
 
-enum PaymentMethod: Codable {
+enum PaymentMethod: Codable, Hashable {
 
     case mealSwipes
     case brbs

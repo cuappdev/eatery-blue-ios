@@ -145,6 +145,7 @@ class SheetViewController: UIViewController {
         descriptionLabel.text = description
         descriptionLabel.textColor = UIColor(named: "Black")
         descriptionLabel.font = .preferredFont(for: .body, weight: .semibold)
+        descriptionLabel.numberOfLines = 0
         stack.addArrangedSubview(descriptionLabel)
 
         stackView.addArrangedSubview(stack)

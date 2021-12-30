@@ -11,108 +11,90 @@ import UIKit
 
 enum EateryStatus {
 
-    case closed
-    case openingSoon(Event)
-    case open(Event)
-    case closingSoon(Event)
-
-}
-
-struct Schedule {
-
-    let events: [Event]
-
-    var isEmpty: Bool {
-        events.isEmpty
-    }
-
-    init(_ array: [Event]) {
-        self.events = array
-    }
-
-    func at(_ date: Date) -> Event? {
-        if let i = indexOfEvent(at: date) {
-            return events[i]
-        } else {
-            return nil
-        }
-    }
-
-    func indexOfEvent(at date: Date) -> Int? {
-        let timestamp = date.timeIntervalSince1970
-        return events.firstIndex { event in
-            event.startTimestamp <= timestamp && timestamp <= event.endTimestamp
-        }
-    }
-
-    func indexOfCurrent() -> Int? {
-        indexOfEvent(at: Date())
-    }
-
-    func current() -> Event? {
-        at(Date())
-    }
-
-    func onDay(_ day: Day) -> Schedule {
-        Schedule(events.filter { event in
-            event.canonicalDay == day
-        })
-    }
-
-    func indexOfNextEvent(_ date: Date = Date()) -> Int? {
-        let timestamp = date.timeIntervalSince1970
-
-        return events.enumerated().filter {
-            timestamp < $0.element.startTimestamp
-        }.min { lhs, rhs in
-            lhs.element.startTimestamp < rhs.element.startTimestamp
+    static func index(_ events: [Event], filter isIncluded: (Event) -> Bool, min isLessThan: (Event, Event) -> Bool) -> Int? {
+        events.enumerated().filter {
+            isIncluded($0.element)
+        }.min {
+            isLessThan($0.element, $1.element)
         }?.offset
     }
 
-    func nextEvent(_ date: Date = Date()) -> Event? {
-        if let index = indexOfNextEvent(date) {
+    static func indexOfCurrentEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
+        events.firstIndex { event in
+            event.startDate <= date && date <= event.endDate && (day != nil ? event.canonicalDay == day : true)
+        }
+    }
+
+    static func currentEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Event? {
+        if let index = indexOfCurrentEvent(events, date: date, on: day) {
             return events[index]
         } else {
             return nil
         }
     }
 
-    func indexOfSalientEvent(_ date: Date = Date()) -> Int? {
-        indexOfEvent(at: date) ?? indexOfNextEvent(date) ?? (!events.isEmpty ? events.count - 1 : nil)
+    static func indexOfNextEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
+        index(events) { event in
+            event.endDate < date && (day != nil ? event.canonicalDay == day : true)
+        } min: { lhs, rhs in
+            lhs.startDate < rhs.startDate
+        }
     }
 
-    func statusAt(_ date: Date) -> EateryStatus {
+    static func nextEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Event? {
+        if let index = indexOfNextEvent(events, date: date, on: day) {
+            return events[index]
+        } else {
+            return nil
+        }
+    }
+
+    static func indexOfPreviousEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
+        index(events) { event in
+            date < event.startDate && (day != nil ? event.canonicalDay == day : true)
+        } min: { lhs, rhs in
+            rhs.endDate < lhs.endDate
+        }
+    }
+
+    static func indexOfSalientEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
+        indexOfCurrentEvent(events, date: date, on: day)
+            ?? indexOfNextEvent(events, date: date, on: day)
+            ?? indexOfPreviousEvent(events, date: date, on: day)
+    }
+
+    case closed
+    case openingSoon(Event)
+    case open(Event)
+    case closingSoon(Event)
+
+    init(_ events: [Event], date: Date = Date()) {
         let timestamp = date.timeIntervalSince1970
 
-        if let event = at(date) {
+        if let event = EateryStatus.currentEvent(events, date: date) {
             // The eatery is open. Is it closing soon?
             let timeUntilClose = event.endTimestamp - timestamp
 
             if timeUntilClose <= 60 * 60 {
-                return .closingSoon(event)
+                self = .closingSoon(event)
             } else {
-                return .open(event)
+                self = .open(event)
             }
 
-        } else if let event = nextEvent(date) {
+        } else if let event = EateryStatus.nextEvent(events, date: date) {
             // The eatery is closed. Is it opening soon?
-
             let timeUntilOpen = event.startTimestamp - timestamp
 
             if timeUntilOpen <= 60 * 60 {
-                return .openingSoon(event)
+                self = .openingSoon(event)
             } else {
-                return .closed
+                self = .closed
             }
 
         } else {
-            return .closed
+            self = .closed
 
         }
-    }
-
-    func currentStatus() -> EateryStatus {
-        statusAt(Date())
     }
 
 }
@@ -165,11 +147,11 @@ class EateryFormatter {
         "\(timeFormatter.string(from: event.startDate)) - \(timeFormatter.string(from: event.endDate))"
     }
 
-    func formatSchedule(_ schedule: Schedule) -> String {
-        if schedule.isEmpty {
+    func formatEventTimes(_ events: [Event]) -> String {
+        if events.isEmpty {
             return "Closed"
         } else {
-            return schedule.events.map(formatEventTime(_:)).joined(separator: ", ")
+            return events.map(formatEventTime(_:)).joined(separator: ", ")
         }
     }
 
@@ -193,6 +175,34 @@ class EateryFormatter {
         text.append(NSAttributedString(string: "4-7 min wait"))
         text.addAttribute(.font, value: font, range: NSRange(location: 0, length: text.length))
         return text
+    }
+
+    func formatPaymentMethod(_ paymentMethod: PaymentMethod) -> String {
+        switch paymentMethod {
+        case .mealSwipes: return "Meal swipes"
+        case .brbs: return "BRBs"
+        case .cash: return "Cash"
+        case .credit: return "Credit"
+        }
+    }
+
+    func formatPaymentMethods(_ paymentMethods: Set<PaymentMethod>) -> String {
+        var components: [String] = []
+        
+        if paymentMethods.contains(.mealSwipes) {
+            components.append("Meal swipes")
+        }
+        if paymentMethods.contains(.brbs) {
+            components.append("BRBs")
+        }
+        if paymentMethods.contains(.cash) {
+            components.append("Cash")
+        }
+        if paymentMethods.contains(.credit) {
+            components.append("Credit")
+        }
+
+        return components.joined(separator: ", ")
     }
 
 }

@@ -54,7 +54,7 @@ class PillFilterButtonView: UIView {
     }
 
     private func setUpImageView() {
-        imageView.image = UIImage(named: "ChevronDown")
+        imageView.image = UIImage(named: "ChevronDown")?.withRenderingMode(.alwaysTemplate)
         imageView.contentMode = .scaleAspectFit
         imageView.isHidden = true
     }
@@ -72,9 +72,11 @@ class PillFilterButtonView: UIView {
         if isHighlighted {
             label.textColor = .white
             backgroundColor = UIColor(named: "Black")
+            imageView.tintColor = .white
         } else {
             label.textColor = UIColor(named: "Black")
             backgroundColor = UIColor(named: "Gray00")
+            imageView.tintColor = UIColor(named: "Black")
         }
     }
 

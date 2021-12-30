@@ -16,10 +16,10 @@ class HoursSheetViewController: SheetViewController {
         return formatter
     }()
 
-    func setUp(_ schedule: Schedule) {
+    func setUp(_ events: [Event]) {
         addHeader(title: "Hours", image: UIImage(named: "Clock"))
-        addStatusLabel(EateryFormatter.default.formatStatus(schedule.currentStatus()))
-        addSchedule(schedule)
+        addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
+        addSchedule(events)
         setCustomSpacing(24)
         addPillButton(title: "Close", style: .regular) { [self] in
             dismiss(animated: true)
@@ -31,13 +31,15 @@ class HoursSheetViewController: SheetViewController {
         }
     }
 
-    private func addSchedule(_ schedule: Schedule) {
+    private func addSchedule(_ events: [Event]) {
         let current = Day()
 
         var dayToDescription: [Day: String] = [:]
         for offset in 0...6 {
             dayToDescription[current.addingDays(offset)] =
-                EateryFormatter.default.formatSchedule(schedule.onDay(current.addingDays(offset)))
+                EateryFormatter.default.formatEventTimes(events.filter {
+                    $0.canonicalDay == current.addingDays(offset)
+                })
         }
 
         var weekdayToDay: [Int: Day] = [:]

@@ -8,55 +8,69 @@
 import Foundation
 import CoreLocation
 
-enum EateryFilter: Hashable {
+struct EateryFilter {
 
-    static func filter(
-        _ filter: EateryFilter,
-        matches eatery: Eatery,
-        currentLocation: CLLocation? = nil
-    ) -> Bool {
-        switch filter {
-        case .underNMinutes(let n):
-            guard let currentLocation = currentLocation else {
-                return false
+    var userLocation: CLLocation?
+
+    var under10MinutesEnabled: Bool = false
+    var paymentMethods: Set<PaymentMethod> = []
+    var favoriteEnabled: Bool = false
+
+    var north: Bool = false
+    var west: Bool = false
+    var central: Bool = false
+
+    var isEnabled: Bool {
+        under10MinutesEnabled || !paymentMethods.isEmpty || favoriteEnabled || north || west || central
+    }
+
+    func predicate() -> EateryPredicate {
+        .and([
+            under10MinutesPredicate,
+            paymentMethodsPredicate,
+            favoritePredicate,
+            campusAreaPredicate
+        ])
+    }
+
+    private var under10MinutesPredicate: EateryPredicate {
+        if under10MinutesEnabled {
+            if let userLocation = userLocation {
+                return .underNMinutes(10, userLocation: userLocation)
+            } else {
+                return .false
             }
-
-            guard let latitude = eatery.latitude, let longitude = eatery.longitude else {
-                return false
-            }
-
-            let eateryLocation = CLLocation(latitude: latitude, longitude: longitude)
-            let distance = currentLocation.distance(from: eateryLocation)
-
-            // https://en.wikipedia.org/wiki/Preferred_walking_speed
-            let walkingSpeed = 1.42
-            let seconds = distance / walkingSpeed
-            let minutes = seconds / 60
-
-            return Int(minutes) <= n
-
-        case .paymentMethod(let paymentMethod):
-            return eatery.paymentMethods.contains(paymentMethod)
-
-        case .favorites:
-            return false
-
-        case .north:
-            return eatery.campusArea == "North"
-
-        case .west:
-            return eatery.campusArea == "West"
-
-        case .central:
-            return eatery.campusArea == "Central"
+        } else {
+            return .true
         }
     }
 
-    case underNMinutes(Int)
-    case paymentMethod(PaymentMethod)
-    case favorites
-    case north
-    case west
-    case central
+    private var paymentMethodsPredicate: EateryPredicate {
+        if paymentMethods.isEmpty {
+            return .true
+        } else {
+            return .or(paymentMethods.map { .acceptsPaymentMethod($0) })
+        }
+    }
+
+    private var favoritePredicate: EateryPredicate {
+        if favoriteEnabled {
+            return .isFavorite
+        } else {
+            return .true
+        }
+    }
+
+    private var campusAreaPredicate: EateryPredicate {
+        if north || west || central {
+            return .or([
+                north ? .campusAreaEqualTo("North") : .false,
+                west ? .campusAreaEqualTo("West") : .false,
+                central ? .campusAreaEqualTo("Central") : .false
+            ])
+        } else {
+            return .true
+        }
+    }
 
 }

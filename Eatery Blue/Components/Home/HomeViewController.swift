@@ -11,13 +11,13 @@ import Kingfisher
 
 class HomeViewController: UIViewController {
 
-    struct EateryCollection {
+    struct EateryCollection: Hashable {
         var title: String
         var description: String?
         var eateries: [Eatery]
     }
 
-    enum Cell {
+    enum Cell: Hashable {
         case searchBar
         case filterView(buttons: [PillFilterButtonView])
         case carouselView(collection: EateryCollection)

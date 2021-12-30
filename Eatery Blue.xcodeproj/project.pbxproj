@@ -24,6 +24,7 @@
 		5D4689FC277D0BA200986AFF /* EateryCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FB277D0BA200986AFF /* EateryCardCell.swift */; };
 		5D4689FE277D0C2600986AFF /* EateryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FD277D0C2600986AFF /* EateryCardTableViewCell.swift */; };
 		5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FF277D146500986AFF /* ClearTableViewCell.swift */; };
+		5D468A02277D252600986AFF /* EateryPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A01277D252600986AFF /* EateryPredicate.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -114,6 +115,7 @@
 		5D4689FB277D0BA200986AFF /* EateryCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardCell.swift; sourceTree = "<group>"; };
 		5D4689FD277D0C2600986AFF /* EateryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardTableViewCell.swift; sourceTree = "<group>"; };
 		5D4689FF277D146500986AFF /* ClearTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearTableViewCell.swift; sourceTree = "<group>"; };
+		5D468A01277D252600986AFF /* EateryPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPredicate.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 				5DDAD4722773D57A00CC98DD /* DummyData.swift */,
 				5DDAD4702773D3DC00CC98DD /* Eatery.swift */,
 				5DF304FE277CC15B00E2C9A4 /* EateryFilter.swift */,
+				5D468A01277D252600986AFF /* EateryPredicate.swift */,
 				5DF3049E2778382D00E2C9A4 /* EateryPresentation.swift */,
 			);
 			path = Model;
@@ -516,6 +519,7 @@
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5DDAD47B2773DC4600CC98DD /* ProfileViewController.swift in Sources */,
 				5DF3049D27782FF400E2C9A4 /* CafeViewController.swift in Sources */,
+				5D468A02277D252600986AFF /* EateryPredicate.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* EateryViewController.swift in Sources */,

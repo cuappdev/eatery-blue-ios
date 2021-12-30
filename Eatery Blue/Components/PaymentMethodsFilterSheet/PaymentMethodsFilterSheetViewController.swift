@@ -7,12 +7,23 @@
 
 import UIKit
 
+protocol PaymentMethodsFilterSheetViewControllerDelegate: AnyObject {
+
+    func paymentMethodsFilterSheetViewController(
+        _ viewController: PaymentMethodsFilterSheetViewController,
+        didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
+    )
+
+}
+
 class PaymentMethodsFilterSheetViewController: SheetViewController {
 
     private let mealSwipesView = PaymentMethodFilterView()
     private let brbsView = PaymentMethodFilterView()
     private let cashOrCreditView = PaymentMethodFilterView()
     private(set) var selectedPaymentMethods: Set<PaymentMethod> = []
+
+    weak var delegate: PaymentMethodsFilterSheetViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +35,12 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         addHeader(title: "Payment Methods")
         addPaymentMethodToggles()
         addPillButton(title: "Show results", style: .prominent) { [self] in
-            dismiss(animated: true)
+            delegate?.paymentMethodsFilterSheetViewController(self, didSelectPaymentMethods: selectedPaymentMethods)
         }
         addTextButton(title: "Reset") { [self] in
             selectedPaymentMethods = []
-            setPaymentMethodViewsFromSelectedPaymentMethods()
-            dismiss(animated: true)
+            updatePaymentMethodViewsFromState()
+            delegate?.paymentMethodsFilterSheetViewController(self, didSelectPaymentMethods: selectedPaymentMethods)
         }
     }
 
@@ -48,7 +59,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
                 selectedPaymentMethods.insert(.mealSwipes)
             }
 
-            setPaymentMethodViewsFromSelectedPaymentMethods()
+            updatePaymentMethodViewsFromState()
         }
 
         stack.addArrangedSubview(brbsView)
@@ -60,7 +71,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
                 selectedPaymentMethods.insert(.brbs)
             }
 
-            setPaymentMethodViewsFromSelectedPaymentMethods()
+            updatePaymentMethodViewsFromState()
         }
 
         stack.addArrangedSubview(cashOrCreditView)
@@ -74,7 +85,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
                 selectedPaymentMethods.insert(.credit)
             }
 
-            setPaymentMethodViewsFromSelectedPaymentMethods()
+            updatePaymentMethodViewsFromState()
         }
 
         mealSwipesView.width(to: brbsView)
@@ -84,7 +95,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.addArrangedSubview(container)
 
-        setPaymentMethodViewsFromSelectedPaymentMethods()
+        updatePaymentMethodViewsFromState()
     }
 
     private func setUpConstraints() {
@@ -95,7 +106,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         view.layoutMargins = UIEdgeInsets(top: 24, left: 16, bottom: view.safeAreaInsets.bottom, right: 16)
     }
 
-    private func setPaymentMethodViewsFromSelectedPaymentMethods() {
+    private func updatePaymentMethodViewsFromState() {
         if selectedPaymentMethods.contains(.mealSwipes) {
             mealSwipesView.imageView.image = UIImage(named: "MealSwipesSelected")
             mealSwipesView.label.textColor = UIColor(named: "EateryBlue")
@@ -119,6 +130,11 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             cashOrCreditView.imageView.image = UIImage(named: "CashUnselected")
             cashOrCreditView.label.textColor = UIColor(named: "Gray05")
         }
+    }
+
+    func setSelectedPaymentMethods(_ paymentMethods: Set<PaymentMethod>) {
+        selectedPaymentMethods = paymentMethods
+        updatePaymentMethodViewsFromState()
     }
 
 }

@@ -12,6 +12,7 @@ class EateryModelController: EateryViewController {
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
+        formatter.calendar = .eatery
         return formatter
     }()
 
@@ -38,11 +39,8 @@ class EateryModelController: EateryViewController {
             return
         }
 
-        let scheduleToday = Schedule(eatery.events).onDay(Day())
-        if let index = scheduleToday.indexOfSalientEvent() {
-            selectedEventIndex = eatery.events.firstIndex { $0 === scheduleToday.events[index] }
-        } else {
-            selectedEventIndex = nil
+        if let index = EateryStatus.indexOfSalientEvent(eatery.events) {
+            selectedEventIndex = index
         }
     }
 
