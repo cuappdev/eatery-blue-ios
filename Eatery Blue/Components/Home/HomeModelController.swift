@@ -22,12 +22,13 @@ class HomeModelController: HomeViewController {
     private var eateryCollections: [EateryCollection] = []
     private var allEateries: [Eatery] = []
 
+    private let filtersView = PillFiltersView()
     private let filterButtons = FilterButtons()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpFilterButtons()
+        setUpFiltersView()
 
         updateCellsFromState()
 
@@ -37,7 +38,7 @@ class HomeModelController: HomeViewController {
                     title: "Favorite Eateries",
                     description: nil,
                     eateries: [
-                        DummyData.rpcc, DummyData.macs
+                        DummyData.rpcc, DummyData.macs, DummyData.macs, DummyData.macs
                     ]
                 ),
                 EateryCollection(
@@ -59,6 +60,19 @@ class HomeModelController: HomeViewController {
 
             updateCellsFromState()
         }
+    }
+
+    private func setUpFiltersView() {
+        filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        filtersView.addButton(filterButtons.under10Minutes)
+        filtersView.addButton(filterButtons.paymentMethods)
+        filtersView.addButton(filterButtons.favorites)
+        filtersView.addButton(filterButtons.north)
+        filtersView.addButton(filterButtons.west)
+        filtersView.addButton(filterButtons.central)
+
+        setUpFilterButtons()
     }
 
     private func setUpFilterButtons() {
@@ -139,14 +153,7 @@ class HomeModelController: HomeViewController {
 
         cells.append(.searchBar)
 
-        cells.append(.filterView(buttons: [
-            filterButtons.under10Minutes,
-            filterButtons.paymentMethods,
-            filterButtons.favorites,
-            filterButtons.north,
-            filterButtons.west,
-            filterButtons.central
-        ]))
+        cells.append(.filterView(filterView: filtersView))
 
         if !filter.isEnabled {
             for collection in eateryCollections {

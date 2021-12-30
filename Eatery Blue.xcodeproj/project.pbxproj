@@ -25,6 +25,7 @@
 		5D4689FE277D0C2600986AFF /* EateryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FD277D0C2600986AFF /* EateryCardTableViewCell.swift */; };
 		5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FF277D146500986AFF /* ClearTableViewCell.swift */; };
 		5D468A02277D252600986AFF /* EateryPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A01277D252600986AFF /* EateryPredicate.swift */; };
+		5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -116,6 +117,7 @@
 		5D4689FD277D0C2600986AFF /* EateryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardTableViewCell.swift; sourceTree = "<group>"; };
 		5D4689FF277D146500986AFF /* ClearTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearTableViewCell.swift; sourceTree = "<group>"; };
 		5D468A01277D252600986AFF /* EateryPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPredicate.swift; sourceTree = "<group>"; };
+		5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselMoreEateriesView.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				5DDAD4742773D70900CC98DD /* CarouselCardView.swift */,
+				5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */,
 				5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */,
 				5DF5F7D327740182001ADCDC /* CarouselView.swift */,
 				5DF30502277CF41700E2C9A4 /* HomeModelController.swift */,
@@ -569,6 +572,7 @@
 				5DF3049727778A7600E2C9A4 /* WaitTimeView.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
+				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,

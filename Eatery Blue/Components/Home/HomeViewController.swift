@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
 
     enum Cell: Hashable {
         case searchBar
-        case filterView(buttons: [PillFilterButtonView])
+        case filterView(filterView: PillFiltersView)
         case carouselView(collection: EateryCollection)
         case titleLabel(title: String)
         case eateryCard(eatery: Eatery)
@@ -163,17 +163,10 @@ extension HomeViewController: UITableViewDataSource {
             searchBar.edgesToSuperview()
             return cell
 
-        case .filterView(buttons: let filterButtons):
-            let filtersView = PillFiltersView()
-            filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-            for filterButton in filterButtons {
-                filtersView.addButton(filterButton)
-            }
-
+        case .filterView(let filterView):
             let cell = ClearTableViewCell()
-            cell.contentView.addSubview(filtersView)
-            filtersView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+            cell.contentView.addSubview(filterView)
+            filterView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
             return cell
 
         case .titleLabel(title: let title):
@@ -195,7 +188,7 @@ extension HomeViewController: UITableViewDataSource {
             carouselView.scrollView.contentInset = carouselView.layoutMargins
             carouselView.titleLabel.text = collection.title
 
-            for eatery in collection.eateries {
+            for eatery in collection.eateries.prefix(3) {
                 let cardView = CarouselCardView()
                 cardView.imageView.kf.setImage(
                     with: eatery.imageUrl,
@@ -215,16 +208,16 @@ extension HomeViewController: UITableViewDataSource {
                 carouselView.addCardView(cardView)
             }
 
-            carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
-                let viewController = ListViewController()
-                viewController.setUp(
-                    collection.eateries,
-                    title: collection.title,
-                    description: collection.description
-                )
+            if collection.eateries.count > 3 {
+                let view = CarouselMoreEateriesView()
+                view.on(UITapGestureRecognizer()) { [self] _ in
+                    didTapMoreButton(collection)
+                }
+                carouselView.addAccessoryView(view)
+            }
 
-                navigationController?.hero.isEnabled = false
-                navigationController?.pushViewController(viewController, animated: true)
+            carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
+                didTapMoreButton(collection)
             }
 
             let cell = ClearTableViewCell()
@@ -266,6 +259,18 @@ extension HomeViewController: UITableViewDataSource {
             cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
             return cell
         }
+    }
+
+    private func didTapMoreButton(_ collection: EateryCollection) {
+        let viewController = ListViewController()
+        viewController.setUp(
+            collection.eateries,
+            title: collection.title,
+            description: collection.description
+        )
+
+        navigationController?.hero.isEnabled = false
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
 }

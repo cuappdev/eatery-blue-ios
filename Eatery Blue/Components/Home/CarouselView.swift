@@ -95,6 +95,10 @@ class CarouselView: UIView {
         stackView.addArrangedSubview(container)
     }
 
+    func addAccessoryView(_ view: UIView) {
+        stackView.addArrangedSubview(view)
+    }
+
     func resetCards() {
         for view in stackView.arrangedSubviews {
             view.removeFromSuperview()

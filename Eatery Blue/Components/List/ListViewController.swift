@@ -34,6 +34,8 @@ class ListViewController: UIViewController {
         RootViewController.setStatusBarStyle(.darkContent)
 
         view.layoutIfNeeded()
+        updateScrollViewContentInset()
+        updateFiltersViewTransform()
     }
 
     private func setUpSelf() {
@@ -47,6 +49,7 @@ class ListViewController: UIViewController {
     }
 
     private func setUpScrollView() {
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.alwaysBounceVertical = true
         scrollView.delegate = self
@@ -63,7 +66,6 @@ class ListViewController: UIViewController {
     }
 
     private func setUpNavigationView() {
-        navigationView.delegate = self
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
 
         navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
@@ -196,7 +198,7 @@ class ListViewController: UIViewController {
 
     private func updateScrollViewContentInset() {
         let topOffset = view.convert(navigationView.normalNavigationBar.bounds, from: navigationView.normalNavigationBar).maxY
-        scrollView.contentInset = UIEdgeInsets(top: topOffset, left: 0, bottom: 0, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: topOffset, left: 0, bottom: view.safeAreaInsets.bottom, right: 0)
     }
 
     private func updateFiltersViewTransform() {
@@ -208,6 +210,16 @@ class ListViewController: UIViewController {
             y: max(0, spacerPosition - filterPosition)
         )
         filtersView.transform = transform
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        view.layoutIfNeeded()
+        updateScrollViewContentInset()
+        updateFiltersViewTransform()
+
+        scrollView.contentOffset = CGPoint(x: 0, y: -scrollView.contentInset.top)
     }
     
 }
@@ -228,15 +240,6 @@ extension ListViewController: UIScrollViewDelegate {
         } else {
             navigationView.setFadeInProgress(0, animated: true)
         }
-    }
-
-}
-
-extension ListViewController: ListNavigationViewDelegate {
-
-    func listNavigationViewDidLayoutSubviews(_ view: ListNavigationView) {
-        updateScrollViewContentInset()
-        updateFiltersViewTransform()
     }
 
 }
