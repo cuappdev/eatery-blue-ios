@@ -132,6 +132,7 @@ class EateryNavigationView: UIView {
         stackView.top(to: layoutMarginsGuide)
         stackView.leadingToSuperview()
         stackView.trailingToSuperview()
+        stackView.bottom(to: layoutMarginsGuide)
 
         normalNavigationBar.height(44)
         normalNavigationBar.leading(to: layoutMarginsGuide)
@@ -153,10 +154,7 @@ class EateryNavigationView: UIView {
         favoriteButton.width(40)
         favoriteButton.height(40)
 
-        scrollView.topToBottom(of: normalNavigationBar, offset: 12)
-        scrollView.leadingToSuperview()
-        scrollView.trailingToSuperview()
-        scrollView.bottom(to: layoutMarginsGuide)
+        scrollView.widthToSuperview()
 
         setUpCategoriesStackViewConstraints(categoriesBackground)
         setUpCategoriesStackViewConstraints(categoriesForeground)

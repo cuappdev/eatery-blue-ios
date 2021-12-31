@@ -66,13 +66,16 @@ class EateryModelController: EateryViewController {
 
     private func updateNavigationViewFromState() {
         guard let event = selectedEvent,
-              let menu = event.menu else {
+              let menu = event.menu
+        else {
+            navigationView.scrollView.isHidden = true
             return
         }
 
         navigationView.removeAllCategories()
 
         let categories = menu.categories
+        navigationView.scrollView.isHidden = categories.isEmpty
         for (i, menuCategory) in categories.enumerated() {
             navigationView.addCategory(menuCategory.category) { [self] in
                 scrollToCategoryView(at: i)
