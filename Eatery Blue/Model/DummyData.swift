@@ -41,12 +41,31 @@ enum DummyData {
         macs.building = "Statler Hall"
         macs.events = (1..<6).map { offset in
             Event(
-                canonicalDay: Day().addingDays(offset),
-                startTimestamp: Day().addingDays(offset).date(hour: 7, minute: 0).timeIntervalSince1970,
-                endTimestamp: Day().addingDays(offset).date(hour: 17, minute: 30).timeIntervalSince1970,
+                canonicalDay: Day().advanced(by: offset),
+                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970,
+                endTimestamp: Day().advanced(by: offset).date(hour: 17, minute: 30).timeIntervalSince1970,
                 menu: macsMenu
             )
         }
+        macs.menuSummary = "Flatbreads, salads, pasta"
+        macs.paymentMethods = [.brbs, .cash, .credit]
+        macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
+        return macs
+    }()
+
+    static let macsOpen: Eatery = {
+        var macs = Eatery()
+        macs.name = "Mac's Café - Open"
+        macs.campusArea = "Central"
+        macs.building = "Statler Hall"
+        macs.events = [
+            Event(
+                canonicalDay: Day(),
+                startTimestamp: Date().timeIntervalSince1970 - 30 * 60,
+                endTimestamp: Date().timeIntervalSince1970 + 120 * 60,
+                menu: macsMenu
+            )
+        ]
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
@@ -189,7 +208,7 @@ enum DummyData {
         dinner.description = "Dinner"
 
         let breakfastTomorrow = Event(
-            canonicalDay: breakfast.canonicalDay.addingDays(1),
+            canonicalDay: breakfast.canonicalDay.advanced(by: 1),
             startTimestamp: breakfast.startTimestamp + 24 * 60 * 60,
             endTimestamp: breakfast.endTimestamp + 24 * 60 * 60,
             description: nil,

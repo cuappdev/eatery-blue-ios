@@ -35,11 +35,10 @@ class HoursSheetViewController: SheetViewController {
         let current = Day()
 
         var dayToDescription: [Day: String] = [:]
-        for offset in 0...6 {
-            dayToDescription[current.addingDays(offset)] =
-                EateryFormatter.default.formatEventTimes(events.filter {
-                    $0.canonicalDay == current.addingDays(offset)
-                })
+        for day in stride(from: current, to: current.advanced(by: 7), by: 1) {
+            dayToDescription[day] = EateryFormatter.default.formatEventTimes(events.filter {
+                $0.canonicalDay == day
+            })
         }
 
         var weekdayToDay: [Int: Day] = [:]

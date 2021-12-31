@@ -84,7 +84,7 @@ class MenuPickerSheetViewController: SheetViewController {
     private func setState(menuChoices: [MenuChoice], selectedMenuIndex: Int?) {
         days = []
         for i in 0...6 {
-            days.append(Day().addingDays(i))
+            days.append(Day().advanced(by: i))
         }
 
         if let selectedMenuIndex = selectedMenuIndex {

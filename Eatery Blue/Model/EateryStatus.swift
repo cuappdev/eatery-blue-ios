@@ -55,6 +55,14 @@ enum EateryStatus {
         }
     }
 
+    static func previousEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Event? {
+        if let index = indexOfPreviousEvent(events, date: date, on: day) {
+            return events[index]
+        } else {
+            return nil
+        }
+    }
+
     static func indexOfSalientEvent(_ events: [Event], date: Date = Date(), on day: Day? = nil) -> Int? {
         indexOfCurrentEvent(events, date: date, on: day)
             ?? indexOfNextEvent(events, date: date, on: day)
@@ -92,6 +100,13 @@ enum EateryStatus {
         } else {
             self = .closed
 
+        }
+    }
+
+    var isOpen: Bool {
+        switch self {
+        case .open, .closingSoon: return true
+        case .closed, .openingSoon: return false
         }
     }
 

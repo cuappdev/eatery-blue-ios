@@ -196,13 +196,14 @@ extension HomeViewController: UITableViewDataSource {
                         .backgroundDecode
                     ]
                 )
+                cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
                 cardView.titleLabel.text = eatery.name
                 cardView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
                     eatery,
                     style: .medium,
                     font: .preferredFont(for: .footnote, weight: .medium),
                     userLocation: nil,
-                    departureDate: Date()
+                    date: Date()
                 ).first
 
                 cardView.on(UITapGestureRecognizer()) { [self] _ in
@@ -243,13 +244,14 @@ extension HomeViewController: UITableViewDataSource {
                     .backgroundDecode
                 ]
             )
+            cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
             cardView.titleLabel.text = eatery.name
             let lines = EateryFormatter.default.formatEatery(
                 eatery,
                 style: .long,
                 font: .preferredFont(for: .footnote, weight: .medium),
                 userLocation: nil,
-                departureDate: Date()
+                date: Date()
             )
             for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
                 if i < lines.count {

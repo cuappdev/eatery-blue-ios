@@ -10,6 +10,8 @@ import UIKit
 class EateryMediumCardView: UIView {
 
     let imageView = UIImageView()
+    let imageTintView = UIView()
+
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let favoriteImageView = UIImageView()
@@ -44,6 +46,14 @@ class EateryMediumCardView: UIView {
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+
+        addSubview(imageTintView)
+        setUpImageTintView()
+    }
+
+    private func setUpImageTintView() {
+        imageTintView.backgroundColor = .white
+        imageTintView.alpha = 0
     }
 
     private func setUpTitleLabel() {
@@ -63,6 +73,8 @@ class EateryMediumCardView: UIView {
 
     private func setUpConstraints() {
         imageView.edgesToSuperview(excluding: .bottom)
+
+        imageTintView.edgesToSuperview()
 
         titleLabel.leadingToSuperview(offset: 12)
         titleLabel.topToBottom(of: imageView, offset: 12)

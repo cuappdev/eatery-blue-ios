@@ -61,19 +61,26 @@ class HomeModelController: HomeViewController {
                     title: "Favorite Eateries",
                     description: nil,
                     eateries: [
-                        DummyData.rpcc, DummyData.macs, DummyData.macs, DummyData.macs
+                        DummyData.rpcc, DummyData.macsOpen, DummyData.macsOpenSoon
                     ]
                 ),
                 EateryCollection(
                     title: "Lunch on the Go",
                     description: "Grab a quick bite on the way to (skipping) your classes",
                     eateries: [
-                        DummyData.rpcc, DummyData.macs
+                        DummyData.macsClosed, DummyData.macsClosingSoon
                     ]
                 ),
             ]
 
-            allEateries = [DummyData.rpcc, DummyData.macs] + eateries.sorted(by: { lhs, rhs in
+            allEateries = [
+                DummyData.rpcc,
+                DummyData.macs,
+                DummyData.macsOpen,
+                DummyData.macsOpenSoon,
+                DummyData.macsClosed,
+                DummyData.macsClosingSoon
+            ] + eateries.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
 

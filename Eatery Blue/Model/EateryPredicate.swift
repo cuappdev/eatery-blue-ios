@@ -36,11 +36,18 @@ indirect enum EateryPredicate {
             return predicates.contains { $0.isSatisfiedBy(eatery) }
 
         case .underNMinutes(let n, let userLocation):
-            guard let walkTime = EateryTiming.walkTime(eatery: eatery, userLocation: userLocation) else {
+            let (walkTime, waitTime) = EateryTiming.timing(
+                eatery: eatery,
+                userLocation: userLocation,
+                departureDate: Date()
+            )
+
+            if let waitTime = waitTime {
+                let totalTime = (walkTime ?? 0) + waitTime.expected
+                return totalTime <= TimeInterval(60 * n)
+            } else {
                 return false
             }
-
-            return Int(walkTime / 60) <= n
 
         case .acceptsPaymentMethod(let paymentMethod):
             return eatery.paymentMethods.contains(paymentMethod)

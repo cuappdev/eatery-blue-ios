@@ -133,13 +133,14 @@ class ListViewController: UIViewController {
         for eatery in eateries {
             let cardView = EateryLargeCardView()
             cardView.imageView.kf.setImage(with: eatery.imageUrl)
+            cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
             cardView.titleLabel.text = eatery.name
             let lines = EateryFormatter.default.formatEatery(
                 eatery,
                 style: .long,
                 font: .preferredFont(for: .footnote, weight: .medium),
                 userLocation: nil,
-                departureDate: Date()
+                date: Date()
             )
             for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
                 if i < lines.count {

@@ -9,11 +9,7 @@ import os.log
 import Foundation
 
 // A day, specifically in New York timezone
-struct Day: Codable, Comparable, Hashable {
-
-    static func < (lhs: Day, rhs: Day) -> Bool {
-        return lhs.year < rhs.year && lhs.month < rhs.month && lhs.day < rhs.day
-    }
+struct Day {
 
     let year: Int
     let month: Int
@@ -57,18 +53,7 @@ struct Day: Codable, Comparable, Hashable {
 
         return date
     }
-
-    func addingDays(_ days: Int) -> Day {
-        let currentDate = date()
-
-        guard let date = Calendar.eatery.date(byAdding: .day, value: days, to: currentDate) else {
-            os_log(.fault, "Day: could not add %d days to %@", days, String(reflecting: currentDate))
-            return self
-        }
-
-        return Day(date: date)
-    }
-
+    
     func startOfWeek() -> Day {
         let components = DateComponents(weekday: 0)
 
@@ -87,6 +72,44 @@ struct Day: Codable, Comparable, Hashable {
 
     func weekday() -> Int {
         Calendar.eatery.component(.weekday, from: date())
+    }
+
+}
+
+extension Day: Codable {
+
+}
+
+extension Day: Hashable {
+
+}
+
+extension Day: Strideable {
+
+    func advanced(by n: Int) -> Day {
+        let currentDate = date()
+
+        guard let date = Calendar.eatery.date(byAdding: .day, value: n, to: currentDate) else {
+            os_log(.error, "%@: could not add %d days to %@", #file, n, String(reflecting: currentDate))
+            return self
+        }
+
+        return Day(date: date)
+    }
+
+    func distance(to other: Day) -> Int {
+        if let day = Calendar.eatery.dateComponents([.day], from: date(), to: other.date()).day {
+            return day
+        } else {
+            os_log(
+                .error,
+                "%@: Unable to compute distance between %@ and %@",
+                #file,
+                String(reflecting: date()),
+                String(reflecting: other.date())
+            )
+            return 0
+        }
     }
 
 }

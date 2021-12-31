@@ -10,6 +10,7 @@ import UIKit
 class EateryLargeCardView: UIView {
 
     let imageView = UIImageView()
+    let imageTintView = UIView()
 
     let labelStackView = UIStackView() 
     let titleLabel = UILabel()
@@ -44,6 +45,14 @@ class EateryLargeCardView: UIView {
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+
+        imageView.addSubview(imageTintView)
+        setUpImageTintView()
+    }
+
+    private func setUpImageTintView() {
+        imageTintView.backgroundColor = .white
+        imageTintView.alpha = 0
     }
 
     private func setUpLabelStackView() {
@@ -82,6 +91,8 @@ class EateryLargeCardView: UIView {
             for: .vertical
         )
         imageView.edgesToSuperview(excluding: .bottom)
+
+        imageTintView.edgesToSuperview()
 
         labelStackView.topToBottom(of: imageView, offset: 12)
         labelStackView.leadingToSuperview(offset: 12)
