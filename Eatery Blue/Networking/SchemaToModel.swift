@@ -16,12 +16,28 @@ struct SchemaToModel {
             building: nil,
             imageUrl: nil,
             menuSummary: nil,
-            paymentMethods: [],
+            paymentMethods: convert(schemaEatery.paymentMethods),
             campusArea: schemaEatery.campusArea,
             events: schemaEatery.events?.compactMap(convert) ?? [],
             location: convert(latitude: schemaEatery.latitude, longitude: schemaEatery.longitude),
             waitTimesByDay: schemaEatery.waitTimesByDay.map(convert) ?? [:]
         )
+    }
+
+    static func convert(_ schemaPaymentMethods: [Schema.PaymentMethod]) -> Set<PaymentMethod> {
+        var paymentMethods: Set<PaymentMethod> = []
+        for schemaPaymentMethod in schemaPaymentMethods {
+            switch schemaPaymentMethod {
+            case .brbs:
+                paymentMethods.insert(.brbs)
+            case .cash:
+                paymentMethods.insert(.cash)
+                paymentMethods.insert(.credit)
+            case .swipes:
+                paymentMethods.insert(.mealSwipes)
+            }
+        }
+        return paymentMethods
     }
 
     static func convert(_ schemaEvent: Schema.Event) -> Event? {

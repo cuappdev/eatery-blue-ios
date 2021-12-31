@@ -21,7 +21,14 @@ enum Schema {
         let latitude: Double?
         let longitude: Double?
         let name: String
+        let paymentMethods: [Schema.PaymentMethod]
         let waitTimesByDay: [Schema.WaitTimesByDay]?
+    }
+
+    enum PaymentMethod: String, Codable {
+        case cash
+        case brbs
+        case swipes
     }
 
     struct WaitTimesByDay: Codable {
