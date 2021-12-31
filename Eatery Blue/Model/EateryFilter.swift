@@ -8,9 +8,7 @@
 import Foundation
 import CoreLocation
 
-struct EateryFilter {
-
-    var userLocation: CLLocation?
+struct EateryFilter: Codable {
 
     var under10MinutesEnabled: Bool = false
     var paymentMethods: Set<PaymentMethod> = []
@@ -24,16 +22,16 @@ struct EateryFilter {
         under10MinutesEnabled || !paymentMethods.isEmpty || favoriteEnabled || north || west || central
     }
 
-    func predicate() -> EateryPredicate {
+    func predicate(userLocation: CLLocation?) -> EateryPredicate {
         .and([
-            under10MinutesPredicate,
-            paymentMethodsPredicate,
-            favoritePredicate,
-            campusAreaPredicate
+            under10MinutesPredicate(userLocation: userLocation),
+            paymentMethodsPredicate(),
+            favoritePredicate(),
+            campusAreaPredicate()
         ])
     }
 
-    private var under10MinutesPredicate: EateryPredicate {
+    func under10MinutesPredicate(userLocation: CLLocation?) -> EateryPredicate {
         if under10MinutesEnabled {
             if let userLocation = userLocation {
                 return .underNMinutes(10, userLocation: userLocation)
@@ -45,7 +43,7 @@ struct EateryFilter {
         }
     }
 
-    private var paymentMethodsPredicate: EateryPredicate {
+    func paymentMethodsPredicate() -> EateryPredicate {
         if paymentMethods.isEmpty {
             return .true
         } else {
@@ -53,7 +51,7 @@ struct EateryFilter {
         }
     }
 
-    private var favoritePredicate: EateryPredicate {
+    func favoritePredicate() -> EateryPredicate {
         if favoriteEnabled {
             return .isFavorite
         } else {
@@ -61,7 +59,7 @@ struct EateryFilter {
         }
     }
 
-    private var campusAreaPredicate: EateryPredicate {
+    func campusAreaPredicate() -> EateryPredicate {
         if north || west || central {
             return .or([
                 north ? .campusAreaEqualTo("North") : .false,

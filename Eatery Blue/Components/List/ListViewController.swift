@@ -10,16 +10,20 @@ import UIKit
 
 class ListViewController: UIViewController {
 
-    private let navigationView = ListNavigationView()
-    private var filtersView: PillFiltersView {
-        navigationView.filtersView
+    let navigationView = ListNavigationView()
+
+    let filterController = EateryFilterViewController()
+    private var filtersView: UIView {
+        filterController.view
     }
 
-    private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
+    let headerStackView = UIStackView()
+    let tableView = UITableView()
 
     // A view that holds the place of the filtersView in the stack view
-    private let filterSpacerView = UIView()
+    private let filterPlaceholder = UIView()
+
+    var eateries: [Eatery] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,37 +36,49 @@ class ListViewController: UIViewController {
         super.viewWillAppear(animated)
 
         RootViewController.setStatusBarStyle(.darkContent)
-
-        view.layoutIfNeeded()
-        updateScrollViewContentInset()
-        updateFiltersViewTransform()
     }
 
     private func setUpSelf() {
         view.backgroundColor = .white
 
-        view.addSubview(scrollView)
-        setUpScrollView()
+        view.addSubview(tableView)
+        setUpTableView()
 
         view.addSubview(navigationView)
         setUpNavigationView()
+
+        setUpFilterController()
     }
 
-    private func setUpScrollView() {
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.alwaysBounceVertical = true
-        scrollView.delegate = self
+    private func setUpFilterController() {
+        addChild(filterController)
+        view.addSubview(filterController.view)
+        filterController.didMove(toParent: self)
 
-        scrollView.addSubview(stackView)
-        setUpStackView()
+        filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
-    private func setUpStackView() {
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 12
+    private func setUpTableView() {
+        tableView.showsVerticalScrollIndicator = false
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.alwaysBounceVertical = true
+        tableView.estimatedRowHeight = 44
+        tableView.tableFooterView = UIView()
+        tableView.allowsSelection = false
+        tableView.separatorStyle = .none
+
+        tableView.dataSource = self
+        tableView.delegate = self
+
+        tableView.addSubview(headerStackView)
+        setUpHeaderStackView()
+    }
+
+    private func setUpHeaderStackView() {
+        headerStackView.axis = .vertical
+        headerStackView.spacing = 12
+        headerStackView.alignment = .fill
+        headerStackView.distribution = .fill
     }
 
     private func setUpNavigationView() {
@@ -76,46 +92,26 @@ class ListViewController: UIViewController {
             let viewController = HomeSearchViewController()
             navigationController?.pushViewController(viewController, animated: true)
         }
-
-        setUpFiltersView()
-    }
-
-    private func setUpFiltersView() {
-        filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-        let shortFilter = PillFilterButtonView()
-        shortFilter.label.text = "Under 10 min"
-        shortFilter.on(UITapGestureRecognizer()) { [weak shortFilter] _ in
-            guard let shortFilter = shortFilter else { return }
-            shortFilter.setHighlighted(!shortFilter.isHighlighted)
-        }
-        filtersView.addButton(shortFilter)
-
-        let paymentMethods = PillFilterButtonView()
-        paymentMethods.label.text = "Payment Methods"
-        paymentMethods.imageView.isHidden = false
-        paymentMethods.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = PaymentMethodsFilterSheetViewController()
-            viewController.setUpSheetPresentation()
-            present(viewController, animated: true)
-        }
-        filtersView.addButton(paymentMethods)
     }
 
     private func setUpConstraints() {
         navigationView.edgesToSuperview(excluding: .bottom)
 
-        scrollView.edgesToSuperview()
+        filtersView.edges(to: navigationView.filterPlaceholder)
 
-        stackView.edgesToSuperview()
-        stackView.widthToSuperview()
+        tableView.edgesToSuperview()
+
+        headerStackView.edgesToSuperview(excluding: .bottom)
+        headerStackView.widthToSuperview()
     }
 
-    func setUp(
-        _ eateries: [Eatery],
-        title: String? = nil,
-        description: String? = nil
-    ) {
+    private func pushViewController(for eatery: Eatery) {
+        let viewController = EateryModelController()
+        viewController.setUp(eatery: eatery)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func setUp(title: String?, description: String?) {
         loadViewIfNeeded()
 
         navigationView.titleLabel.text = title
@@ -129,10 +125,110 @@ class ListViewController: UIViewController {
         }
 
         addFilterSpacerView()
+    }
 
-        for eatery in eateries {
+    func addTitleLabel(_ title: String) {
+        let label = UILabel()
+        label.text = title
+        label.font = .preferredFont(for: .largeTitle, weight: .bold)
+        label.textColor = UIColor(named: "EateryBlue")
+
+        let container = ContainerView(content: label)
+        container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        headerStackView.addArrangedSubview(container)
+    }
+
+    func addDescriptionLabel(_ description: String) {
+        let label = UILabel()
+        label.text = description
+        label.numberOfLines = 0
+        label.font = .preferredFont(for: .body, weight: .medium)
+        label.textColor = UIColor(named: "Gray06")
+
+        let container = ContainerView(content: label)
+        container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        headerStackView.addArrangedSubview(container)
+    }
+
+    func addFilterSpacerView() {
+        headerStackView.addArrangedSubview(filterPlaceholder)
+
+        filterPlaceholder.height(to: filtersView)
+    }
+
+    private func updateTableViewContentInset() {
+        let topOffset = view.convert(navigationView.normalNavigationBar.bounds, from: navigationView.normalNavigationBar).maxY
+        tableView.contentInset = UIEdgeInsets(top: topOffset, left: 0, bottom: view.safeAreaInsets.bottom, right: 0)
+    }
+
+    private func updateFiltersViewTransform() {
+        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
+        let spacerPosition = view.convert(filterPlaceholder.bounds, from: filterPlaceholder).minY
+
+        let transform = CGAffineTransform(
+            translationX: 0,
+            y: max(0, spacerPosition - filterPosition)
+        )
+        filtersView.transform = transform
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        view.layoutIfNeeded()
+        updateTableViewContentInset()
+        updateFiltersViewTransform()
+
+        tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
+    }
+    
+}
+
+extension ListViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateFiltersViewTransform()
+        updateNavigationViewFadeInProgress()
+    }
+
+    private func updateNavigationViewFadeInProgress() {
+        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
+        let spacerPosition = view.convert(filterPlaceholder.bounds, from: filterPlaceholder).minY
+
+        if spacerPosition < filterPosition {
+            navigationView.setFadeInProgress(1, animated: true)
+        } else {
+            navigationView.setFadeInProgress(0, animated: true)
+        }
+    }
+
+}
+
+extension ListViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1 + eateries.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = UITableViewCell()
+            headerStackView.layoutIfNeeded()
+            let container = ContainerView(content: UIView())
+            cell.contentView.addSubview(container)
+            container.height(headerStackView.frame.height + 12, priority: .defaultHigh)
+            container.edgesToSuperview()
+            return cell
+
+        } else {
+            let eatery = eateries[indexPath.row - 1]
             let cardView = EateryLargeCardView()
-            cardView.imageView.kf.setImage(with: eatery.imageUrl)
+            cardView.imageView.kf.setImage(
+                with: eatery.imageUrl,
+                options: [
+                    .backgroundDecode
+                ]
+            )
             cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
             cardView.titleLabel.text = eatery.name
             let lines = EateryFormatter.default.formatEatery(
@@ -149,102 +245,20 @@ class ListViewController: UIViewController {
                     subtitleLabel.isHidden = true
                 }
             }
-            cardView.subtitleLabels[0].lineBreakMode = .byTruncatingTail
             cardView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }
 
-            addCardView(cardView)
+            cardView.height(216)
+
+            let cell = EateryLargeCardTableViewCell(cardView: cardView)
+            cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            return cell
         }
     }
 
-    private func pushViewController(for eatery: Eatery) {
-        let viewController = EateryModelController()
-        viewController.setUp(eatery: eatery)
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    private func addTitleLabel(_ title: String) {
-        let label = UILabel()
-        label.text = title
-        label.font = .preferredFont(for: .largeTitle, weight: .bold)
-        label.textColor = UIColor(named: "EateryBlue")
-
-        let container = ContainerView(content: label)
-        container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        stackView.addArrangedSubview(container)
-    }
-
-    private func addDescriptionLabel(_ description: String) {
-        let label = UILabel()
-        label.text = description
-        label.numberOfLines = 0
-        label.font = .preferredFont(for: .body, weight: .medium)
-        label.textColor = UIColor(named: "Gray06")
-
-        let container = ContainerView(content: label)
-        container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        stackView.addArrangedSubview(container)
-    }
-
-    private func addFilterSpacerView() {
-        stackView.addArrangedSubview(filterSpacerView)
-
-        filterSpacerView.height(to: filtersView)
-    }
-
-    private func addCardView(_ view: EateryLargeCardView) {
-        view.height(216)
-
-        let cell = EateryLargeCardCell(cardView: view)
-        cell.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        stackView.addArrangedSubview(cell)
-    }
-
-    private func updateScrollViewContentInset() {
-        let topOffset = view.convert(navigationView.normalNavigationBar.bounds, from: navigationView.normalNavigationBar).maxY
-        scrollView.contentInset = UIEdgeInsets(top: topOffset, left: 0, bottom: view.safeAreaInsets.bottom, right: 0)
-    }
-
-    private func updateFiltersViewTransform() {
-        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
-        let spacerPosition = view.convert(filterSpacerView.frame, from: stackView).minY
-
-        let transform = CGAffineTransform(
-            translationX: 0,
-            y: max(0, spacerPosition - filterPosition)
-        )
-        filtersView.transform = transform
-    }
-
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-
-        view.layoutIfNeeded()
-        updateScrollViewContentInset()
-        updateFiltersViewTransform()
-
-        scrollView.contentOffset = CGPoint(x: 0, y: -scrollView.contentInset.top)
-    }
-    
 }
 
-extension ListViewController: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateFiltersViewTransform()
-        updateNavigationViewFadeInProgress()
-    }
-
-    private func updateNavigationViewFadeInProgress() {
-        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
-        let spacerPosition = view.convert(filterSpacerView.frame, from: stackView).minY
-
-        if spacerPosition < filterPosition {
-            navigationView.setFadeInProgress(1, animated: true)
-        } else {
-            navigationView.setFadeInProgress(0, animated: true)
-        }
-    }
+extension ListViewController: UITableViewDelegate {
 
 }

@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
 
     enum Cell: Hashable {
         case searchBar
-        case filterView(filterView: PillFiltersView)
+        case customView(view: UIView)
         case carouselView(collection: EateryCollection)
         case titleLabel(title: String)
         case eateryCard(eatery: Eatery)
@@ -98,15 +98,15 @@ class HomeViewController: UIViewController {
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
-
-        navigationView.bottomToTop(of: tableHeaderView, priority: .defaultLow)
-        navigationView.bottomToTop(of: tableHeaderView, relation: .equalOrGreater)
     }
 
     private func setUpConstraints() {
         tableView.edgesToSuperview()
 
         navigationView.edgesToSuperview(excluding: .bottom)
+
+        navigationView.bottomToTop(of: tableHeaderView, priority: .defaultLow)
+        navigationView.bottomToTop(of: tableHeaderView, relation: .equalOrGreater)
     }
 
     func pushViewController(for eatery: Eatery) {
@@ -163,10 +163,10 @@ extension HomeViewController: UITableViewDataSource {
             searchBar.edgesToSuperview()
             return cell
 
-        case .filterView(let filterView):
+        case .customView(let view):
             let cell = ClearTableViewCell()
-            cell.contentView.addSubview(filterView)
-            filterView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+            cell.contentView.addSubview(view)
+            view.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
             return cell
 
         case .titleLabel(title: let title):
@@ -273,7 +273,7 @@ extension HomeViewController: UITableViewDataSource {
     }
 
     private func didTapMoreButton(_ collection: EateryCollection) {
-        let viewController = ListViewController()
+        let viewController = ListModelController()
         viewController.setUp(
             collection.eateries,
             title: collection.title,

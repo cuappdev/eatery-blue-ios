@@ -23,19 +23,25 @@ class HomeModelController: HomeViewController {
     private var eateryCollections: [EateryCollection] = []
     private var allEateries: [Eatery] = []
 
-    private let filtersView = PillFiltersView()
-    private let filterButtons = FilterButtons()
+    private let filterController = EateryFilterViewController()
 
     private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpFiltersView()
+        setUpFilterController()
 
         updateCellsFromState()
 
         updateStateFromNetworking()
+    }
+
+    private func setUpFilterController() {
+        addChild(filterController)
+        filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        filterController.delegate = self
+        filterController.didMove(toParent: self)
     }
 
     private func updateStateFromNetworking() {
@@ -88,98 +94,12 @@ class HomeModelController: HomeViewController {
         }.store(in: &cancellables)
     }
 
-    private func setUpFiltersView() {
-        filtersView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-        filtersView.addButton(filterButtons.under10Minutes)
-        filtersView.addButton(filterButtons.paymentMethods)
-        filtersView.addButton(filterButtons.favorites)
-        filtersView.addButton(filterButtons.north)
-        filtersView.addButton(filterButtons.west)
-        filtersView.addButton(filterButtons.central)
-
-        setUpFilterButtons()
-    }
-
-    private func setUpFilterButtons() {
-        setUpFilterButtonUnder10Minutes()
-        setUpFilterButtonPaymentMethods()
-        setUpFilterButtonFavorites()
-        setUpFilterButtonNorth()
-        setUpFilterButtonWest()
-        setUpFilterButtonCentral()
-    }
-
-    private func setUpFilterButtonUnder10Minutes() {
-        let button = filterButtons.under10Minutes
-        button.label.text = "Under 10 min"
-        button.on(UITapGestureRecognizer()) { [self] _ in
-            filter.under10MinutesEnabled.toggle()
-            updateFilterButtonsFromState()
-            updateCellsFromState()
-        }
-    }
-
-    private func setUpFilterButtonPaymentMethods() {
-        let paymentMethod = filterButtons.paymentMethods
-        paymentMethod.label.text = "Payment Methods"
-        paymentMethod.imageView.isHidden = false
-        paymentMethod.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = PaymentMethodsFilterSheetViewController()
-            viewController.setUpSheetPresentation()
-            viewController.setSelectedPaymentMethods(filter.paymentMethods)
-            viewController.delegate = self
-            present(viewController, animated: true)
-        }
-    }
-
-    private func setUpFilterButtonFavorites() {
-        let button = filterButtons.favorites
-        button.label.text = "Favorites"
-        button.on(UITapGestureRecognizer()) { [self] _ in
-            filter.favoriteEnabled.toggle()
-            updateFilterButtonsFromState()
-            updateCellsFromState()
-        }
-    }
-
-    private func setUpFilterButtonNorth() {
-        let button = filterButtons.north
-        button.label.text = "North"
-        button.on(UITapGestureRecognizer()) { [self] _ in
-            filter.north.toggle()
-            updateFilterButtonsFromState()
-            updateCellsFromState()
-        }
-    }
-
-    private func setUpFilterButtonWest() {
-        let button = filterButtons.west
-        button.label.text = "West"
-        button.on(UITapGestureRecognizer()) { [self] _ in
-            filter.west.toggle()
-            updateFilterButtonsFromState()
-            updateCellsFromState()
-        }
-    }
-
-
-    private func setUpFilterButtonCentral() {
-        let button = filterButtons.central
-        button.label.text = "Central"
-        button.on(UITapGestureRecognizer()) { [self] _ in
-            filter.central.toggle()
-            updateFilterButtonsFromState()
-            updateCellsFromState()
-        }
-    }
-
     private func updateCellsFromState() {
         cells = []
 
         cells.append(.searchBar)
 
-        cells.append(.filterView(filterView: filtersView))
+        cells.append(.customView(view: filterController.view))
 
         if !filter.isEnabled {
             for collection in eateryCollections {
@@ -195,7 +115,7 @@ class HomeModelController: HomeViewController {
             }
 
         } else {
-            let predicate = filter.predicate()
+            let predicate = filter.predicate(userLocation: nil)
             let filteredEateries = allEateries.filter(predicate.isSatisfiedBy(_:))
             for eatery in filteredEateries {
                 cells.append(.eateryCard(eatery: eatery))
@@ -205,35 +125,14 @@ class HomeModelController: HomeViewController {
         tableView.reloadData()
     }
 
-    private func updateFilterButtonsFromState() {
-        filterButtons.under10Minutes.setHighlighted(filter.under10MinutesEnabled)
-        filterButtons.favorites.setHighlighted(filter.favoriteEnabled)
-        filterButtons.north.setHighlighted(filter.north)
-        filterButtons.west.setHighlighted(filter.west)
-        filterButtons.central.setHighlighted(filter.central)
-
-        if filter.paymentMethods.isEmpty {
-            filterButtons.paymentMethods.setHighlighted(false)
-            filterButtons.paymentMethods.label.text = "Payment Methods"
-        } else {
-            filterButtons.paymentMethods.setHighlighted(true)
-            filterButtons.paymentMethods.label.text = EateryFormatter.default.formatPaymentMethods(filter.paymentMethods)
-        }
-    }
-
 }
 
-extension HomeModelController: PaymentMethodsFilterSheetViewControllerDelegate {
+extension HomeModelController: EateryFilterViewControllerDelegate {
 
-    func paymentMethodsFilterSheetViewController(
-        _ viewController: PaymentMethodsFilterSheetViewController,
-        didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
-    ) {
-        filter.paymentMethods = paymentMethods
-
-        updateFilterButtonsFromState()
+    func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
+        self.filter = filter
         updateCellsFromState()
-        viewController.dismiss(animated: true)
     }
 
 }
+

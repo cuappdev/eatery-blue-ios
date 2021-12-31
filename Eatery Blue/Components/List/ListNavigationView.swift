@@ -22,7 +22,7 @@ class ListNavigationView: UIView {
     let titleLabel = UILabel()
     let searchButton = ContainerView(content: UIImageView())
 
-    let filtersView = PillFiltersView()
+//    let filtersView = PillFiltersView()
 
     // A view that holds the place of the filtersView in the navigation view
     let filterPlaceholder = UIView()
@@ -52,7 +52,7 @@ class ListNavigationView: UIView {
         setUpNormalNavigationBar()
 
         addSubview(filterPlaceholder)
-        addSubview(filtersView)
+//        addSubview(filtersView)
 
         addSubview(separator)
         setUpSeparator()
@@ -123,7 +123,7 @@ class ListNavigationView: UIView {
         filterPlaceholder.trailingToSuperview()
         filterPlaceholder.bottom(to: layoutMarginsGuide)
 
-        filtersView.edges(to: filterPlaceholder)
+//        filtersView.edges(to: filterPlaceholder)
 
         separator.edgesToSuperview(excluding: .top)
     }

@@ -19,7 +19,7 @@ struct Networking {
     static let prod = Networking(fetchUrl: URL(string: "https://d706-2601-187-8400-2076-1158-3d93-7b45-1456.ngrok.io/api")!)
 
     #if DEBUG
-    static let `default` = dev
+    static let `default` = local
     #else
     static let `default` = prod
     #endif

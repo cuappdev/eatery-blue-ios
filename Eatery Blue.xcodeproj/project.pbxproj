@@ -40,6 +40,8 @@
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
 		5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651892773CBFB000338D4 /* LaunchScreen.storyboard */; };
 		5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651922773CD5A000338D4 /* HomeViewController.swift */; };
+		5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */; };
+		5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86EDA0277ED0A500C92A3B /* ListModelController.swift */; };
 		5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4702773D3DC00CC98DD /* Eatery.swift */; };
 		5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4722773D57A00CC98DD /* DummyData.swift */; };
 		5DDAD4752773D70900CC98DD /* EateryMediumCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4742773D70900CC98DD /* EateryMediumCardView.swift */; };
@@ -141,6 +143,8 @@
 		5D86518A2773CBFB000338D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D86518C2773CBFB000338D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D8651922773CD5A000338D4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilterViewController.swift; sourceTree = "<group>"; };
+		5D86EDA0277ED0A500C92A3B /* ListModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModelController.swift; sourceTree = "<group>"; };
 		5DDAD4702773D3DC00CC98DD /* Eatery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eatery.swift; sourceTree = "<group>"; };
 		5DDAD4722773D57A00CC98DD /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		5DDAD4742773D70900CC98DD /* EateryMediumCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumCardView.swift; sourceTree = "<group>"; };
@@ -427,6 +431,7 @@
 		5DF304CF277A652900E2C9A4 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				5D86EDA0277ED0A500C92A3B /* ListModelController.swift */,
 				5DF304D2277A6AF200E2C9A4 /* ListNavigationView.swift */,
 				5DF304D0277A69E000E2C9A4 /* ListViewController.swift */,
 			);
@@ -436,6 +441,7 @@
 		5DF304D4277A73B700E2C9A4 /* PillFilters */ = {
 			isa = PBXGroup;
 			children = (
+				5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */,
 				5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */,
 				5DF5F7D127740140001ADCDC /* PillFilterButtonView.swift */,
 			);
@@ -561,6 +567,7 @@
 				5D4689FC277D0BA200986AFF /* EateryLargeCardCell.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* EateryMediumCardView.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* MenuCategoryView.swift in Sources */,
+				5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
 				5D0CDC592775346600AD0E27 /* PillView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
@@ -596,6 +603,7 @@
 				5D468A19277E440300986AFF /* SchemaToModel.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5DF304FF277CC15C00E2C9A4 /* EateryFilter.swift in Sources */,
+				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont.swift in Sources */,
 				5DF3049727778A7600E2C9A4 /* WaitTimeView.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
