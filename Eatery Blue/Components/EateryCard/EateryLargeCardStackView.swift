@@ -1,5 +1,5 @@
 //
-//  EateryCardStackView.swift
+//  EateryLargeCardStackView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EateryCardStackView: UIView {
+class EateryLargeCardStackView: UIView {
 
     let titleLabel = UILabel()
     let stackView = UIStackView()
@@ -47,8 +47,8 @@ class EateryCardStackView: UIView {
         stackView.edges(to: layoutMarginsGuide, excluding: .top)
     }
 
-    func addCardView(_ cardView: EateryCardView) {
-        let cell = EateryCardCell(cardView: cardView)
+    func addCardView(_ cardView: EateryLargeCardView) {
+        let cell = EateryLargeCardCell(cardView: cardView)
         cell.height(216)
         stackView.addArrangedSubview(cell)
     }

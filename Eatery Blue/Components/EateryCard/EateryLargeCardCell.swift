@@ -1,5 +1,5 @@
 //
-//  EateryCardCell.swift
+//  EateryLargeCardCell.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/29/21.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class EateryCardCell: UIView {
+class EateryLargeCardCell: UIView {
 
-    let cardView: EateryCardView
+    let cardView: EateryLargeCardView
     private lazy var container = ContainerView(content: cardView)
 
     override init(frame: CGRect) {
-        self.cardView = EateryCardView()
+        self.cardView = EateryLargeCardView()
 
         super.init(frame: frame)
 
@@ -21,7 +21,7 @@ class EateryCardCell: UIView {
         setUpConstraints()
     }
 
-    init(cardView: EateryCardView) {
+    init(cardView: EateryLargeCardView) {
         self.cardView = cardView
 
         super.init(frame: .zero)

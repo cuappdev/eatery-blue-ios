@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/30/21.
 //
 
+import os.log
 import Foundation
 
 struct SchemaToModel {
@@ -18,8 +19,8 @@ struct SchemaToModel {
             paymentMethods: [],
             campusArea: schemaEatery.campusArea,
             events: schemaEatery.events?.compactMap(convert) ?? [],
-            latitude: schemaEatery.latitude,
-            longitude: schemaEatery.longitude
+            location: convert(latitude: schemaEatery.latitude, longitude: schemaEatery.longitude),
+            waitTimesByDay: schemaEatery.waitTimesByDay.map(convert) ?? [:]
         )
     }
 
@@ -44,6 +45,14 @@ struct SchemaToModel {
         )
     }
 
+    static func convert(latitude: Double?, longitude: Double?) -> EateryLocation? {
+        if let latitude = latitude, let longitude = longitude {
+            return EateryLocation(latitude: latitude, longitude: longitude)
+        } else {
+            return nil
+        }
+    }
+
     static func convert(_ schemaMenuCategory: Schema.MenuCategory) -> MenuCategory {
         MenuCategory(
             category: schemaMenuCategory.category,
@@ -57,6 +66,36 @@ struct SchemaToModel {
             name: schemaMenuItem.name,
             description: nil,
             price: nil
+        )
+    }
+
+    static func convert(_ schemaWaitTimesByDay: [Schema.WaitTimesByDay]) -> [Day: WaitTimes] {
+        if schemaWaitTimesByDay.isEmpty {
+            return [:]
+        }
+
+        var waitTimesByDay: [Day: WaitTimes] = [:]
+        for schemaWaitTimesByDay in schemaWaitTimesByDay {
+            guard let dayString = schemaWaitTimesByDay.canonicalDate,
+                  let day = Day(string: dayString),
+                  let waitTimes = schemaWaitTimesByDay.waitTimes,
+                  !waitTimes.isEmpty
+            else {
+                continue
+            }
+
+            waitTimesByDay[day] = WaitTimes(samples: waitTimes.map(convert), samplingMethod: .nearestNeighbor)
+        }
+
+        return waitTimesByDay
+    }
+
+    static func convert(_ schemaWaitTimes: Schema.WaitTimes) -> WaitTimeSample {
+        WaitTimeSample(
+            timestamp: TimeInterval(schemaWaitTimes.timestamp),
+            low: TimeInterval(schemaWaitTimes.waitTimeLow),
+            expected: TimeInterval(schemaWaitTimes.waitTimeExpected),
+            high: TimeInterval(schemaWaitTimes.waitTimeHigh)
         )
     }
 

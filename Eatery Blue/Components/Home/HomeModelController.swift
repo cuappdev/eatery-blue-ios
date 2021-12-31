@@ -51,6 +51,13 @@ class HomeModelController: HomeViewController {
         } receiveValue: { [self] eateries in
             eateryCollections = [
                 EateryCollection(
+                    title: "Debug",
+                    description: nil,
+                    eateries: [
+                        eateries.first(where: { $0.name.starts(with: "Mac's") })!
+                    ]
+                ),
+                EateryCollection(
                     title: "Favorite Eateries",
                     description: nil,
                     eateries: [
@@ -66,7 +73,10 @@ class HomeModelController: HomeViewController {
                 ),
             ]
 
-            allEateries = eateries
+            allEateries = [DummyData.rpcc, DummyData.macs] + eateries.sorted(by: { lhs, rhs in
+                lhs.name < rhs.name
+            })
+
             updateCellsFromState()
         }.store(in: &cancellables)
     }

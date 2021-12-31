@@ -72,7 +72,7 @@ class WaitTimeCell: UIView {
         startTimeLabel.text = startTime
 
         barHeightConstraint?.isActive = false
-        barHeightConstraint = bar.height(to: barHeightLayoutGuide, multiplier: max(0.05, min(0.95, fraction)))
+        barHeightConstraint = bar.height(to: barHeightLayoutGuide, multiplier: max(0, min(1, fraction)))
     }
 
 }

@@ -87,7 +87,7 @@ class HomeViewController: UIViewController {
         tableView.allowsSelection = false
 
         tableView.register(CarouselTableViewCell.self, forCellReuseIdentifier: "carouselView")
-        tableView.register(EateryCardTableViewCell.self, forCellReuseIdentifier: "eateryCard")
+        tableView.register(EateryLargeCardTableViewCell.self, forCellReuseIdentifier: "eateryCard")
     }
 
     private func setUpNavigationView() {
@@ -189,7 +189,7 @@ extension HomeViewController: UITableViewDataSource {
             carouselView.titleLabel.text = collection.title
 
             for eatery in collection.eateries.prefix(3) {
-                let cardView = CarouselCardView()
+                let cardView = EateryMediumCardView()
                 cardView.imageView.kf.setImage(
                     with: eatery.imageUrl,
                     options: [
@@ -197,9 +197,13 @@ extension HomeViewController: UITableViewDataSource {
                     ]
                 )
                 cardView.titleLabel.text = eatery.name
-                cardView.subtitleLabel.text = """
-                \(eatery.building ?? "--") · \(eatery.menuSummary ?? "--")
-                """
+                cardView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
+                    eatery,
+                    style: .medium,
+                    font: .preferredFont(for: .footnote, weight: .medium),
+                    userLocation: nil,
+                    departureDate: Date()
+                ).first
 
                 cardView.on(UITapGestureRecognizer()) { [self] _ in
                     pushViewController(for: eatery)
@@ -232,7 +236,7 @@ extension HomeViewController: UITableViewDataSource {
             return cell
 
         case .eateryCard(eatery: let eatery):
-            let cardView = EateryCardView()
+            let cardView = EateryLargeCardView()
             cardView.imageView.kf.setImage(
                 with: eatery.imageUrl,
                 options: [
@@ -240,22 +244,27 @@ extension HomeViewController: UITableViewDataSource {
                 ]
             )
             cardView.titleLabel.text = eatery.name
-            cardView.subtitleLabel1.attributedText = EateryFormatter.default.formatEatery(
+            let lines = EateryFormatter.default.formatEatery(
                 eatery,
-                font: cardView.subtitleLabel1.font
+                style: .long,
+                font: .preferredFont(for: .footnote, weight: .medium),
+                userLocation: nil,
+                departureDate: Date()
             )
-            cardView.subtitleLabel2.attributedText = EateryFormatter.default.formatTimingInfo(
-                eatery,
-                font: cardView.subtitleLabel2.font
-            )
-
+            for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
+                if i < lines.count {
+                    subtitleLabel.attributedText = lines[i]
+                } else {
+                    subtitleLabel.isHidden = true
+                }
+            }
             cardView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }
 
             cardView.height(216)
 
-            let cell = EateryCardTableViewCell(cardView: cardView)
+            let cell = EateryLargeCardTableViewCell(cardView: cardView)
             cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
             return cell
         }

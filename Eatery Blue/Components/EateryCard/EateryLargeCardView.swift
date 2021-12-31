@@ -1,17 +1,20 @@
 //
-//  CarouselCardView.swift
+//  EateryLargeCardView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/22/21.
+//  Created by William Ma on 12/23/21.
 //
 
 import UIKit
 
-class CarouselCardView: UIView {
+class EateryLargeCardView: UIView {
 
     let imageView = UIImageView()
+
+    let labelStackView = UIStackView() 
     let titleLabel = UILabel()
-    let subtitleLabel = UILabel()
+    let subtitleLabels = [UILabel(), UILabel()]
+
     let favoriteImageView = UIImageView()
 
     override init(frame: CGRect) {
@@ -31,11 +34,8 @@ class CarouselCardView: UIView {
         addSubview(imageView)
         setUpImageView()
 
-        addSubview(titleLabel)
-        setUpTitleLabel()
-
-        addSubview(subtitleLabel)
-        setUpSubtitleLabel()
+        addSubview(labelStackView)
+        setUpLabelStackView()
 
         addSubview(favoriteImageView)
         setUpFavoriteImageView()
@@ -46,12 +46,27 @@ class CarouselCardView: UIView {
         imageView.clipsToBounds = true
     }
 
+    private func setUpLabelStackView() {
+        labelStackView.axis = .vertical
+        labelStackView.spacing = 4
+        labelStackView.distribution = .fill
+        labelStackView.alignment = .fill
+        
+        labelStackView.addArrangedSubview(titleLabel)
+        setUpTitleLabel()
+
+        for subtitleLabel in subtitleLabels {
+            labelStackView.addArrangedSubview(subtitleLabel)
+            setUpSubtitleLabel(subtitleLabel)
+        }
+    }
+
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.textColor = UIColor(named: "Black")
     }
 
-    private func setUpSubtitleLabel() {
+    private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         subtitleLabel.textColor = UIColor(named: "Gray05")
     }
@@ -62,18 +77,16 @@ class CarouselCardView: UIView {
     }
 
     private func setUpConstraints() {
+        imageView.setContentCompressionResistancePriority(
+            titleLabel.contentCompressionResistancePriority(for: .vertical) - 1,
+            for: .vertical
+        )
         imageView.edgesToSuperview(excluding: .bottom)
 
-        titleLabel.leadingToSuperview(offset: 12)
-        titleLabel.topToBottom(of: imageView, offset: 12)
-        titleLabel.trailingToLeading(of: favoriteImageView, offset: 4)
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-
-        subtitleLabel.leadingToSuperview(offset: 12)
-        subtitleLabel.topToBottom(of: titleLabel, offset: 4)
-        subtitleLabel.bottomToSuperview(offset: -12)
-        subtitleLabel.trailingToLeading(of: favoriteImageView, offset: 4)
-        subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        labelStackView.topToBottom(of: imageView, offset: 12)
+        labelStackView.leadingToSuperview(offset: 12)
+        labelStackView.bottomToSuperview(offset: -12)
+        labelStackView.trailingToLeading(of: favoriteImageView, offset: 16)
 
         favoriteImageView.trailingToSuperview(offset: 12)
         favoriteImageView.height(to: titleLabel)

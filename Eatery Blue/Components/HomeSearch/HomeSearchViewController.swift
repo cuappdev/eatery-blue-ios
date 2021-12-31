@@ -85,7 +85,7 @@ class HomeSearchViewController: UIViewController {
         favoritesView.titleLabel.text = "Favorites"
 
         for favorite in [DummyData.macs] {
-            let cardView = CarouselCardViewCompact()
+            let cardView = EaterySmallCardView()
             cardView.imageView.kf.setImage(with: favorite.imageUrl)
             cardView.titleLabel.text = favorite.name
             favoritesView.addCardView(cardView)

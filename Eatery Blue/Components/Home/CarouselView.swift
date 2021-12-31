@@ -84,7 +84,7 @@ class CarouselView: UIView {
         stackView.height(186)
     }
 
-    func addCardView(_ cardView: CarouselCardView) {
+    func addCardView(_ cardView: EateryMediumCardView) {
         let container = ContainerView(content: cardView)
         container.cornerRadius = 8
         container.shadowRadius = 4

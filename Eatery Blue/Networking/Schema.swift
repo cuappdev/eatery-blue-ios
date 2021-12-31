@@ -30,12 +30,10 @@ enum Schema {
     }
 
     struct WaitTimes: Codable {
-        let blockEndTimestamp: Int
-        let blockDuration: Int
-        let waitTimeLow: Double
-        let waitTimeExpected: Double
-        let waitTimeHigh: Double
-        let relativeDensity: Double
+        let timestamp: Int
+        let waitTimeLow: Int
+        let waitTimeExpected: Int
+        let waitTimeHigh: Int
     }
 
     struct Event: Codable {

@@ -131,20 +131,24 @@ class ListViewController: UIViewController {
         addFilterSpacerView()
 
         for eatery in eateries {
-            let cardView = EateryCardView()
+            let cardView = EateryLargeCardView()
             cardView.imageView.kf.setImage(with: eatery.imageUrl)
             cardView.titleLabel.text = eatery.name
-
-            cardView.subtitleLabel1.attributedText = EateryFormatter.default.formatEatery(
+            let lines = EateryFormatter.default.formatEatery(
                 eatery,
-                font: cardView.subtitleLabel1.font
+                style: .long,
+                font: .preferredFont(for: .footnote, weight: .medium),
+                userLocation: nil,
+                departureDate: Date()
             )
-
-            cardView.subtitleLabel2.attributedText = EateryFormatter.default.formatTimingInfo(
-                eatery,
-                font: cardView.subtitleLabel2.font
-            )
-
+            for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
+                if i < lines.count {
+                    subtitleLabel.attributedText = lines[i]
+                } else {
+                    subtitleLabel.isHidden = true
+                }
+            }
+            cardView.subtitleLabels[0].lineBreakMode = .byTruncatingTail
             cardView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }
@@ -188,10 +192,10 @@ class ListViewController: UIViewController {
         filterSpacerView.height(to: filtersView)
     }
 
-    private func addCardView(_ view: EateryCardView) {
+    private func addCardView(_ view: EateryLargeCardView) {
         view.height(216)
 
-        let cell = EateryCardCell(cardView: view)
+        let cell = EateryLargeCardCell(cardView: view)
         cell.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.addArrangedSubview(cell)
     }

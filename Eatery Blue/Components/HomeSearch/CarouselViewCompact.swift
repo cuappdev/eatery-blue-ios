@@ -80,7 +80,7 @@ class CarouselViewCompact: UIView {
         stackView.height(140)
     }
 
-    func addCardView(_ cardView: CarouselCardViewCompact) {
+    func addCardView(_ cardView: EaterySmallCardView) {
         stackView.addArrangedSubview(cardView)
     }
 

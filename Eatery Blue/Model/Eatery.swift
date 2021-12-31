@@ -4,7 +4,6 @@
 //
 //  Created by William Ma on 12/22/21.
 //
-//  This file is intended to house pure data structs relating to eateries. 
 
 import Foundation
 
@@ -49,8 +48,8 @@ struct Eatery: Codable, Hashable {
     var paymentMethods: Set<PaymentMethod> = []
     var campusArea: String?
     var events: [Event] = []
-    var latitude: Double?
-    var longitude: Double?
+    var location: EateryLocation?
+    var waitTimesByDay: [Day: WaitTimes] = [:]
 
 }
 

@@ -206,7 +206,7 @@ class EateryViewController: UIViewController {
         let label = UILabel()
         label.text = "\(eatery.building ?? "--") · \(eatery.menuSummary ?? "--")"
         label.textColor = UIColor(named: "Gray05")
-        label.font = .preferredFont(for: .subheadline, weight: .regular)
+        label.font = .preferredFont(for: .subheadline, weight: .semibold)
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -284,13 +284,20 @@ class EateryViewController: UIViewController {
         text.append(NSAttributedString(string: " Wait Time"))
         cell.titleLabel.attributedText = text
 
-        cell.statusLabel.textColor = UIColor(named: "Black")
-        cell.statusLabel.text = "12-15 minutes"
+        if let waitTimes = eatery.waitTimesByDay[Day()] {
+            cell.statusLabel.textColor = UIColor(named: "Black")
+            cell.statusLabel.text = "12-15 minutes"
 
-        cell.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = WaitTimeSheetViewController()
-            viewController.setUpSheetPresentation()
-            present(viewController, animated: true)
+            cell.on(UITapGestureRecognizer()) { [self] _ in
+                let viewController = WaitTimesSheetViewController()
+                viewController.setUpSheetPresentation()
+                viewController.setUp(waitTimes)
+                present(viewController, animated: true)
+            }
+
+        } else {
+            cell.statusLabel.textColor = UIColor(named: "Gray05")
+            cell.statusLabel.text = "-- minutes"
         }
 
         return cell

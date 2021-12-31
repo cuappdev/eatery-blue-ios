@@ -5,8 +5,8 @@
 //  Created by William Ma on 12/29/21.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 indirect enum EateryPredicate {
 
@@ -35,20 +35,12 @@ indirect enum EateryPredicate {
         case .or(let predicates):
             return predicates.contains { $0.isSatisfiedBy(eatery) }
 
-        case .underNMinutes(let n, let location):
-            guard let latitude = eatery.latitude, let longitude = eatery.longitude else {
+        case .underNMinutes(let n, let userLocation):
+            guard let walkTime = EateryTiming.walkTime(eatery: eatery, userLocation: userLocation) else {
                 return false
             }
 
-            let eateryLocation = CLLocation(latitude: latitude, longitude: longitude)
-            let distance = location.distance(from: eateryLocation)
-
-            // https://en.wikipedia.org/wiki/Preferred_walking_speed
-            let walkingSpeed = 1.42
-            let seconds = distance / walkingSpeed
-            let minutes = seconds / 60
-
-            return Int(minutes) <= n
+            return Int(walkTime / 60) <= n
 
         case .acceptsPaymentMethod(let paymentMethod):
             return eatery.paymentMethods.contains(paymentMethod)

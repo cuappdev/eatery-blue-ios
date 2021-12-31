@@ -1,5 +1,5 @@
 //
-//  CarouselCardViewCompact.swift
+//  EaterySmallCardView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/22/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CarouselCardViewCompact: UIView {
+class EaterySmallCardView: UIView {
 
     let imageView = UIImageView()
     let favoriteImageView = UIImageView()

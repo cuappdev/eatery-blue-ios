@@ -13,6 +13,9 @@ protocol WaitTimeViewDelegate: AnyObject {
     @objc
     optional func waitTimeView(_ sender: WaitTimeView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String
 
+    @objc
+    optional func waitTimeView(_ sender: WaitTimeView, didHighlightCell cell: WaitTimeCell, atIndex index: Int)
+
 }
 
 class WaitTimeView: UIView {
@@ -137,7 +140,7 @@ class WaitTimeView: UIView {
         waitTimeLabel.alpha = 0
     }
 
-    func highlightCell(at index: Int) {
+    func highlightCell(at index: Int, notifyDelegate: Bool = false) {
         if highlightIndex == index {
             return
         }
@@ -155,8 +158,10 @@ class WaitTimeView: UIView {
         waitTimePositionConstraint?.isActive = false
         waitTimePositionConstraint = waitTimeLabel.centerX(to: cell)
 
-        if let delegate = delegate {
-            waitTimeLabel.content.text = delegate.waitTimeView?(self, waitTimeTextForCell: cell, atIndex: index)
+        waitTimeLabel.content.text = delegate?.waitTimeView?(self, waitTimeTextForCell: cell, atIndex: index)
+
+        if notifyDelegate {
+            delegate?.waitTimeView?(self, didHighlightCell: cell, atIndex: index)
         }
     }
 
@@ -166,7 +171,11 @@ class WaitTimeView: UIView {
         }
 
         if animated {
-            UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction]) { [self] in
+            UIView.animate(
+                withDuration: 0.15,
+                delay: 0,
+                options: [.allowUserInteraction, .beginFromCurrentState]
+            ) { [self] in
                 highlightCell(at: index)
                 layoutIfNeeded()
             }
@@ -194,15 +203,13 @@ class WaitTimeView: UIView {
 extension WaitTimeView: UIScrollViewDelegate {
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let cellWidth = scrollView.bounds.width
         let initialPosition = scrollView.contentOffset.x
-        let displacement = 1.5 * velocity.x * cellWidth
-        let finalPosition = max(0, min(scrollView.contentSize.width, initialPosition + displacement))
-
-        // Quantize to nearest cell increment
-        let quantizedIndex = Int(round(finalPosition / cellWidth))
-
-        targetContentOffset.pointee = CGPoint(x: cellWidth * CGFloat(quantizedIndex), y: 0)
+        let decelerationRate = scrollView.decelerationRate.rawValue
+        let deltaPosition = velocity.x * decelerationRate / (1 - decelerationRate)
+        let finalPosition = initialPosition + deltaPosition
+        let cellWidth = scrollView.bounds.width
+        let index = Int(finalPosition / cellWidth)
+        targetContentOffset.pointee = CGPoint(x: cellWidth * CGFloat(index), y: 0)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -217,7 +224,7 @@ extension WaitTimeView: UIScrollViewDelegate {
         let maxIndexDist = 2
         if abs(index - highlightIndex) > maxIndexDist {
             let clampedIndex = max(index - maxIndexDist, min(index + maxIndexDist, highlightIndex))
-            highlightCell(at: clampedIndex, animated: false)
+            highlightCell(at: clampedIndex, animated: true)
         }
     }
 

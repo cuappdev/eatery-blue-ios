@@ -47,8 +47,6 @@ enum DummyData {
                 menu: macsMenu
             )
         }
-        macs.latitude = 0
-        macs.longitude = 0
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
@@ -68,8 +66,6 @@ enum DummyData {
                 menu: macsMenu
             )
         ]
-        macs.latitude = 0
-        macs.longitude = 0
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
@@ -89,8 +85,6 @@ enum DummyData {
                 menu: macsMenu
             )
         ]
-        macs.latitude = 0
-        macs.longitude = 0
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
@@ -110,8 +104,6 @@ enum DummyData {
                 menu: macsMenu
             )
         ]
-        macs.latitude = 0
-        macs.longitude = 0
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
@@ -124,8 +116,7 @@ enum DummyData {
         eatery.paymentMethods = [.cash, .credit, .brbs, .mealSwipes]
         eatery.campusArea = "North"
         eatery.building = "Robert Purcell Community Center"
-        eatery.longitude = -76.477354
-        eatery.latitude = 42.455973
+        eatery.location = EateryLocation(latitude: 42.455973, longitude: -76.477354)
         eatery.menuSummary = "Cornell Dining"
         eatery.imageUrl = URL(string: "https://resizer.otstatic.com/v2/photos/wide-huge/1/31826674.jpg")
 
