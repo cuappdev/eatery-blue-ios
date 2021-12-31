@@ -60,7 +60,8 @@ class HomeModelController: HomeViewController {
                     title: "Debug",
                     description: nil,
                     eateries: [
-                        eateries.first(where: { $0.name.starts(with: "Mac's") })!
+                        eateries.first(where: { $0.name.starts(with: "Mac's") })!,
+                        eateries.first(where: { $0.name.starts(with: "Terrace") })!
                     ]
                 ),
                 EateryCollection(

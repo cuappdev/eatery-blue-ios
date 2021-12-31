@@ -52,7 +52,7 @@
 		5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */; };
 		5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304922777830F00E2C9A4 /* HoursSheetViewController.swift */; };
 		5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304942777870F00E2C9A4 /* WaitTimesSheetViewController.swift */; };
-		5DF3049727778A7600E2C9A4 /* WaitTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3049627778A7600E2C9A4 /* WaitTimeView.swift */; };
+		5DF3049727778A7600E2C9A4 /* WaitTimesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3049627778A7600E2C9A4 /* WaitTimesView.swift */; };
 		5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3049827778FE100E2C9A4 /* WaitTimeCell.swift */; };
 		5DF304A32778F3D100E2C9A4 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304A22778F3D100E2C9A4 /* Calendar.swift */; };
 		5DF304A527791D2C00E2C9A4 /* EateryModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */; };
@@ -155,7 +155,7 @@
 		5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAttachment.swift; sourceTree = "<group>"; };
 		5DF304922777830F00E2C9A4 /* HoursSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoursSheetViewController.swift; sourceTree = "<group>"; };
 		5DF304942777870F00E2C9A4 /* WaitTimesSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimesSheetViewController.swift; sourceTree = "<group>"; };
-		5DF3049627778A7600E2C9A4 /* WaitTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimeView.swift; sourceTree = "<group>"; };
+		5DF3049627778A7600E2C9A4 /* WaitTimesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimesView.swift; sourceTree = "<group>"; };
 		5DF3049827778FE100E2C9A4 /* WaitTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimeCell.swift; sourceTree = "<group>"; };
 		5DF304A22778F3D100E2C9A4 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryModelController.swift; sourceTree = "<group>"; };
@@ -404,7 +404,7 @@
 			children = (
 				5DF3049827778FE100E2C9A4 /* WaitTimeCell.swift */,
 				5DF304942777870F00E2C9A4 /* WaitTimesSheetViewController.swift */,
-				5DF3049627778A7600E2C9A4 /* WaitTimeView.swift */,
+				5DF3049627778A7600E2C9A4 /* WaitTimesView.swift */,
 			);
 			path = WaitTimesSheet;
 			sourceTree = "<group>";
@@ -605,7 +605,7 @@
 				5DF304FF277CC15C00E2C9A4 /* EateryFilter.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont.swift in Sources */,
-				5DF3049727778A7600E2C9A4 /* WaitTimeView.swift in Sources */,
+				5DF3049727778A7600E2C9A4 /* WaitTimesView.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,

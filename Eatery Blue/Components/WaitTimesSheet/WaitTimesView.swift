@@ -1,5 +1,5 @@
 //
-//  WaitTimeView.swift
+//  WaitTimesView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/25/21.
@@ -8,17 +8,23 @@
 import UIKit
 
 @objc
-protocol WaitTimeViewDelegate: AnyObject {
+protocol WaitTimeViewDelegate: NSObjectProtocol {
 
     @objc
-    optional func waitTimeView(_ sender: WaitTimeView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String
+    optional func waitTimesView(_ sender: WaitTimesView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String
 
     @objc
-    optional func waitTimeView(_ sender: WaitTimeView, didHighlightCell cell: WaitTimeCell, atIndex index: Int)
+    optional func waitTimesView(_ sender: WaitTimesView, shouldHighlightCell cell: WaitTimeCell, atIndex index: Int) -> Bool
+
+    @objc
+    optional func waitTimesView(_ sender: WaitTimesView, didHighlightCell cell: WaitTimeCell, atIndex index: Int)
+
+    @objc
+    optional func waitTimesViewDidScroll(_ sender: WaitTimesView)
 
 }
 
-class WaitTimeView: UIView {
+class WaitTimesView: UIView {
 
     let scrollView = UIScrollView()
     let stackView = UIStackView()
@@ -28,7 +34,7 @@ class WaitTimeView: UIView {
     let waitTimeLabel = ContainerView(content: UILabel())
     let connectingLine = UIView()
 
-    private(set) var highlightIndex: Int?
+    private(set) var highlightedIndex: Int?
 
     weak var delegate: WaitTimeViewDelegate?
 
@@ -116,7 +122,7 @@ class WaitTimeView: UIView {
         container.width(to: self, multiplier: 1/6)
 
         container.on(UITapGestureRecognizer()) { [self] _ in
-            highlightCell(at: index, animated: true)
+            highlightCell(at: index, notifyDelegate: true, animated: true)
         }
 
         cells.append(cell)
@@ -131,26 +137,35 @@ class WaitTimeView: UIView {
     }
 
     func dehighlightCells() {
-        if let previousIndex = highlightIndex {
+        if let previousIndex = highlightedIndex {
             cells[previousIndex].bar.backgroundColor = UIColor(named: "EateryBlueMedium")
         }
-        highlightIndex = nil
+        highlightedIndex = nil
 
         connectingLine.alpha = 0
         waitTimeLabel.alpha = 0
     }
 
-    func highlightCell(at index: Int, notifyDelegate: Bool = false) {
-        if highlightIndex == index {
+    func highlightCell(at index: Int, askDelegate: Bool = true, notifyDelegate: Bool = false) {
+        guard 0 <= index, index < cells.count else {
             return
         }
 
-        if let previousIndex = highlightIndex {
+        let cell = cells[index]
+        if askDelegate, !(delegate?.waitTimesView?(self, shouldHighlightCell: cell, atIndex: index) ?? true) {
+            return
+        }
+
+        if highlightedIndex == index {
+            return
+        }
+
+        if let previousIndex = highlightedIndex {
             cells[previousIndex].bar.backgroundColor = UIColor(named: "EateryBlueMedium")
         }
-        highlightIndex = index
+        highlightedIndex = index
 
-        let cell = cells[index]
+
         cell.bar.backgroundColor = UIColor(named: "EateryBlue")
 
         connectingLine.alpha = 1
@@ -158,15 +173,15 @@ class WaitTimeView: UIView {
         waitTimePositionConstraint?.isActive = false
         waitTimePositionConstraint = waitTimeLabel.centerX(to: cell)
 
-        waitTimeLabel.content.text = delegate?.waitTimeView?(self, waitTimeTextForCell: cell, atIndex: index)
+        waitTimeLabel.content.text = delegate?.waitTimesView?(self, waitTimeTextForCell: cell, atIndex: index)
 
         if notifyDelegate {
-            delegate?.waitTimeView?(self, didHighlightCell: cell, atIndex: index)
+            delegate?.waitTimesView?(self, didHighlightCell: cell, atIndex: index)
         }
     }
 
-    private func highlightCell(at index: Int, animated: Bool) {
-        if highlightIndex == index {
+    private func highlightCell(at index: Int, askDelegate: Bool = true, notifyDelegate: Bool = false, animated: Bool) {
+        if highlightedIndex == index {
             return
         }
 
@@ -176,11 +191,11 @@ class WaitTimeView: UIView {
                 delay: 0,
                 options: [.allowUserInteraction, .beginFromCurrentState]
             ) { [self] in
-                highlightCell(at: index)
+                highlightCell(at: index, askDelegate: askDelegate, notifyDelegate: notifyDelegate)
                 layoutIfNeeded()
             }
         } else {
-            highlightCell(at: index)
+            highlightCell(at: index, askDelegate: askDelegate, notifyDelegate: notifyDelegate)
         }
     }
 
@@ -198,34 +213,31 @@ class WaitTimeView: UIView {
         return result
     }
 
-}
-
-extension WaitTimeView: UIScrollViewDelegate {
-
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let initialPosition = scrollView.contentOffset.x
-        let decelerationRate = scrollView.decelerationRate.rawValue
-        let deltaPosition = velocity.x * decelerationRate / (1 - decelerationRate)
-        let finalPosition = initialPosition + deltaPosition
-        let cellWidth = scrollView.bounds.width
-        let index = Int(finalPosition / cellWidth)
-        targetContentOffset.pointee = CGPoint(x: cellWidth * CGFloat(index), y: 0)
+    func visibleCellIndexes() -> [Int] {
+        cells.enumerated().filter { (i, cell) in
+            let cellRectInView = cell.convert(cell.bounds, to: self)
+            return bounds.contains(cellRectInView)
+        }.map { $0.offset }
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let highlightIndex = highlightIndex else {
+    func scrollCellToCenter(at index: Int, animated: Bool) {
+        guard 0 <= index, index < cells.count else {
             return
         }
 
-        let cellWidth = scrollView.bounds.width
-        let position = scrollView.contentOffset.x
-        let index = Int(round(position / cellWidth))
+        layoutIfNeeded()
 
-        let maxIndexDist = 2
-        if abs(index - highlightIndex) > maxIndexDist {
-            let clampedIndex = max(index - maxIndexDist, min(index + maxIndexDist, highlightIndex))
-            highlightCell(at: clampedIndex, animated: true)
-        }
+        let cell = cells[index]
+        let offset = cell.convert(cell.bounds, to: scrollView).minX
+        scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: animated)
+    }
+
+}
+
+extension WaitTimesView: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.waitTimesViewDidScroll?(self)
     }
 
 }

@@ -288,10 +288,11 @@ class EateryViewController: UIViewController {
             cell.statusLabel.textColor = UIColor(named: "Black")
             cell.statusLabel.text = "12-15 minutes"
 
+            let events = eatery.events
             cell.on(UITapGestureRecognizer()) { [self] _ in
                 let viewController = WaitTimesSheetViewController()
                 viewController.setUpSheetPresentation()
-                viewController.setUp(waitTimes)
+                viewController.setUp(waitTimes, events: events)
                 present(viewController, animated: true)
             }
 

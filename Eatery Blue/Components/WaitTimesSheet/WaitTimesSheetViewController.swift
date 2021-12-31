@@ -9,8 +9,22 @@ import UIKit
 
 class WaitTimesSheetViewController: SheetViewController {
 
+    private let dayFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMMM d"
+        return dateFormatter
+    }()
+
+    private let shortTimeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+        dateFormatter.calendar = .eatery
+        return dateFormatter
+    }()
+
     // A time formatter without AM/PM in 12-hour time
-    private let timeFormatter: DateFormatter = {
+    private let tinyTimeFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm"
         dateFormatter.calendar = .eatery
@@ -23,15 +37,36 @@ class WaitTimesSheetViewController: SheetViewController {
 
     private var day = Day()
     private var waitTimes: WaitTimes?
+    private var events: [Event] = []
 
-    func setUp(_ waitTimes: WaitTimes, day: Day = Day()) {
+    private let waitTimeLabel = UILabel()
+    private let dayLabel = UILabel()
+    private let visibleTimesLabel = UILabel()
+    private let waitTimesView = WaitTimesView()
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Compute layout so the waitTimesView is able to accurately scroll cell to center
+        view.layoutIfNeeded()
+
+        let index = index(closesTo: Date())
+        waitTimesView.highlightCell(at: index)
+        waitTimesView.scrollCellToCenter(at: index, animated: false)
+        updateWaitTimeLabel()
+    }
+
+    func setUp(_ waitTimes: WaitTimes, events: [Event], day: Day = Day()) {
         self.waitTimes = waitTimes
         self.day = day
+        self.events = events
 
         addHeader(title: "Wait Time", image: UIImage(named: "Watch"))
-        addStatusLabel("12-15 minutes")
-        addTextSection(title: "Wednesday, November 10", description: "11:45 AM - 1:00 PM")
-        addWaitTimeView(generateWaitTimeData(waitTimes, day: day))
+        setUpWaitTimeLabel()
+        setUpDayLabel()
+        setCustomSpacing(4)
+        setUpVisibleTimesLabel()
+        setUpWaitTimesView(generateWaitTimeData(waitTimes, events: events, day: day))
         setCustomSpacing(24)
         addPillButton(title: "Close", style: .regular) { [self] in
             dismiss(animated: true)
@@ -43,12 +78,24 @@ class WaitTimesSheetViewController: SheetViewController {
         }
     }
 
-    private func addStatusLabel(_ text: String) {
-        let label = UILabel()
-        label.text = text
-        label.textColor = UIColor(named: "EateryBlue")
-        label.font = .preferredFont(for: .headline, weight: .semibold)
-        stackView.addArrangedSubview(label)
+    private func setUpWaitTimeLabel() {
+        waitTimeLabel.textColor = UIColor(named: "EateryBlue")
+        waitTimeLabel.font = .preferredFont(for: .headline, weight: .semibold)
+        stackView.addArrangedSubview(waitTimeLabel)
+    }
+
+    private func setUpDayLabel() {
+        dayLabel.text = dayFormatter.string(from: day.date())
+        dayLabel.textColor = UIColor(named: "Gray05")
+        dayLabel.font = .preferredFont(for: .subheadline, weight: .medium)
+        stackView.addArrangedSubview(dayLabel)
+    }
+
+    private func setUpVisibleTimesLabel() {
+        visibleTimesLabel.textColor = UIColor(named: "Black")
+        visibleTimesLabel.font = .preferredFont(for: .body, weight: .semibold)
+        visibleTimesLabel.numberOfLines = 0
+        stackView.addArrangedSubview(visibleTimesLabel)
     }
 
     private func midpointDateOfSample(at index: Int) -> Date {
@@ -63,7 +110,12 @@ class WaitTimesSheetViewController: SheetViewController {
         waitTimes?.sample(at: midpointDateOfSample(at: index))
     }
 
-    private func generateWaitTimeData(_ waitTimes: WaitTimes, day: Day) -> WaitTimeData {
+    private func index(closesTo date: Date) -> Int {
+        let timeSinceStartOfDay = date.timeIntervalSince(Day(date: date).date())
+        return Int(timeSinceStartOfDay / samplePeriod)
+    }
+
+    private func generateWaitTimeData(_ waitTimes: WaitTimes, events: [Event], day: Day) -> WaitTimeData {
         var data: WaitTimeData = []
 
         for i in 0..<1000 {
@@ -72,45 +124,84 @@ class WaitTimesSheetViewController: SheetViewController {
                 break
             }
 
-            guard let sample = sample(at: i) else {
-                continue
-            }
-
             let sampleStart = startDateOfSample(at: i)
-            data.append((
-                startTime: timeFormatter.string(from: sampleStart),
-                fraction: max(0, min(1, sample.expected / (2 * samplePeriod)))
-            ))
+
+            if !EateryStatus(events, date: sampleMidpoint).isOpen {
+                // If the eatery is closed, display zero height bar
+                data.append((
+                    startTime: tinyTimeFormatter.string(from: sampleStart),
+                    fraction: 0
+                ))
+            
+            } else if let sample = sample(at: i) {
+                // Otherwise, display the sample
+                data.append((
+                    startTime: tinyTimeFormatter.string(from: sampleStart),
+                    fraction: max(0, min(1, sample.expected / (2 * samplePeriod)))
+                ))
+            }
         }
 
         return data
     }
 
-    private func addWaitTimeView(_ data: WaitTimeData) {
-        let view = WaitTimeView()
-        view.delegate = self
+    private func setUpWaitTimesView(_ data: WaitTimeData) {
+        waitTimesView.delegate = self
 
         for datum in data {
             let cell = WaitTimeCell()
             cell.setDatum(startTime: datum.startTime, fraction: datum.fraction)
-            view.addCell(cell)
+            waitTimesView.addCell(cell)
         }
 
-        stackView.addArrangedSubview(view)
+        stackView.addArrangedSubview(waitTimesView)
+    }
+
+    private func updateWaitTimeLabel() {
+        guard let highlightedIndex = waitTimesView.highlightedIndex,
+              let sample = sample(at: highlightedIndex)
+        else {
+            return
+        }
+
+        let low = Int(round(sample.low / 60))
+        let high = Int(round(sample.high / 60))
+
+        waitTimeLabel.text = "\(low)-\(high) minutes"
     }
 
 }
 
 extension WaitTimesSheetViewController: WaitTimeViewDelegate {
 
-    func waitTimeView(_ sender: WaitTimeView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String {
+    func waitTimesView(_ sender: WaitTimesView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String {
         guard let sample = sample(at: index) else {
             return "? min"
         }
 
-        let lowMinutes = Int(sample.low / 60)
-        let highMinutes = Int(sample.high / 60)
+        let lowMinutes = Int(round(sample.low / 60))
+        let highMinutes = Int(round(sample.high / 60))
         return "\(lowMinutes)-\(highMinutes) min"
+    }
+
+    func waitTimesViewDidScroll(_ sender: WaitTimesView) {
+        let visibleRange = sender.visibleCellIndexes().prefix(5)
+        guard let lower = visibleRange.min(), let upper = visibleRange.max() else {
+            return
+        }
+
+        let lowerDate = startDateOfSample(at: lower)
+        let upperDate = startDateOfSample(at: upper + 1)
+
+        visibleTimesLabel.text = "\(shortTimeFormatter.string(from: lowerDate)) - \(shortTimeFormatter.string(from: upperDate))"
+    }
+
+    func waitTimesView(_ sender: WaitTimesView, shouldHighlightCell cell: WaitTimeCell, atIndex i: Int) -> Bool {
+        EateryStatus(events, date: startDateOfSample(at: i)).isOpen
+    }
+
+    func waitTimesView(_ sender: WaitTimesView, didHighlightCell cell: WaitTimeCell, atIndex index: Int) {
+        updateWaitTimeLabel()
     }
 
 }

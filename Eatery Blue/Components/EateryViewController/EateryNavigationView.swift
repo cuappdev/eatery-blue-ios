@@ -11,6 +11,8 @@ class EateryNavigationView: UIView {
 
     let backgroundView = UIView()
 
+    let stackView = UIStackView()
+
     let normalNavigationBar = UIView()
     let backButton = ContainerView(pillContent: UIImageView())
     let titleLabel = UILabel()
@@ -43,13 +45,22 @@ class EateryNavigationView: UIView {
         addSubview(backgroundView)
         setUpBackgroundView()
 
-        addSubview(normalNavigationBar)
-        setUpNormalNavigationBar()
-
-        addSubview(scrollView)
-        setUpScrollView()
+        addSubview(stackView)
+        setUpStackView()
 
         addSubview(divider)
+    }
+
+    private func setUpStackView() {
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        stackView.alignment = .center
+
+        stackView.addArrangedSubview(normalNavigationBar)
+        setUpNormalNavigationBar()
+
+        stackView.addArrangedSubview(scrollView)
+        setUpScrollView()
     }
 
     private func setUpBackgroundView() {
@@ -118,8 +129,13 @@ class EateryNavigationView: UIView {
     private func setUpConstraints() {
         backgroundView.edgesToSuperview()
 
-        normalNavigationBar.edges(to: layoutMarginsGuide, excluding: .bottom)
+        stackView.top(to: layoutMarginsGuide)
+        stackView.leadingToSuperview()
+        stackView.trailingToSuperview()
+
         normalNavigationBar.height(44)
+        normalNavigationBar.leading(to: layoutMarginsGuide)
+        normalNavigationBar.trailing(to: layoutMarginsGuide)
 
         backButton.centerYToSuperview()
         backButton.leadingToSuperview()
