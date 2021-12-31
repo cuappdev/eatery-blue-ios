@@ -197,7 +197,7 @@ extension WaitTimesSheetViewController: WaitTimeViewDelegate {
     }
 
     func waitTimesView(_ sender: WaitTimesView, shouldHighlightCell cell: WaitTimeCell, atIndex i: Int) -> Bool {
-        EateryStatus(events, date: startDateOfSample(at: i)).isOpen
+        EateryStatus(events, date: midpointDateOfSample(at: i)).isOpen
     }
 
     func waitTimesView(_ sender: WaitTimesView, didHighlightCell cell: WaitTimeCell, atIndex index: Int) {
