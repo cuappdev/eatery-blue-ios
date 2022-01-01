@@ -1,5 +1,5 @@
 //
-//  HomeSearchModelViewController.swift
+//  HomeSearchModelController.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/1/22.
@@ -19,6 +19,10 @@ class HomeSearchModelController: HomeSearchViewController {
         searchBar.delegate = self
     }
 
+    func setUp(_ eateries: [Eatery]) {
+        contentController.setUp(eateries)
+    }
+
 }
 
 extension HomeSearchModelController: UISearchBarDelegate {
@@ -26,10 +30,11 @@ extension HomeSearchModelController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         emptyController.view.alpha = searchText.isEmpty ? 1 : 0
         contentController.view.alpha = searchText.isEmpty ? 0 : 1
+
+        contentController.searchTextDidChange(searchText)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: false)
         navigationController?.popViewController(animated: true)
     }
 

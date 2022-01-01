@@ -97,7 +97,7 @@ class EateryLargeCardView: UIView {
         labelStackView.topToBottom(of: imageView, offset: 12)
         labelStackView.leadingToSuperview(offset: 12)
         labelStackView.bottomToSuperview(offset: -12)
-        labelStackView.trailingToLeading(of: favoriteImageView, offset: 16)
+        labelStackView.trailingToLeading(of: favoriteImageView, offset: -16)
 
         favoriteImageView.trailingToSuperview(offset: 12)
         favoriteImageView.height(to: titleLabel)

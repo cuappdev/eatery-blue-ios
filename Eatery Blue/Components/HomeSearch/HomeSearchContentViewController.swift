@@ -142,7 +142,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
 
         case .item(let item, let eatery):
             let view = SearchItemView()
-            view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
             view.titleLabel.text = item.name
 
             if let price = item.price {

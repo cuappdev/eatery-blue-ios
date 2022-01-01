@@ -36,7 +36,6 @@ class HomeSearchViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        RootViewController.setStatusBarStyle(.lightContent)
         searchBar.setShowsCancelButton(false, animated: false)
     }
 

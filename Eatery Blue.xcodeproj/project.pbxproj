@@ -38,9 +38,11 @@
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
-		5D73C3812780E4F30020507C /* HomeSearchModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3802780E4F30020507C /* HomeSearchModelViewController.swift */; };
+		5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3802780E4F30020507C /* HomeSearchModelController.swift */; };
 		5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */; };
 		5D73C3852780F0060020507C /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3842780F0060020507C /* SearchItemView.swift */; };
+		5D73C38827810B160020507C /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C38727810B160020507C /* Fuse */; };
+		5D73C38A27810F370020507C /* FuseFuture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C38927810F370020507C /* FuseFuture.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -145,9 +147,10 @@
 		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
 		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
 		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
-		5D73C3802780E4F30020507C /* HomeSearchModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchModelViewController.swift; sourceTree = "<group>"; };
+		5D73C3802780E4F30020507C /* HomeSearchModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchModelController.swift; sourceTree = "<group>"; };
 		5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentModelController.swift; sourceTree = "<group>"; };
 		5D73C3842780F0060020507C /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
+		5D73C38927810F370020507C /* FuseFuture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuseFuture.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -211,6 +214,7 @@
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
 				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
+				5D73C38827810B160020507C /* Fuse in Frameworks */,
 				5DF5F7C92773FCEC001ADCDC /* TinyConstraints in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +287,7 @@
 				5DF304A22778F3D100E2C9A4 /* Calendar.swift */,
 				5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */,
 				5DF5F7D5277404C8001ADCDC /* UIFont.swift */,
+				5D73C38927810F370020507C /* FuseFuture.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -397,7 +402,7 @@
 				5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */,
 				5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */,
 				5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */,
-				5D73C3802780E4F30020507C /* HomeSearchModelViewController.swift */,
+				5D73C3802780E4F30020507C /* HomeSearchModelController.swift */,
 				5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */,
 				5D73C3842780F0060020507C /* SearchItemView.swift */,
 				5DF5F7E42774BEE3001ADCDC /* SearchRecentItemView.swift */,
@@ -501,6 +506,7 @@
 				5DF5F7C82773FCEC001ADCDC /* TinyConstraints */,
 				5DF5F7CB2773FD09001ADCDC /* Tactile */,
 				5DF5F7D827740D26001ADCDC /* Kingfisher */,
+				5D73C38727810B160020507C /* Fuse */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -535,6 +541,7 @@
 				5DF5F7C72773FCEC001ADCDC /* XCRemoteSwiftPackageReference "TinyConstraints" */,
 				5DF5F7CA2773FD09001ADCDC /* XCRemoteSwiftPackageReference "Tactile" */,
 				5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -615,6 +622,7 @@
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
 				5DF5F7E92774C8A9001ADCDC /* EateryLargeCardStackView.swift in Sources */,
 				5DF304D1277A69E000E2C9A4 /* ListViewController.swift in Sources */,
+				5D73C38A27810F370020507C /* FuseFuture.swift in Sources */,
 				5D468A17277E401800986AFF /* Schema.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
@@ -634,7 +642,7 @@
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
-				5D73C3812780E4F30020507C /* HomeSearchModelViewController.swift in Sources */,
+				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,
@@ -862,6 +870,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krisk/fuse-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
@@ -897,6 +913,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5D73C38727810B160020507C /* Fuse */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */;
+			productName = Fuse;
+		};
 		5DF5F7C22773FCC4001ADCDC /* Hero */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */;

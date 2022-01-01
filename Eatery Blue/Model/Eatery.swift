@@ -74,7 +74,7 @@ struct MenuItem: Codable, Hashable {
     let price: Int?
     let isSearchable: Bool
 
-    init(healthy: Bool, name: String, description: String? = nil, price: Int? = nil, isSearchable: Bool = false) {
+    init(healthy: Bool, name: String, description: String? = nil, price: Int? = nil, isSearchable: Bool = true) {
         self.healthy = healthy
         self.name = name
         self.description = description

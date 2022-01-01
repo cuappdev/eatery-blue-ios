@@ -91,12 +91,6 @@ class HomeViewController: UIViewController {
 
     private func setUpNavigationView() {
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
-
-        navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
-            let searchViewController = HomeSearchModelController()
-            navigationController?.hero.isEnabled = false
-            navigationController?.pushViewController(searchViewController, animated: true)
-        }
     }
 
     private func setUpConstraints() {
@@ -129,14 +123,6 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UISearchBarDelegate {
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        let searchViewController = HomeSearchModelController()
-        navigationController?.hero.isEnabled = true
-        navigationController?.hero.navigationAnimationType = .fade
-        navigationController?.pushViewController(searchViewController, animated: true)
-        return false
-    }
 
 }
 

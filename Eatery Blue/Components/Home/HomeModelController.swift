@@ -31,6 +31,7 @@ class HomeModelController: HomeViewController {
         super.viewDidLoad()
 
         setUpFilterController()
+        setUpNavigationView()
 
         updateCellsFromState()
 
@@ -42,6 +43,15 @@ class HomeModelController: HomeViewController {
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         filterController.delegate = self
         filterController.didMove(toParent: self)
+    }
+
+    private func setUpNavigationView() {
+        navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
+            let searchViewController = HomeSearchModelController()
+            searchViewController.setUp(allEateries)
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(searchViewController, animated: true)
+        }
     }
 
     private func updateStateFromNetworking() {
@@ -133,6 +143,19 @@ extension HomeModelController: EateryFilterViewControllerDelegate {
     func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
         updateCellsFromState()
+    }
+
+}
+
+extension HomeModelController {
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        let viewController = HomeSearchModelController()
+        viewController.setUp(allEateries)
+        navigationController?.hero.isEnabled = true
+        navigationController?.hero.navigationAnimationType = .fade
+        navigationController?.pushViewController(viewController, animated: true)
+        return false
     }
 
 }
