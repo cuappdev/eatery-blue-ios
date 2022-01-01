@@ -80,11 +80,10 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = 44
-
+        tableView.estimatedRowHeight = 216
+        tableView.allowsSelection = false
         tableView.tableHeaderView = tableHeaderView
         tableView.tableFooterView = UIView()
-        tableView.allowsSelection = false
 
         tableView.register(CarouselTableViewCell.self, forCellReuseIdentifier: "carouselView")
         tableView.register(EateryLargeCardTableViewCell.self, forCellReuseIdentifier: "eateryCard")
@@ -94,7 +93,7 @@ class HomeViewController: UIViewController {
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
-            let searchViewController = HomeSearchViewController()
+            let searchViewController = HomeSearchModelController()
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
@@ -132,7 +131,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UISearchBarDelegate {
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        let searchViewController = HomeSearchViewController()
+        let searchViewController = HomeSearchModelController()
         navigationController?.hero.isEnabled = true
         navigationController?.hero.navigationAnimationType = .fade
         navigationController?.pushViewController(searchViewController, animated: true)

@@ -26,6 +26,8 @@ class CarouselViewCompact: UIView {
     }
 
     private func setUpSelf() {
+        insetsLayoutMarginsFromSafeArea = false
+
         addSubview(titleLabel)
         setUpTitleLabel()
 
@@ -41,7 +43,7 @@ class CarouselViewCompact: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "ForwardButton")
+        buttonImageView.image = UIImage(named: "ButtonArrowForward")
     }
 
     private func setUpScrollView() {
@@ -60,20 +62,20 @@ class CarouselViewCompact: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.top(to: self, self.layoutMarginsGuide.topAnchor)
-        titleLabel.leading(to: self, self.layoutMarginsGuide.leadingAnchor)
+        titleLabel.top(to: layoutMarginsGuide)
+        titleLabel.leading(to: layoutMarginsGuide)
         titleLabel.trailingToLeading(of: buttonImageView)
         titleLabel.height(to: buttonImageView)
 
-        buttonImageView.top(to: self, self.layoutMarginsGuide.topAnchor)
-        buttonImageView.trailing(to: self, self.layoutMarginsGuide.trailingAnchor)
+        buttonImageView.top(to: layoutMarginsGuide)
+        buttonImageView.trailing(to: layoutMarginsGuide)
         buttonImageView.height(40)
         buttonImageView.width(40)
 
         scrollView.topToBottom(of: titleLabel, offset: 12)
         scrollView.leadingToSuperview()
         scrollView.trailingToSuperview()
-        scrollView.bottom(to: self, self.layoutMarginsGuide.bottomAnchor)
+        scrollView.bottom(to: layoutMarginsGuide)
         scrollView.height(140)
 
         stackView.edgesToSuperview()
@@ -82,6 +84,12 @@ class CarouselViewCompact: UIView {
 
     func addCardView(_ cardView: EaterySmallCardView) {
         stackView.addArrangedSubview(cardView)
+    }
+
+    func removeAllCardViews() {
+        for view in stackView.arrangedSubviews {
+            view.removeFromSuperview()
+        }
     }
 
 }

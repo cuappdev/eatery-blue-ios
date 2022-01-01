@@ -55,4 +55,10 @@ class SearchRecentsView: UIView {
         stackView.addArrangedSubview(itemView)
     }
 
+    func removeAllItems() {
+        for view in stackView.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+    }
+
 }

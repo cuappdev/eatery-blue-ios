@@ -1,18 +1,19 @@
 //
-//  MenuItemView.swift
+//  SearchItemView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/23/21.
+//  Created by William Ma on 1/1/22.
 //
 
 import UIKit
 
-class MenuItemView: UIView {
+class SearchItemView: UIView {
 
     let stackView = UIStackView()
     let titleLabel = UILabel()
     let priceLabel = UILabel()
     let descriptionLabel = UILabel()
+    let sourceLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,7 +28,9 @@ class MenuItemView: UIView {
 
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
-        
+
+        backgroundColor = .white
+
         addSubview(stackView)
         setUpStackView()
     }
@@ -49,6 +52,9 @@ class MenuItemView: UIView {
 
         stackView.addArrangedSubview(descriptionLabel)
         setUpDescriptionLabel()
+
+        stackView.addArrangedSubview(sourceLabel)
+        setUpSourceLabel()
     }
 
     private func setUpTitleLabel() {
@@ -66,6 +72,11 @@ class MenuItemView: UIView {
         descriptionLabel.textColor = UIColor(named: "Gray05")
         descriptionLabel.isHidden = true
         descriptionLabel.numberOfLines = 0
+    }
+
+    private func setUpSourceLabel() {
+        sourceLabel.font = .preferredFont(for: .caption1, weight: .medium)
+        sourceLabel.textColor = UIColor(named: "EateryBlue")
     }
 
     private func setUpConstraints() {

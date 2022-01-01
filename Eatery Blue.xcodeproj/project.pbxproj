@@ -35,6 +35,12 @@
 		5D468A21277E59F300986AFF /* WaitTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A20277E59F300986AFF /* WaitTimes.swift */; };
 		5D468A27277E820C00986AFF /* EateryTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A26277E820C00986AFF /* EateryTiming.swift */; };
 		5D468A29277E83F800986AFF /* EateryLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A28277E83F800986AFF /* EateryLocation.swift */; };
+		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
+		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
+		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
+		5D73C3812780E4F30020507C /* HomeSearchModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3802780E4F30020507C /* HomeSearchModelViewController.swift */; };
+		5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */; };
+		5D73C3852780F0060020507C /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3842780F0060020507C /* SearchItemView.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -136,6 +142,12 @@
 		5D468A20277E59F300986AFF /* WaitTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimes.swift; sourceTree = "<group>"; };
 		5D468A26277E820C00986AFF /* EateryTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryTiming.swift; sourceTree = "<group>"; };
 		5D468A28277E83F800986AFF /* EateryLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EateryLocation.swift; sourceTree = "<group>"; };
+		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
+		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
+		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
+		5D73C3802780E4F30020507C /* HomeSearchModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchModelViewController.swift; sourceTree = "<group>"; };
+		5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentModelController.swift; sourceTree = "<group>"; };
+		5D73C3842780F0060020507C /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -381,7 +393,13 @@
 			isa = PBXGroup;
 			children = (
 				5DF5F7DE27742273001ADCDC /* CarouselViewCompact.swift */,
+				5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */,
+				5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */,
+				5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */,
+				5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */,
+				5D73C3802780E4F30020507C /* HomeSearchModelViewController.swift */,
 				5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */,
+				5D73C3842780F0060020507C /* SearchItemView.swift */,
 				5DF5F7E42774BEE3001ADCDC /* SearchRecentItemView.swift */,
 				5DF5F7E22774BEAD001ADCDC /* SearchRecentsView.swift */,
 			);
@@ -553,14 +571,17 @@
 				5D468A02277D252600986AFF /* EateryPredicate.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
+				5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* EateryViewController.swift in Sources */,
 				5DF304A527791D2C00E2C9A4 /* EateryModelController.swift in Sources */,
 				5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
 				5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */,
+				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
 				5D0CDC602776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift in Sources */,
+				5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
 				5DF304C6277A22AD00E2C9A4 /* ReportIssueButtonView.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
@@ -589,6 +610,7 @@
 				5DF304A32778F3D100E2C9A4 /* Calendar.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
 				5D468A21277E59F300986AFF /* WaitTimes.swift in Sources */,
+				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,
 				5DF304AD2779209E00E2C9A4 /* DayPickerCell.swift in Sources */,
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
 				5DF5F7E92774C8A9001ADCDC /* EateryLargeCardStackView.swift in Sources */,
@@ -598,6 +620,7 @@
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
 				5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */,
 				5D468A1B277E45DE00986AFF /* Day.swift in Sources */,
+				5D73C3852780F0060020507C /* SearchItemView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* DayPickerView.swift in Sources */,
 				5D468A1D277E578A00986AFF /* EateryStatus.swift in Sources */,
 				5D468A19277E440300986AFF /* SchemaToModel.swift in Sources */,
@@ -611,6 +634,7 @@
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
+				5D73C3812780E4F30020507C /* HomeSearchModelViewController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,

@@ -160,9 +160,11 @@ class EateryFormatter {
             var lines: [NSAttributedString] = []
 
             var firstLineComponents: [NSAttributedString] = []
-            firstLineComponents.append(NSAttributedString(
-                string: formatEateryTimeTotal(eatery, userLocation: userLocation, departureDate: date)
-            ))
+            if let building = eatery.building {
+                firstLineComponents.append(NSAttributedString(
+                    string: building
+                ))
+            }
             if let firstLineSecondComponent = firstLineSecondComponent(eatery, date: date) {
                 firstLineComponents.append(firstLineSecondComponent)
             }
