@@ -22,6 +22,8 @@ class HomeSearchContentViewController: UIViewController {
     }
 
     private let blurView = UIVisualEffectView()
+    let filterController = EateryFilterViewController()
+    private var filterView: UIView { filterController.view }
     private let separator = HDivider()
     let tableView = UITableView()
 
@@ -41,7 +43,15 @@ class HomeSearchContentViewController: UIViewController {
         view.addSubview(blurView)
         setUpBlurView()
 
+        setUpFilterController()
+
         view.addSubview(separator)
+    }
+
+    private func setUpFilterController() {
+        addChild(filterController)
+        view.addSubview(filterView)
+        filterController.didMove(toParent: self)
     }
 
     private func setUpBlurView() {
@@ -62,7 +72,11 @@ class HomeSearchContentViewController: UIViewController {
 
     private func setUpConstraints() {
         blurView.edgesToSuperview(excluding: .bottom)
-        blurView.bottomToTop(of: view.safeAreaLayoutGuide)
+
+        filterView.top(to: view.layoutMarginsGuide)
+        filterView.leadingToSuperview()
+        filterView.trailingToSuperview()
+        filterView.bottom(to: blurView, offset: -12)
 
         separator.leadingToSuperview()
         separator.trailingToSuperview()

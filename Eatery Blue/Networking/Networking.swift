@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-struct Networking {
+class Networking {
 
     enum NetworkingError: Error {
         case other(String)
@@ -27,6 +27,11 @@ struct Networking {
     let fetchUrl: URL
     let decoder: JSONDecoder
 
+    private var lastFetch: Date?
+    private var cachedEateries: [Eatery] = []
+    private var fetchEateriesPublisher: AnyPublisher<[Eatery], Error>?
+    private var cancellables: Set<AnyCancellable> = []
+
     init(fetchUrl: URL) {
         self.fetchUrl = fetchUrl
         self.decoder = JSONDecoder()
@@ -34,15 +39,28 @@ struct Networking {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
-    func fetchEateries() -> AnyPublisher<[Eatery], Error> {
-        return URLSession
+    func isExpired(date: Date, maxStaleness: TimeInterval) -> Bool {
+        if let lastFetch = lastFetch {
+            return date.timeIntervalSince(lastFetch) > maxStaleness
+        } else {
+            return true
+        }
+    }
+
+    func fetchEateries(maxStaleness: TimeInterval = 0) -> AnyPublisher<[Eatery], Error> {
+        if !isExpired(date: Date(), maxStaleness: maxStaleness) {
+            return Just(cachedEateries).setFailureType(to: Error.self).eraseToAnyPublisher()
+        } else if let publisher = fetchEateriesPublisher {
+            return publisher
+        }
+
+        let publisher = URLSession
             .shared
             .dataTaskPublisher(for: fetchUrl)
             .tryMap({ data, response in
                 data
             })
             .decode(type: Schema.APIResponse.self, decoder: decoder)
-            .receive(on: DispatchQueue.main)
             .tryMap({ (response: Schema.APIResponse) -> [Schema.Eatery] in
                 if let error = response.error {
                     throw NetworkingError.other(error)
@@ -54,7 +72,21 @@ struct Networking {
                 schemaEateries.map(SchemaToModel.convert)
             })
             .receive(on: DispatchQueue.main)
+            .share()
             .eraseToAnyPublisher()
+
+        fetchEateriesPublisher = publisher
+
+        publisher
+            .sink { [self] _ in
+                fetchEateriesPublisher = nil
+            } receiveValue: { [self] value in
+                lastFetch = Date()
+                cachedEateries = value
+            }
+            .store(in: &cancellables)
+
+        return publisher
     }
 
 }

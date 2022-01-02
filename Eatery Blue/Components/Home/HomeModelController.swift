@@ -48,7 +48,6 @@ class HomeModelController: HomeViewController {
     private func setUpNavigationView() {
         navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
             let searchViewController = HomeSearchModelController()
-            searchViewController.setUp(allEateries)
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
@@ -151,7 +150,6 @@ extension HomeModelController {
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         let viewController = HomeSearchModelController()
-        viewController.setUp(allEateries)
         navigationController?.hero.isEnabled = true
         navigationController?.hero.navigationAnimationType = .fade
         navigationController?.pushViewController(viewController, animated: true)

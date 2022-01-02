@@ -89,7 +89,7 @@ class ListViewController: UIViewController {
         }
 
         navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
-            let viewController = HomeSearchViewController()
+            let viewController = HomeSearchModelController()
             navigationController?.pushViewController(viewController, animated: true)
         }
     }

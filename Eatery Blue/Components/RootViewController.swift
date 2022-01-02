@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/22/21.
 //
 
+import Combine
 import UIKit
 
 class RootViewController: UIViewController {
@@ -14,6 +15,8 @@ class RootViewController: UIViewController {
     private let home = HomeModelController()
     private let menus = MenusViewController()
     private let profile = ProfileViewController()
+
+    private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,16 +76,15 @@ class RootViewController: UIViewController {
     }
 
     private func setUpStatusBarStyleNotifications() {
-        NotificationCenter.default.addObserver(
-            forName: RootViewController.statusBarStyleNotification,
-            object: nil,
-            queue: nil
-        ) { [self] notification in
-            guard let style = notification.userInfo?["statusBarStyle"] as? UIStatusBarStyle else { return }
+        NotificationCenter.default
+            .publisher(for: RootViewController.statusBarStyleNotification)
+            .sink { [self] notification in
+                guard let style = notification.userInfo?["statusBarStyle"] as? UIStatusBarStyle else { return }
 
-            thePreferredStatusBarStyle = style
-            setNeedsStatusBarAppearanceUpdate()
-        }
+                thePreferredStatusBarStyle = style
+                setNeedsStatusBarAppearanceUpdate()
+            }
+            .store(in: &cancellables)
     }
 
 }

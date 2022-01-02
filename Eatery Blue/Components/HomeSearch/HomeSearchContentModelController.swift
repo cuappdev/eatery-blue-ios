@@ -14,36 +14,37 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     enum SearchItem: Fuseable {
 
         case eatery(Eatery)
-        case menuItem(MenuItem, Eatery)
+        case menuItem(MenuItem, category: String, Eatery)
 
         var properties: [FuseProperty] {
             switch self {
             case .eatery(let eatery):
                 return [
                     FuseProperty(name: eatery.name, weight: 1),
-                    FuseProperty(name: eatery.building ?? "", weight: eatery.building != nil ? 0.3 : 0),
-                    FuseProperty(name: eatery.menuSummary ?? "", weight: eatery.menuSummary != nil ? 0.5 : 0)
+                    FuseProperty(name: eatery.building ?? "", weight: eatery.building != nil ? 0.25 : 0),
                 ]
 
-            case .menuItem(let item, _):
+            case .menuItem(let item, let category, _):
                 return [
                     FuseProperty(name: item.name, weight: 1),
-                    FuseProperty(name: item.description ?? "", weight: item.description != nil ? 0.5 : 0)
+                    FuseProperty(name: item.description ?? "", weight: item.description != nil ? 0.5 : 0),
+                    FuseProperty(name: category, weight: 0.5)
                 ]
             }
         }
 
     }
 
-    private var searchItems: [SearchItem] = []
-
-    private var searchText = CurrentValueSubject<String, Never>("")
+    @Published private var allEateries: [Eatery] = []
+    @Published private var filter = EateryFilter()
+    @Published private var searchText = ""
     private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpSearchTextSubscription()
+        setUpFilterController()
     }
 
     private func setUpSearchTextSubscription() {
@@ -51,15 +52,15 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         // 50 wpm * (5 cpm / wpm) * (1 min / 60 s) = 4.17 characters per second
         // Debounce interval should be 1 / 4.17 ~= 0.25 seconds per character
 
-        searchText
-            .debounce(for: 0.25, scheduler: DispatchQueue.main, options: nil)
+        $searchText
             .filter({ searchText in
                 3 <= searchText.count && searchText.count <= 30
             })
-            .flatMap({ [self] searchText -> AnyPublisher<([SearchItem], [Fuse.FusableSearchResult]), Never> in
-                // Pass along the search items at the time the search is started in case the search items change
-                // mid-search
-                let searchItems = self.searchItems
+            .debounce(for: 0.25, scheduler: DispatchQueue.main, options: nil)
+            .combineLatest($filter, $allEateries)
+            .flatMap({ [self] (searchText, filter, allEateries) -> AnyPublisher<([SearchItem], [Fuse.FusableSearchResult]), Never> in
+                let filtered = allEateries.filter(filter.predicate(userLocation: nil).isSatisfiedBy(_:))
+                let searchItems = computeSearchItems(filtered)
 
                 return Fuse(threshold: 0.4).searchPublisher(searchText, in: searchItems).map { results in
                     (searchItems, results)
@@ -71,8 +72,16 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             .store(in: &cancellables)
     }
 
+    private func setUpFilterController() {
+        filterController.delegate = self
+    }
+
     func setUp(_ eateries: [Eatery]) {
-        searchItems = []
+        self.allEateries = eateries
+    }
+
+    private func computeSearchItems(_ eateries: [Eatery]) -> [SearchItem] {
+        var searchItems: [SearchItem] = []
 
         let now = Date()
         let today = Day(date: now)
@@ -89,16 +98,19 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                     continue
                 }
 
-                let allItems = menu.categories.flatMap({ $0.items })
-                for item in allItems {
-                    guard item.isSearchable else {
-                        continue
-                    }
+                for category in menu.categories {
+                    for item in category.items {
+                        guard item.isSearchable else {
+                            continue
+                        }
 
-                    searchItems.append(.menuItem(item, eatery))
+                        searchItems.append(.menuItem(item, category: category.category, eatery))
+                    }
                 }
             }
         }
+
+        return searchItems
     }
 
     private func updateCells(searchItems: [SearchItem], searchResults: [Fuse.FusableSearchResult]) {
@@ -115,7 +127,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             case .eatery(let eatery):
                 cells.append(.eatery(eatery))
 
-            case .menuItem(let menuItem, let eatery):
+            case .menuItem(let menuItem, _, let eatery):
                 cells.append(.item(menuItem, eatery))
             }
         }
@@ -124,7 +136,15 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     }
 
     func searchTextDidChange(_ searchText: String) {
-        self.searchText.value = searchText
+        self.searchText = searchText
+    }
+
+}
+
+extension HomeSearchContentModelController: EateryFilterViewControllerDelegate {
+
+    func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
+        self.filter = filter
     }
 
 }

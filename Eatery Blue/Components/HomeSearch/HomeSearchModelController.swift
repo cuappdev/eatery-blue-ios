@@ -5,22 +5,30 @@
 //  Created by William Ma on 1/1/22.
 //
 
+import Combine
 import UIKit
 
 class HomeSearchModelController: HomeSearchViewController {
+
+    private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpSearchBar()
+
+        Networking.default
+            .fetchEateries(maxStaleness: .infinity)
+            .sink { _ in
+            } receiveValue: { [self] eateries in
+                contentController.setUp(eateries)
+            }
+            .store(in: &cancellables)
+
     }
 
     private func setUpSearchBar() {
         searchBar.delegate = self
-    }
-
-    func setUp(_ eateries: [Eatery]) {
-        contentController.setUp(eateries)
     }
 
 }
