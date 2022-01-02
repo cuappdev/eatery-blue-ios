@@ -104,6 +104,12 @@ class HomeSearchContentViewController: UIViewController {
         scrollToTop()
     }
 
+    func didSelectEatery(_ eatery: Eatery, at indexPath: IndexPath) {
+    }
+
+    func didSelectItem(_ item: MenuItem, at indexPath: IndexPath, eatery: Eatery?) {
+    }
+
 }
 
 extension HomeSearchContentViewController: UITableViewDataSource {
@@ -145,7 +151,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                 }
             }
             cardView.on(UITapGestureRecognizer()) { [self] _ in
-                pushViewController(for: eatery)
+                didSelectEatery(eatery, at: indexPath)
             }
 
             cardView.height(216)
@@ -183,6 +189,10 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                 view.sourceLabel.isHidden = true
             }
 
+            view.on(UITapGestureRecognizer()) { [self] _ in
+                didSelectItem(item, at: indexPath, eatery: eatery)
+            }
+
             let container = ContainerView(content: view)
             container.cornerRadius = 8
             container.shadowRadius = 4
@@ -195,13 +205,6 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             container.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16))
             return cell
         }
-    }
-
-    func pushViewController(for eatery: Eatery) {
-        let viewController = EateryModelController()
-        viewController.setUp(eatery: eatery)
-        navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(viewController, animated: true)
     }
 
 }

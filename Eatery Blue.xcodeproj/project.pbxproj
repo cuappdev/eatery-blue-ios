@@ -44,8 +44,10 @@
 		5D73C38827810B160020507C /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C38727810B160020507C /* Fuse */; };
 		5D73C38A27810F370020507C /* FuseFuture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C38927810F370020507C /* FuseFuture.swift */; };
 		5D73C38D278129100020507C /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C38C278129100020507C /* Logging */; };
-		5D73C38F278129350020507C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C38E278129350020507C /* Logger.swift */; };
 		5D73C39127812C4F0020507C /* SearchResultsCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C39027812C4F0020507C /* SearchResultsCountView.swift */; };
+		5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3BC27822AD30020507C /* EateryBlue.xcdatamodeld */; };
+		5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3BF27822CD20020507C /* CoreDataStack.swift */; };
+		5D73C3C5278237240020507C /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C3C4278237240020507C /* ArgumentParser */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -53,6 +55,8 @@
 		5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651922773CD5A000338D4 /* HomeViewController.swift */; };
 		5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */; };
 		5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86EDA0277ED0A500C92A3B /* ListModelController.swift */; };
+		5DCB869C2782396000134066 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869B2782396000134066 /* main.swift */; };
+		5DCB869E27823D5500134066 /* NetworkingDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869D27823D5500134066 /* NetworkingDebugger.swift */; };
 		5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4702773D3DC00CC98DD /* Eatery.swift */; };
 		5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4722773D57A00CC98DD /* DummyData.swift */; };
 		5DDAD4752773D70900CC98DD /* EateryMediumCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDAD4742773D70900CC98DD /* EateryMediumCardView.swift */; };
@@ -154,8 +158,9 @@
 		5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentModelController.swift; sourceTree = "<group>"; };
 		5D73C3842780F0060020507C /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
 		5D73C38927810F370020507C /* FuseFuture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuseFuture.swift; sourceTree = "<group>"; };
-		5D73C38E278129350020507C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5D73C39027812C4F0020507C /* SearchResultsCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCountView.swift; sourceTree = "<group>"; };
+		5D73C3BD27822AD30020507C /* EateryBlue.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EateryBlue.xcdatamodel; sourceTree = "<group>"; };
+		5D73C3BF27822CD20020507C /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -165,6 +170,8 @@
 		5D8651922773CD5A000338D4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilterViewController.swift; sourceTree = "<group>"; };
 		5D86EDA0277ED0A500C92A3B /* ListModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModelController.swift; sourceTree = "<group>"; };
+		5DCB869B2782396000134066 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		5DCB869D27823D5500134066 /* NetworkingDebugger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingDebugger.swift; sourceTree = "<group>"; };
 		5DDAD4702773D3DC00CC98DD /* Eatery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eatery.swift; sourceTree = "<group>"; };
 		5DDAD4722773D57A00CC98DD /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		5DDAD4742773D70900CC98DD /* EateryMediumCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumCardView.swift; sourceTree = "<group>"; };
@@ -218,6 +225,7 @@
 			files = (
 				5D73C38D278129100020507C /* Logging in Frameworks */,
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
+				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
 				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
@@ -236,6 +244,15 @@
 				5D468A18277E440300986AFF /* SchemaToModel.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		5D73C3952782277A0020507C /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				5D73C3BC27822AD30020507C /* EateryBlue.xcdatamodeld */,
+				5D73C3BF27822CD20020507C /* CoreDataStack.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		5D8651722773CBFB000338D4 = {
@@ -257,13 +274,15 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
-				5D73C38E278129350020507C /* Logger.swift */,
 				5DF304B427797C3100E2C9A4 /* Components */,
+				5D73C3952782277A0020507C /* CoreData */,
 				5DF304B327797BD200E2C9A4 /* Extensions */,
 				5DF304B227797BBA00E2C9A4 /* Model */,
 				5D468A13277E3FD300986AFF /* Networking */,
+				5DCB869F27823DDB00134066 /* Testing */,
 				5D8651872773CBFB000338D4 /* Assets.xcassets */,
 				5D86518C2773CBFB000338D4 /* Info.plist */,
 				5D8651892773CBFB000338D4 /* LaunchScreen.storyboard */,
@@ -271,11 +290,19 @@
 			path = "Eatery Blue";
 			sourceTree = "<group>";
 		};
+		5DCB869F27823DDB00134066 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				5DDAD4722773D57A00CC98DD /* DummyData.swift */,
+				5DCB869D27823D5500134066 /* NetworkingDebugger.swift */,
+			);
+			path = Testing;
+			sourceTree = "<group>";
+		};
 		5DF304B227797BBA00E2C9A4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				5D468A1A277E45DE00986AFF /* Day.swift */,
-				5DDAD4722773D57A00CC98DD /* DummyData.swift */,
 				5DDAD4702773D3DC00CC98DD /* Eatery.swift */,
 				5DF304FE277CC15B00E2C9A4 /* EateryFilter.swift */,
 				5D468A1E277E57AF00986AFF /* EateryFormatter.swift */,
@@ -516,6 +543,7 @@
 				5DF5F7D827740D26001ADCDC /* Kingfisher */,
 				5D73C38727810B160020507C /* Fuse */,
 				5D73C38C278129100020507C /* Logging */,
+				5D73C3C4278237240020507C /* ArgumentParser */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -552,6 +580,7 @@
 				5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */,
 				5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */,
+				5D73C3C3278237230020507C /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -598,6 +627,7 @@
 				5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */,
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
+				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
 				5D0CDC602776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift in Sources */,
 				5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
@@ -605,7 +635,6 @@
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
 				5D4689FC277D0BA200986AFF /* EateryLargeCardCell.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* EateryMediumCardView.swift in Sources */,
-				5D73C38F278129350020507C /* Logger.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* MenuCategoryView.swift in Sources */,
 				5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
@@ -617,6 +646,7 @@
 				5DF30503277CF41700E2C9A4 /* HomeModelController.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
+				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5D4689FA277D061900986AFF /* CarouselTableViewCell.swift in Sources */,
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
 				5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */,
@@ -626,6 +656,7 @@
 				5D468A29277E83F800986AFF /* EateryLocation.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
 				5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */,
+				5DCB869E27823D5500134066 /* NetworkingDebugger.swift in Sources */,
 				5DF304A32778F3D100E2C9A4 /* Calendar.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
 				5D468A21277E59F300986AFF /* WaitTimes.swift in Sources */,
@@ -664,6 +695,7 @@
 				5DF304DD277B6C6A00E2C9A4 /* HomeNavigationView.swift in Sources */,
 				5D0CDC432774E5F400AD0E27 /* EateryPillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
+				5DCB869C2782396000134066 /* main.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -898,6 +930,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		5D73C3C3278237230020507C /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
@@ -943,6 +983,11 @@
 			package = 5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */;
 			productName = Logging;
 		};
+		5D73C3C4278237240020507C /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D73C3C3278237230020507C /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
 		5DF5F7C22773FCC4001ADCDC /* Hero */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */;
@@ -964,6 +1009,19 @@
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		5D73C3BC27822AD30020507C /* EateryBlue.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5D73C3BD27822AD30020507C /* EateryBlue.xcdatamodel */,
+			);
+			currentVersion = 5D73C3BD27822AD30020507C /* EateryBlue.xcdatamodel */;
+			path = EateryBlue.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5D8651732773CBFB000338D4 /* Project object */;
 }

@@ -43,6 +43,7 @@ class CarouselViewCompact: UIView {
     }
 
     private func setUpButtonImageView() {
+        buttonImageView.isUserInteractionEnabled = true
         buttonImageView.image = UIImage(named: "ButtonArrowForward")
     }
 

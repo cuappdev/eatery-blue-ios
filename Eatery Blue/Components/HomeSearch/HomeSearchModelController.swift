@@ -16,6 +16,7 @@ class HomeSearchModelController: HomeSearchViewController {
         super.viewDidLoad()
 
         setUpSearchBar()
+        setUpEmptyController()
 
         Networking.default
             .fetchEateries(maxStaleness: .infinity)
@@ -24,11 +25,14 @@ class HomeSearchModelController: HomeSearchViewController {
                 contentController.setUp(eateries)
             }
             .store(in: &cancellables)
-
     }
 
     private func setUpSearchBar() {
         searchBar.delegate = self
+    }
+
+    private func setUpEmptyController() {
+        emptyController.delegate = self
     }
 
 }
@@ -44,6 +48,18 @@ extension HomeSearchModelController: UISearchBarDelegate {
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         navigationController?.popViewController(animated: true)
+    }
+
+}
+
+extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
+
+    func homeSearchEmptyModelController(
+        _ viewController: HomeSearchEmptyModelController,
+        didSelectRecentSearch recentSearch: RecentSearch
+    ) {
+        searchBar.text = recentSearch.title
+        searchBar(searchBar, textDidChange: searchBar.text ?? "")
     }
 
 }

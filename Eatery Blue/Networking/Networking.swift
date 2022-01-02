@@ -14,16 +14,6 @@ class Networking {
         case other(String)
     }
 
-    static let local = Networking(fetchUrl: URL(string: "http://127.0.0.1:8000/api")!)
-    static let dev = Networking(fetchUrl: URL(string: "https://d706-2601-187-8400-2076-1158-3d93-7b45-1456.ngrok.io/api")!)
-    static let prod = Networking(fetchUrl: URL(string: "https://d706-2601-187-8400-2076-1158-3d93-7b45-1456.ngrok.io/api")!)
-
-    #if DEBUG
-    static let `default` = local
-    #else
-    static let `default` = prod
-    #endif
-
     let fetchUrl: URL
     let decoder: JSONDecoder
 
@@ -36,7 +26,7 @@ class Networking {
         self.fetchUrl = fetchUrl
         self.decoder = JSONDecoder()
 
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self.decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
     func isExpired(date: Date, maxStaleness: TimeInterval) -> Bool {

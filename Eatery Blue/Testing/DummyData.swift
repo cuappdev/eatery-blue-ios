@@ -39,7 +39,7 @@ enum DummyData {
         macs.name = "Mac's Café"
         macs.campusArea = "Central"
         macs.building = "Statler Hall"
-        macs.events = (1..<6).map { offset in
+        macs.events = (0..<5).map { offset in
             Event(
                 canonicalDay: Day().advanced(by: offset),
                 startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970,

@@ -89,14 +89,7 @@ class HomeModelController: HomeViewController {
                 ),
             ]
 
-            allEateries = [
-                DummyData.rpcc,
-                DummyData.macs,
-                DummyData.macsOpen,
-                DummyData.macsOpenSoon,
-                DummyData.macsClosed,
-                DummyData.macsClosingSoon
-            ] + eateries.sorted(by: { lhs, rhs in
+            allEateries = eateries.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
 

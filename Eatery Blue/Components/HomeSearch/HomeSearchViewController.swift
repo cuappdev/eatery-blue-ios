@@ -30,13 +30,8 @@ class HomeSearchViewController: UIViewController {
         super.viewDidAppear(animated)
 
         searchBar.searchTextField.becomeFirstResponder()
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        searchBar.setShowsCancelButton(false, animated: false)
+        navigationController?.hero.isEnabled = true
     }
 
     private func setUpView() {
@@ -64,6 +59,7 @@ class HomeSearchViewController: UIViewController {
     }
 
     private func setUpSearchBar() {
+        searchBar.setShowsCancelButton(true, animated: false)
         searchBar.hero.id = "searchBar"
         searchBar.placeholder = "Search for grub..."
         // UISearchBar has a built-in padding of 10px on the top and bottom

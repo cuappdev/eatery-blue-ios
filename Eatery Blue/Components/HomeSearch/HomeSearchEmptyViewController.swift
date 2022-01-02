@@ -9,17 +9,6 @@ import UIKit
 
 class HomeSearchEmptyViewController: UIViewController {
 
-    enum RecentSearchType: String, Codable {
-        case item
-        case place
-    }
-
-    struct RecentSearch: Codable, Hashable {
-        let type: RecentSearchType
-        let title: String
-        let subtitle: String?
-    }
-
     let blurView = UIVisualEffectView()
     let separator = HDivider()
 
@@ -93,43 +82,6 @@ class HomeSearchEmptyViewController: UIViewController {
         blurView.bottomToTop(of: view.safeAreaLayoutGuide)
 
         separator.bottomToTop(of: view.safeAreaLayoutGuide)
-    }
-
-    func updateFavorites(_ favorites: [Eatery]) {
-        favoritesView.removeAllCardViews()
-
-        for favorite in favorites {
-            let cardView = EaterySmallCardView()
-            cardView.imageView.kf.setImage(with: favorite.imageUrl)
-            cardView.titleLabel.text = favorite.name
-            favoritesView.addCardView(cardView)
-        }
-    }
-
-    func updateRecentSearches(_ recentSearches: [RecentSearch]) {
-        recentsView.removeAllItems()
-
-        for recentSearch in recentSearches {
-            let itemView = SearchRecentItemView()
-            itemView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            switch recentSearch.type {
-            case .item:
-                itemView.imageView.image = UIImage(named: "Item")?.withRenderingMode(.alwaysTemplate)
-            case .place:
-                itemView.imageView.image = UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate)
-            }
-            itemView.imageView.tintColor = UIColor(named: "EateryBlue")
-            itemView.titleLabel.text = recentSearch.title
-
-            if let subtitle = recentSearch.subtitle {
-                itemView.subtitleLabel.isHidden = false
-                itemView.subtitleLabel.text = subtitle
-            } else {
-                itemView.subtitleLabel.isHidden = true
-            }
-
-            recentsView.addItem(itemView)
-        }
     }
 
     override func viewSafeAreaInsetsDidChange() {
