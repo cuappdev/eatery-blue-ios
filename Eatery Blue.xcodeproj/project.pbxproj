@@ -43,6 +43,8 @@
 		5D73C3852780F0060020507C /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3842780F0060020507C /* SearchItemView.swift */; };
 		5D73C38827810B160020507C /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C38727810B160020507C /* Fuse */; };
 		5D73C38A27810F370020507C /* FuseFuture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C38927810F370020507C /* FuseFuture.swift */; };
+		5D73C38D278129100020507C /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C38C278129100020507C /* Logging */; };
+		5D73C38F278129350020507C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C38E278129350020507C /* Logger.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -151,6 +153,7 @@
 		5D73C3822780E9DD0020507C /* HomeSearchContentModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentModelController.swift; sourceTree = "<group>"; };
 		5D73C3842780F0060020507C /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
 		5D73C38927810F370020507C /* FuseFuture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuseFuture.swift; sourceTree = "<group>"; };
+		5D73C38E278129350020507C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -211,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D73C38D278129100020507C /* Logging in Frameworks */,
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
 				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
@@ -253,6 +257,7 @@
 			children = (
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
+				5D73C38E278129350020507C /* Logger.swift */,
 				5DF304B427797C3100E2C9A4 /* Components */,
 				5DF304B327797BD200E2C9A4 /* Extensions */,
 				5DF304B227797BBA00E2C9A4 /* Model */,
@@ -507,6 +512,7 @@
 				5DF5F7CB2773FD09001ADCDC /* Tactile */,
 				5DF5F7D827740D26001ADCDC /* Kingfisher */,
 				5D73C38727810B160020507C /* Fuse */,
+				5D73C38C278129100020507C /* Logging */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -542,6 +548,7 @@
 				5DF5F7CA2773FD09001ADCDC /* XCRemoteSwiftPackageReference "Tactile" */,
 				5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */,
+				5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -594,6 +601,7 @@
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
 				5D4689FC277D0BA200986AFF /* EateryLargeCardCell.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* EateryMediumCardView.swift in Sources */,
+				5D73C38F278129350020507C /* Logger.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* MenuCategoryView.swift in Sources */,
 				5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
@@ -878,6 +886,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-log";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
@@ -917,6 +933,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */;
 			productName = Fuse;
+		};
+		5D73C38C278129100020507C /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
 		};
 		5DF5F7C22773FCC4001ADCDC /* Hero */ = {
 			isa = XCSwiftPackageProductDependency;

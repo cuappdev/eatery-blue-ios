@@ -5,7 +5,6 @@
 //  Created by William Ma on 12/23/21.
 //
 
-import os.log
 import UIKit
 
 class EateryViewController: UIViewController {
@@ -474,7 +473,7 @@ extension EateryViewController: UIScrollViewDelegate {
 
         if let categoryView = categoryView {
             guard let index = categoryViews.firstIndex(of: categoryView) else {
-                os_log("%@: could not find index of %@ in categoryViews", self, categoryView)
+                logger.error("\(self): Could not find index of \(categoryView) in categoryViews")
                 return
             }
 

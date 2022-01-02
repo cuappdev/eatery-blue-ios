@@ -49,10 +49,14 @@ class Networking {
 
     func fetchEateries(maxStaleness: TimeInterval = 0) -> AnyPublisher<[Eatery], Error> {
         if !isExpired(date: Date(), maxStaleness: maxStaleness) {
+            logger.debug("\(#function): returning \(cachedEateries.count) cached eateries")
             return Just(cachedEateries).setFailureType(to: Error.self).eraseToAnyPublisher()
         } else if let publisher = fetchEateriesPublisher {
+            logger.debug("\(#function): returning in-flight publisher")
             return publisher
         }
+
+        logger.info("\(#function): fetching fresh eateries")
 
         let publisher = URLSession
             .shared

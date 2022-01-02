@@ -5,7 +5,6 @@
 //  Created by William Ma on 12/30/21.
 //
 
-import os.log
 import Foundation
 
 // A day, specifically in New York timezone
@@ -47,7 +46,7 @@ struct Day {
         let components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute)
 
         guard let date = Calendar.eatery.date(from: components) else {
-            os_log(.fault, "Day: could not form date from components %@", String(reflecting: components))
+            logger.error("\(#function): could not form date from components \(components)")
             return Date()
         }
 
@@ -63,7 +62,7 @@ struct Day {
             matchingPolicy: .nextTime,
             direction: .backward
         ) else {
-            os_log(.fault, "Day: could not find start of week for %@", String(reflecting: self))
+            logger.error("\(#function): could not find start of week for \(self)")
             return self
         }
 
@@ -90,7 +89,7 @@ extension Day: Strideable {
         let currentDate = date()
 
         guard let date = Calendar.eatery.date(byAdding: .day, value: n, to: currentDate) else {
-            os_log(.error, "%@: could not add %d days to %@", #file, n, String(reflecting: currentDate))
+            logger.error("\(#function): could not add \(n) days to \(currentDate)")
             return self
         }
 
@@ -101,13 +100,7 @@ extension Day: Strideable {
         if let day = Calendar.eatery.dateComponents([.day], from: date(), to: other.date()).day {
             return day
         } else {
-            os_log(
-                .error,
-                "%@: Unable to compute distance between %@ and %@",
-                #file,
-                String(reflecting: date()),
-                String(reflecting: other.date())
-            )
+            logger.error("\(#function): unable to compute distance between \(date()) and \(other.date())")
             return 0
         }
     }
