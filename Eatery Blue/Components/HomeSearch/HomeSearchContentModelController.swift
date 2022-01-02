@@ -59,15 +59,20 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             .debounce(for: 0.25, scheduler: DispatchQueue.main, options: nil)
             .combineLatest($filter, $allEateries)
             .flatMap({ [self] (searchText, filter, allEateries) -> AnyPublisher<([SearchItem], [Fuse.FusableSearchResult]), Never> in
-                let filtered = allEateries.filter(filter.predicate(userLocation: nil).isSatisfiedBy(_:))
-                let searchItems = computeSearchItems(filtered)
+                let eateries: [Eatery]
+                if filter.isEnabled {
+                    eateries = allEateries.filter(filter.predicate(userLocation: nil).isSatisfiedBy(_:))
+                } else {
+                    eateries = allEateries
+                }
+                let searchItems = computeSearchItems(eateries)
 
                 return Fuse(threshold: 0.4).searchPublisher(searchText, in: searchItems).map { results in
                     (searchItems, results)
                 }.eraseToAnyPublisher()
             })
             .sink { [self] result in
-                updateCells(searchItems: result.0, searchResults: result.1)
+                updateCells(filtered: filter.isEnabled, searchItems: result.0, searchResults: result.1)
             }
             .store(in: &cancellables)
     }
@@ -113,13 +118,30 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         return searchItems
     }
 
-    private func updateCells(searchItems: [SearchItem], searchResults: [Fuse.FusableSearchResult]) {
+    private func updateCells(filtered: Bool, searchItems: [SearchItem], searchResults: [Fuse.FusableSearchResult]) {
         cells = []
 
-        // Lower score is better match
+        // Lower score is better
         let displayed = searchResults.sorted { lhs, rhs in
             lhs.score < rhs.score
         }.prefix(100)
+
+        if filtered {
+            let countView = SearchResultsCountView()
+            countView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            if displayed.count == 1 {
+                countView.titleLabel.text = "1 result"
+            } else {
+                countView.titleLabel.text = "\(displayed.count) results"
+            }
+
+            countView.resetButton.on(UITapGestureRecognizer()) { [self] _ in
+                filter = EateryFilter()
+                filterController.setFilter(EateryFilter())
+            }
+
+            cells.append(.customView(view: countView))
+        }
 
         for searchResult in displayed {
             let item = searchItems[searchResult.index]

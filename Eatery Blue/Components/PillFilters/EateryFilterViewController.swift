@@ -144,6 +144,7 @@ class EateryFilterViewController: UIViewController {
 
     func setFilter(_ filter: EateryFilter) {
         self.filter = filter
+        updateFilterButtonsFromState()
     }
 
 }
