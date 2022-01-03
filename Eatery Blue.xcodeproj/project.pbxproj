@@ -347,17 +347,17 @@
 				5DDAD4782773DC1600CC98DD /* MenusViewController.swift */,
 				5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */,
 				5DF304D5277AA96300E2C9A4 /* EateryCard */,
-				5DF304BA27797D3C00E2C9A4 /* EateryViewController */,
-				5DF304BC27797D7E00E2C9A4 /* Home */,
-				5DF304BD27797D8700E2C9A4 /* HomeSearch */,
+				5DF304BA27797D3C00E2C9A4 /* EateryScreen */,
+				5DF304D4277A73B700E2C9A4 /* EateryFilter */,
+				5DF304BC27797D7E00E2C9A4 /* HomeScreen */,
+				5DF304BD27797D8700E2C9A4 /* HomeSearchScreen */,
 				5DF304B627797CDB00E2C9A4 /* HoursSheet */,
-				5DF304CF277A652900E2C9A4 /* List */,
+				5DF304CF277A652900E2C9A4 /* ListScreen */,
 				5DF304BE27797DA100E2C9A4 /* MenuPickerSheet */,
 				5DF304B927797D1F00E2C9A4 /* PaymentMethodsFilterSheet */,
 				5DF304B827797D0500E2C9A4 /* PaymentMethodsSheet */,
-				5DF304D4277A73B700E2C9A4 /* PillFilters */,
 				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
-				5DF304C7277A343000E2C9A4 /* ReportIssueViewController */,
+				5DF304C7277A343000E2C9A4 /* ReportIssueScreen */,
 				5DF304B727797CE400E2C9A4 /* Sheet */,
 				5DF304B527797CB600E2C9A4 /* Util */,
 				5DF304C027797E4500E2C9A4 /* WaitTimesSheet */,
@@ -412,7 +412,7 @@
 			path = PaymentMethodsFilterSheet;
 			sourceTree = "<group>";
 		};
-		5DF304BA27797D3C00E2C9A4 /* EateryViewController */ = {
+		5DF304BA27797D3C00E2C9A4 /* EateryScreen */ = {
 			isa = PBXGroup;
 			children = (
 				5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */,
@@ -426,10 +426,10 @@
 				5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */,
 				5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */,
 			);
-			path = EateryViewController;
+			path = EateryScreen;
 			sourceTree = "<group>";
 		};
-		5DF304BC27797D7E00E2C9A4 /* Home */ = {
+		5DF304BC27797D7E00E2C9A4 /* HomeScreen */ = {
 			isa = PBXGroup;
 			children = (
 				5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */,
@@ -439,10 +439,10 @@
 				5DF304DC277B6C6A00E2C9A4 /* HomeNavigationView.swift */,
 				5D8651922773CD5A000338D4 /* HomeViewController.swift */,
 			);
-			path = Home;
+			path = HomeScreen;
 			sourceTree = "<group>";
 		};
-		5DF304BD27797D8700E2C9A4 /* HomeSearch */ = {
+		5DF304BD27797D8700E2C9A4 /* HomeSearchScreen */ = {
 			isa = PBXGroup;
 			children = (
 				5DF5F7DE27742273001ADCDC /* CarouselViewCompact.swift */,
@@ -457,7 +457,7 @@
 				5DF5F7E22774BEAD001ADCDC /* SearchRecentsView.swift */,
 				5D73C39027812C4F0020507C /* SearchResultsCountView.swift */,
 			);
-			path = HomeSearch;
+			path = HomeSearchScreen;
 			sourceTree = "<group>";
 		};
 		5DF304BE27797DA100E2C9A4 /* MenuPickerSheet */ = {
@@ -490,34 +490,34 @@
 			path = ReportIssueView;
 			sourceTree = "<group>";
 		};
-		5DF304C7277A343000E2C9A4 /* ReportIssueViewController */ = {
+		5DF304C7277A343000E2C9A4 /* ReportIssueScreen */ = {
 			isa = PBXGroup;
 			children = (
 				5DF304C8277A345600E2C9A4 /* ReportIssueViewController.swift */,
 				5DF304CA277A36DE00E2C9A4 /* IssueTypeButtonView.swift */,
 				5DF304CC277A3ACA00E2C9A4 /* IssueDescriptionView.swift */,
 			);
-			path = ReportIssueViewController;
+			path = ReportIssueScreen;
 			sourceTree = "<group>";
 		};
-		5DF304CF277A652900E2C9A4 /* List */ = {
+		5DF304CF277A652900E2C9A4 /* ListScreen */ = {
 			isa = PBXGroup;
 			children = (
 				5D86EDA0277ED0A500C92A3B /* ListModelController.swift */,
 				5DF304D2277A6AF200E2C9A4 /* ListNavigationView.swift */,
 				5DF304D0277A69E000E2C9A4 /* ListViewController.swift */,
 			);
-			path = List;
+			path = ListScreen;
 			sourceTree = "<group>";
 		};
-		5DF304D4277A73B700E2C9A4 /* PillFilters */ = {
+		5DF304D4277A73B700E2C9A4 /* EateryFilter */ = {
 			isa = PBXGroup;
 			children = (
 				5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */,
 				5DDAD47C2773E8BA00CC98DD /* PillFiltersView.swift */,
 				5DF5F7D127740140001ADCDC /* PillFilterButtonView.swift */,
 			);
-			path = PillFilters;
+			path = EateryFilter;
 			sourceTree = "<group>";
 		};
 		5DF304D5277AA96300E2C9A4 /* EateryCard */ = {
