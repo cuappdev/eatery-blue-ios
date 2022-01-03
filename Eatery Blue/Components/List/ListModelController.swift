@@ -29,7 +29,7 @@ class ListModelController: ListViewController {
 
     func updateEateriesFromState() {
         if filter.isEnabled {
-            let predicate = filter.predicate(userLocation: nil)
+            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
             eateries = allEateries.filter(predicate.isSatisfiedBy(_:))
         } else {
             eateries = allEateries

@@ -5,7 +5,8 @@
 //  Created by William Ma on 12/22/21.
 //
 
-import os.log
+import Combine
+import CoreLocation
 import UIKit
 import Kingfisher
 
@@ -30,8 +31,9 @@ class HomeViewController: UIViewController {
     private let tableHeaderView = UIView()
 
     var cells: [Cell] = []
+    @Published var userLocation: CLLocation? = nil
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +53,6 @@ class HomeViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         updateScrollViewContentInset()
     }
 
@@ -183,13 +184,18 @@ extension HomeViewController: UITableViewDataSource {
                 )
                 cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
                 cardView.titleLabel.text = eatery.name
-                cardView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
-                    eatery,
-                    style: .medium,
-                    font: .preferredFont(for: .footnote, weight: .medium),
-                    userLocation: nil,
-                    date: Date()
-                ).first
+
+                $userLocation
+                    .sink { userLocation in
+                        cardView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
+                            eatery,
+                            style: .medium,
+                            font: .preferredFont(for: .footnote, weight: .medium),
+                            userLocation: userLocation,
+                            date: Date()
+                        ).first
+                    }
+                    .store(in: &cancellables)
 
                 cardView.on(UITapGestureRecognizer()) { [self] _ in
                     pushViewController(for: eatery)
@@ -231,20 +237,27 @@ extension HomeViewController: UITableViewDataSource {
             )
             cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
             cardView.titleLabel.text = eatery.name
-            let lines = EateryFormatter.default.formatEatery(
-                eatery,
-                style: .long,
-                font: .preferredFont(for: .footnote, weight: .medium),
-                userLocation: nil,
-                date: Date()
-            )
-            for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
-                if i < lines.count {
-                    subtitleLabel.attributedText = lines[i]
-                } else {
-                    subtitleLabel.isHidden = true
+
+            $userLocation
+                .sink { userLocation in
+                    let lines = EateryFormatter.default.formatEatery(
+                        eatery,
+                        style: .long,
+                        font: .preferredFont(for: .footnote, weight: .medium),
+                        userLocation: userLocation,
+                        date: Date()
+                    )
+
+                    for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
+                        if i < lines.count {
+                            subtitleLabel.attributedText = lines[i]
+                        } else {
+                            subtitleLabel.isHidden = true
+                        }
+                    }
                 }
-            }
+                .store(in: &cancellables)
+
             cardView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }

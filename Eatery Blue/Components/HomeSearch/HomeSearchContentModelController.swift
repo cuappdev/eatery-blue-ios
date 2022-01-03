@@ -63,7 +63,8 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             .flatMap({ [self] (searchText, filter, allEateries) -> AnyPublisher<([SearchItem], [Fuse.FusableSearchResult]), Never> in
                 let eateries: [Eatery]
                 if filter.isEnabled {
-                    eateries = allEateries.filter(filter.predicate(userLocation: nil).isSatisfiedBy(_:))
+                    let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
+                    eateries = allEateries.filter(predicate.isSatisfiedBy(_:))
                 } else {
                     eateries = allEateries
                 }

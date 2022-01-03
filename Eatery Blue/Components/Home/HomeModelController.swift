@@ -38,6 +38,14 @@ class HomeModelController: HomeViewController {
         updateStateFromNetworking()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        LocationManager.shared.requestAuthorization()
+        LocationManager.shared.requestLocation()
+        LocationManager.shared.$userLocation.assign(to: &$userLocation)
+    }
+
     private func setUpFilterController() {
         addChild(filterController)
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -118,7 +126,7 @@ class HomeModelController: HomeViewController {
             }
 
         } else {
-            let predicate = filter.predicate(userLocation: nil)
+            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
             let filteredEateries = allEateries.filter(predicate.isSatisfiedBy(_:))
             for eatery in filteredEateries {
                 cells.append(.eateryCard(eatery: eatery))

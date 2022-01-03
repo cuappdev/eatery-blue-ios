@@ -5,7 +5,6 @@
 //  Created by William Ma on 12/27/21.
 //
 
-import os.log
 import UIKit
 
 class ListViewController: UIViewController {
@@ -235,7 +234,7 @@ extension ListViewController: UITableViewDataSource {
                 eatery,
                 style: .long,
                 font: .preferredFont(for: .footnote, weight: .medium),
-                userLocation: nil,
+                userLocation: LocationManager.shared.userLocation,
                 date: Date()
             )
             for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {

@@ -5,7 +5,6 @@
 //  Created by William Ma on 12/30/21.
 //
 
-import os.log
 import Foundation
 
 struct SchemaToModel {

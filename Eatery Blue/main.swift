@@ -22,6 +22,9 @@ struct EateryBlue: ParsableCommand {
     @Flag
     var injectDummyData: Bool = false
 
+    @Flag
+    var locationUrisHall: Bool = false
+
     func run() throws {
         if let logLevel = logLevel, let logLevel = Logger.Level(rawValue: logLevel) {
             logger.logLevel = logLevel
@@ -31,8 +34,9 @@ struct EateryBlue: ParsableCommand {
         }
 
         if injectDummyData {
+            logger.info("\(#function): Injecting dummy data")
             if let fetchUrl = fetchUrl, let url = URL(string: fetchUrl) {
-                let networking = NetworkingDebugger(fetchUrl: url)
+                let networking = DummyNetworking(fetchUrl: url)
                 networking.injectDummyData = true
                 Networking.default = networking
             }
@@ -40,6 +44,13 @@ struct EateryBlue: ParsableCommand {
             if let fetchUrl = fetchUrl, let url = URL(string: fetchUrl) {
                 Networking.default = Networking(fetchUrl: url)
             }
+        }
+
+        if locationUrisHall {
+            logger.info("\(#function): Setting location to uris hall")
+            LocationManager.shared = DummyLocationManager()
+        } else {
+            LocationManager.shared = LocationManager()
         }
 
         AppDelegate.main()
@@ -50,6 +61,12 @@ struct EateryBlue: ParsableCommand {
 extension Networking {
 
     static var `default`: Networking!
+
+}
+
+extension LocationManager {
+
+    static var shared: LocationManager!
 
 }
 

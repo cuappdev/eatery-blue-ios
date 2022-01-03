@@ -140,7 +140,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                 eatery,
                 style: .long,
                 font: .preferredFont(for: .footnote, weight: .medium),
-                userLocation: nil,
+                userLocation: LocationManager.shared.userLocation,
                 date: Date()
             )
             for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {

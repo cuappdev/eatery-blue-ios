@@ -19,6 +19,8 @@ class EateryFormatter {
 
     private let timeFormatter = DateFormatter()
     private let mediumDayMonthFormatter = DateFormatter()
+    private let walkTimeMinutesCap = 30
+    private let waitTimeMinutesCap = 30
 
     init() {
         timeFormatter.dateStyle = .none
@@ -217,7 +219,11 @@ class EateryFormatter {
             let minutesLow = Int(round((((walkTime ?? 0) + waitTime.low) / 60)))
             let minutesHigh = Int(round(((walkTime ?? 0) + waitTime.high) / 60))
 
-            return "\(minutesLow)-\(minutesHigh) min"
+            if min(minutesLow, minutesHigh) > walkTimeMinutesCap + waitTimeMinutesCap {
+                return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min"
+            } else {
+                return "\(minutesLow)-\(minutesHigh) min"
+            }
 
         } else {
             return "-- min"
@@ -227,7 +233,12 @@ class EateryFormatter {
     func formatEateryWalkTime(_ eatery: Eatery, userLocation: CLLocation?) -> String {
         if let walkTime = EateryTiming.walkTime(eatery: eatery, userLocation: userLocation) {
             let minutes = Int(round(walkTime / 60))
-            return "\(minutes) min walk"
+            if minutes > walkTimeMinutesCap {
+                return ">\(walkTimeMinutesCap) min walk"
+            } else {
+                return "\(minutes) min walk"
+            }
+
         } else {
             return "-- min walk"
         }
@@ -244,7 +255,9 @@ class EateryFormatter {
             let minutesLow = Int(round(waitTime.low / 60))
             let minutesHigh = Int(round(waitTime.high / 60))
 
-            if minutesLow == minutesHigh {
+            if min(minutesLow, minutesHigh) > walkTimeMinutesCap + waitTimeMinutesCap {
+                return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min wait"
+            } else if minutesLow == minutesHigh {
                 return "\(minutesLow) min wait"
             } else {
                 return "\(minutesLow)-\(minutesHigh) min wait"

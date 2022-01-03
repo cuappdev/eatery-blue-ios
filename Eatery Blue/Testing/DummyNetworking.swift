@@ -1,5 +1,5 @@
 //
-//  NetworkingDebugger.swift
+//  DummyNetworking.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/2/22.
@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class NetworkingDebugger: Networking {
+class DummyNetworking: Networking {
 
     var injectDummyData: Bool = false
 
