@@ -19,6 +19,7 @@
 		5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */; };
 		5D0CDC592775346600AD0E27 /* PillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC582775346600AD0E27 /* PillView.swift */; };
 		5D0CDC602776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift */; };
+		5D157CDC2783B7140014B63A /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D157CDB2783B7140014B63A /* LogoView.swift */; };
 		5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */; };
 		5D4689FA277D061900986AFF /* CarouselTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */; };
 		5D4689FC277D0BA200986AFF /* EateryLargeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FB277D0BA200986AFF /* EateryLargeCardCell.swift */; };
@@ -55,6 +56,7 @@
 		5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651922773CD5A000338D4 /* HomeViewController.swift */; };
 		5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */; };
 		5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86EDA0277ED0A500C92A3B /* ListModelController.swift */; };
+		5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */; };
 		5DCB869C2782396000134066 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869B2782396000134066 /* main.swift */; };
 		5DCB869E27823D5500134066 /* DummyNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869D27823D5500134066 /* DummyNetworking.swift */; };
 		5DCB86A22783544C00134066 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB86A12783544C00134066 /* LocationManager.swift */; };
@@ -137,6 +139,7 @@
 		5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryNavigationView.swift; sourceTree = "<group>"; };
 		5D0CDC582775346600AD0E27 /* PillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillView.swift; sourceTree = "<group>"; };
 		5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsFilterSheetViewController.swift; sourceTree = "<group>"; };
+		5D157CDB2783B7140014B63A /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationController.swift; sourceTree = "<group>"; };
 		5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselTableViewCell.swift; sourceTree = "<group>"; };
 		5D4689FB277D0BA200986AFF /* EateryLargeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryLargeCardCell.swift; sourceTree = "<group>"; };
@@ -172,6 +175,7 @@
 		5D8651922773CD5A000338D4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5D86ED9E277EBB2B00C92A3B /* EateryFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilterViewController.swift; sourceTree = "<group>"; };
 		5D86EDA0277ED0A500C92A3B /* ListModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModelController.swift; sourceTree = "<group>"; };
+		5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoRefreshControl.swift; sourceTree = "<group>"; };
 		5DCB869B2782396000134066 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5DCB869D27823D5500134066 /* DummyNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyNetworking.swift; sourceTree = "<group>"; };
 		5DCB86A12783544C00134066 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -240,6 +244,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D157CD82783818C0014B63A /* LogoRefreshControl */ = {
+			isa = PBXGroup;
+			children = (
+				5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */,
+				5D157CDB2783B7140014B63A /* LogoView.swift */,
+			);
+			path = LogoRefreshControl;
+			sourceTree = "<group>";
+		};
 		5D468A13277E3FD300986AFF /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,8 +360,8 @@
 				5DDAD4782773DC1600CC98DD /* MenusViewController.swift */,
 				5DDAD47A2773DC4600CC98DD /* ProfileViewController.swift */,
 				5DF304D5277AA96300E2C9A4 /* EateryCard */,
-				5DF304BA27797D3C00E2C9A4 /* EateryScreen */,
 				5DF304D4277A73B700E2C9A4 /* EateryFilter */,
+				5DF304BA27797D3C00E2C9A4 /* EateryScreen */,
 				5DF304BC27797D7E00E2C9A4 /* HomeScreen */,
 				5DF304BD27797D8700E2C9A4 /* HomeSearchScreen */,
 				5DF304B627797CDB00E2C9A4 /* HoursSheet */,
@@ -356,8 +369,9 @@
 				5DF304BE27797DA100E2C9A4 /* MenuPickerSheet */,
 				5DF304B927797D1F00E2C9A4 /* PaymentMethodsFilterSheet */,
 				5DF304B827797D0500E2C9A4 /* PaymentMethodsSheet */,
-				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
+				5D157CD82783818C0014B63A /* LogoRefreshControl */,
 				5DF304C7277A343000E2C9A4 /* ReportIssueScreen */,
+				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
 				5DF304B727797CE400E2C9A4 /* Sheet */,
 				5DF304B527797CB600E2C9A4 /* Util */,
 				5DF304C027797E4500E2C9A4 /* WaitTimesSheet */,
@@ -622,6 +636,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D157CDC2783B7140014B63A /* LogoView.swift in Sources */,
 				5DF304B127793BF800E2C9A4 /* MenuChoiceView.swift in Sources */,
 				5D73C39127812C4F0020507C /* SearchResultsCountView.swift in Sources */,
 				5D468A1F277E57AF00986AFF /* EateryFormatter.swift in Sources */,
@@ -673,6 +688,7 @@
 				5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */,
 				5DCB869E27823D5500134066 /* DummyNetworking.swift in Sources */,
 				5DF304A32778F3D100E2C9A4 /* Calendar.swift in Sources */,
+				5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
 				5D468A21277E59F300986AFF /* WaitTimes.swift in Sources */,
 				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,

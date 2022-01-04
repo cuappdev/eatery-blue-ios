@@ -23,6 +23,9 @@ struct EateryBlue: ParsableCommand {
     var injectDummyData: Bool = false
 
     @Flag
+    var delayNetworkRequests: Bool = false
+
+    @Flag
     var locationUrisHall: Bool = false
 
     func run() throws {
@@ -33,18 +36,23 @@ struct EateryBlue: ParsableCommand {
             logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
         }
 
-        if injectDummyData {
-            logger.info("\(#function): Injecting dummy data")
-            if let fetchUrl = fetchUrl, let url = URL(string: fetchUrl) {
-                let networking = DummyNetworking(fetchUrl: url)
-                networking.injectDummyData = true
-                Networking.default = networking
+        let url = URL(string: fetchUrl!)!
+        let networking: Networking
+        if injectDummyData || delayNetworkRequests {
+            let dummyNetworking = DummyNetworking(fetchUrl: url)
+            if injectDummyData {
+                logger.info("\(#function): Injecting dummy data")
+                dummyNetworking.injectDummyData = true
             }
+            if delayNetworkRequests {
+                logger.info("\(#function): Delaying network requests")
+                dummyNetworking.delay = 5
+            }
+            networking = dummyNetworking
         } else {
-            if let fetchUrl = fetchUrl, let url = URL(string: fetchUrl) {
-                Networking.default = Networking(fetchUrl: url)
-            }
+            networking = Networking(fetchUrl: url)
         }
+        Networking.default = networking
 
         if locationUrisHall {
             logger.info("\(#function): Setting location to uris hall")

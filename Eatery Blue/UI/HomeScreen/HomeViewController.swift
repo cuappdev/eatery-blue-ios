@@ -92,6 +92,7 @@ class HomeViewController: UIViewController {
 
     private func setUpNavigationView() {
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
+        navigationView.logoRefreshControl.delegate = self
     }
 
     private func setUpConstraints() {
@@ -111,7 +112,14 @@ class HomeViewController: UIViewController {
     }
 
     private func updateScrollViewContentInset() {
-        tableView.contentInset.top = navigationView.computeFullyExpandedHeight()
+        var top = navigationView.computeFullyExpandedHeight()
+
+        if navigationView.logoRefreshControl.isRefreshing {
+            top += 44
+        }
+
+        tableView.contentInset.top = top
+
         tableView.contentInset.bottom = view.safeAreaInsets.bottom
     }
 
@@ -295,6 +303,13 @@ extension HomeViewController: UIScrollViewDelegate {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
+        // It's important that handleSnapping is called after handlePullToRefresh since handlePullToRefresh may update
+        // contentInset which handleSnapping depends on
+        handlePullToRefresh(scrollView)
+        handleSnapping(scrollView, velocity: velocity, targetContentOffset: targetContentOffset)
+    }
+
+    private func handleSnapping(_ scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard let superview = scrollView.superview else {
             return
         }
@@ -326,6 +341,16 @@ extension HomeViewController: UIScrollViewDelegate {
         targetContentOffset.pointee = CGPoint(x: 0, y: finalPosition)
     }
 
+    private func handlePullToRefresh(_ scrollView: UIScrollView) {
+        let deltaFromTop = tableView.contentOffset.y + tableView.contentInset.top
+        let pullProgress = (-deltaFromTop - 22) / 66
+
+        if pullProgress > 1.1 {
+            navigationView.logoRefreshControl.beginRefreshing()
+            updateScrollViewContentInset()
+        }
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         handleNavigationView()
         handleLogo()
@@ -352,16 +377,30 @@ extension HomeViewController: UIScrollViewDelegate {
 
     private func handleLogo() {
         let deltaFromTop = tableView.contentOffset.y + tableView.contentInset.top
-        let fadeDistance = 44.0
-        let transform = CGAffineTransform(
-            translationX: 0,
-            y: max(-fadeDistance, -deltaFromTop)
-        )
-        navigationView.logoView.transform = transform
 
+        if !navigationView.logoRefreshControl.isRefreshing {
+            let pullProgress = (-deltaFromTop - 22) / 66
+            navigationView.logoRefreshControl.setPullProgress(pullProgress)
+        }
+
+        let fadeDistance = navigationView.logoRefreshControl.bounds.height
         let progress = max(0, min(1, 1 - deltaFromTop / fadeDistance))
-        navigationView.logoView.alpha = progress
+        navigationView.logoRefreshControl.alpha = progress
         navigationView.largeTitleLabel.alpha = progress
+    }
+
+}
+
+extension HomeViewController: LogoRefreshControlDelegate {
+
+    func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl) {
+
+    }
+
+    func logoRefreshControlDidEndRefreshing(_ sender: LogoRefreshControl) {
+        UIView.animate(withDuration: 0.15) { [self] in
+            updateScrollViewContentInset()
+        }
     }
 
 }

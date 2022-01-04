@@ -33,9 +33,9 @@ class HomeModelController: HomeViewController {
         setUpFilterController()
         setUpNavigationView()
 
-        updateCellsFromState()
-
-        updateStateFromNetworking()
+        updateStateFromNetworking() { [self] in
+            updateCellsFromState()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,17 +59,21 @@ class HomeModelController: HomeViewController {
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
+
+        navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
     }
 
-    private func updateStateFromNetworking() {
-        Networking.default.fetchEateries().sink { completion in
-            switch completion {
+    private func updateStateFromNetworking(_ completion: (() -> Void)? = nil) {
+        Networking.default.fetchEateries().sink { subscriptionCompletion in
+            switch subscriptionCompletion {
             case .failure(let error):
-                print(error)
+                logger.error("\(error)")
 
             case .finished:
-                return
+                break
             }
+
+            completion?()
 
         } receiveValue: { [self] eateries in
             eateryCollections = [
@@ -100,8 +104,6 @@ class HomeModelController: HomeViewController {
             allEateries = eateries.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
-
-            updateCellsFromState()
         }.store(in: &cancellables)
     }
 
@@ -134,6 +136,13 @@ class HomeModelController: HomeViewController {
         }
 
         tableView.reloadData()
+    }
+
+    @objc private func didRefresh(_ sender: LogoRefreshControl) {
+        updateStateFromNetworking { [self] in
+            updateCellsFromState()
+            sender.endRefreshing()
+        }
     }
 
 }

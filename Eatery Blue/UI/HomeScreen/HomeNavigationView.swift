@@ -10,7 +10,7 @@ import UIKit
 class HomeNavigationView: UIView {
 
     let normalNavigationBar = UIView()
-    let logoView = ContainerView(content: UIImageView())
+    let logoRefreshControl = LogoRefreshControl()
     let titleLabel = UILabel()
     let searchButton = ContainerView(content: UIImageView())
 
@@ -18,11 +18,16 @@ class HomeNavigationView: UIView {
 
     private(set) var fadeInProgress: Double = 0
 
+    private var cachedNormalHeight: CGFloat? = nil
+    private var cachedExpandedHeight: CGFloat? = nil
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         setUpSelf()
         setUpConstraints()
+
+        setFadeInProgress(fadeInProgress)
     }
 
     required init?(coder: NSCoder) {
@@ -32,29 +37,22 @@ class HomeNavigationView: UIView {
     private func setUpSelf() {
         backgroundColor = UIColor(named: "EateryBlue")
 
-        addSubview(largeTitleLabel)
-        setUpLargeTitleLabel()
-
         addSubview(normalNavigationBar)
         setUpNormalNavigationBar()
 
-        setFadeInProgress(fadeInProgress)
+        addSubview(largeTitleLabel)
+        setUpLargeTitleLabel()
+
+        addSubview(logoRefreshControl)
+        setUpLogoRefreshControl()
     }
 
     private func setUpNormalNavigationBar() {
-        normalNavigationBar.addSubview(logoView)
-        setUpLogoView()
-
         normalNavigationBar.addSubview(titleLabel)
         setUpTitleLabel()
 
         normalNavigationBar.addSubview(searchButton)
         setUpSearchButton()
-    }
-
-    private func setUpLogoView() {
-        logoView.content.image = UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate)
-        logoView.content.tintColor = .white
     }
 
     private func setUpTitleLabel() {
@@ -75,17 +73,15 @@ class HomeNavigationView: UIView {
         largeTitleLabel.text = "Eatery"
     }
 
+    private func setUpLogoRefreshControl() {
+    }
+
     private func setUpConstraints() {
         normalNavigationBar.height(44)
         normalNavigationBar.edges(to: layoutMarginsGuide, excluding: .bottom)
         normalNavigationBar.bottomToSuperview(relation: .equalOrLess)
 
-        logoView.width(36)
-        logoView.height(36)
-        logoView.centerYToSuperview()
-        logoView.leadingToSuperview()
-
-        titleLabel.leadingToTrailing(of: logoView, offset: 8, relation: .equalOrGreater)
+        titleLabel.leadingToTrailing(of: logoRefreshControl, offset: 8, relation: .equalOrGreater)
         titleLabel.topToSuperview()
         titleLabel.bottomToSuperview()
         titleLabel.centerXToSuperview()
@@ -98,6 +94,11 @@ class HomeNavigationView: UIView {
 
         largeTitleLabel.setCompressionResistance(.required, for: .vertical)
         largeTitleLabel.edges(to: layoutMarginsGuide, excluding: .top)
+
+        logoRefreshControl.width(36)
+        logoRefreshControl.height(36)
+        logoRefreshControl.bottomToTop(of: largeTitleLabel, offset: -4)
+        logoRefreshControl.leading(to: layoutMarginsGuide)
     }
 
     func computeFullyExpandedHeight() -> CGFloat {
