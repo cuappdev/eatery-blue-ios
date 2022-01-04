@@ -50,6 +50,10 @@ extension HomeSearchModelController: UISearchBarDelegate {
         navigationController?.popViewController(animated: true)
     }
 
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
 }
 
 extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {

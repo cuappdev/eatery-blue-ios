@@ -88,8 +88,18 @@ class ListViewController: UIViewController {
         }
 
         navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
+            guard let navigationController = navigationController else { return }
+
+            if navigationController.children.count > 1 {
+                let previous = navigationController.children[navigationController.children.count - 2]
+                if previous is HomeSearchModelController {
+                    navigationController.popViewController(animated: true)
+                    return
+                }
+            }
+
             let viewController = HomeSearchModelController()
-            navigationController?.pushViewController(viewController, animated: true)
+            navigationController.pushViewController(viewController, animated: true)
         }
     }
 
