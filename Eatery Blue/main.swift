@@ -64,6 +64,11 @@ struct EateryBlue: ParsableCommand {
             LocationManager.shared = LocationManager()
         }
 
+        if forceOnboarding {
+            logger.info("\(#function): Force onboarding")
+            UserDefaults.standard.set(false, forKey: "didOnboard")
+        }
+
         AppDelegate.main()
     }
 

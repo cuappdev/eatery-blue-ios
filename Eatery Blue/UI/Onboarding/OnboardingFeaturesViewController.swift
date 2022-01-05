@@ -152,10 +152,16 @@ class OnboardingFeaturesViewController: UIViewController {
         let nextIndex = clampedIndex + 1
 
         if nextIndex == pages.count {
-            let viewController = OnboardingLoginViewController()
-            navigationController?.pushViewController(viewController, animated: true)
+            // We've reached the last page
+
+            // Transition back to main page for now
+            // TODO: Onboarding Login Page
+
+            NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
 
         } else {
+            // Move to the next page
+
             let offset = CGPoint(x: CGFloat(nextIndex) * scrollView.bounds.width, y: 0)
             scrollView.setContentOffset(offset, animated: true)
         }
