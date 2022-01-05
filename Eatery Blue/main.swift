@@ -28,6 +28,9 @@ struct EateryBlue: ParsableCommand {
     @Flag
     var locationUrisHall: Bool = false
 
+    @Flag
+    var forceOnboarding: Bool = false
+
     func run() throws {
         if let logLevel = logLevel, let logLevel = Logger.Level(rawValue: logLevel) {
             logger.logLevel = logLevel

@@ -14,7 +14,7 @@ class SheetPresentationController: UIPresentationController {
         view.backgroundColor = .black.withAlphaComponent(0.5)
         view.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
-            action: #selector(dimmingViewTapped(_:))
+            action: #selector(didTapDimmingView(_:))
         ))
         return view
     }()
@@ -80,7 +80,7 @@ class SheetPresentationController: UIPresentationController {
         CGSize(width: parentSize.width, height: height)
     }
 
-    @objc private func dimmingViewTapped(_ sender: UITapGestureRecognizer) {
+    @objc private func didTapDimmingView(_ sender: UITapGestureRecognizer) {
         presentedViewController.dismiss(animated: true)
     }
 
