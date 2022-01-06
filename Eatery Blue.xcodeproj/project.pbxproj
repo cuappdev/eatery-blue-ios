@@ -36,6 +36,10 @@
 		5D468A21277E59F300986AFF /* WaitTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A20277E59F300986AFF /* WaitTimes.swift */; };
 		5D468A27277E820C00986AFF /* EateryTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A26277E820C00986AFF /* EateryTiming.swift */; };
 		5D468A29277E83F800986AFF /* EateryLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A28277E83F800986AFF /* EateryLocation.swift */; };
+		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
+		5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6327876460000C518D /* GetSessionManager.swift */; };
+		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
+		5D6C3D6B27878A7E000C518D /* Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6A27878A7E000C518D /* Get.swift */; };
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
@@ -65,6 +69,7 @@
 		5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */; };
 		5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */; };
 		5DBA89AB278528F5002DCA6B /* OnboardingLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */; };
+		5DBA89AE27861C8B002DCA6B /* GetAccountLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */; };
 		5DCB869C2782396000134066 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869B2782396000134066 /* main.swift */; };
 		5DCB869E27823D5500134066 /* DummyNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869D27823D5500134066 /* DummyNetworking.swift */; };
 		5DCB86A22783544C00134066 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB86A12783544C00134066 /* LocationManager.swift */; };
@@ -162,6 +167,8 @@
 		5D468A20277E59F300986AFF /* WaitTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimes.swift; sourceTree = "<group>"; };
 		5D468A26277E820C00986AFF /* EateryTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryTiming.swift; sourceTree = "<group>"; };
 		5D468A28277E83F800986AFF /* EateryLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EateryLocation.swift; sourceTree = "<group>"; };
+		5D6C3D6327876460000C518D /* GetSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSessionManager.swift; sourceTree = "<group>"; };
+		5D6C3D6A27878A7E000C518D /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
 		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
 		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
 		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
@@ -190,6 +197,7 @@
 		5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeaturesViewController.swift; sourceTree = "<group>"; };
 		5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureView.swift; sourceTree = "<group>"; };
 		5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginViewController.swift; sourceTree = "<group>"; };
+		5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAccountLogin.swift; sourceTree = "<group>"; };
 		5DCB869B2782396000134066 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5DCB869D27823D5500134066 /* DummyNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyNetworking.swift; sourceTree = "<group>"; };
 		5DCB86A12783544C00134066 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -243,11 +251,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
 				5D73C38D278129100020507C /* Logging in Frameworks */,
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
 				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
 				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
+				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
 				5DF5F7C92773FCEC001ADCDC /* TinyConstraints in Frameworks */,
 			);
@@ -306,6 +316,7 @@
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
+				5DBA89AC27861BA2002DCA6B /* Get */,
 				5D73C3952782277A0020507C /* CoreData */,
 				5DF304B327797BD200E2C9A4 /* Extensions */,
 				5DCB86A02783543900134066 /* Location */,
@@ -355,6 +366,16 @@
 				5DDAD4762773DA9800CC98DD /* RootViewController.swift */,
 			);
 			path = Root;
+			sourceTree = "<group>";
+		};
+		5DBA89AC27861BA2002DCA6B /* Get */ = {
+			isa = PBXGroup;
+			children = (
+				5D6C3D6A27878A7E000C518D /* Get.swift */,
+				5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */,
+				5D6C3D6327876460000C518D /* GetSessionManager.swift */,
+			);
+			path = Get;
 			sourceTree = "<group>";
 		};
 		5DCB869F27823DDB00134066 /* Testing */ = {
@@ -622,6 +643,8 @@
 				5D73C38727810B160020507C /* Fuse */,
 				5D73C38C278129100020507C /* Logging */,
 				5D73C3C4278237240020507C /* ArgumentParser */,
+				5D6C3D5F278746B8000C518D /* SwiftSoup */,
+				5D6C3D6627877980000C518D /* Alamofire */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -659,6 +682,8 @@
 				5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */,
 				5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */,
 				5D73C3C3278237230020507C /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -691,6 +716,7 @@
 				5D73C39127812C4F0020507C /* SearchResultsCountView.swift in Sources */,
 				5D468A1F277E57AF00986AFF /* EateryFormatter.swift in Sources */,
 				5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */,
+				5D6C3D6B27878A7E000C518D /* Get.swift in Sources */,
 				5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */,
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D468A27277E820C00986AFF /* EateryTiming.swift in Sources */,
@@ -748,6 +774,7 @@
 				5DF5F7E92774C8A9001ADCDC /* EateryLargeCardStackView.swift in Sources */,
 				5DF304D1277A69E000E2C9A4 /* ListViewController.swift in Sources */,
 				5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */,
+				5DBA89AE27861C8B002DCA6B /* GetAccountLogin.swift in Sources */,
 				5D73C38A27810F370020507C /* FuseFuture.swift in Sources */,
 				5D468A17277E401800986AFF /* Schema.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
@@ -767,6 +794,7 @@
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */,
+				5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */,
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
@@ -1002,6 +1030,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krisk/fuse-swift";
@@ -1061,6 +1105,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5D6C3D5F278746B8000C518D /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+		5D6C3D6627877980000C518D /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		5D73C38727810B160020507C /* Fuse */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */;

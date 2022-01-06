@@ -31,12 +31,22 @@ struct EateryBlue: ParsableCommand {
     @Flag
     var forceOnboarding: Bool = false
 
+    @Option
+    var getLogLevel: String?
+
     func run() throws {
         if let logLevel = logLevel, let logLevel = Logger.Level(rawValue: logLevel) {
             logger.logLevel = logLevel
             logger.log(level: logLevel, "Set log level to \(logLevel)")
         } else {
             logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
+        }
+
+        if let getLogLevel = getLogLevel, let logLevel = Logger.Level(rawValue: getLogLevel) {
+            Get.logger.logLevel = logLevel
+            Get.logger.log(level: logLevel, "Set log level to \(logLevel)")
+        } else {
+            Get.logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
         }
 
         let url = URL(string: fetchUrl!)!

@@ -106,3 +106,18 @@ extension Day: Strideable {
     }
 
 }
+
+extension Day {
+
+    private static let iso8601DateFormatter: ISO8601DateFormatter = {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withFullDate, .withDashSeparatorInDate]
+        dateFormatter.timeZone = Calendar.eatery.timeZone
+        return dateFormatter
+    }()
+
+    func iso8601() -> String {
+        Day.iso8601DateFormatter.string(from: date())
+    }
+
+}
