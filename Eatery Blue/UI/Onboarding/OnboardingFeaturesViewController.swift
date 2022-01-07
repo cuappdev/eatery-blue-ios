@@ -154,10 +154,8 @@ class OnboardingFeaturesViewController: UIViewController {
         if nextIndex == pages.count {
             // We've reached the last page
 
-            // Transition back to main page for now
-            // TODO: Onboarding Login Page
-
-            NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
+            let viewController = OnboardingLoginModelController()
+            navigationController?.pushViewController(viewController, animated: true)
 
         } else {
             // Move to the next page

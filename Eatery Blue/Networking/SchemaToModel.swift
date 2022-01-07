@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SchemaToModel {
+enum SchemaToModel {
 
     static func convert(_ schemaEatery: Schema.Eatery) -> Eatery {
         Eatery(

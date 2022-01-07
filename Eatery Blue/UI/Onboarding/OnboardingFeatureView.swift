@@ -36,7 +36,7 @@ class OnboardingFeatureView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .largeTitle, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
         titleLabel.textColor = UIColor(named: "EateryBlue")
     }
 

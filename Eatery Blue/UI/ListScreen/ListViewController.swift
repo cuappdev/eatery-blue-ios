@@ -139,7 +139,7 @@ class ListViewController: UIViewController {
     func addTitleLabel(_ title: String) {
         let label = UILabel()
         label.text = title
-        label.font = .preferredFont(for: .largeTitle, weight: .bold)
+        label.font = .systemFont(ofSize: 34, weight: .bold)
         label.textColor = UIColor(named: "EateryBlue")
 
         let container = ContainerView(content: label)

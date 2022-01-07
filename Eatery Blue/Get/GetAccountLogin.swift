@@ -35,11 +35,15 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
     private var loadUrlContinuation: CheckedContinuation<Void, Error>?
     private var loginAttempts: Int = 0
 
-    private let netid: String
+    private let netId: String
     private let password: String
 
-    init(netid: String, password: String) {
-        self.netid = netid
+    convenience init(credentials: KeychainManager.Credentials) {
+        self.init(netId: credentials.netId, password: credentials.password)
+    }
+
+    init(netId: String, password: String) {
+        self.netId = netId
         self.password = password
 
         let configuration = WKWebViewConfiguration()
@@ -127,7 +131,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
 
     @MainActor private func webLogIn() async throws {
         let script = """
-        document.getElementsByName('j_username')[0].value = '\(netid)';
+        document.getElementsByName('j_username')[0].value = '\(netId)';
         document.getElementsByName('j_password')[0].value = '\(password)';
         document.getElementsByName('_eventId_proceed')[0].click();
         """

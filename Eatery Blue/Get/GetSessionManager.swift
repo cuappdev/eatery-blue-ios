@@ -46,12 +46,12 @@ class GetSessionManager {
 
         let responseData = try await dataTask.serializingData().value
         Get.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
-        
+
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.id
     }
 
-    @MainActor func accountInfo(userId: String) async throws -> [Get.Account] {
+    @MainActor func accountInfo(userId: String) async throws -> [Get.RawAccount] {
         struct Parameters: Encodable {
             let version = "1"
             let method = "retrieveAccountsByUser"
@@ -66,7 +66,7 @@ class GetSessionManager {
         }
 
         struct Response: Decodable {
-            let accounts: [Get.Account]
+            let accounts: [Get.RawAccount]
         }
 
         let dataTask = AF.request(
@@ -86,7 +86,7 @@ class GetSessionManager {
         return response.response.accounts
     }
 
-    @MainActor func transactions(userId: String, start: Day, end: Day) async throws -> [Get.Transaction] {
+    @MainActor func transactions(userId: String, start: Day, end: Day) async throws -> [Get.RawTransaction] {
         struct Parameters: Encodable {
             struct Params: Encodable {
                 struct QueryCriteria: Encodable {
@@ -125,7 +125,7 @@ class GetSessionManager {
         }
 
         struct Response: Decodable {
-            let transactions: [Get.Transaction]
+            let transactions: [Get.RawTransaction]
         }
 
         let dataTask = AF.request(

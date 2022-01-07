@@ -14,12 +14,12 @@ enum Get {
 
     static var logger = Logger(label: "com.appdev.Eatery-Blue.Get.logger")
 
-    struct Account: Decodable {
+    struct RawAccount: Decodable {
         let accountDisplayName: String?
         let balance: Double?
     }
 
-    struct Transaction: Decodable {
+    struct RawTransaction: Decodable {
         let amount: Double?
         let actualDate: String?
         let locationName: String?
