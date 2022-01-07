@@ -36,6 +36,11 @@
 		5D468A21277E59F300986AFF /* WaitTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A20277E59F300986AFF /* WaitTimes.swift */; };
 		5D468A27277E820C00986AFF /* EateryTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A26277E820C00986AFF /* EateryTiming.swift */; };
 		5D468A29277E83F800986AFF /* EateryLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A28277E83F800986AFF /* EateryLocation.swift */; };
+		5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */; };
+		5D698F8627888EC80054E1AB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8527888EC80054E1AB /* LoginView.swift */; };
+		5D698F88278892A10054E1AB /* LoginErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */; };
+		5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8927889DE30054E1AB /* ProfileViewController.swift */; };
+		5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8B27889F0A0054E1AB /* AccountViewController.swift */; };
 		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
 		5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6327876460000C518D /* GetSessionManager.swift */; };
 		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
@@ -171,6 +176,11 @@
 		5D468A20277E59F300986AFF /* WaitTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitTimes.swift; sourceTree = "<group>"; };
 		5D468A26277E820C00986AFF /* EateryTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryTiming.swift; sourceTree = "<group>"; };
 		5D468A28277E83F800986AFF /* EateryLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EateryLocation.swift; sourceTree = "<group>"; };
+		5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginViewController.swift; sourceTree = "<group>"; };
+		5D698F8527888EC80054E1AB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginErrorMessageView.swift; sourceTree = "<group>"; };
+		5D698F8927889DE30054E1AB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5D698F8B27889F0A0054E1AB /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		5D6C3D6327876460000C518D /* GetSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSessionManager.swift; sourceTree = "<group>"; };
 		5D6C3D6A27878A7E000C518D /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
 		5D6C3D6C27879B4A000C518D /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -291,6 +301,25 @@
 				5D468A18277E440300986AFF /* SchemaToModel.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		5D698F8427888EB90054E1AB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */,
+				5D698F8527888EC80054E1AB /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		5D6C3D7927888DF8000C518D /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5D698F8B27889F0A0054E1AB /* AccountViewController.swift */,
+				5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */,
+				5D698F8927889DE30054E1AB /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		5D73C3952782277A0020507C /* CoreData */ = {
@@ -445,12 +474,14 @@
 				5DF304BD27797D8700E2C9A4 /* HomeSearchScreen */,
 				5DF304B627797CDB00E2C9A4 /* HoursSheet */,
 				5DF304CF277A652900E2C9A4 /* ListScreen */,
+				5D698F8427888EB90054E1AB /* Login */,
 				5D157CD82783818C0014B63A /* LogoRefreshControl */,
 				5DBA899D2784CBD6002DCA6B /* Main */,
 				5DF304BE27797DA100E2C9A4 /* MenuPickerSheet */,
 				5DBA89982783ECEB002DCA6B /* Onboarding */,
 				5DF304B927797D1F00E2C9A4 /* PaymentMethodsFilterSheet */,
 				5DF304B827797D0500E2C9A4 /* PaymentMethodsSheet */,
+				5D6C3D7927888DF8000C518D /* Profile */,
 				5DF304C7277A343000E2C9A4 /* ReportIssueScreen */,
 				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
 				5DBA89A52784D898002DCA6B /* Root */,
@@ -743,6 +774,7 @@
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
 				5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */,
+				5D698F88278892A10054E1AB /* LoginErrorMessageView.swift in Sources */,
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
@@ -793,7 +825,10 @@
 				5D468A17277E401800986AFF /* Schema.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
+				5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */,
+				5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */,
 				5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */,
+				5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */,
 				5DCB86A22783544C00134066 /* LocationManager.swift in Sources */,
 				5D468A1B277E45DE00986AFF /* Day.swift in Sources */,
 				5D73C3852780F0060020507C /* SearchItemView.swift in Sources */,
@@ -824,6 +859,7 @@
 				5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */,
 				5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */,
 				5D4689FE277D0C2600986AFF /* EateryLargeCardTableViewCell.swift in Sources */,
+				5D698F8627888EC80054E1AB /* LoginView.swift in Sources */,
 				5DF304DD277B6C6A00E2C9A4 /* HomeNavigationView.swift in Sources */,
 				5D0CDC432774E5F400AD0E27 /* EateryPillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,

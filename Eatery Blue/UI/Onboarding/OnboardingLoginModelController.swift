@@ -31,6 +31,8 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
     }
 
     private func setUpNetIdTextField() {
+        netIdTextField.autocapitalizationType = .none
+        netIdTextField.autocorrectionType = .no
         netIdTextField.addTarget(self, action: #selector(netIdTextFieldEditingChanged), for: .editingChanged)
         netIdTextField.delegate = self
     }

@@ -11,6 +11,7 @@ class MainViewController: UIViewController {
 
     private let theTabBarController = UITabBarController()
     private let home = HomeModelController()
+    private let profile = ProfileViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +27,11 @@ class MainViewController: UIViewController {
 
         let homeNavigationController = UINavigationController(rootViewController: home)
 
+        let profileNavigationController = UINavigationController(rootViewController: profile)
+
         theTabBarController.setViewControllers([
-            homeNavigationController
+            homeNavigationController,
+            profileNavigationController
         ], animated: false)
 
         let tabBarAppearance = UITabBarAppearance()

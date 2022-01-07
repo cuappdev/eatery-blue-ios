@@ -1,16 +1,15 @@
 //
-//  OnboardingLoginViewController.swift
+//  ProfileLoginViewController.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 1/4/22.
+//  Created by William Ma on 1/7/22.
 //
 
 import UIKit
 
-class OnboardingLoginViewController: UIViewController {
+class ProfileLoginViewController: UIViewController {
 
-    private let backButton = ContainerView(content: UIImageView())
-    private let skipButton = ContainerView(content: UILabel())
+    private let settingsButton = ContainerView(content: UIImageView())
     private let scrollView = UIScrollView()
     private let loginView = LoginView()
     let netIdTextField = UITextField()
@@ -38,11 +37,8 @@ class OnboardingLoginViewController: UIViewController {
     private func setUpView() {
         view.backgroundColor = .white
 
-        view.addSubview(backButton)
-        setUpBackButton()
-
-        view.addSubview(skipButton)
-        setUpSkipButton()
+        view.addSubview(settingsButton)
+        setUpSettingsButton()
 
         view.addSubview(scrollView)
         setUpScrollView()
@@ -51,24 +47,10 @@ class OnboardingLoginViewController: UIViewController {
         setUpLoginButton()
     }
 
-    private func setUpBackButton() {
-        backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
-        backButton.content.tintColor = UIColor(named: "Black")
-        backButton.content.contentMode = .scaleAspectFit
-        backButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
-
-        backButton.on(UITapGestureRecognizer()) { [self] _ in
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
-    private func setUpSkipButton() {
-        skipButton.content.font = .preferredFont(for: .body, weight: .semibold)
-        skipButton.content.text = "Skip"
-
-        skipButton.on(UITapGestureRecognizer()) { [self] _ in
-            didTapSkipButton()
-        }
+    private func setUpSettingsButton() {
+        settingsButton.content.image = UIImage(named: "Settings")?.withRenderingMode(.alwaysTemplate)
+        settingsButton.content.tintColor = UIColor(named: "Black")
+        settingsButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
     }
 
     private func setUpScrollView() {
@@ -118,16 +100,11 @@ class OnboardingLoginViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        backButton.topToSuperview(offset: 12, usingSafeArea: true)
-        backButton.leadingToSuperview(offset: 16, usingSafeArea: true)
-        backButton.width(34)
-        backButton.height(34)
+        settingsButton.topToSuperview(offset: 12, usingSafeArea: true)
+        settingsButton.trailingToSuperview(offset: 16, usingSafeArea: true)
+        settingsButton.height(34)
 
-        skipButton.topToSuperview(offset: 12, usingSafeArea: true)
-        skipButton.trailingToSuperview(offset: 16, usingSafeArea: true)
-        skipButton.height(34)
-
-        scrollView.topToBottom(of: backButton)
+        scrollView.topToBottom(of: settingsButton)
         scrollView.leadingToSuperview()
         scrollView.trailingToSuperview()
 
@@ -160,6 +137,7 @@ class OnboardingLoginViewController: UIViewController {
 
         let delta = intersection.height - view.safeAreaInsets.bottom
         additionalSafeAreaInsets.bottom += delta
+        additionalSafeAreaInsets.bottom = max(0, additionalSafeAreaInsets.bottom)
     }
 
     func setLoginButtonEnabled(_ isEnabled: Bool) {
@@ -179,11 +157,6 @@ class OnboardingLoginViewController: UIViewController {
         } else {
             errorMessageView.isHidden = true
         }
-    }
-
-    func finishOnboarding() {
-        UserDefaults.standard.set(true, forKey: "didOnboard")
-        NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
     }
 
 }
