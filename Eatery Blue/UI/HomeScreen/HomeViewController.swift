@@ -40,7 +40,6 @@ class HomeViewController: UIViewController {
 
         view.backgroundColor = .white
 
-        setUpNavigation()
         setUpView()
         setUpConstraints()
     }
@@ -54,15 +53,6 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateScrollViewContentInset()
-    }
-
-    private func setUpNavigation() {
-        navigationController?.tabBarItem = UITabBarItem(
-            title: "",
-            image: UIImage(named: "Home"),
-            selectedImage: UIImage(named: "HomeSelected")
-        )
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     private func setUpView() {

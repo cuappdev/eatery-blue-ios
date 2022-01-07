@@ -41,6 +41,8 @@
 		5D698F88278892A10054E1AB /* LoginErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */; };
 		5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8927889DE30054E1AB /* ProfileViewController.swift */; };
 		5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8B27889F0A0054E1AB /* AccountViewController.swift */; };
+		5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */; };
+		5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F912788A7FE0054E1AB /* AccountModelController.swift */; };
 		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
 		5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6327876460000C518D /* GetSessionManager.swift */; };
 		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
@@ -181,6 +183,8 @@
 		5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginErrorMessageView.swift; sourceTree = "<group>"; };
 		5D698F8927889DE30054E1AB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5D698F8B27889F0A0054E1AB /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginModelController.swift; sourceTree = "<group>"; };
+		5D698F912788A7FE0054E1AB /* AccountModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModelController.swift; sourceTree = "<group>"; };
 		5D6C3D6327876460000C518D /* GetSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSessionManager.swift; sourceTree = "<group>"; };
 		5D6C3D6A27878A7E000C518D /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
 		5D6C3D6C27879B4A000C518D /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -312,10 +316,19 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		5D698F932788ACDA0054E1AB /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				5D698F912788A7FE0054E1AB /* AccountModelController.swift */,
+				5D698F8B27889F0A0054E1AB /* AccountViewController.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		5D6C3D7927888DF8000C518D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				5D698F8B27889F0A0054E1AB /* AccountViewController.swift */,
+				5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */,
 				5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */,
 				5D698F8927889DE30054E1AB /* ProfileViewController.swift */,
 			);
@@ -467,6 +480,7 @@
 		5DF304B427797C3100E2C9A4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5D698F932788ACDA0054E1AB /* Account */,
 				5DF304D5277AA96300E2C9A4 /* EateryCard */,
 				5DF304D4277A73B700E2C9A4 /* EateryFilter */,
 				5DF304BA27797D3C00E2C9A4 /* EateryScreen */,
@@ -803,6 +817,7 @@
 				5D4689FA277D061900986AFF /* CarouselTableViewCell.swift in Sources */,
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
 				5DDAD4712773D3DC00CC98DD /* Eatery.swift in Sources */,
+				5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */,
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */,
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
 				5D468A29277E83F800986AFF /* EateryLocation.swift in Sources */,
@@ -865,6 +880,7 @@
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
+				5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
