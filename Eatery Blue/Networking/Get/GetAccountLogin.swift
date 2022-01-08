@@ -14,15 +14,13 @@ import WebKit
 
 class GetAccountLogin: NSObject, WKNavigationDelegate {
 
-    typealias SessionID = String
-
     enum LoginError: Error {
         case invalidLoginUrl
         case loginFailed
         case internalError
     }
-
-    enum Stage {
+    
+    private enum Stage {
         case loginScreen
         case transition
         case loginFailed
@@ -38,11 +36,11 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
     private let netId: String
     private let password: String
 
-    convenience init(credentials: KeychainManager.Credentials) {
+    @MainActor convenience init(credentials: KeychainManager.Credentials) {
         self.init(netId: credentials.netId, password: credentials.password)
     }
 
-    init(netId: String, password: String) {
+    @MainActor init(netId: String, password: String) {
         self.netId = netId
         self.password = password
 
@@ -66,7 +64,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         webView.removeFromSuperview()
     }
 
-    @MainActor func sessionId() async throws -> SessionID {
+    @MainActor func sessionId() async throws -> String {
         guard let loginUrl = URL(string: "https://get.cbord.com/cornell/full/login.php?mobileapp=1") else {
             throw LoginError.invalidLoginUrl
         }
@@ -77,7 +75,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         for _ in 1...100 {
             let stage = try await stage()
 
-            Get.logger.debug("\(#function): \(stage)")
+            Networking.logger.debug("\(#function): \(stage)")
 
             switch stage {
             case .loginScreen:
@@ -194,16 +192,16 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
     ) async -> WKNavigationActionPolicy {
-        Get.logger.debug("\(#function): \(navigationAction.request)")
+        Networking.logger.debug("\(#function): \(navigationAction.request)")
         return .allow
     }
 
-    @MainActor private func handleSamlForm() async throws -> SessionID {
+    @MainActor private func handleSamlForm() async throws -> String {
         guard let html = try await html() else {
             throw LoginError.internalError
         }
 
-        Get.logger.trace("\(html)")
+        Networking.logger.trace("\(html)")
 
         let document: Document = try SwiftSoup.parse(html)
         guard let form = try document.select("form").first() else {
@@ -249,7 +247,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         return encoded.joined(separator: "&")
     }
 
-    @MainActor private func makeSamlRequest(samlResponse: String) async throws -> SessionID {
+    @MainActor private func makeSamlRequest(samlResponse: String) async throws -> String {
         let parameters = [
             "RelayState": "https://get.cbord.com/cornell/full/login.php?mobileapp=1",
             "SAMLResponse": samlResponse
@@ -263,7 +261,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         )
 
         let response = await dataTask.serializingString().response
-        Get.logger.trace("\(String(describing: response))")
+        Networking.logger.trace("\(String(describing: response))")
 
         guard let url = response.response?.url,
               let components = URLComponents(url: url, resolvingAgainstBaseURL: true),

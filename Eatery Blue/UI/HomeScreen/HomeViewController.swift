@@ -81,7 +81,6 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpNavigationView() {
-        navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
         navigationView.logoRefreshControl.delegate = self
     }
 
@@ -102,7 +101,7 @@ class HomeViewController: UIViewController {
     }
 
     private func updateScrollViewContentInset() {
-        var top = navigationView.computeFullyExpandedHeight()
+        var top = navigationView.computeExpandedHeight()
 
         if navigationView.logoRefreshControl.isRefreshing {
             top += 44
@@ -312,7 +311,7 @@ extension HomeViewController: UIScrollViewDelegate {
             from: navigationView
         ).y
         let navigationBarExpandedPosition = -superview.convert(
-            CGPoint(x: 0, y: navigationView.computeFullyExpandedHeight()),
+            CGPoint(x: 0, y: navigationView.computeExpandedHeight()),
             from: navigationView
         ).y
 
@@ -343,13 +342,14 @@ extension HomeViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         handleNavigationView()
-        handleLogo()
     }
 
     private func handleNavigationView() {
         guard let superview = tableView.superview else {
             return
         }
+
+        // Handle normal navigation bar
 
         let currentPosition = tableView.contentOffset.y
         let navigationBarNormalPosition = -superview.convert(
@@ -363,9 +363,9 @@ extension HomeViewController: UIScrollViewDelegate {
         } else {
             navigationView.setFadeInProgress(0, animated: true)
         }
-    }
 
-    private func handleLogo() {
+        // Handle logo refresh control and large title label
+
         let deltaFromTop = tableView.contentOffset.y + tableView.contentInset.top
 
         if !navigationView.logoRefreshControl.isRefreshing {

@@ -18,13 +18,9 @@ class HomeSearchModelController: HomeSearchViewController {
         setUpSearchBar()
         setUpEmptyController()
 
-        Networking.default
-            .fetchEateries(maxStaleness: .infinity)
-            .sink { _ in
-            } receiveValue: { [self] eateries in
-                contentController.setUp(eateries)
-            }
-            .store(in: &cancellables)
+        Task {
+            await updateEateriesFromNetworking()
+        }
     }
 
     private func setUpSearchBar() {
@@ -33,6 +29,15 @@ class HomeSearchModelController: HomeSearchViewController {
 
     private func setUpEmptyController() {
         emptyController.delegate = self
+    }
+
+    private func updateEateriesFromNetworking() async {
+        do {
+            let eateries = try await Networking.default.eateries.fetch(maxStaleness: .infinity)
+            contentController.setUp(eateries)
+        } catch {
+            logger.error("\(error)")
+        }
     }
 
 }

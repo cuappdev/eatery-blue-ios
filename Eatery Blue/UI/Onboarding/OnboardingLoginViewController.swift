@@ -115,6 +115,10 @@ class OnboardingLoginViewController: UIViewController {
         loginButton.content.font = .preferredFont(for: .body, weight: .semibold)
         loginButton.content.textAlignment = .center
         loginButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
+
+        loginButton.on(UITapGestureRecognizer()) { [self] _ in
+            didTapLoginButton()
+        }
     }
 
     private func setUpConstraints() {

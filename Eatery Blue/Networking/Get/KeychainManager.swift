@@ -16,6 +16,7 @@ struct KeychainManager {
 
     enum KeychainError: Error {
         case stringEncodingError
+        case notFound
         case unexpectedPasswordData
         case unhandledError(status: OSStatus)
     }
@@ -44,7 +45,7 @@ struct KeychainManager {
         }
     }
 
-    func get() throws -> Credentials? {
+    func get() throws -> Credentials {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrServer as String: KeychainManager.server,
@@ -56,7 +57,7 @@ struct KeychainManager {
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status != errSecItemNotFound else {
-            return nil
+            throw KeychainError.notFound
         }
         guard status == errSecSuccess else {
             throw KeychainError.unhandledError(status: status)

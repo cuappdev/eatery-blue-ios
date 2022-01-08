@@ -45,7 +45,7 @@ class GetSessionManager {
         )
 
         let responseData = try await dataTask.serializingData().value
-        Get.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
+        Networking.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.id
@@ -80,7 +80,7 @@ class GetSessionManager {
         )
 
         let responseData = try await dataTask.serializingData().value
-        Get.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
+        Networking.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.accounts
@@ -141,7 +141,7 @@ class GetSessionManager {
         )
 
         let responseData = try await dataTask.serializingData().value
-        Get.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
+        Networking.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.transactions

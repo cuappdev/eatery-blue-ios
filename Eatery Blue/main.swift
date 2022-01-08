@@ -32,40 +32,32 @@ struct EateryBlue: ParsableCommand {
     var forceOnboarding: Bool = false
 
     @Option
-    var getLogLevel: String?
+    var networkingLogLevel: String?
+
+    @Flag
+    var forceDeleteCredentials: Bool = false
 
     func run() throws {
-        if let logLevel = logLevel, let logLevel = Logger.Level(rawValue: logLevel) {
-            logger.logLevel = logLevel
-            logger.log(level: logLevel, "Set log level to \(logLevel)")
-        } else {
-            logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
+        if let logLevel = logLevel {
+            if let logLevel = Logger.Level(rawValue: logLevel) {
+                logger.logLevel = logLevel
+                logger.log(level: logLevel, "Set log level to \(logLevel)")
+            } else {
+                logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
+            }
         }
 
-        if let getLogLevel = getLogLevel, let logLevel = Logger.Level(rawValue: getLogLevel) {
-            Get.logger.logLevel = logLevel
-            Get.logger.log(level: logLevel, "Set log level to \(logLevel)")
-        } else {
-            Get.logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
+        if let getLogLevel = networkingLogLevel {
+            if let logLevel = Logger.Level(rawValue: getLogLevel) {
+                Networking.logger.logLevel = logLevel
+                Networking.logger.log(level: logLevel, "Set log level to \(logLevel)")
+            } else {
+                Networking.logger.error("Could not parse Logger.Level from \"\(String(describing: getLogLevel))\"")
+            }
         }
 
         let url = URL(string: fetchUrl!)!
-        let networking: Networking
-        if injectDummyData || delayNetworkRequests {
-            let dummyNetworking = DummyNetworking(fetchUrl: url)
-            if injectDummyData {
-                logger.info("\(#function): Injecting dummy data")
-                dummyNetworking.injectDummyData = true
-            }
-            if delayNetworkRequests {
-                logger.info("\(#function): Delaying network requests")
-                dummyNetworking.delay = 5
-            }
-            networking = dummyNetworking
-        } else {
-            networking = Networking(fetchUrl: url)
-        }
-        Networking.default = networking
+        Networking.default = Networking(fetchUrl: url)
 
         if locationUrisHall {
             logger.info("\(#function): Setting location to uris hall")
@@ -77,6 +69,11 @@ struct EateryBlue: ParsableCommand {
         if forceOnboarding {
             logger.info("\(#function): Force onboarding")
             UserDefaults.standard.set(false, forKey: "didOnboard")
+        }
+
+        if forceDeleteCredentials {
+            logger.info("\(#function): Deleting credentials")
+            try! KeychainManager.shared.delete()
         }
 
         AppDelegate.main()

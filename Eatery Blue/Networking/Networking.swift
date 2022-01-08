@@ -7,80 +7,108 @@
 
 import Combine
 import Foundation
+import Logging
 
 class Networking {
 
-    enum NetworkingError: Error {
-        case other(String)
-    }
+    static var logger = Logger(label: "com.appdev.Eatery-Blue.Networking.logger")
 
-    let fetchUrl: URL
-    let decoder: JSONDecoder
-
-    private var lastFetch: Date?
-    private var cachedEateries: [Eatery] = []
-    private var fetchEateriesPublisher: AnyPublisher<[Eatery], Error>?
-    private var cancellables: Set<AnyCancellable> = []
+    let eateries: InMemoryCache<[Eatery]>
+    let sessionId: InMemoryCache<String>
+    let account: FetchAccount
 
     init(fetchUrl: URL) {
-        self.fetchUrl = fetchUrl
-        self.decoder = JSONDecoder()
+        let fetchEateries = FetchEateries(url: fetchUrl)
+        self.eateries = InMemoryCache(fetch: fetchEateries.fetch)
 
+        let sessionId = FetchGETSessionID()
+        self.sessionId = InMemoryCache(fetch: sessionId.fetch)
+
+        self.account = FetchAccount(self.sessionId)
+    }
+
+}
+
+struct FetchEateries {
+
+    enum FetchError: Error {
+        case apiError(String)
+    }
+
+    private let url: URL
+    private let decoder: JSONDecoder
+
+    init(url: URL) {
+        self.url = url
+        self.decoder = JSONDecoder()
         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
-    func isExpired(date: Date, maxStaleness: TimeInterval) -> Bool {
-        if let lastFetch = lastFetch {
-            return date.timeIntervalSince(lastFetch) > maxStaleness
-        } else {
-            return true
+    func fetch() async throws -> [Eatery] {
+        let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
+        let schemaApiResponse = try decoder.decode(Schema.APIResponse.self, from: data)
+
+        if let error = schemaApiResponse.error {
+            throw FetchError.apiError(error)
         }
+
+        return schemaApiResponse.data.map(SchemaToModel.convert)
     }
 
-    func fetchEateries(maxStaleness: TimeInterval = 0) -> AnyPublisher<[Eatery], Error> {
-        if !isExpired(date: Date(), maxStaleness: maxStaleness) {
-            logger.debug("\(#function): returning \(cachedEateries.count) cached eateries")
-            return Just(cachedEateries).setFailureType(to: Error.self).eraseToAnyPublisher()
-        } else if let publisher = fetchEateriesPublisher {
-            logger.debug("\(#function): returning in-flight publisher")
-            return publisher
-        }
+}
 
-        logger.info("\(#function): fetching fresh eateries")
+struct FetchGETSessionID {
 
-        let publisher = URLSession
-            .shared
-            .dataTaskPublisher(for: fetchUrl)
-            .tryMap({ data, response in
-                data
-            })
-            .decode(type: Schema.APIResponse.self, decoder: decoder)
-            .tryMap({ (response: Schema.APIResponse) -> [Schema.Eatery] in
-                if let error = response.error {
-                    throw NetworkingError.other(error)
-                }
+    func fetch() async throws -> String {
+        let credentials = try KeychainManager.shared.get()
+        return try await GetAccountLogin(credentials: credentials).sessionId()
+    }
 
-                return response.data
-            })
-            .map({ (schemaEateries: [Schema.Eatery]) -> [Eatery] in
-                schemaEateries.map(SchemaToModel.convert)
-            })
-            .receive(on: DispatchQueue.main)
-            .share()
-            .eraseToAnyPublisher()
+}
 
-        fetchEateriesPublisher = publisher
+struct FetchAccount {
 
-        publisher
-            .sink { [self] _ in
-                fetchEateriesPublisher = nil
-            } receiveValue: { [self] value in
-                lastFetch = Date()
-                cachedEateries = value
+    let sessionId: InMemoryCache<String>
+
+    init(_ sessionId: InMemoryCache<String>) {
+        self.sessionId = sessionId
+    }
+
+    func fetch() async throws -> Account {
+        return try await fetch(retryAttempts: 1)
+    }
+
+    func fetch(retryAttempts: Int) async throws -> Account {
+        do {
+            let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
+            let sessionManager = GetSessionManager(sessionId: sessionId)
+
+            let userId = try await sessionManager.userId()
+
+            async let rawAccountInfo = sessionManager.accountInfo(userId: userId)
+            async let rawTransactions = sessionManager.transactions(
+                userId: userId,
+                start: Day(),
+                end: Day().advanced(by: -365)
+            )
+
+            return try await GetToModel.convert(getAccounts: rawAccountInfo, getTransactions: rawTransactions)
+
+        } catch {
+            if retryAttempts > 0 {
+                Networking.logger.info(
+                    """
+                    FetchAccount failed with error: \(error)
+                    Retrying \(retryAttempts) more times.
+                    """
+                )
+                await sessionId.invalidate()
+                return try await fetch(retryAttempts: retryAttempts - 1)
+                
+            } else {
+                throw error
             }
-            .store(in: &cancellables)
-
-        return publisher
+        }
     }
 
 }

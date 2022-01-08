@@ -29,9 +29,9 @@ struct Account: Codable {
     var mealPlan: MealPlanType?
     var mealSwipesRemaining: Int?
     
-    var brbBalance: Double = 0
-    var cityBucksBalance: Double = 0
-    var laundryBalance: Double = 0
+    var brbBalance: Double?
+    var cityBucksBalance: Double?
+    var laundryBalance: Double?
 
     var mealSwipeTransactions: [MealSwipeTransaction] = []
     var brbTransactions: [CurrencyTransaction] = []

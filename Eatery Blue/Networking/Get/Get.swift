@@ -12,8 +12,6 @@ enum Get {
 
     static var debugAttachAccountLoginWebViewToWindow = false
 
-    static var logger = Logger(label: "com.appdev.Eatery-Blue.Get.logger")
-
     struct RawAccount: Decodable {
         let accountDisplayName: String?
         let balance: Double?

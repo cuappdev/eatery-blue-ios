@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController {
         case login
     }
 
-    private var currentViewController: UIViewController?
+    private var theNavigationController = UINavigationController()
     private let account = AccountModelController()
     private let login = ProfileLoginModelController()
 
@@ -23,54 +23,47 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setMode(currentMode)
+        setUpNavigationController()
         setUpAccountController()
         setUpLoginController()
+        setUpConstraints()
+
+        setMode(currentMode)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    private func setUpNavigationController() {
+        addChild(theNavigationController)
+        view.addSubview(theNavigationController.view)
+        theNavigationController.didMove(toParent: self)
 
-        RootViewController.setStatusBarStyle(.darkContent) 
+        // Pick a view controller to be the root, doesn't matter which in particular
+        theNavigationController.viewControllers = [login]
+
+        theNavigationController.navigationBar.prefersLargeTitles = true
+        theNavigationController.setNavigationBarHidden(true, animated: false)
     }
 
     private func setUpAccountController() {
-
     }
 
     private func setUpLoginController() {
         login.delegate = self
     }
 
-    private func setMode(_ mode: Mode) {
-        if let current = currentViewController {
-            removeController(current)
-        }
+    private func setUpConstraints() {
+        theNavigationController.view.edgesToSuperview()
+    }
 
+    private func setMode(_ mode: Mode) {
         currentMode = mode
 
         switch mode {
         case .login:
-            addController(login)
-            currentViewController = login
+            theNavigationController.viewControllers[0] = login
 
         case .account:
-            addController(account)
-            currentViewController = account
+            theNavigationController.viewControllers[0] = account
         }
-    }
-
-    private func addController(_ controller: UIViewController) {
-        addChild(controller)
-        view.addSubview(controller.view)
-        controller.view.edgesToSuperview()
-        controller.didMove(toParent: self)
-    }
-
-    private func removeController(_ controller: UIViewController) {
-        controller.willMove(toParent: nil)
-        controller.view.removeFromSuperview()
-        controller.removeFromParent()
     }
 
 }

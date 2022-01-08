@@ -33,7 +33,8 @@ class HomeModelController: HomeViewController {
         setUpFilterController()
         setUpNavigationView()
 
-        updateStateFromNetworking() { [self] in
+        Task {
+            await updateStateFromNetworking()
             updateCellsFromState()
         }
     }
@@ -63,19 +64,10 @@ class HomeModelController: HomeViewController {
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
     }
 
-    private func updateStateFromNetworking(_ completion: (() -> Void)? = nil) {
-        Networking.default.fetchEateries().sink { subscriptionCompletion in
-            switch subscriptionCompletion {
-            case .failure(let error):
-                logger.error("\(error)")
+    private func updateStateFromNetworking() async {
+        do {
+            let eateries = try await Networking.default.eateries.fetch(maxStaleness: 0)
 
-            case .finished:
-                break
-            }
-
-            completion?()
-
-        } receiveValue: { [self] eateries in
             eateryCollections = [
                 EateryCollection(
                     title: "Debug",
@@ -104,7 +96,10 @@ class HomeModelController: HomeViewController {
             allEateries = eateries.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
-        }.store(in: &cancellables)
+
+        } catch {
+            logger.error("\(error)")
+        }
     }
 
     private func updateCellsFromState() {
@@ -139,7 +134,8 @@ class HomeModelController: HomeViewController {
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
-        updateStateFromNetworking { [self] in
+        Task {
+            await updateStateFromNetworking()
             updateCellsFromState()
             sender.endRefreshing()
         }

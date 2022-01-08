@@ -73,11 +73,23 @@ enum GetToModel {
             }
 
             if name.contains("City Bucks") {
-                account.cityBucksBalance = min(account.cityBucksBalance, balance)
+                if let existingBalance = account.cityBucksBalance {
+                    account.cityBucksBalance = min(balance, existingBalance)
+                } else {
+                    account.cityBucksBalance = balance
+                }
             } else if name.contains("Laundry") {
-                account.laundryBalance = min(account.laundryBalance, balance)
+                if let existingBalance = account.laundryBalance {
+                    account.laundryBalance = min(balance, existingBalance)
+                } else {
+                    account.laundryBalance = balance
+                }
             } else if name.contains("Big Red Bucks") {
-                account.brbBalance = min(account.brbBalance, balance)
+                if let existingBalance = account.brbBalance {
+                    account.brbBalance = min(balance, existingBalance)
+                } else {
+                    account.brbBalance = balance
+                }
             }
         }
     }

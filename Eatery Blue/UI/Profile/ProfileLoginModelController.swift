@@ -42,7 +42,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         if parent != nil, let credentials = try? KeychainManager.shared.get() {
             netIdTextField.text = credentials.netId
             passwordTextField.text = "        "
-            attemptLogin(netId: credentials.netId, password: credentials.password)
+            attemptLogin()
         }
     }
 
@@ -70,14 +70,29 @@ class ProfileLoginModelController: ProfileLoginViewController {
     override func didTapLoginButton() {
         super.didTapLoginButton()
 
-        attemptLogin(netId: netId, password: password)
+        do {
+            let credentials = KeychainManager.Credentials(netId: netId, password: password)
+            try KeychainManager.shared.save(credentials)
+
+            Task {
+                await Networking.default.sessionId.invalidate()
+                attemptLogin()
+            }
+
+        } catch KeychainManager.KeychainError.unhandledError(status: let status) {
+            logger.error("\(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
+            updateErrorMessage("Internal error, please try again later")
+
+        } catch {
+            updateErrorMessage("Internal error, please try again later")
+        }
     }
 
     private func updateLoginButtonEnabledFromState() {
         setLoginButtonEnabled(isLoginEnabled)
     }
 
-    private func attemptLogin(netId: String, password: String) {
+    private func attemptLogin() {
         guard isLoginEnabled else {
             return
         }
@@ -89,18 +104,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
         Task {
             do {
-                let credentials = KeychainManager.Credentials(netId: netId, password: password)
-                let sessionId = try await GetAccountLogin(netId: netId, password: password).sessionId()
-                try KeychainManager.shared.save(credentials)
-
+                let sessionId = try await Networking.default.sessionId.fetch(maxStaleness: .infinity)
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
 
             } catch GetAccountLogin.LoginError.loginFailed {
                 updateErrorMessage("NetID and/or password incorrect, please try again")
 
-            } catch KeychainManager.KeychainError.unhandledError(status: let status) {
-                logger.error("\(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
-                updateErrorMessage("Internal error, please try again later")
             } catch {
                 updateErrorMessage("Internal error, please try again later")
             }
@@ -118,7 +127,7 @@ extension ProfileLoginModelController: UITextFieldDelegate {
         if textField == netIdTextField {
             passwordTextField.becomeFirstResponder()
         } else if textField == passwordTextField {
-            attemptLogin(netId: netId, password: password)
+            didTapLoginButton()
         }
 
         return false
