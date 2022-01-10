@@ -39,8 +39,8 @@ class ProfileViewController: UIViewController {
         // Pick a view controller to be the root, doesn't matter which in particular
         theNavigationController.viewControllers = [login]
 
+        theNavigationController.delegate = self
         theNavigationController.navigationBar.prefersLargeTitles = true
-        theNavigationController.setNavigationBarHidden(true, animated: false)
     }
 
     private func setUpAccountController() {
@@ -71,8 +71,16 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileLoginModelControllerDelegate {
 
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
-        account.setUp(sessionId)
         setMode(.account)
+    }
+
+}
+
+extension ProfileViewController: UINavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        let hideNavigationBar = viewController is ProfileLoginViewController
+        navigationController.setNavigationBarHidden(hideNavigationBar, animated: animated)
     }
 
 }

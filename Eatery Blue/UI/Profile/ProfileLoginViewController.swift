@@ -34,6 +34,12 @@ class ProfileLoginViewController: UIViewController {
         )
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        RootViewController.setStatusBarStyle(.darkContent)
+    }
+
     private func setUpView() {
         view.backgroundColor = .white
 

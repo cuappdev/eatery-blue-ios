@@ -16,7 +16,7 @@ class EateryLargeCardTableViewCell: ClearTableViewCell {
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        setUpSelf()
+        setUpContentView()
         setUpConstraints()
     }
 
@@ -25,7 +25,7 @@ class EateryLargeCardTableViewCell: ClearTableViewCell {
 
         super.init(style: .default, reuseIdentifier: nil)
 
-        setUpSelf()
+        setUpContentView()
         setUpConstraints()
     }
 
@@ -33,7 +33,7 @@ class EateryLargeCardTableViewCell: ClearTableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setUpSelf() {
+    private func setUpContentView() {
         contentView.addSubview(cell)
     }
 

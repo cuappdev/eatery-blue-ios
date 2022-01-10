@@ -14,7 +14,7 @@ class CarouselTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        setUpSelf()
+        setUpContentView()
         setUpConstraints()
     }
 
@@ -22,8 +22,8 @@ class CarouselTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setUpSelf() {
-        addSubview(carouselView)
+    private func setUpContentView() {
+        contentView.addSubview(carouselView)
 
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.scrollView.contentInset = carouselView.layoutMargins

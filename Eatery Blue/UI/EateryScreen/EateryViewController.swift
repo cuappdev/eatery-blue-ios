@@ -12,6 +12,7 @@ class EateryViewController: UIViewController {
     private static let priceNumberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
+        formatter.locale = .eatery
         return formatter
     }()
 

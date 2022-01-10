@@ -17,12 +17,12 @@ class ListViewController: UIViewController {
     }
 
     let headerStackView = UIStackView()
-    let tableView = UITableView()
+    private let tableView = UITableView()
 
     // A view that holds the place of the filtersView in the stack view
     private let filterPlaceholder = UIView()
 
-    var eateries: [Eatery] = []
+    private(set) var eateries: [Eatery] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,6 +189,11 @@ class ListViewController: UIViewController {
         updateFiltersViewTransform()
 
         tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
+    }
+
+    func updateEateries(_ eateries: [Eatery]) {
+        self.eateries = eateries
+        tableView.reloadData()
     }
     
 }

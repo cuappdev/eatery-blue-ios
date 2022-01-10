@@ -103,10 +103,9 @@ class HomeModelController: HomeViewController {
     }
 
     private func updateCellsFromState() {
-        cells = []
+        var cells: [Cell] = []
 
         cells.append(.searchBar)
-
         cells.append(.customView(view: filterController.view))
 
         if !filter.isEnabled {
@@ -130,7 +129,7 @@ class HomeModelController: HomeViewController {
             }
         }
 
-        tableView.reloadData()
+        updateCells(cells)
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {

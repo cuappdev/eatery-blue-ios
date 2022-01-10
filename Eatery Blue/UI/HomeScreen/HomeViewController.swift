@@ -27,10 +27,10 @@ class HomeViewController: UIViewController {
     }
 
     let navigationView = HomeNavigationView()
-    let tableView = UITableView()
+    private let tableView = UITableView()
     private let tableHeaderView = UIView()
 
-    var cells: [Cell] = []
+    private(set) var cells: [Cell] = []
     @Published var userLocation: CLLocation? = nil
 
     private var cancellables: Set<AnyCancellable> = []
@@ -277,6 +277,11 @@ extension HomeViewController: UITableViewDataSource {
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func updateCells(_ cells: [Cell]) {
+        self.cells = cells
+        tableView.reloadData()
     }
 
 }

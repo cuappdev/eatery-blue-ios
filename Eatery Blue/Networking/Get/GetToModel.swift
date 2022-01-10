@@ -9,93 +9,93 @@ import Foundation
 
 enum GetToModel {
 
-    static func convert(getAccounts: [Get.RawAccount], getTransactions: [Get.RawTransaction]) -> Account {
-        var account = Account()
-        populateMealPlan(&account, getAccounts: getAccounts)
-        populateBalances(&account, getAccounts: getAccounts)
-        populateTransactions(&account, getTransactions: getTransactions)
-        return account
-    }
+    private static let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.calendar = .eatery
+        return dateFormatter
+    }()
 
-    private static func populateMealPlan(_ account: inout Account, getAccounts: [Get.RawAccount]) {
-        let perWeekPlans: [String] = ["Basic", "Choice", "Traditional"]
-        let perSemesterPlans: [String] = ["Flex", "Off"] // Off is for Off-Campus
-        let unlimitedPlans: [String] = ["Unlimited"]
-        let swipePlans: [String] = perWeekPlans + perSemesterPlans + unlimitedPlans
+    static func convert(getAccounts: [Get.RawAccount], getTransactions: [Get.RawTransaction]) -> [Account] {
+        let transactions = convert(getTransactions)
 
-        let mealPlans = getAccounts.filter { getAccount in
-            guard let name = getAccount.accountDisplayName,
-                  let balance = getAccount.balance,
-                  balance >= 0
-            else {
-                return false
-            }
-
-            return swipePlans.contains { swipePlan in
-                name.contains(swipePlan)
-            }
-        }
-
-        // Choose the meal plan with the lowest balance. Break ties by the account name.
-        let mealPlan = mealPlans.min { lhs, rhs in
-            guard let lhsBalance = lhs.balance, let rhsBalance = rhs.balance,
-                  let lhsName = lhs.accountDisplayName, let rhsName = lhs.accountDisplayName
-            else {
-                return false
-            }
-
-            if lhsBalance != rhsBalance {
-                return lhsBalance < rhsBalance
-            } else {
-                return lhsName < rhsName
-            }
-        }
-
-        if let mealPlan = mealPlan, let name = mealPlan.accountDisplayName, let balance = mealPlan.balance {
-            account.mealSwipesRemaining = Int(balance)
-
-            if perWeekPlans.contains(where: { name.contains($0) }) {
-                account.mealPlan = .perWeek
-            } else if perSemesterPlans.contains(where: { name.contains($0) }) {
-                account.mealPlan = .perSemester
-            } else if unlimitedPlans.contains(where: { name.contains($0) }) {
-                account.mealPlan = .unlimited
-            }
-        }
-    }
-
-    private static func populateBalances(_ account: inout Account, getAccounts: [Get.RawAccount]) {
+        var accounts: [Account] = []
+        
         for getAccount in getAccounts {
-            guard let name = getAccount.accountDisplayName,
-                  let balance = getAccount.balance
+            guard let accountType = parseAccountType(from: getAccount.accountDisplayName) else {
+                continue
+            }
+
+            accounts.append(Account(
+                accountType: accountType,
+                balance: getAccount.balance,
+                transactions: transactions.filter { $0.accountType == accountType }
+            ))
+        }
+
+        return accounts
+    }
+
+    static func convert(_ getTransactions: [Get.RawTransaction]) -> [Account.Transaction] {
+        var transactions: [Account.Transaction] = []
+
+        for getTransaction in getTransactions {
+            guard let location = getTransaction.locationName,
+                  let dateString = getTransaction.actualDate,
+                  let date = dateFormatter.date(from: dateString),
+                  let amount = getTransaction.amount,
+                  let accountType = parseAccountType(from: getTransaction.accountName)
             else {
                 continue
             }
 
-            if name.contains("City Bucks") {
-                if let existingBalance = account.cityBucksBalance {
-                    account.cityBucksBalance = min(balance, existingBalance)
-                } else {
-                    account.cityBucksBalance = balance
-                }
-            } else if name.contains("Laundry") {
-                if let existingBalance = account.laundryBalance {
-                    account.laundryBalance = min(balance, existingBalance)
-                } else {
-                    account.laundryBalance = balance
-                }
-            } else if name.contains("Big Red Bucks") {
-                if let existingBalance = account.brbBalance {
-                    account.brbBalance = min(balance, existingBalance)
-                } else {
-                    account.brbBalance = balance
-                }
-            }
+            transactions.append(Account.Transaction(
+                location: location,
+                date: date,
+                amount: amount,
+                accountType: accountType
+            ))
         }
+
+        return transactions
     }
 
-    private static func populateTransactions(_ account: inout Account, getTransactions: [Get.RawTransaction]) {
+    static func parseAccountType(from getAccountDisplayName: String?) -> Account.AccountType? {
+        guard let name = getAccountDisplayName else {
+            return nil
+        }
 
+        if name.contains("City Bucks") {
+            return .cityBucks
+        }
+        if name.contains("Big Red Bucks") {
+            return .bigRedBucks
+        }
+        if name.contains("Laundry") {
+            return .laundry
+        }
+
+        if name.contains("Unlimited") {
+            return .unlimited
+        }
+        if name.contains("Traditional") {
+            return .bearTraditional
+        }
+        if name.contains("Choice") {
+            return .bearChoice
+        }
+        if name.contains("Basic") {
+            return .bearBasic
+        }
+
+        if name.contains("Off") {
+            return .offCampusValue
+        }
+        if name.contains("Flex") {
+            return .flex
+        }
+
+        return nil
     }
 
 }

@@ -23,9 +23,6 @@ struct EateryBlue: ParsableCommand {
     var injectDummyData: Bool = false
 
     @Flag
-    var delayNetworkRequests: Bool = false
-
-    @Flag
     var locationUrisHall: Bool = false
 
     @Flag
@@ -56,7 +53,12 @@ struct EateryBlue: ParsableCommand {
             }
         }
 
-        let url = URL(string: fetchUrl!)!
+        let url: URL
+        if let fetchUrl = fetchUrl, let fetchUrl = URL(string: fetchUrl) {
+            url = fetchUrl
+        } else {
+            url = URL(string: "http://eatery-dev.cornellappdev.com/api")!
+        }
         Networking.default = Networking(fetchUrl: url)
 
         if locationUrisHall {

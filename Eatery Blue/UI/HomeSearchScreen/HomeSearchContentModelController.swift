@@ -129,7 +129,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     }
 
     private func updateCells(filtered: Bool, searchItems: [SearchItem], searchResults: [Fuse.FusableSearchResult]) {
-        cells = []
+        var cells: [Cell] = []
 
         // Lower score is better
         let displayed = searchResults.sorted { lhs, rhs in
@@ -165,7 +165,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             }
         }
 
-        tableView.reloadData()
+        updateCells(cells)
     }
 
     func searchTextDidChange(_ searchText: String) {

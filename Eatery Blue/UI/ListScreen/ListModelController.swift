@@ -30,12 +30,10 @@ class ListModelController: ListViewController {
     func updateEateriesFromState() {
         if filter.isEnabled {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
-            eateries = allEateries.filter(predicate.isSatisfiedBy(_:))
+            updateEateries(allEateries.filter(predicate.isSatisfiedBy(_:)))
         } else {
-            eateries = allEateries
+            updateEateries(allEateries)
         }
-
-        tableView.reloadData()
     }
 
 }

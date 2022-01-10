@@ -12,6 +12,7 @@ class HomeSearchContentViewController: UIViewController {
     private let priceNumberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
+        formatter.locale = .eatery
         return formatter
     }()
 
@@ -25,9 +26,9 @@ class HomeSearchContentViewController: UIViewController {
     let filterController = EateryFilterViewController()
     private var filterView: UIView { filterController.view }
     private let separator = HDivider()
-    let tableView = UITableView()
+    private let tableView = UITableView()
 
-    var cells: [Cell] = []
+    private(set) var cells: [Cell] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +109,11 @@ class HomeSearchContentViewController: UIViewController {
     }
 
     func didSelectItem(_ item: MenuItem, at indexPath: IndexPath, eatery: Eatery?) {
+    }
+
+    func updateCells(_ cells: [Cell]) {
+        self.cells = cells
+        tableView.reloadData()
     }
 
 }

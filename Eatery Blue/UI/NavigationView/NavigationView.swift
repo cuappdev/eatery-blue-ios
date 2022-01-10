@@ -94,20 +94,42 @@ class NavigationView: UIView {
     }
 
     func computeExpandedHeight() -> CGFloat {
-        let temporaryConstraint = largeTitleLabel.topToBottom(
-            of: normalNavigationBar,
-            offset: 0
-        )
-
-        defer {
-            temporaryConstraint.isActive = false
+        class Delegate: NSObject, UINavigationBarDelegate {
+            func position(for bar: UIBarPositioning) -> UIBarPosition {
+                .topAttached
+            }
         }
 
-        return systemLayoutSizeFitting(
-            CGSize(width: bounds.width, height: 0),
-            withHorizontalFittingPriority: .defaultLow,
-            verticalFittingPriority: .defaultHigh
-        ).height
+        let dummyNavigationBar = UINavigationBar()
+        dummyNavigationBar.prefersLargeTitles = true
+
+        // As of iOS 15, the navigation bar changes its height by 2px whether it is top or topAttached
+        let delegate = Delegate()
+        dummyNavigationBar.delegate = delegate
+
+        // Fix a font so that the height does not change based on
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .red
+        appearance.titleTextAttributes = [.font: UIFont.eateryNavigationBarTitleFont]
+        appearance.largeTitleTextAttributes = [.font: UIFont.eateryNavigationBarLargeTitleFont]
+        dummyNavigationBar.standardAppearance = appearance
+        dummyNavigationBar.scrollEdgeAppearance = appearance
+
+        let item = UINavigationItem(title: "Dummy Navigation Bar")
+        item.largeTitleDisplayMode = .always
+        dummyNavigationBar.items = [item]
+
+        addSubview(dummyNavigationBar)
+
+        // If you want to see what the dummy navigation bar looks like attached to the view, comment the line below.
+        defer { dummyNavigationBar.removeFromSuperview() }
+
+        dummyNavigationBar.topToSuperview(usingSafeArea: true)
+        dummyNavigationBar.leadingToSuperview(usingSafeArea: true)
+        dummyNavigationBar.trailingToSuperview(usingSafeArea: true)
+
+        dummyNavigationBar.layoutIfNeeded()
+        return safeAreaInsets.top + dummyNavigationBar.frame.height
     }
 
     func computeNormalHeight() -> CGFloat {

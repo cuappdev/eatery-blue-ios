@@ -15,7 +15,7 @@ class Networking {
 
     let eateries: InMemoryCache<[Eatery]>
     let sessionId: InMemoryCache<String>
-    let account: FetchAccount
+    let accounts: FetchAccounts
 
     init(fetchUrl: URL) {
         let fetchEateries = FetchEateries(url: fetchUrl)
@@ -24,7 +24,7 @@ class Networking {
         let sessionId = FetchGETSessionID()
         self.sessionId = InMemoryCache(fetch: sessionId.fetch)
 
-        self.account = FetchAccount(self.sessionId)
+        self.accounts = FetchAccounts(self.sessionId)
     }
 
 }
@@ -66,7 +66,7 @@ struct FetchGETSessionID {
 
 }
 
-struct FetchAccount {
+struct FetchAccounts {
 
     let sessionId: InMemoryCache<String>
 
@@ -74,11 +74,11 @@ struct FetchAccount {
         self.sessionId = sessionId
     }
 
-    func fetch() async throws -> Account {
-        return try await fetch(retryAttempts: 1)
+    func fetch(start: Day, end: Day) async throws -> [Account] {
+        return try await fetch(start: start, end: end, retryAttempts: 1)
     }
 
-    func fetch(retryAttempts: Int) async throws -> Account {
+    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
         do {
             let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
             let sessionManager = GetSessionManager(sessionId: sessionId)
@@ -88,8 +88,8 @@ struct FetchAccount {
             async let rawAccountInfo = sessionManager.accountInfo(userId: userId)
             async let rawTransactions = sessionManager.transactions(
                 userId: userId,
-                start: Day(),
-                end: Day().advanced(by: -365)
+                start: start,
+                end: end
             )
 
             return try await GetToModel.convert(getAccounts: rawAccountInfo, getTransactions: rawTransactions)
@@ -99,11 +99,11 @@ struct FetchAccount {
                 Networking.logger.info(
                     """
                     FetchAccount failed with error: \(error)
-                    Retrying \(retryAttempts) more times.
+                    Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
                 await sessionId.invalidate()
-                return try await fetch(retryAttempts: retryAttempts - 1)
+                return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
                 
             } else {
                 throw error

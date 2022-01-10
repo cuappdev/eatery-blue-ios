@@ -9,33 +9,43 @@ import Foundation
 
 struct Account: Codable {
 
-    enum MealPlanType: String, Codable {
-        case perSemester
-        case perWeek
+    enum AccountType: Codable {
+
+        case cityBucks
+        case bigRedBucks
+        case laundry
+
         case unlimited
+        case bearTraditional
+        case bearChoice
+        case bearBasic
+
+        case offCampusValue
+        case flex
+
+        var isMealPlan: Bool {
+            switch self {
+            case .unlimited, .bearTraditional, .bearChoice, .bearBasic, .offCampusValue, .flex: return true
+            case .cityBucks, .bigRedBucks, .laundry: return false
+            }
+        }
+
     }
 
-    struct MealSwipeTransaction: Codable {
-        let location: String
-        let date: String
+    enum TransactionType: Codable {
+        case mealSwipe
+        case currency
     }
 
-    struct CurrencyTransaction: Codable {
+    struct Transaction: Codable {
         let location: String
         let date: Date
         let amount: Double
+        let accountType: AccountType
     }
 
-    var mealPlan: MealPlanType?
-    var mealSwipesRemaining: Int?
-    
-    var brbBalance: Double?
-    var cityBucksBalance: Double?
-    var laundryBalance: Double?
-
-    var mealSwipeTransactions: [MealSwipeTransaction] = []
-    var brbTransactions: [CurrencyTransaction] = []
-    var cityBucksTransactions: [CurrencyTransaction] = []
-    var laundryTransactions: [CurrencyTransaction] = []
+    let accountType: AccountType
+    var balance: Double?
+    var transactions: [Transaction]
 
 }
