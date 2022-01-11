@@ -12,9 +12,9 @@ enum SchemaToModel {
     static func convert(_ schemaEatery: Schema.Eatery) -> Eatery {
         Eatery(
             name: schemaEatery.name,
-            building: nil,
-            imageUrl: nil,
-            menuSummary: nil,
+            locationDescription: schemaEatery.location,
+            imageUrl: schemaEatery.imageUrl,
+            menuSummary: schemaEatery.menuSummary,
             paymentMethods: convert(schemaEatery.paymentMethods),
             campusArea: schemaEatery.campusArea,
             events: schemaEatery.events?.compactMap(convert) ?? [],
@@ -23,7 +23,11 @@ enum SchemaToModel {
         )
     }
 
-    static func convert(_ schemaPaymentMethods: [Schema.PaymentMethod]) -> Set<PaymentMethod> {
+    static func convert(_ schemaPaymentMethods: [Schema.PaymentMethod]?) -> Set<PaymentMethod> {
+        guard let schemaPaymentMethods = schemaPaymentMethods else {
+            return []
+        }
+
         var paymentMethods: Set<PaymentMethod> = []
         for schemaPaymentMethod in schemaPaymentMethods {
             switch schemaPaymentMethod {
@@ -77,7 +81,7 @@ enum SchemaToModel {
 
     static func convert(_ schemaMenuItem: Schema.MenuItem) -> MenuItem {
         MenuItem(
-            healthy: schemaMenuItem.healthy,
+            healthy: schemaMenuItem.healthy ?? false,
             name: schemaMenuItem.name,
             description: nil,
             price: nil

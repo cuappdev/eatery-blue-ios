@@ -9,7 +9,7 @@ import UIKit
 
 class ProfileLoginViewController: UIViewController {
 
-    private let settingsButton = ContainerView(content: UIImageView())
+    let settingsButton = ContainerView(content: UIImageView())
     private let scrollView = UIScrollView()
     private let loginView = LoginView()
     let netIdTextField = UITextField()
@@ -56,7 +56,7 @@ class ProfileLoginViewController: UIViewController {
     private func setUpSettingsButton() {
         settingsButton.content.image = UIImage(named: "Settings")?.withRenderingMode(.alwaysTemplate)
         settingsButton.content.tintColor = UIColor(named: "Black")
-        settingsButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
+        settingsButton.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 
     private func setUpScrollView() {
@@ -110,9 +110,10 @@ class ProfileLoginViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        settingsButton.topToSuperview(offset: 12, usingSafeArea: true)
-        settingsButton.trailingToSuperview(offset: 16, usingSafeArea: true)
-        settingsButton.height(34)
+        settingsButton.topToSuperview(usingSafeArea: true)
+        settingsButton.trailingToSuperview(offset: 6, usingSafeArea: true)
+        settingsButton.height(44)
+        settingsButton.width(44)
 
         scrollView.topToBottom(of: settingsButton)
         scrollView.leadingToSuperview()

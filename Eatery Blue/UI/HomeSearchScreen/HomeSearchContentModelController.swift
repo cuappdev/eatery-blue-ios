@@ -21,7 +21,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             case .eatery(let eatery):
                 return [
                     FuseProperty(name: eatery.name, weight: 1),
-                    FuseProperty(name: eatery.building ?? "", weight: eatery.building != nil ? 0.25 : 0),
+                    FuseProperty(name: eatery.locationDescription ?? "", weight: eatery.location != nil ? 0.25 : 0),
                 ]
 
             case .menuItem(let item, let category, _):

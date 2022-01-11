@@ -76,21 +76,7 @@ class HomeModelController: HomeViewController {
                         eateries.first(where: { $0.name.starts(with: "Mac's") })!,
                         eateries.first(where: { $0.name.starts(with: "Terrace") })!
                     ]
-                ),
-                EateryCollection(
-                    title: "Favorite Eateries",
-                    description: nil,
-                    eateries: [
-                        DummyData.rpcc, DummyData.macsOpen, DummyData.macsOpenSoon
-                    ]
-                ),
-                EateryCollection(
-                    title: "Lunch on the Go",
-                    description: "Grab a quick bite on the way to (skipping) your classes",
-                    eateries: [
-                        DummyData.macsClosed, DummyData.macsClosingSoon
-                    ]
-                ),
+                )
             ]
 
             allEateries = eateries.sorted(by: { lhs, rhs in

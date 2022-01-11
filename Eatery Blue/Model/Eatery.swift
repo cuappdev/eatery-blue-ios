@@ -42,7 +42,7 @@ struct Event: Codable, Hashable {
 struct Eatery: Codable, Hashable {
 
     var name: String = ""
-    var building: String?
+    var locationDescription: String?
     var imageUrl: URL?
     var menuSummary: String?
     var paymentMethods: Set<PaymentMethod> = []

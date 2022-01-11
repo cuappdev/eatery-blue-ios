@@ -65,6 +65,11 @@
 		5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3BC27822AD30020507C /* EateryBlue.xcdatamodeld */; };
 		5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C3BF27822CD20020507C /* CoreDataStack.swift */; };
 		5D73C3C5278237240020507C /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 5D73C3C4278237240020507C /* ArgumentParser */; };
+		5D75D6D1278CD59000832359 /* SettingsMainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75D6D0278CD59000832359 /* SettingsMainMenuViewController.swift */; };
+		5D75D6D3278E084E00832359 /* SettingsMainMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75D6D2278E084E00832359 /* SettingsMainMenuCell.swift */; };
+		5D75D6D5278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75D6D4278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift */; };
+		5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75D6D6278E0D7000832359 /* SettingsLogoutPillButton.swift */; };
+		5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75D6D8278E1A2700832359 /* SettingsMainMenuModelController.swift */; };
 		5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86517E2773CBFB000338D4 /* AppDelegate.swift */; };
 		5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8651802773CBFB000338D4 /* SceneDelegate.swift */; };
 		5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D8651872773CBFB000338D4 /* Assets.xcassets */; };
@@ -211,6 +216,11 @@
 		5D73C39027812C4F0020507C /* SearchResultsCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCountView.swift; sourceTree = "<group>"; };
 		5D73C3BD27822AD30020507C /* EateryBlue.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EateryBlue.xcdatamodel; sourceTree = "<group>"; };
 		5D73C3BF27822CD20020507C /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		5D75D6D0278CD59000832359 /* SettingsMainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMainMenuViewController.swift; sourceTree = "<group>"; };
+		5D75D6D2278E084E00832359 /* SettingsMainMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMainMenuCell.swift; sourceTree = "<group>"; };
+		5D75D6D4278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMainMenuLoginStatusView.swift; sourceTree = "<group>"; };
+		5D75D6D6278E0D7000832359 /* SettingsLogoutPillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLogoutPillButton.swift; sourceTree = "<group>"; };
+		5D75D6D8278E1A2700832359 /* SettingsMainMenuModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMainMenuModelController.swift; sourceTree = "<group>"; };
 		5D86517B2773CBFB000338D4 /* Eatery Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Blue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D86517E2773CBFB000338D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D8651802773CBFB000338D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -422,6 +432,18 @@
 			path = NavigationView;
 			sourceTree = "<group>";
 		};
+		5DA434C4278CD0DF001337FD /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5D75D6D2278E084E00832359 /* SettingsMainMenuCell.swift */,
+				5D75D6D4278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift */,
+				5D75D6D8278E1A2700832359 /* SettingsMainMenuModelController.swift */,
+				5D75D6D0278CD59000832359 /* SettingsMainMenuViewController.swift */,
+				5D75D6D6278E0D7000832359 /* SettingsLogoutPillButton.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		5DBA89982783ECEB002DCA6B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,6 +564,7 @@
 				5DF304C7277A343000E2C9A4 /* ReportIssueScreen */,
 				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
 				5DBA89A52784D898002DCA6B /* Root */,
+				5DA434C4278CD0DF001337FD /* Settings */,
 				5DF304B727797CE400E2C9A4 /* Sheet */,
 				5DBA89A02784D2ED002DCA6B /* Splash */,
 				5DF304B527797CB600E2C9A4 /* Util */,
@@ -822,8 +845,10 @@
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D468A27277E820C00986AFF /* EateryTiming.swift in Sources */,
 				5D468A02277D252600986AFF /* EateryPredicate.swift in Sources */,
+				5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
+				5D75D6D5278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift in Sources */,
 				5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */,
 				5DA434C0278B9566001337FD /* AccountPickerSheetViewController.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* EateryViewController.swift in Sources */,
@@ -901,6 +926,7 @@
 				5D73C3852780F0060020507C /* SearchItemView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* DayPickerView.swift in Sources */,
 				5D468A1D277E578A00986AFF /* EateryStatus.swift in Sources */,
+				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
 				5D468A19277E440300986AFF /* SchemaToModel.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5DF304FF277CC15C00E2C9A4 /* EateryFilter.swift in Sources */,
@@ -927,12 +953,14 @@
 				5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */,
 				5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */,
 				5D4689FE277D0C2600986AFF /* EateryLargeCardTableViewCell.swift in Sources */,
+				5D75D6D1278CD59000832359 /* SettingsMainMenuViewController.swift in Sources */,
 				5D698F8627888EC80054E1AB /* LoginView.swift in Sources */,
 				5D0CDC432774E5F400AD0E27 /* EateryPillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
 				5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */,
+				5D75D6D3278E084E00832359 /* SettingsMainMenuCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1076,6 +1104,7 @@
 				DEVELOPMENT_TEAM = S53MNES6U5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
@@ -1106,6 +1135,7 @@
 				DEVELOPMENT_TEAM = S53MNES6U5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";

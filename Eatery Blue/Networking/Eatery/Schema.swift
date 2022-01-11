@@ -16,13 +16,19 @@ enum Schema {
     }
 
     struct Eatery: Codable {
+        let id: Int
         let campusArea: String?
         let events: [Schema.Event]?
+        let imageUrl: URL?
+        let menuSummary: String?
         let latitude: Double?
         let longitude: Double?
+        let location: String?
         let name: String
-        let paymentMethods: [Schema.PaymentMethod]
+        let paymentMethods: [Schema.PaymentMethod]?
         let waitTimesByDay: [Schema.WaitTimesByDay]?
+        let onlineOrderUrl: URL?
+        let alerts: [Alert]?
     }
 
     enum PaymentMethod: String, Codable {
@@ -57,8 +63,15 @@ enum Schema {
     }
 
     struct MenuItem: Codable {
-        let healthy: Bool
+        let healthy: Bool?
         let name: String
+    }
+
+    struct Alert: Codable {
+        let id: Int
+        let description: String?
+        let startTimestamp: Int
+        let endTimestamp: Int
     }
 
 }

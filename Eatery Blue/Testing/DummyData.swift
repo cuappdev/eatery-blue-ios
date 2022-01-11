@@ -38,7 +38,7 @@ enum DummyData {
         var macs = Eatery()
         macs.name = "Mac's Café"
         macs.campusArea = "Central"
-        macs.building = "Statler Hall"
+        macs.locationDescription = "Statler Hall"
         macs.events = (0..<5).map { offset in
             Event(
                 canonicalDay: Day().advanced(by: offset),
@@ -57,7 +57,7 @@ enum DummyData {
         var macs = Eatery()
         macs.name = "Mac's Café - Open"
         macs.campusArea = "Central"
-        macs.building = "Statler Hall"
+        macs.locationDescription = "Statler Hall"
         macs.events = [
             Event(
                 canonicalDay: Day(),
@@ -76,7 +76,7 @@ enum DummyData {
         var macs = Eatery()
         macs.name = "Mac's Café - Open Soon"
         macs.campusArea = "Central"
-        macs.building = "Statler Hall"
+        macs.locationDescription = "Statler Hall"
         macs.events = [
             Event(
                 canonicalDay: Day(),
@@ -95,7 +95,7 @@ enum DummyData {
         var macs = Eatery()
         macs.name = "Mac's Café - Closed"
         macs.campusArea = "Central"
-        macs.building = "Statler Hall"
+        macs.locationDescription = "Statler Hall"
         macs.events = [
             Event(
                 canonicalDay: Day(),
@@ -114,7 +114,7 @@ enum DummyData {
         var macs = Eatery()
         macs.name = "Mac's Café - Closing Soon"
         macs.campusArea = "Central"
-        macs.building = "Statler Hall"
+        macs.locationDescription = "Statler Hall"
         macs.events = [
             Event(
                 canonicalDay: Day(),
@@ -134,7 +134,7 @@ enum DummyData {
         eatery.name = "RPCC"
         eatery.paymentMethods = [.cash, .credit, .brbs, .mealSwipes]
         eatery.campusArea = "North"
-        eatery.building = "Robert Purcell Community Center"
+        eatery.locationDescription = "Robert Purcell Community Center"
         eatery.location = EateryLocation(latitude: 42.455973, longitude: -76.477354)
         eatery.menuSummary = "Cornell Dining"
         eatery.imageUrl = URL(string: "https://resizer.otstatic.com/v2/photos/wide-huge/1/31826674.jpg")

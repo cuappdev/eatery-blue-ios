@@ -186,8 +186,8 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             }
 
             if let eatery = eatery {
-                if let building = eatery.building {
-                    view.sourceLabel.text = "\(eatery.name) · \(building)"
+                if let location = eatery.location {
+                    view.sourceLabel.text = "\(eatery.name) · \(location)"
                 } else {
                     view.sourceLabel.text = eatery.name
                 }

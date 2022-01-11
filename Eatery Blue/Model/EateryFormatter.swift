@@ -162,9 +162,9 @@ class EateryFormatter {
             var lines: [NSAttributedString] = []
 
             var firstLineComponents: [NSAttributedString] = []
-            if let building = eatery.building {
+            if let locationDescription = eatery.locationDescription {
                 firstLineComponents.append(NSAttributedString(
-                    string: building
+                    string: locationDescription
                 ))
             }
             if let firstLineSecondComponent = firstLineSecondComponent(eatery, date: date) {

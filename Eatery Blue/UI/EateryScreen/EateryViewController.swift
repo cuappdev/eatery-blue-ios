@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/23/21.
 //
 
+import Combine
 import UIKit
 
 class EateryViewController: UIViewController {
@@ -23,6 +24,8 @@ class EateryViewController: UIViewController {
 
     var headerView: UIView?
     var navigationTriggerView: UIView?
+
+    private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -204,7 +207,7 @@ class EateryViewController: UIViewController {
 
     func addShortDescriptionLabel(_ eatery: Eatery) {
         let label = UILabel()
-        label.text = "\(eatery.building ?? "--") · \(eatery.menuSummary ?? "--")"
+        label.text = "\(eatery.locationDescription ?? "--") · \(eatery.menuSummary ?? "--")"
         label.textColor = UIColor(named: "Gray05")
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
 

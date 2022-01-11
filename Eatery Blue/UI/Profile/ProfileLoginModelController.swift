@@ -34,6 +34,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
         setUpNetIdTextField()
         setUpPasswordTextField()
+        setUpSettingsButton()
     }
 
     override func didMove(toParent parent: UIViewController?) {
@@ -116,6 +117,13 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
             isLoggingIn = false
             updateLoginButtonEnabledFromState()
+        }
+    }
+
+    private func setUpSettingsButton() {
+        settingsButton.on(UITapGestureRecognizer()) { [self] _ in
+            let viewController = SettingsMainMenuModelController()
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
 

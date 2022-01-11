@@ -56,6 +56,15 @@ class AccountViewController: UIViewController {
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.title = "Account"
+
+        let settingsItem = UIBarButtonItem(
+            image: UIImage(named: "Settings"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSettingsButton)
+        )
+        settingsItem.tintColor = .white
+        navigationItem.rightBarButtonItem = settingsItem
     }
 
     private func setUpView() {
@@ -85,6 +94,11 @@ class AccountViewController: UIViewController {
         balanceCells = balances
         transactionCells = transactions
         tableView.reloadData()
+    }
+
+    @objc private func didTapSettingsButton() {
+        let viewController = SettingsMainMenuModelController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
 }
