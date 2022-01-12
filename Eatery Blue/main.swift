@@ -75,7 +75,7 @@ struct EateryBlue: ParsableCommand {
 
         if forceDeleteCredentials {
             logger.info("\(#function): Deleting credentials")
-            try! KeychainManager.shared.delete()
+            try! GetKeychainManager.shared.delete()
         }
 
         AppDelegate.main()

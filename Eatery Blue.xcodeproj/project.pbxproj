@@ -49,7 +49,7 @@
 		5D6C3D6D27879B4A000C518D /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6C27879B4A000C518D /* Account.swift */; };
 		5D6C3D7127879F8E000C518D /* GetToModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D7027879F8E000C518D /* GetToModel.swift */; };
 		5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */; };
-		5D6C3D752787BA1D000C518D /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D742787BA1D000C518D /* KeychainManager.swift */; };
+		5D6C3D752787BA1D000C518D /* GetKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */; };
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
@@ -201,7 +201,7 @@
 		5D6C3D6C27879B4A000C518D /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		5D6C3D7027879F8E000C518D /* GetToModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToModel.swift; sourceTree = "<group>"; };
 		5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginModelController.swift; sourceTree = "<group>"; };
-		5D6C3D742787BA1D000C518D /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetKeychainManager.swift; sourceTree = "<group>"; };
 		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
 		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
 		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
@@ -494,9 +494,9 @@
 			children = (
 				5D6C3D6A27878A7E000C518D /* Get.swift */,
 				5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */,
+				5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */,
 				5D6C3D6327876460000C518D /* GetSessionManager.swift */,
 				5D6C3D7027879F8E000C518D /* GetToModel.swift */,
-				5D6C3D742787BA1D000C518D /* KeychainManager.swift */,
 			);
 			path = Get;
 			sourceTree = "<group>";
@@ -941,7 +941,7 @@
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */,
-				5D6C3D752787BA1D000C518D /* KeychainManager.swift in Sources */,
+				5D6C3D752787BA1D000C518D /* GetKeychainManager.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,

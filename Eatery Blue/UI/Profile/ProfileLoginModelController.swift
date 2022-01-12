@@ -35,12 +35,8 @@ class ProfileLoginModelController: ProfileLoginViewController {
         setUpNetIdTextField()
         setUpPasswordTextField()
         setUpSettingsButton()
-    }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-
-        if parent != nil, let credentials = try? KeychainManager.shared.get() {
+        if let credentials = try? GetKeychainManager.shared.get() {
             netIdTextField.text = credentials.netId
             passwordTextField.text = "        "
             attemptLogin()
@@ -72,19 +68,20 @@ class ProfileLoginModelController: ProfileLoginViewController {
         super.didTapLoginButton()
 
         do {
-            let credentials = KeychainManager.Credentials(netId: netId, password: password)
-            try KeychainManager.shared.save(credentials)
+            let credentials = GetKeychainManager.Credentials(netId: netId, password: password)
+            try GetKeychainManager.shared.save(credentials)
 
             Task {
                 await Networking.default.sessionId.invalidate()
                 attemptLogin()
             }
 
-        } catch KeychainManager.KeychainError.unhandledError(status: let status) {
-            logger.error("\(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
+        } catch GetKeychainManager.KeychainError.unhandledError(status: let status) {
+            logger.error("\(#function): \(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
             updateErrorMessage("Internal error, please try again later")
 
         } catch {
+            logger.error("\(#function): \(error)")
             updateErrorMessage("Internal error, please try again later")
         }
     }
@@ -110,6 +107,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
             } catch GetAccountLogin.LoginError.loginFailed {
                 updateErrorMessage("NetID and/or password incorrect, please try again")
+
+            } catch GetAccountLogin.LoginError.emptyNetId {
+                updateErrorMessage("Please enter a NetID")
+
+            } catch GetAccountLogin.LoginError.emptyPassword {
+                updateErrorMessage("Please enter a password")
 
             } catch {
                 updateErrorMessage("Internal error, please try again later")

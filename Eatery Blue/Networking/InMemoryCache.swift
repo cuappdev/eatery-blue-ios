@@ -33,6 +33,7 @@ actor InMemoryCache<Value> {
             let task = Task { () -> Value in
                 defer { fetchTask = nil }
                 let result = try await fetch()
+                try Task.checkCancellation()
                 cachedValue = result
                 cachedValueDate = Date()
                 return result
@@ -57,6 +58,7 @@ actor InMemoryCache<Value> {
     func invalidate() {
         cachedValue = nil
         cachedValueDate = nil
+        fetchTask?.cancel()
     }
 
 }

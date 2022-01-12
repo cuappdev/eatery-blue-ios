@@ -11,6 +11,8 @@ import Logging
 
 class Networking {
 
+    static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
+
     static var logger = Logger(label: "com.appdev.Eatery-Blue.Networking.logger")
 
     let eateries: InMemoryCache<[Eatery]>
@@ -25,6 +27,17 @@ class Networking {
         self.sessionId = InMemoryCache(fetch: sessionId.fetch)
 
         self.accounts = FetchAccounts(self.sessionId)
+    }
+
+    func logOut() async {
+        do {
+            try GetKeychainManager.shared.delete()
+        } catch {
+            Networking.logger.error("Unable to delete credentials while logging out: \(error)")
+        }
+        await sessionId.invalidate()
+
+        NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 
 }
@@ -60,7 +73,7 @@ struct FetchEateries {
 struct FetchGETSessionID {
 
     func fetch() async throws -> String {
-        let credentials = try KeychainManager.shared.get()
+        let credentials = try GetKeychainManager.shared.get()
         return try await GetAccountLogin(credentials: credentials).sessionId()
     }
 

@@ -52,9 +52,16 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             }
         ))
         setCustomSpacing(24)
-        if let credentials = try? KeychainManager.shared.get() {
-            addLoginStatusView(credentials.netId, logOut: {
+        if let credentials = try? GetKeychainManager.shared.get() {
+            var didAttemptLogOut = false
 
+            addLoginStatusView(credentials.netId, logOut: {
+                if !didAttemptLogOut {
+                    Task {
+                        await Networking.default.logOut()
+                    }
+                    didAttemptLogOut = true
+                }
             })
         }
     }

@@ -17,9 +17,13 @@ class GetSessionManager {
     private let base: String
     private let sessionId: String
 
+    private var session: Session
+
     init(base: String = "https://services.get.cbord.com/GETServices/services/json", sessionId: String) {
         self.base = base
         self.sessionId = sessionId
+
+        session = Session(cachedResponseHandler: ResponseCacher.doNotCache)
     }
 
     @MainActor func userId() async throws -> String {
@@ -37,7 +41,7 @@ class GetSessionManager {
             let id: String
         }
 
-        let dataTask = AF.request(
+        let dataTask = session.request(
             "\(base)/user",
             method: .post,
             parameters: Parameters(sessionId: sessionId),
@@ -69,7 +73,7 @@ class GetSessionManager {
             let accounts: [Get.RawAccount]
         }
 
-        let dataTask = AF.request(
+        let dataTask = session.request(
             "\(base)/commerce",
             method: .post,
             parameters: Parameters(
@@ -128,7 +132,7 @@ class GetSessionManager {
             let transactions: [Get.RawTransaction]
         }
 
-        let dataTask = AF.request(
+        let dataTask = session.request(
             "\(base)/commerce",
             method: .post,
             parameters: Parameters(

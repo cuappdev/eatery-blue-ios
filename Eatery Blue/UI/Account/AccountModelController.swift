@@ -255,6 +255,16 @@ class AccountModelController: AccountViewController {
         }
     }
 
+    override func didRefresh(_ sender: UIRefreshControl) {
+        super.didRefresh(sender)
+
+        Task {
+            await updateAccountsFromNetworking()
+            updateCellsFromState()
+            sender.endRefreshing()
+        }
+    }
+
 }
 
 extension AccountModelController: AccountPickerSheetViewControllerDelegate {

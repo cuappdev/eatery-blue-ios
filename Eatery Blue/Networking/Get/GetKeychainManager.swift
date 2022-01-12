@@ -1,5 +1,5 @@
 //
-//  KeychainManager.swift
+//  GetKeychainManager.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/6/22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct KeychainManager {
+struct GetKeychainManager {
 
     struct Credentials {
         var netId: String
@@ -21,7 +21,7 @@ struct KeychainManager {
         case unhandledError(status: OSStatus)
     }
 
-    static let shared = KeychainManager()
+    static let shared = GetKeychainManager()
 
     private static let server = "https://shibidp.cit.cornell.edu/"
 
@@ -35,7 +35,7 @@ struct KeychainManager {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrAccount as String: credentials.netId,
-            kSecAttrServer as String: KeychainManager.server,
+            kSecAttrServer as String: GetKeychainManager.server,
             kSecValueData as String: passwordData
         ]
 
@@ -48,7 +48,7 @@ struct KeychainManager {
     func get() throws -> Credentials {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
-            kSecAttrServer as String: KeychainManager.server,
+            kSecAttrServer as String: GetKeychainManager.server,
             kSecMatchLimit as String: kSecMatchLimitOne,
             kSecReturnAttributes as String: true,
             kSecReturnData as String: true
@@ -77,7 +77,7 @@ struct KeychainManager {
     func delete() throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
-            kSecAttrServer as String: KeychainManager.server
+            kSecAttrServer as String: GetKeychainManager.server
         ]
 
         let status = SecItemDelete(query as CFDictionary)

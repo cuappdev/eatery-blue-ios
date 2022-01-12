@@ -15,8 +15,6 @@ class ProfileViewController: UIViewController {
     }
 
     private var theNavigationController = UINavigationController()
-    private let account = AccountModelController()
-    private let login = ProfileLoginModelController()
 
     private var currentMode: Mode = .login
 
@@ -24,11 +22,16 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         setUpNavigationController()
-        setUpAccountController()
-        setUpLoginController()
         setUpConstraints()
 
-        setMode(currentMode)
+        setMode(currentMode, animated: false)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didLogOut(_:)),
+            name: Networking.didLogOutNotification,
+            object: nil
+        )
     }
 
     private func setUpNavigationController() {
@@ -36,18 +39,8 @@ class ProfileViewController: UIViewController {
         view.addSubview(theNavigationController.view)
         theNavigationController.didMove(toParent: self)
 
-        // Pick a view controller to be the root, doesn't matter which in particular
-        theNavigationController.viewControllers = [login]
-
         theNavigationController.delegate = self
         theNavigationController.navigationBar.prefersLargeTitles = true
-    }
-
-    private func setUpAccountController() {
-    }
-
-    private func setUpLoginController() {
-        login.delegate = self
     }
 
     private func setUpConstraints() {
@@ -56,16 +49,32 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    private func setMode(_ mode: Mode) {
+    func setMode(_ mode: Mode, animated: Bool) {
         currentMode = mode
 
+        let viewController: UIViewController
         switch mode {
         case .login:
-            theNavigationController.viewControllers[0] = login
+            let login = ProfileLoginModelController()
+            login.delegate = self
+            viewController = login
 
         case .account:
-            theNavigationController.viewControllers[0] = account
+            viewController = AccountModelController()
         }
+
+        var viewControllers = theNavigationController.viewControllers
+        if viewControllers.isEmpty {
+            viewControllers.append(viewController)
+        } else {
+            viewControllers[0] = viewController
+        }
+        theNavigationController.setViewControllers(viewControllers, animated: animated)
+    }
+
+    @objc private func didLogOut(_ notification: Notification) {
+        setMode(.login, animated: false)
+        theNavigationController.popToRootViewController(animated: true)
     }
 
 }
@@ -73,7 +82,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileLoginModelControllerDelegate {
 
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
-        setMode(.account)
+        setMode(.account, animated: true)
     }
 
 }

@@ -25,6 +25,8 @@ class AccountViewController: UIViewController {
     let transactionsHeaderView = AccountTransactionsHeaderView()
     private let tableView = UITableView()
 
+    private let refreshControl = UIRefreshControl()
+
     private(set) var balanceCells: [BalanceCell] = []
     private(set) var transactionCells: [TransactionCell] = []
 
@@ -82,6 +84,10 @@ class AccountViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
 
+        refreshControl.tintColor = .white
+        refreshControl.addTarget(self, action: #selector(didRefresh(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+
         tableView.register(AccountBalanceTableViewCell.self, forCellReuseIdentifier: "balance")
         tableView.register(AccountTransactionTableViewCell.self, forCellReuseIdentifier: "transaction")
     }
@@ -101,6 +107,9 @@ class AccountViewController: UIViewController {
     @objc private func didTapSettingsButton() {
         let viewController = SettingsMainMenuModelController()
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @objc func didRefresh(_ sender: UIRefreshControl) {
     }
 
 }

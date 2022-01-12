@@ -18,6 +18,8 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         case invalidLoginUrl
         case loginFailed
         case internalError
+        case emptyNetId
+        case emptyPassword
     }
     
     private enum Stage {
@@ -36,7 +38,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
     private let netId: String
     private let password: String
 
-    @MainActor convenience init(credentials: KeychainManager.Credentials) {
+    @MainActor convenience init(credentials: GetKeychainManager.Credentials) {
         self.init(netId: credentials.netId, password: credentials.password)
     }
 
@@ -130,6 +132,12 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
     }
 
     @MainActor private func webLogIn() async throws {
+        if netId.isEmpty {
+            throw LoginError.emptyNetId
+        } else if password.isEmpty {
+            throw LoginError.emptyPassword
+        }
+
         let script = """
         document.getElementsByName('j_username')[0].value = '\(netId)';
         document.getElementsByName('j_password')[0].value = '\(password)';
