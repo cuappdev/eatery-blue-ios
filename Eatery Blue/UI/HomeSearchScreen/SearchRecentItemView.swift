@@ -61,15 +61,15 @@ class SearchRecentItemView: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.leading(to: layoutMarginsGuide)
-        imageView.width(16)
-        imageView.height(16)
-        imageView.centerY(to: layoutMarginsGuide)
+        imageView.snp.makeConstraints { make in
+            make.leading.centerY.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(16)
+        }
 
-        stackView.leadingToTrailing(of: imageView, offset: 8)
-        stackView.topToSuperview()
-        stackView.trailingToSuperview()
-        stackView.bottomToSuperview()
+        stackView.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(8)
+            make.top.trailing.bottom.equalToSuperview()
+        }
     }
 
 }

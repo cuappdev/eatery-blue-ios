@@ -54,19 +54,21 @@ class EaterySmallCardView: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.edgesToSuperview(excluding: .bottom)
-        imageView.width(96)
-        imageView.height(96)
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.width.height.equalTo(96)
+        }
 
-        favoriteImageView.width(24)
-        favoriteImageView.height(24)
-        favoriteImageView.trailing(to: imageView)
-        favoriteImageView.bottom(to: imageView)
+        favoriteImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.trailing.bottom.equalTo(imageView)
+        }
 
-        titleLabel.topToBottom(of: imageView, offset: 8)
-        titleLabel.leadingToSuperview()
-        titleLabel.trailingToSuperview()
-        titleLabel.bottomToSuperview(relation: .equalOrLess)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview()
+        }
     }
 
 }

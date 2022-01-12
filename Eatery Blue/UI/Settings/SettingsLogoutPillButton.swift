@@ -45,17 +45,25 @@ class SettingsLogoutPillButton: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.width(16)
-        imageView.height(16)
-        imageView.leadingToSuperview(offset: 10)
-        imageView.centerYToSuperview()
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(16)
+            make.leading.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
+        }
 
-        titleLabel.leadingToTrailing(of: imageView, offset: 4)
-        titleLabel.topToSuperview(offset: 8)
-        titleLabel.bottomToSuperview(offset: -8)
-        titleLabel.trailingToSuperview(offset: 10)
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(4)
+            make.top.bottom.equalToSuperview().inset(8)
+            make.trailing.equalToSuperview().inset(10)
+        }
+        titleLabel.setContentHuggingPriority(
+            imageView.contentHuggingPriority(for: .horizontal) + 1,
+            for: .horizontal
+        )
+        titleLabel.setContentHuggingPriority(
+            imageView.contentHuggingPriority(for: .vertical) + 1,
+            for: .vertical
+        )
     }
 
     override func layoutSubviews() {

@@ -73,7 +73,10 @@ class HomeModelController: HomeViewController {
                     title: "Debug",
                     description: nil,
                     eateries: [
+                        DummyData.macsOpen,
                         eateries.first(where: { $0.name.starts(with: "Mac's") })!,
+                        eateries.first(where: { $0.name.starts(with: "Terrace") })!,
+                        eateries.first(where: { $0.name.starts(with: "Terrace") })!,
                         eateries.first(where: { $0.name.starts(with: "Terrace") })!
                     ]
                 )
@@ -136,16 +139,3 @@ extension HomeModelController: EateryFilterViewControllerDelegate {
     }
 
 }
-
-extension HomeModelController {
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        let viewController = HomeSearchModelController()
-        navigationController?.hero.isEnabled = true
-        navigationController?.hero.navigationAnimationType = .fade
-        navigationController?.pushViewController(viewController, animated: true)
-        return false
-    }
-
-}
-

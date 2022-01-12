@@ -35,7 +35,9 @@ class EateryPillButtonStackView: UIView {
     }
 
     private func setUpConstraints() {
-        stackView.edges(to: layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(layoutMarginsGuide)
+        }
     }
 
     func addPillButton(_ view: EateryPillButtonView) {

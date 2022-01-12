@@ -34,10 +34,14 @@ class TimingCellView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.edges(to: layoutMarginsGuide, excluding: .bottom)
-        
-        statusLabel.topToBottom(of: titleLabel, offset: 4)
-        statusLabel.edges(to: layoutMarginsGuide, excluding: .top)
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(layoutMarginsGuide)
+        }
+
+        statusLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

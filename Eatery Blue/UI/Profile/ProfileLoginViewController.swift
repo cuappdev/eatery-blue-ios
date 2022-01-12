@@ -25,13 +25,6 @@ class ProfileLoginViewController: UIViewController {
 
         setLoginButtonEnabled(false)
         updateErrorMessage(nil)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillChangeFrame(_:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -110,45 +103,40 @@ class ProfileLoginViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        settingsButton.topToSuperview(usingSafeArea: true)
-        settingsButton.trailingToSuperview(offset: 6, usingSafeArea: true)
-        settingsButton.height(44)
-        settingsButton.width(44)
+        settingsButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(6)
+            make.width.height.equalTo(44)
+        }
 
-        scrollView.topToBottom(of: settingsButton)
-        scrollView.leadingToSuperview()
-        scrollView.trailingToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(settingsButton.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+        }
 
-        loginView.edgesToSuperview()
-        loginView.widthToSuperview()
+        loginView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
 
-        loginButton.topToBottom(of: scrollView)
-        loginButton.leadingToSuperview(offset: 16, usingSafeArea: true)
-        loginButton.trailingToSuperview(offset: 16, usingSafeArea: true)
-        loginButton.bottomToSuperview(offset: -12, usingSafeArea: true)
+        loginButton.snp.makeConstraints { make in
+            make.top.equalTo(scrollView.snp.bottom)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12).priority(.high)
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).inset(12)
+
+            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-12).priority(.high)
+            make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-12)
+        }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     func didTapLoginButton() {
-
     }
 
     private func didTapSkipButton() {
         NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
-    }
-
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-
-        let keyboardFrameInViewCoordinates = view.convert(keyboardFrame, from: nil)
-        let intersection = view.frame.intersection(keyboardFrameInViewCoordinates)
-
-        let delta = intersection.height - view.safeAreaInsets.bottom
-        additionalSafeAreaInsets.bottom += delta
-        additionalSafeAreaInsets.bottom = max(0, additionalSafeAreaInsets.bottom)
     }
 
     func setLoginButtonEnabled(_ isEnabled: Bool) {

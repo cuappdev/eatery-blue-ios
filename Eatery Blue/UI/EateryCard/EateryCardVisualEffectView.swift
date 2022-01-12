@@ -1,19 +1,19 @@
 //
-//  EateryLargeCardCell.swift
+//  EateryCardVisualEffectView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/29/21.
+//  Created by William Ma on 1/11/22.
 //
 
 import UIKit
 
-class EateryLargeCardCell: UIView {
+class EateryCardVisualEffectView<Content: UIView>: UIView {
 
-    let cardView: EateryLargeCardView
-    private lazy var container = ContainerView(content: cardView)
+    let content: Content
+    private lazy var container = ContainerView(content: content)
 
     override init(frame: CGRect) {
-        self.cardView = EateryLargeCardView()
+        self.content = Content()
 
         super.init(frame: frame)
 
@@ -21,8 +21,8 @@ class EateryLargeCardCell: UIView {
         setUpConstraints()
     }
 
-    init(cardView: EateryLargeCardView) {
-        self.cardView = cardView
+    init(content: Content) {
+        self.content = content
 
         super.init(frame: .zero)
 
@@ -36,6 +36,7 @@ class EateryLargeCardCell: UIView {
 
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
+        layoutMargins = .zero
 
         container.cornerRadius = 8
         container.shadowRadius = 4
@@ -46,7 +47,9 @@ class EateryLargeCardCell: UIView {
     }
 
     private func setUpConstraints() {
-        container.edges(to: layoutMarginsGuide)
+        container.snp.makeConstraints { make in
+            make.edges.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

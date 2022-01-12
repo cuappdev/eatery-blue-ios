@@ -60,12 +60,14 @@ class CarouselMoreEateriesView: UIView {
     }
 
     private func setUpConstraints() {
-        width(186)
+        snp.makeConstraints { make in
+            make.width.equalTo(186)
+        }
 
-        stackView.centerYToSuperview()
-        stackView.leadingToSuperview()
-        stackView.trailingToSuperview()
-        stackView.topToSuperview(relation: .equalOrGreater)
+        stackView.snp.makeConstraints { make in
+            make.leading.trailing.centerY.equalToSuperview()
+            make.top.greaterThanOrEqualToSuperview()
+        }
     }
 
 }

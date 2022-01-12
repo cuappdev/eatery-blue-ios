@@ -13,7 +13,9 @@ extension UITableViewCell {
         self.init(style: .default, reuseIdentifier: nil)
 
         contentView.addSubview(content)
-        content.edgesToSuperview()
+        content.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
 }

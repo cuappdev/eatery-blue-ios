@@ -46,23 +46,27 @@ class EateryPillButtonView: UIView {
     }
 
     private func setUpConstraints() {
-        container.centerXToSuperview()
-        container.leading(to: layoutMarginsGuide, relation: .equalOrGreater)
-        container.trailing(to: layoutMarginsGuide, relation: .equalOrLess)
-        container.top(to: layoutMarginsGuide)
-        container.bottom(to: layoutMarginsGuide)
+        container.snp.makeConstraints { make in
+            make.centerX.top.bottom.equalTo(layoutMarginsGuide)
+            make.leading.greaterThanOrEqualTo(layoutMarginsGuide)
+            make.trailing.lessThanOrEqualTo(layoutMarginsGuide)
+        }
 
-        imageView.width(24)
-        imageView.height(24)
-        imageView.centerYToSuperview()
-        imageView.leadingToSuperview()
-        imageView.topToSuperview(relation: .equalOrGreater)
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.leading.centerY.equalToSuperview()
+            make.top.greaterThanOrEqualToSuperview()
+        }
 
-        titleLabel.leadingToTrailing(of: imageView, offset: 4)
-        titleLabel.topToSuperview()
-        titleLabel.trailingToSuperview()
-        titleLabel.bottomToSuperview()
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(4)
+            make.top.trailing.bottom.equalToSuperview()
+        }
+
+        titleLabel.setContentHuggingPriority(
+            imageView.contentHuggingPriority(for: .horizontal) + 1,
+            for: .horizontal
+        )
     }
 
     override func layoutSubviews() {

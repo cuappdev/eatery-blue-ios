@@ -74,21 +74,27 @@ class OnboardingStartViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        titleLabel.bottom(to: view, view.layoutMarginsGuide.centerYAnchor)
-        titleLabel.centerXToSuperview()
+        titleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.centerY)
+            make.centerX.equalToSuperview()
+        }
 
-        eateryLogoView.centerXToSuperview()
-        eateryLogoView.width(96)
-        eateryLogoView.height(96)
-        eateryLogoView.bottomToTop(of: titleLabel)
+        eateryLogoView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.width.height.equalTo(96)
+            make.bottom.equalTo(titleLabel.snp.top)
+        }
 
-        nextButton.topToBottom(of: titleLabel, offset: 24)
-        nextButton.leadingToSuperview(offset: 48)
-        nextButton.trailingToSuperview(offset: 48)
+        nextButton.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview().inset(48)
+        }
 
-        appDevLogoView.bottom(to: view.layoutMarginsGuide, offset: -12)
-        appDevLogoView.height(16)
-        appDevLogoView.centerXToSuperview()
+        appDevLogoView.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12)
+            make.height.equalTo(16)
+            make.centerX.equalToSuperview()
+        }
     }
 
 }

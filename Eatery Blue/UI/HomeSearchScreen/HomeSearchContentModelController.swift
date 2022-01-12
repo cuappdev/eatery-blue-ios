@@ -11,6 +11,11 @@ import UIKit
 
 class HomeSearchContentModelController: HomeSearchContentViewController {
 
+    private static let searchMinCharacters = 3
+    private static let searchMaxCharacters = 120
+
+    private static let searchMaxResults = 100
+
     enum SearchItem: Fuseable {
 
         case eatery(Eatery)
@@ -21,7 +26,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             case .eatery(let eatery):
                 return [
                     FuseProperty(name: eatery.name, weight: 1),
-                    FuseProperty(name: eatery.locationDescription ?? "", weight: eatery.location != nil ? 0.25 : 0),
+                    FuseProperty(name: eatery.locationDescription ?? "", weight: eatery.locationDescription != nil ? 0.25 : 0),
                 ]
 
             case .menuItem(let item, let category, _):
@@ -48,12 +53,10 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     }
 
     private func setUpSearchTextSubscription() {
-        // Minimum number of characters before beginning search
-        let minCharacters = 3
-
         $searchText
             .filter({ searchText in
-                minCharacters <= searchText.count && searchText.count <= 30
+                HomeSearchContentModelController.searchMinCharacters <= searchText.count
+                && searchText.count <= HomeSearchContentModelController.searchMaxCharacters
             })
             // Assuming that users type at about 50 wpm...
             // 50 wpm * (5 cpm / wpm) * (1 min / 60 s) = 4.17 characters per second
@@ -70,7 +73,10 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                 }
                 let searchItems = computeSearchItems(eateries)
 
-                return Fuse(threshold: 0.4).searchPublisher(searchText, in: searchItems).map { results in
+                return Fuse(
+                    threshold: 0.4,
+                    maxPatternLength: HomeSearchContentModelController.searchMaxCharacters
+                ).searchPublisher(searchText, in: searchItems).map { results in
                     (searchItems, results)
                 }.eraseToAnyPublisher()
             })
@@ -81,7 +87,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
         // Clear results when search does not contain enough characters
         $searchText.filter { searchText in
-            searchText.count < minCharacters
+            searchText.count < HomeSearchContentModelController.searchMinCharacters
         }.sink { [self] _ in
             updateCells(filtered: false, searchItems: [], searchResults: [])
         }.store(in: &cancellables)
@@ -134,7 +140,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         // Lower score is better
         let displayed = searchResults.sorted { lhs, rhs in
             lhs.score < rhs.score
-        }.prefix(100)
+        }.prefix(HomeSearchContentModelController.searchMaxResults)
 
         if filtered {
             let countView = SearchResultsCountView()

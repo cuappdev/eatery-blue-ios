@@ -30,7 +30,9 @@ class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTr
         }
 
         let presentedFrame = transitionContext.finalFrame(for: presentedViewController)
-        presentedView.edgesToSuperview(excluding: .top)
+        presentedView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+        }
 
         let offScreenTransform = CGAffineTransform(
             translationX: 0,

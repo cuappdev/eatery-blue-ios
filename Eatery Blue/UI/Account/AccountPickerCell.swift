@@ -44,18 +44,23 @@ class AccountPickerCell: UIView {
     }
 
     private func setUpConstraints() {
-        height(62)
+        snp.makeConstraints { make in
+            make.height.equalTo(62)
+        }
 
-        titleLabel.leading(to: layoutMarginsGuide)
-        titleLabel.centerY(to: layoutMarginsGuide)
-        titleLabel.trailingToLeading(of: imageView, offset: 8)
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.leading.equalTo(layoutMarginsGuide)
+        }
 
-        imageView.trailing(to: layoutMarginsGuide)
-        imageView.centerY(to: layoutMarginsGuide)
-        imageView.width(24)
-        imageView.height(24)
+        imageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.centerY.trailing.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(24)
+        }
 
-        bottomSeparator.edges(to: layoutMarginsGuide, excluding: .top)
+        bottomSeparator.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 
 }

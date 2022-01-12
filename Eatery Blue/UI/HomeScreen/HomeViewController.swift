@@ -75,9 +75,6 @@ class HomeViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.tableHeaderView = tableHeaderView
         tableView.tableFooterView = UIView()
-
-        tableView.register(CarouselTableViewCell.self, forCellReuseIdentifier: "carouselView")
-        tableView.register(EateryLargeCardTableViewCell.self, forCellReuseIdentifier: "eateryCard")
     }
 
     private func setUpNavigationView() {
@@ -85,12 +82,15 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        tableView.edgesToSuperview()
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        navigationView.edgesToSuperview(excluding: .bottom)
-
-        navigationView.bottomToTop(of: tableHeaderView, priority: .defaultLow)
-        navigationView.bottomToTop(of: tableHeaderView, relation: .equalOrGreater)
+        navigationView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(tableHeaderView.snp.top).priority(.low)
+            make.bottom.greaterThanOrEqualTo(tableHeaderView.snp.top)
+        }
     }
 
     func pushViewController(for eatery: Eatery) {
@@ -122,6 +122,14 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UISearchBarDelegate {
 
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        let viewController = HomeSearchModelController()
+        navigationController?.hero.isEnabled = true
+        navigationController?.hero.navigationAnimationType = .fade
+        navigationController?.pushViewController(viewController, animated: true)
+        return false
+    }
+
 }
 
 extension HomeViewController: UITableViewDataSource {
@@ -140,17 +148,12 @@ extension HomeViewController: UITableViewDataSource {
             searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             searchBar.backgroundImage = UIImage()
             searchBar.hero.id = "searchBar"
-
-            let cell = ClearTableViewCell()
-            cell.contentView.addSubview(searchBar)
-            searchBar.edgesToSuperview()
-            return cell
+            return ClearTableViewCell(content: searchBar)
 
         case .customView(let view):
-            let cell = ClearTableViewCell()
-            cell.contentView.addSubview(view)
-            view.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
-            return cell
+            let container = ContainerView(content: view)
+            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            return ClearTableViewCell(content: container)
 
         case .titleLabel(title: let title):
             let label = UILabel()
@@ -160,11 +163,8 @@ extension HomeViewController: UITableViewDataSource {
             let container = ContainerView(content: label)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
-            let cell = ClearTableViewCell()
-            cell.contentView.addSubview(container)
-            container.edgesToSuperview()
-            return cell
-
+            return ClearTableViewCell(content: container)
+            
         case .carouselView(collection: let collection):
             let carouselView = CarouselView()
             carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -172,19 +172,19 @@ extension HomeViewController: UITableViewDataSource {
             carouselView.titleLabel.text = collection.title
 
             for eatery in collection.eateries.prefix(3) {
-                let cardView = EateryMediumCardView()
-                cardView.imageView.kf.setImage(
+                let contentView = EateryMediumCardContentView()
+                contentView.imageView.kf.setImage(
                     with: eatery.imageUrl,
                     options: [
                         .backgroundDecode
                     ]
                 )
-                cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
-                cardView.titleLabel.text = eatery.name
+                contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
+                contentView.titleLabel.text = eatery.name
 
                 $userLocation
                     .sink { userLocation in
-                        cardView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
+                        contentView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
                             eatery,
                             style: .medium,
                             font: .preferredFont(for: .footnote, weight: .medium),
@@ -194,11 +194,11 @@ extension HomeViewController: UITableViewDataSource {
                     }
                     .store(in: &cancellables)
 
-                cardView.on(UITapGestureRecognizer()) { [self] _ in
+                contentView.on(UITapGestureRecognizer()) { [self] _ in
                     pushViewController(for: eatery)
                 }
 
-                carouselView.addCardView(cardView)
+                carouselView.addCardView(contentView)
             }
 
             if collection.eateries.count > 3 {
@@ -213,27 +213,20 @@ extension HomeViewController: UITableViewDataSource {
                 didTapMoreButton(collection)
             }
 
-            let cell = ClearTableViewCell()
-            cell.contentView.addSubview(carouselView)
-            cell.contentView.clipsToBounds = false
-            cell.contentView.backgroundColor = nil
-            cell.backgroundView = UIView()
-            cell.backgroundView?.backgroundColor = nil
-            cell.backgroundColor = nil
-            cell.clipsToBounds = false
-            carouselView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
-            return cell
+            let container = ContainerView(content: carouselView)
+            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            return ClearTableViewCell(content: container)
 
         case .eateryCard(eatery: let eatery):
-            let cardView = EateryLargeCardView()
-            cardView.imageView.kf.setImage(
+            let contentView = EateryLargeCardContentView()
+            contentView.imageView.kf.setImage(
                 with: eatery.imageUrl,
                 options: [
                     .backgroundDecode
                 ]
             )
-            cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
-            cardView.titleLabel.text = eatery.name
+            contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
+            contentView.titleLabel.text = eatery.name
 
             $userLocation
                 .sink { userLocation in
@@ -245,7 +238,7 @@ extension HomeViewController: UITableViewDataSource {
                         date: Date()
                     )
 
-                    for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
+                    for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
                         if i < lines.count {
                             subtitleLabel.attributedText = lines[i]
                         } else {
@@ -255,15 +248,13 @@ extension HomeViewController: UITableViewDataSource {
                 }
                 .store(in: &cancellables)
 
-            cardView.on(UITapGestureRecognizer()) { [self] _ in
+            contentView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }
 
-            cardView.height(216)
-
-            let cell = EateryLargeCardTableViewCell(cardView: cardView)
-            cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return cell
+            let cardView = EateryCardVisualEffectView(content: contentView)
+            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            return ClearTableViewCell(content: cardView)
         }
     }
 

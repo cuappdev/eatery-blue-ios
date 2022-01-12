@@ -56,19 +56,21 @@ class AccountBalanceTableViewCell: UITableViewCell {
     }
 
     private func setUpConstraints() {
-        iconView.centerYToSuperview()
-        iconView.width(16)
-        iconView.height(16)
-        iconView.leading(to: contentView.layoutMarginsGuide)
+        iconView.snp.makeConstraints { make in
+            make.centerY.equalTo(contentView.layoutMarginsGuide)
+            make.width.height.equalTo(16)
+            make.leading.equalTo(contentView.layoutMarginsGuide)
+        }
 
-        titleLabel.leadingToTrailing(of: iconView, offset: 8)
-        titleLabel.top(to: contentView.layoutMarginsGuide)
-        titleLabel.bottom(to: contentView.layoutMarginsGuide)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(iconView.snp.trailing).offset(8)
+            make.top.bottom.equalTo(contentView.layoutMarginsGuide)
+        }
 
-        subtitleLabel.leadingToTrailing(of: titleLabel, offset: 8)
-        subtitleLabel.top(to: contentView.layoutMarginsGuide)
-        subtitleLabel.bottom(to: contentView.layoutMarginsGuide)
-        subtitleLabel.trailing(to: contentView.layoutMarginsGuide)
+        subtitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.top.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
         subtitleLabel.setContentHuggingPriority(
             titleLabel.contentHuggingPriority(for: .horizontal) + 1,
             for: .horizontal
@@ -78,9 +80,10 @@ class AccountBalanceTableViewCell: UITableViewCell {
             for: .horizontal
         )
 
-        separator.bottomToSuperview()
-        separator.leading(to: contentView.layoutMarginsGuide)
-        separator.trailing(to: contentView.layoutMarginsGuide)
+        separator.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalTo(contentView.layoutMarginsGuide)
+        }
     }
 
 }

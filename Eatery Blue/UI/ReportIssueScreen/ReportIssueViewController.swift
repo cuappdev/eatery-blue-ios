@@ -48,13 +48,6 @@ class ReportIssueViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillChangeFrame(_:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
     }
 
     private func setUpView() {
@@ -102,8 +95,9 @@ class ReportIssueViewController: UIViewController {
             dismiss(animated: true)
         }
 
-        cancelButton.width(40)
-        cancelButton.height(40)
+        cancelButton.snp.makeConstraints { make in
+            make.width.height.equalTo(40)
+        }
 
         stackView.addArrangedSubview(header)
     }
@@ -141,7 +135,18 @@ class ReportIssueViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        stackView.edges(to: view.layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(view.layoutMarginsGuide)
+
+            make.bottom.equalTo(view.layoutMarginsGuide).priority(.high)
+            make.bottom.lessThanOrEqualTo(view.layoutMarginsGuide)
+
+            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-16).priority(.high)
+
+            // This constraint is *not* required because otherwise it would trigger an unsatisfiable constraints
+            // exception when the view was dismissed
+            make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-16).priority(.required.advanced(by: -1))
+        }
     }
 
     private func updateIssueTypeButtonFromState() {
@@ -155,17 +160,6 @@ class ReportIssueViewController: UIViewController {
             issueTypeButton.label.textColor = UIColor(named: "Gray05")
             issueTypeButton.label.font = .preferredFont(for: .subheadline, weight: .medium)
         }
-    }
-
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-
-        let keyboardFrameInViewCoordinates = view.convert(keyboardFrame, from: nil)
-        let intersection = view.frame.intersection(keyboardFrameInViewCoordinates)
-        additionalSafeAreaInsets.bottom = intersection.height
     }
 
     private func addSubmitButton() {

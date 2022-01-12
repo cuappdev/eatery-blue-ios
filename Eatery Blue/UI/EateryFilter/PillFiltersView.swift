@@ -44,10 +44,14 @@ class PillFiltersView: UIView {
     }
 
     private func setUpConstraints() {
-        scrollView.edgesToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        stackView.edgesToSuperview()
-        stackView.height(to: self)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.equalTo(scrollView.frameLayoutGuide)
+        }
     }
 
     func addButton(_ buttonView: PillFilterButtonView) {

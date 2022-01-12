@@ -88,10 +88,10 @@ class LoginView: UIView {
     }
 
     private func setUpConstraints() {
-        stackView.topToSuperview()
-        stackView.bottomToSuperview()
-        stackView.leadingToSuperview(offset: 16)
-        stackView.trailingToSuperview(offset: 16)
+        stackView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
     }
 
 }

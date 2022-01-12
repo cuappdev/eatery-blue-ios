@@ -46,18 +46,20 @@ class SearchResultsCountView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.leading(to: layoutMarginsGuide)
-        titleLabel.centerY(to: layoutMarginsGuide)
-        titleLabel.top(to: layoutMarginsGuide, relation: .equalOrGreater)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.centerY.equalTo(layoutMarginsGuide)
+            make.top.greaterThanOrEqualTo(layoutMarginsGuide)
+        }
 
+        resetButton.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.trailing.equalTo(layoutMarginsGuide)
+            make.top.bottom.equalTo(layoutMarginsGuide)
+        }
         resetButton.content.setContentHuggingPriority(
             titleLabel.contentHuggingPriority(for: .horizontal) + 1,
             for: .horizontal
         )
-        resetButton.leadingToTrailing(of: titleLabel, offset: 8)
-        resetButton.trailing(to: layoutMarginsGuide)
-        resetButton.topToSuperview()
-        resetButton.bottomToSuperview()
     }
 
 }

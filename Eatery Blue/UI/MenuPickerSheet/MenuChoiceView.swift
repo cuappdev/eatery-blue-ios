@@ -49,19 +49,21 @@ class MenuChoiceView: UIView {
     }
 
     private func setUpConstraints() {
-        descriptionLabel.top(to: layoutMarginsGuide)
-        descriptionLabel.leading(to: layoutMarginsGuide)
-        descriptionLabel.trailingToLeading(of: imageView)
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(layoutMarginsGuide)
+        }
 
-        timeLabel.topToBottom(of: descriptionLabel, offset: 4)
-        timeLabel.leading(to: layoutMarginsGuide)
-        timeLabel.bottom(to: layoutMarginsGuide)
-        timeLabel.trailingToLeading(of: imageView)
+        timeLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(4)
+            make.leading.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        imageView.centerY(to: layoutMarginsGuide)
-        imageView.trailing(to: layoutMarginsGuide)
-        imageView.width(24)
-        imageView.height(24)
+        imageView.snp.makeConstraints { make in
+            make.leading.equalTo(descriptionLabel.snp.trailing)
+            make.leading.equalTo(timeLabel.snp.trailing)
+            make.centerY.trailing.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(24)
+        }
     }
 
 }

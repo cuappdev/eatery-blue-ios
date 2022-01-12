@@ -60,10 +60,13 @@ class PillFilterButtonView: UIView {
     }
 
     private func setUpConstraints() {
-        stackView.edges(to: layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(layoutMarginsGuide)
+        }
 
-        imageView.width(16)
-        imageView.height(16)
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(16)
+        }
     }
 
     func setHighlighted(_ isHighlighted: Bool) {

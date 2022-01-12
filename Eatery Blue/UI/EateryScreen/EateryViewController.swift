@@ -83,25 +83,36 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        navigationView.edgesToSuperview(excluding: .bottom)
+        navigationView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
 
-        scrollView.edgesToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        stackView.edgesToSuperview()
-        stackView.width(to: scrollView)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
     }
 
     func setCustomSpacing(_ spacing: CGFloat) {
-        guard let last = stackView.arrangedSubviews.last else { return }
+        guard let last = stackView.arrangedSubviews.last else {
+            return
+        }
         stackView.setCustomSpacing(spacing, after: last)
     }
 
     func addHeaderImageView(imageUrl: URL?) {
         let imageView = UIImageView()
-         imageView.aspectRatio(375 / 240)
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.kf.setImage(with: imageUrl)
+
+        imageView.snp.makeConstraints { make in
+            make.width.equalTo(imageView.snp.height).multipliedBy(375.0 / 240.0)
+        }
 
         stackView.addArrangedSubview(imageView)
 
@@ -124,8 +135,11 @@ class EateryViewController: UIViewController {
             imageView.image = UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor(named: "EateryBlue")
             imageView.contentMode = .scaleAspectFit
-            imageView.width(24)
-            imageView.height(24)
+
+            imageView.snp.makeConstraints { make in
+                make.width.height.equalTo(24)
+            }
+
             stack.addArrangedSubview(imageView)
         }
 
@@ -134,8 +148,11 @@ class EateryViewController: UIViewController {
             imageView.image = UIImage(named: "BRBs")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor(named: "EateryRed")
             imageView.contentMode = .scaleAspectFit
-            imageView.width(24)
-            imageView.height(24)
+
+            imageView.snp.makeConstraints { make in
+                make.width.height.equalTo(24)
+            }
+
             stack.addArrangedSubview(imageView)
         }
 
@@ -144,8 +161,11 @@ class EateryViewController: UIViewController {
             imageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor(named: "EateryGreen")
             imageView.contentMode = .scaleAspectFit
-            imageView.width(24)
-            imageView.height(24)
+            
+            imageView.snp.makeConstraints { make in
+                make.width.height.equalTo(24)
+            }
+
             stack.addArrangedSubview(imageView)
         }
 
@@ -162,8 +182,10 @@ class EateryViewController: UIViewController {
         container.shadowOpacity = 0.25
         container.shadowRadius = 4
 
-        container.trailingToSuperview(offset: 16)
-        container.bottom(to: headerView, offset: -16)
+        container.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(16)
+            make.bottom.equalTo(headerView).offset(-16)
+        }
 
         container.on(UITapGestureRecognizer()) { [self] _ in
             let viewController = PaymentMethodsSheetViewController()
@@ -184,14 +206,15 @@ class EateryViewController: UIViewController {
 
         let container = ContainerView(pillContent: imageView)
         container.cornerRadiusView.backgroundColor = .white
+        container.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
         stackView.addSubview(container)
 
-        container.leadingToSuperview(offset: 20)
-        container.width(40)
-        container.height(40)
-        container.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        container.centerY(to: headerView, headerView.bottomAnchor)
+        container.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.width.height.equalTo(40)
+            make.centerY.equalTo(headerView.snp.bottom)
+        }
     }
 
     func addNameLabel(_ name: String) {
@@ -309,16 +332,20 @@ class EateryViewController: UIViewController {
 
     func addSpacer(height: CGFloat, color: UIColor? = UIColor(named: "Gray00")) {
         let spacer = UIView()
-        spacer.height(height)
         spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
+        spacer.snp.makeConstraints { make in
+            make.height.equalTo(height)
+        }
     }
 
     func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor(named: "Gray00")) {
         let spacer = UIView()
         spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
-        spacer.height(to: view, multiplier: multiplier)
+        spacer.snp.makeConstraints { make in
+            make.height.equalTo(view).multipliedBy(multiplier)
+        }
     }
 
     func addMenuHeaderView(title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {

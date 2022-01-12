@@ -22,7 +22,9 @@ class MainViewController: UIViewController {
     private func setUpView() {
         addChild(theTabBarController)
         view.addSubview(theTabBarController.view)
-        theTabBarController.view.edgesToSuperview()
+        theTabBarController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         theTabBarController.didMove(toParent: self)
 
         let homeNavigationController = UINavigationController(rootViewController: home)

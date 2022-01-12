@@ -12,8 +12,10 @@ class VDivider: UIView {
     init(width: CGFloat = 1) {
         super.init(frame: .zero)
 
-        self.width(width)
         self.backgroundColor = UIColor(named: "Gray00")
+        snp.makeConstraints { make in
+            make.width.equalTo(width)
+        }
     }
 
     required init?(coder: NSCoder) {

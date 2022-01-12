@@ -29,7 +29,9 @@ class ContainerView<Content: UIView>: UIView {
         }
         didSet {
             cornerRadiusView.addSubview(content)
-            content.edges(to: layoutMarginsGuide)
+            content.snp.makeConstraints { make in
+                make.edges.equalTo(layoutMarginsGuide)
+            }
         }
     }
 
@@ -76,10 +78,14 @@ class ContainerView<Content: UIView>: UIView {
         layoutMargins = .zero
 
         addSubview(cornerRadiusView)
-        cornerRadiusView.edges(to: self)
+        cornerRadiusView.snp.makeConstraints { make in
+            make.edges.equalTo(self)
+        }
 
         cornerRadiusView.addSubview(content)
-        content.edges(to: layoutMarginsGuide)
+        content.snp.makeConstraints { make in
+            make.edges.equalTo(layoutMarginsGuide)
+        }
     }
 
     convenience init(pillContent: Content) {

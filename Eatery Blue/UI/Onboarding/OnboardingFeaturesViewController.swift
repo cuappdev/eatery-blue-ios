@@ -103,22 +103,27 @@ class OnboardingFeaturesViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        backButton.topToSuperview(offset: 12, usingSafeArea: true)
-        backButton.leadingToSuperview(offset: 16, usingSafeArea: true)
-        backButton.width(34)
-        backButton.height(34)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.width.height.equalTo(34)
+        }
 
-        scrollView.topToBottom(of: backButton)
-        scrollView.leadingToSuperview()
-        scrollView.trailingToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(backButton.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+        }
 
-        stackView.edgesToSuperview()
-        stackView.heightToSuperview()
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.equalTo(scrollView.frameLayoutGuide)
+        }
 
-        nextButton.topToBottom(of: scrollView)
-        nextButton.leadingToSuperview(offset: 16, usingSafeArea: true)
-        nextButton.trailingToSuperview(offset: 16, usingSafeArea: true)
-        nextButton.bottomToSuperview(offset: -12, usingSafeArea: true)
+        nextButton.snp.makeConstraints { make in
+            make.top.equalTo(scrollView.snp.bottom)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12)
+        }
         nextButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -142,7 +147,9 @@ class OnboardingFeaturesViewController: UIViewController {
             stackView.addArrangedSubview(view)
             pageViews.append(view)
 
-            view.width(to: scrollView)
+            view.snp.makeConstraints { make in
+                make.width.equalTo(scrollView)
+            }
         }
     }
 

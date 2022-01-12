@@ -62,24 +62,28 @@ class SettingsMainMenuCell: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.centerY(to: layoutMarginsGuide)
-        imageView.leading(to: layoutMarginsGuide)
-        imageView.width(24)
-        imageView.height(24)
+        imageView.snp.makeConstraints { make in
+            make.leading.centerY.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(24)
+        }
 
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.leadingToTrailing(of: imageView, offset: 8)
-        titleLabel.trailingToLeading(of: chevronImageView, offset: -12)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(layoutMarginsGuide)
+            make.leading.equalTo(imageView.snp.trailing).offset(8)
+        }
 
-        subtitleLabel.topToBottom(of: titleLabel, offset: 4)
-        subtitleLabel.leadingToTrailing(of: imageView, offset: 8)
-        subtitleLabel.bottom(to: layoutMarginsGuide)
-        subtitleLabel.trailingToLeading(of: chevronImageView, offset: -12)
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(imageView.snp.trailing).offset(8)
+            make.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        chevronImageView.centerY(to: layoutMarginsGuide)
-        chevronImageView.trailing(to: layoutMarginsGuide)
-        chevronImageView.width(16)
-        chevronImageView.height(16)
+        chevronImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(12)
+            make.leading.equalTo(subtitleLabel.snp.trailing).offset(12)
+            make.centerY.trailing.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(16)
+        }
     }
 
 }

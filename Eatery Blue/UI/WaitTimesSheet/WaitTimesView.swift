@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/25/21.
 //
 
+import SnapKit
 import UIKit
 
 @objc
@@ -30,9 +31,9 @@ class WaitTimesView: UIView {
     let stackView = UIStackView()
     private var cells: [WaitTimeCell] = []
 
-    private var waitTimePositionConstraint: NSLayoutConstraint?
+    private var waitTimePositionConstraint: Constraint?
     let waitTimeLabel = ContainerView(content: UILabel())
-    let connectingLine = UIView()
+    let connectingLine = UIView() // The thin line that connects the bar to the waitTimeLabel
 
     private(set) var highlightedIndex: Int?
 
@@ -96,22 +97,31 @@ class WaitTimesView: UIView {
     }
 
     private func setUpConstraints() {
-        height(216)
+        snp.makeConstraints { make in
+            make.height.equalTo(216)
+        }
 
-        scrollView.topToSuperview()
-        scrollView.bottomToSuperview()
-        scrollView.widthToSuperview(multiplier: 1/6)
-        scrollView.centerXToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(1.0 / 6.0)
+            make.centerX.equalToSuperview()
+        }
 
-        stackView.edgesToSuperview()
-        stackView.heightToSuperview()
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.equalTo(scrollView.frameLayoutGuide)
+        }
 
-        waitTimeLabel.topToSuperview(offset: 12)
+        waitTimeLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(12)
+        }
 
-        connectingLine.centerX(to: waitTimeLabel)
-        connectingLine.topToBottom(of: waitTimeLabel)
-        connectingLine.bottomToSuperview()
-        connectingLine.width(2)
+        connectingLine.snp.makeConstraints { make in
+            make.centerX.equalTo(waitTimeLabel)
+            make.top.equalTo(waitTimeLabel.snp.bottom)
+            make.bottom.equalToSuperview()
+            make.width.equalTo(2)
+        }
     }
 
     func addCell(_ cell: WaitTimeCell) {
@@ -119,7 +129,9 @@ class WaitTimesView: UIView {
 
         let container = ContainerView(content: cell)
         stackView.addArrangedSubview(container)
-        container.width(to: self, multiplier: 1/6)
+        container.snp.makeConstraints { make in
+            make.width.equalTo(self).multipliedBy(1.0 / 6.0)
+        }
 
         container.on(UITapGestureRecognizer()) { [self] _ in
             highlightCell(at: index, notifyDelegate: true, animated: true)
@@ -170,8 +182,10 @@ class WaitTimesView: UIView {
 
         connectingLine.alpha = 1
         waitTimeLabel.alpha = 1
-        waitTimePositionConstraint?.isActive = false
-        waitTimePositionConstraint = waitTimeLabel.centerX(to: cell)
+        waitTimePositionConstraint?.deactivate()
+        waitTimeLabel.snp.makeConstraints { make in
+            waitTimePositionConstraint = make.centerX.equalTo(cell).constraint
+        }
 
         waitTimeLabel.content.text = delegate?.waitTimesView?(self, waitTimeTextForCell: cell, atIndex: index)
 

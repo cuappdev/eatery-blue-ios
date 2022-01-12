@@ -56,7 +56,9 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         if Get.debugAttachAccountLoginWebViewToWindow,
             let delegate = UIApplication.shared.connectedScenes.first!.delegate as? SceneDelegate {
             delegate.window?.addSubview(webView)
-            webView.edgesToSuperview()
+            webView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
         }
     }
 

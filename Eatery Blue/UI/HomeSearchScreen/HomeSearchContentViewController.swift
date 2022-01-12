@@ -72,18 +72,24 @@ class HomeSearchContentViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        blurView.edgesToSuperview(excluding: .bottom)
+        blurView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
 
-        filterView.top(to: view.layoutMarginsGuide)
-        filterView.leadingToSuperview()
-        filterView.trailingToSuperview()
-        filterView.bottom(to: blurView, offset: -12)
+        filterView.snp.makeConstraints { make in
+            make.top.equalTo(view.layoutMarginsGuide)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(blurView).inset(12)
+        }
 
-        separator.leadingToSuperview()
-        separator.trailingToSuperview()
-        separator.bottom(to: blurView)
+        separator.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(blurView)
+        }
 
-        tableView.edgesToSuperview()
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     private func updateTableViewContentInset() {
@@ -127,21 +133,18 @@ extension HomeSearchContentViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch cells[indexPath.row] {
         case .customView(view: let view):
-            let cell = ClearTableViewCell()
-            cell.contentView.addSubview(view)
-            view.edgesToSuperview()
-            return cell
+            return ClearTableViewCell(content: view)
 
         case .eatery(let eatery):
-            let cardView = EateryLargeCardView()
-            cardView.imageView.kf.setImage(
+            let contentView = EateryLargeCardContentView()
+            contentView.imageView.kf.setImage(
                 with: eatery.imageUrl,
                 options: [
                     .backgroundDecode
                 ]
             )
-            cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
-            cardView.titleLabel.text = eatery.name
+            contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
+            contentView.titleLabel.text = eatery.name
             let lines = EateryFormatter.default.formatEatery(
                 eatery,
                 style: .long,
@@ -149,22 +152,20 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                 userLocation: LocationManager.shared.userLocation,
                 date: Date()
             )
-            for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
+            for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
                 if i < lines.count {
                     subtitleLabel.attributedText = lines[i]
                 } else {
                     subtitleLabel.isHidden = true
                 }
             }
-            cardView.on(UITapGestureRecognizer()) { [self] _ in
+            contentView.on(UITapGestureRecognizer()) { [self] _ in
                 didSelectEatery(eatery, at: indexPath)
             }
 
-            cardView.height(216)
-
-            let cell = EateryLargeCardTableViewCell(cardView: cardView)
-            cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return cell
+            let cardView = EateryCardVisualEffectView(content: contentView)
+            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            return ClearTableViewCell(content: cardView)
 
         case .item(let item, let eatery):
             let view = SearchItemView()
@@ -186,8 +187,8 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             }
 
             if let eatery = eatery {
-                if let location = eatery.location {
-                    view.sourceLabel.text = "\(eatery.name) · \(location)"
+                if let locationDescription = eatery.locationDescription {
+                    view.sourceLabel.text = "\(eatery.name) · \(locationDescription)"
                 } else {
                     view.sourceLabel.text = eatery.name
                 }
@@ -199,17 +200,9 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                 didSelectItem(item, at: indexPath, eatery: eatery)
             }
 
-            let container = ContainerView(content: view)
-            container.cornerRadius = 8
-            container.shadowRadius = 4
-            container.shadowOffset = CGSize(width: 0, height: 4)
-            container.shadowColor = UIColor(named: "ShadowLight")
-            container.shadowOpacity = 0.25
-
-            let cell = ClearTableViewCell()
-            cell.contentView.addSubview(container)
-            container.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16))
-            return cell
+            let cardView = EateryCardVisualEffectView(content: view)
+            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            return ClearTableViewCell(content: cardView)
         }
     }
 

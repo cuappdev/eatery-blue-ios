@@ -53,22 +53,22 @@ class ReportIssueButtonView: UIView {
     }
 
     private func setUpConstraints() {
-        container.centerXToSuperview()
-        container.leading(to: layoutMarginsGuide, relation: .equalOrGreater)
-        container.trailing(to: layoutMarginsGuide, relation: .equalOrLess)
-        container.top(to: layoutMarginsGuide)
-        container.bottom(to: layoutMarginsGuide)
+        container.snp.makeConstraints { make in
+            make.centerX.equalTo(layoutMarginsGuide)
+            make.leading.greaterThanOrEqualTo(layoutMarginsGuide)
+            make.top.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        imageView.width(16)
-        imageView.height(16)
-        imageView.centerYToSuperview()
-        imageView.leadingToSuperview()
-        imageView.topToSuperview(relation: .equalOrGreater)
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(16)
+            make.leading.centerY.equalToSuperview()
+            make.top.greaterThanOrEqualToSuperview()
+        }
 
-        titleLabel.leadingToTrailing(of: imageView, offset: 4)
-        titleLabel.topToSuperview()
-        titleLabel.trailingToSuperview()
-        titleLabel.bottomToSuperview()
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(4)
+            make.top.trailing.bottom.equalToSuperview()
+        }
         titleLabel.setContentHuggingPriority(.required, for: .horizontal)
     }
 

@@ -38,7 +38,9 @@ class TimingDataView: UIView {
     }
 
     private func setUpConstraints() {
-        stackView.edges(to: layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(layoutMarginsGuide)
+        }
     }
 
     func addCellView(_ cellView: TimingCellView) {
@@ -49,10 +51,14 @@ class TimingDataView: UIView {
 
         let divider = VDivider()
         stackView.addArrangedSubview(divider)
-        divider.height(to: self, multiplier: 1/2)
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(self).multipliedBy(0.5)
+        }
 
         stackView.addArrangedSubview(cellView)
-        cellView.width(to: firstCell)
+        cellView.snp.makeConstraints { make in
+            make.width.equalTo(firstCell)
+        }
     }
 
 }

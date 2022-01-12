@@ -88,8 +88,10 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             updatePaymentMethodViewsFromState()
         }
 
-        mealSwipesView.width(to: brbsView)
-        mealSwipesView.width(to: cashOrCreditView)
+        mealSwipesView.snp.makeConstraints { make in
+            make.width.equalTo(brbsView)
+            make.width.equalTo(cashOrCreditView)
+        }
 
         let container = ContainerView(content: stack)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -99,7 +101,9 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
     }
 
     private func setUpConstraints() {
-        stackView.edges(to: view.layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(view.layoutMarginsGuide)
+        }
     }
 
     override func viewSafeAreaInsetsDidChange() {

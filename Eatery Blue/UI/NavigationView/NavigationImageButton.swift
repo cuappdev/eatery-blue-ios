@@ -36,12 +36,14 @@ class NavigationImageButton: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.width(24)
-        imageView.height(24)
-        imageView.centerXToSuperview()
-        imageView.centerYToSuperview()
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.center.equalToSuperview()
+        }
 
-        width(to: imageView, relation: .equal)
+        snp.makeConstraints { make in
+            make.width.equalTo(imageView)
+        }
     }
 
 }

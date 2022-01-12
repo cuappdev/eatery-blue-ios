@@ -51,7 +51,9 @@ class ProfileViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        theNavigationController.view.edgesToSuperview()
+        theNavigationController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     private func setMode(_ mode: Mode) {

@@ -49,14 +49,14 @@ class IssueDescriptionView: UIView {
     }
 
     private func setUpConstraints() {
-        textView.topToSuperview()
-        textView.bottomToSuperview()
-        textView.leadingToSuperview(offset: 8)
-        textView.trailingToSuperview(offset: 8)
+        textView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(8)
+        }
 
-        placeholderLabel.topToSuperview(offset: 8)
-        placeholderLabel.leadingToSuperview(offset: 8)
-        placeholderLabel.trailingToSuperview(offset: 8)
+        placeholderLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(8)
+        }
     }
 
 }

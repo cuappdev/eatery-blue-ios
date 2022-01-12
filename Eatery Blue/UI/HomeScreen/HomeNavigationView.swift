@@ -43,10 +43,11 @@ class HomeNavigationView: NavigationView {
     }
 
     private func setUpConstraints() {
-        logoRefreshControl.width(36)
-        logoRefreshControl.height(36)
-        logoRefreshControl.bottomToTop(of: largeTitleLabel, offset: -4)
-        logoRefreshControl.leading(to: layoutMarginsGuide)
+        logoRefreshControl.snp.makeConstraints { make in
+            make.width.height.equalTo(36)
+            make.bottom.equalTo(largeTitleLabel.snp.top).offset(4)
+            make.leading.equalTo(layoutMarginsGuide)
+        }
     }
 
     func setFadeInProgress(_ progress: Double) {

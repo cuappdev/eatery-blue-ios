@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/SnapKit/SnapKit",
+        "state": {
+          "branch": null,
+          "revision": "d458564516e5676af9c70b4f4b2a9178294f1bc6",
+          "version": "5.0.1"
+        }
+      },
+      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
@@ -71,15 +80,6 @@
           "branch": "master",
           "revision": "e68399a54f471079293596c7e78cf71948481733",
           "version": null
-        }
-      },
-      {
-        "package": "TinyConstraints",
-        "repositoryURL": "https://github.com/roberthein/TinyConstraints",
-        "state": {
-          "branch": null,
-          "revision": "3262e5c591d4ab6272255df2087a01bbebd138dc",
-          "version": "4.0.2"
         }
       }
     ]

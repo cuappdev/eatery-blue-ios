@@ -40,13 +40,16 @@ class PaymentMethodFilterView: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.width(64)
-        imageView.height(64)
-        imageView.top(to: layoutMarginsGuide)
-        imageView.centerXToSuperview()
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(64)
+            make.top.equalTo(layoutMarginsGuide)
+            make.centerX.equalToSuperview()
+        }
 
-        label.topToBottom(of: imageView, offset: 8)
-        label.edges(to: layoutMarginsGuide, excluding: .top)
+        label.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

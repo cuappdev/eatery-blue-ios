@@ -44,17 +44,16 @@ class IssueTypeButtonView: UIView {
     }
 
     private func setUpConstraints() {
-        label.top(to: layoutMarginsGuide)
-        label.leading(to: layoutMarginsGuide)
-        label.bottom(to: layoutMarginsGuide)
+        label.snp.makeConstraints { make in
+            make.top.leading.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        imageView.leadingToTrailing(of: label, offset: 4)
-        imageView.width(16)
-        imageView.height(16)
-        imageView.centerY(to: layoutMarginsGuide)
-        imageView.trailing(to: layoutMarginsGuide)
-        imageView.top(to: layoutMarginsGuide, relation: .equalOrGreater)
-        imageView.bottom(to: layoutMarginsGuide, relation: .equalOrLess)
+        imageView.snp.makeConstraints { make in
+            make.leading.equalTo(label.snp.trailing).offset(4)
+            make.width.height.equalTo(16)
+            make.centerY.trailing.equalTo(layoutMarginsGuide)
+            make.top.greaterThanOrEqualTo(layoutMarginsGuide)
+        }
     }
 
 }

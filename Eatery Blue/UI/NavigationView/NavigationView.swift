@@ -69,28 +69,32 @@ class NavigationView: UIView {
     }
 
     private func setUpConstraints() {
-        normalNavigationBar.height(44)
-        normalNavigationBar.edges(to: layoutMarginsGuide, excluding: .bottom)
-        normalNavigationBar.bottomToSuperview(relation: .equalOrLess)
+        normalNavigationBar.snp.makeConstraints { make in
+            make.height.equalTo(44)
+            make.top.leading.trailing.equalTo(layoutMarginsGuide)
+            make.bottom.lessThanOrEqualToSuperview()
+        }
 
-        leftButtons.topToSuperview()
-        leftButtons.leadingToSuperview()
-        leftButtons.bottomToSuperview()
+        leftButtons.snp.makeConstraints { make in
+            make.top.leading.bottom.equalToSuperview()
+        }
 
-        titleLabel.leadingToTrailing(of: leftButtons, offset: 8, relation: .equalOrGreater)
-        titleLabel.topToSuperview()
-        titleLabel.bottomToSuperview()
-        titleLabel.centerXToSuperview()
-        titleLabel.trailingToLeading(of: rightButtons, offset: 8, relation: .equalOrLess)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.greaterThanOrEqualTo(leftButtons.snp.trailing).offset(8)
+            make.top.bottom.centerX.equalToSuperview()
+            make.trailing.lessThanOrEqualTo(rightButtons.snp.leading).offset(-8)
+        }
         titleLabel.setContentHuggingPriority(.defaultLow - 1, for: .horizontal)
         titleLabel.setContentCompressionResistancePriority(.defaultHigh - 1, for: .horizontal)
 
-        rightButtons.topToSuperview()
-        rightButtons.trailingToSuperview()
-        rightButtons.bottomToSuperview()
+        rightButtons.snp.makeConstraints { make in
+            make.top.trailing.bottom.equalToSuperview()
+        }
 
-        largeTitleLabel.setCompressionResistance(.required, for: .vertical)
-        largeTitleLabel.edges(to: layoutMarginsGuide, excluding: .top)
+        largeTitleLabel.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
+        largeTitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     func computeExpandedHeight() -> CGFloat {
@@ -124,9 +128,9 @@ class NavigationView: UIView {
         // If you want to see what the dummy navigation bar looks like attached to the view, comment the line below.
         defer { dummyNavigationBar.removeFromSuperview() }
 
-        dummyNavigationBar.topToSuperview(usingSafeArea: true)
-        dummyNavigationBar.leadingToSuperview(usingSafeArea: true)
-        dummyNavigationBar.trailingToSuperview(usingSafeArea: true)
+        dummyNavigationBar.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(safeAreaLayoutGuide)
+        }
 
         dummyNavigationBar.layoutIfNeeded()
         return safeAreaInsets.top + dummyNavigationBar.frame.height

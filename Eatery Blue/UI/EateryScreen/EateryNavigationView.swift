@@ -127,44 +127,53 @@ class EateryNavigationView: UIView {
     }
 
     private func setUpConstraints() {
-        backgroundView.edgesToSuperview()
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        stackView.top(to: layoutMarginsGuide)
-        stackView.leadingToSuperview()
-        stackView.trailingToSuperview()
-        stackView.bottom(to: layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(layoutMarginsGuide)
+            make.leading.trailing.equalToSuperview()
+        }
 
-        normalNavigationBar.height(44)
-        normalNavigationBar.leading(to: layoutMarginsGuide)
-        normalNavigationBar.trailing(to: layoutMarginsGuide)
+        normalNavigationBar.snp.makeConstraints { make in
+            make.height.equalTo(44)
+            make.leading.trailing.equalTo(layoutMarginsGuide)
+        }
 
-        backButton.centerYToSuperview()
-        backButton.leadingToSuperview()
-        backButton.width(40)
-        backButton.height(40)
+        backButton.snp.makeConstraints { make in
+            make.centerY.leading.equalToSuperview()
+            make.width.height.equalTo(40)
+        }
 
-        titleLabel.leadingToTrailing(of: backButton, offset: 8, relation: .equalOrGreater)
-        titleLabel.topToSuperview()
-        titleLabel.bottomToSuperview()
-        titleLabel.centerXToSuperview()
-        titleLabel.trailingToLeading(of: favoriteButton, offset: 8, relation: .equalOrLess)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.greaterThanOrEqualTo(backButton.snp.trailing).offset(8)
+            make.top.bottom.centerX.equalToSuperview()
+            make.trailing.lessThanOrEqualTo(favoriteButton.snp.leading).offset(-8)
+        }
 
-        favoriteButton.centerYToSuperview()
-        favoriteButton.trailingToSuperview()
-        favoriteButton.width(40)
-        favoriteButton.height(40)
+        favoriteButton.snp.makeConstraints { make in
+            make.centerY.trailing.equalToSuperview()
+            make.width.height.equalTo(40)
+        }
 
-        scrollView.widthToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+        }
 
         setUpCategoriesStackViewConstraints(categoriesBackground)
         setUpCategoriesStackViewConstraints(categoriesForeground)
 
-        divider.edgesToSuperview(excluding: .top)
+        divider.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 
     private func setUpCategoriesStackViewConstraints(_ stackView: UIStackView) {
-        stackView.edgesToSuperview()
-        stackView.height(to: scrollView)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.equalTo(scrollView.frameLayoutGuide)
+        }
     }
 
     func setFadeInProgress(_ progress: Double) {
@@ -208,7 +217,9 @@ class EateryNavigationView: UIView {
         categoriesBackground.addArrangedSubview(backgroundContainer)
         categoriesForeground.addArrangedSubview(foregroundContainer)
 
-        backgroundContainer.width(to: foregroundContainer)
+        backgroundContainer.snp.makeConstraints { make in
+            make.width.equalTo(foregroundContainer)
+        }
 
         backgroundContainer.on(UITapGestureRecognizer()) { _ in
             onTap?()

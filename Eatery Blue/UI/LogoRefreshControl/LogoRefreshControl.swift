@@ -26,8 +26,9 @@ class LogoRefreshControl: UIControl {
         super.init(frame: frame)
 
         addSubview(logoView)
-        logoView.centerXToSuperview()
-        logoView.centerYToSuperview()
+        logoView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 
     required init?(coder: NSCoder) {

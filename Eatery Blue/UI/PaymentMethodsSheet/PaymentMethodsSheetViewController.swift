@@ -42,17 +42,23 @@ class PaymentMethodsSheetViewController: SheetViewController {
         stack.addArrangedSubview(mealSwipesImageView)
         mealSwipesImageView.contentMode = .scaleAspectFit
         mealSwipesImageView.image = UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate)
-        mealSwipesImageView.height(48)
+        mealSwipesImageView.snp.makeConstraints { make in
+            make.height.equalTo(48)
+        }
 
         stack.addArrangedSubview(brbsImageView)
         brbsImageView.contentMode = .scaleAspectFit
         brbsImageView.image = UIImage(named: "BRBs")?.withRenderingMode(.alwaysTemplate)
-        brbsImageView.height(48)
+        brbsImageView.snp.makeConstraints { make in
+            make.height.equalTo(48)
+        }
 
         stack.addArrangedSubview(cashOrCardImageView)
         cashOrCardImageView.contentMode = .scaleAspectFit
         cashOrCardImageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
-        cashOrCardImageView.height(48)
+        cashOrCardImageView.snp.makeConstraints { make in
+            make.height.equalTo(48)
+        }
 
         let container = ContainerView(content: stack)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

@@ -36,18 +36,22 @@ class LogoView: UIView {
         pizza.image = UIImage(named: "Pizza")?.withRenderingMode(.alwaysTemplate)
         pizza.tintColor = .white
 
-        pin.centerXToSuperview()
-        pin.topToSuperview(offset: 2.5)
-        pin.height(17.39)
-        pin.width(14)
+        pin.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(2.5)
+            make.height.equalTo(17.39)
+            make.width.equalTo(14)
+        }
 
-        pizza.centerXToSuperview()
-        pizza.topToSuperview(offset: 14.5)
-        pizza.width(27)
-        pizza.height(27)
+        pizza.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(14.5)
+            make.width.height.equalTo(27)
+        }
 
-        width(48)
-        height(48)
+        snp.makeConstraints { make in
+            make.width.height.equalTo(48)
+        }
     }
 
     override func draw(_ rect: CGRect) {

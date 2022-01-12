@@ -36,13 +36,14 @@ class SettingsMainMenuLoginStatusView: UIView {
     }
 
     private func setUpConstraints() {
-        label.centerY(to: layoutMarginsGuide)
-        label.leading(to: layoutMarginsGuide)
-        label.trailingToLeading(of: logoutButton)
+        label.snp.makeConstraints { make in
+            make.centerY.leading.equalTo(layoutMarginsGuide)
+        }
 
-        logoutButton.top(to: layoutMarginsGuide)
-        logoutButton.trailing(to: layoutMarginsGuide)
-        logoutButton.bottom(to: layoutMarginsGuide)
+        logoutButton.snp.makeConstraints { make in
+            make.leading.equalTo(label.snp.trailing)
+            make.top.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

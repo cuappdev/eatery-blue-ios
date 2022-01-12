@@ -56,7 +56,9 @@ class SheetPresentationController: UIPresentationController {
         }
 
         containerView.addSubview(dimmingView)
-        dimmingView.edgesToSuperview()
+        dimmingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { [self] _ in
             dimmingView.alpha = 1

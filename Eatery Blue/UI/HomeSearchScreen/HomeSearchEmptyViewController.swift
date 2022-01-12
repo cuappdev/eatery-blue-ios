@@ -73,15 +73,24 @@ class HomeSearchEmptyViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        scrollView.edgesToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        stackView.edgesToSuperview()
-        stackView.widthToSuperview()
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
 
-        blurView.edgesToSuperview(excluding: .bottom)
-        blurView.bottomToTop(of: view.safeAreaLayoutGuide)
+        blurView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
 
-        separator.bottomToTop(of: view.safeAreaLayoutGuide)
+        separator.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
     }
 
     override func viewSafeAreaInsetsDidChange() {

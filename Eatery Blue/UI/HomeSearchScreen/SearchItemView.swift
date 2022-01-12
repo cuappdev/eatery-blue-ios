@@ -80,10 +80,14 @@ class SearchItemView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.topToSuperview()
-        titleLabel.leadingToSuperview()
-        titleLabel.bottomToSuperview()
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.bottom.equalToSuperview()
+        }
 
+        priceLabel.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing)
+            make.top.trailing.bottom.equalToSuperview()
+        }
         priceLabel.setContentHuggingPriority(
             titleLabel.contentHuggingPriority(for: .horizontal) + 1,
             for: .horizontal
@@ -92,12 +96,10 @@ class SearchItemView: UIView {
             titleLabel.contentCompressionResistancePriority(for: .horizontal) + 1,
             for: .horizontal
         )
-        priceLabel.leadingToTrailing(of: titleLabel)
-        priceLabel.topToSuperview()
-        priceLabel.trailingToSuperview()
-        priceLabel.bottomToSuperview()
 
-        stackView.edges(to: layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

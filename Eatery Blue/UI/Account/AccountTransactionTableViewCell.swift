@@ -51,19 +51,20 @@ class AccountTransactionTableViewCell: UITableViewCell {
     }
 
     private func setUpConstraints() {
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.leading(to: layoutMarginsGuide)
-        titleLabel.trailing(to: amountLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(layoutMarginsGuide)
+        }
 
-        subtitleLabel.topToBottom(of: titleLabel)
-        subtitleLabel.leading(to: layoutMarginsGuide)
-        subtitleLabel.bottom(to: layoutMarginsGuide)
-        subtitleLabel.trailing(to: amountLabel)
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.leading.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        amountLabel.top(to: layoutMarginsGuide)
-        amountLabel.bottom(to: layoutMarginsGuide)
-        amountLabel.trailing(to: layoutMarginsGuide)
-
+        amountLabel.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.leading.equalTo(subtitleLabel.snp.trailing).offset(8)
+            make.top.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
         amountLabel.setContentHuggingPriority(.defaultLow + 1, for: .horizontal)
         amountLabel.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
     }

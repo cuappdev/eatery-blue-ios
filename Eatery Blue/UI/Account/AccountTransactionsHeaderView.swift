@@ -66,27 +66,31 @@ class AccountTransactionsHeaderView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.leading(to: layoutMarginsGuide)
-        titleLabel.height(to: buttonImageView)
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(layoutMarginsGuide)
+            make.height.equalTo(buttonImageView)
+        }
 
-        buttonImageView.top(to: layoutMarginsGuide)
-        buttonImageView.leadingToTrailing(of: titleLabel, offset: 8)
-        buttonImageView.trailing(to: layoutMarginsGuide)
-        buttonImageView.height(40)
-        buttonImageView.width(40)
+        buttonImageView.snp.makeConstraints { make in
+            make.top.trailing.equalTo(layoutMarginsGuide)
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.width.height.equalTo(40)
+        }
 
-        searchBar.topToBottom(of: titleLabel, offset: 2)
-        // Counter the 8-px margin built into the search bar
-        searchBar.leading(to: layoutMarginsGuide, offset: -8)
-        searchBar.trailing(to: layoutMarginsGuide, offset: 8)
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(2)
+            make.leading.trailing.equalTo(layoutMarginsGuide).inset(-8)
+        }
 
-        separator.topToBottom(of: searchBar, offset: 2)
-        separator.leading(to: layoutMarginsGuide)
-        separator.trailing(to: layoutMarginsGuide)
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom).offset(2)
+            make.leading.trailing.equalTo(layoutMarginsGuide)
+        }
 
-        headerLabel.topToBottom(of: searchBar, offset: 12)
-        headerLabel.edges(to: layoutMarginsGuide, excluding: .top)
+        headerLabel.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom).offset(12)
+            make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

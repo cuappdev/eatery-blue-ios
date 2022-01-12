@@ -124,10 +124,14 @@ class SettingsMainMenuViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        scrollView.edgesToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        stackView.edges(to: scrollView.contentLayoutGuide)
-        stackView.width(to: scrollView.frameLayoutGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
     }
 
     @objc private func didTapBackButton() {

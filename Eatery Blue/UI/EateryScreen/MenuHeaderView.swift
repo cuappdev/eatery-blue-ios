@@ -51,19 +51,21 @@ class MenuHeaderView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.leading(to: layoutMarginsGuide)
-        titleLabel.trailingToLeading(of: buttonImageView)
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(layoutMarginsGuide)
+        }
 
-        subtitleLabel.topToBottom(of: titleLabel, offset: 4)
-        subtitleLabel.leading(to: layoutMarginsGuide)
-        subtitleLabel.bottom(to: layoutMarginsGuide)
-        subtitleLabel.trailingToLeading(of: buttonImageView)
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.leading.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        buttonImageView.width(40)
-        buttonImageView.height(40)
-        buttonImageView.trailing(to: layoutMarginsGuide)
-        buttonImageView.centerYToSuperview()
+        buttonImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.leading.equalTo(subtitleLabel.snp.trailing).offset(8)
+            make.width.height.equalTo(40)
+            make.trailing.centerY.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

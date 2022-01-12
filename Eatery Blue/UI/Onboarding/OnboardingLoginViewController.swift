@@ -27,12 +27,9 @@ class OnboardingLoginViewController: UIViewController {
         setLoginButtonEnabled(false)
         updateErrorMessage(nil)
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillChangeFrame(_:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
+        // Since the loginButton is tracking the keyboard, layout the view beforehand so the keyboard animation doesn't
+        // also animate every other subview.
+        view.layoutIfNeeded()
     }
 
     private func setUpView() {
@@ -122,26 +119,36 @@ class OnboardingLoginViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        backButton.topToSuperview(offset: 12, usingSafeArea: true)
-        backButton.leadingToSuperview(offset: 16, usingSafeArea: true)
-        backButton.width(34)
-        backButton.height(34)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(12)
+            make.leading.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.width.height.equalTo(34)
+        }
 
-        skipButton.topToSuperview(offset: 12, usingSafeArea: true)
-        skipButton.trailingToSuperview(offset: 16, usingSafeArea: true)
-        skipButton.height(34)
+        skipButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(12)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(34)
+        }
 
-        scrollView.topToBottom(of: backButton)
-        scrollView.leadingToSuperview()
-        scrollView.trailingToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(backButton.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+        }
 
-        loginView.edgesToSuperview()
-        loginView.widthToSuperview()
+        loginView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
 
-        loginButton.topToBottom(of: scrollView)
-        loginButton.leadingToSuperview(offset: 16, usingSafeArea: true)
-        loginButton.trailingToSuperview(offset: 16, usingSafeArea: true)
-        loginButton.bottomToSuperview(offset: -12, usingSafeArea: true)
+        loginButton.snp.makeConstraints { make in
+            make.top.equalTo(scrollView.snp.bottom)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).inset(12)
+            make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-12)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12).priority(.high)
+            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-12).priority(.high)
+        }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -151,19 +158,6 @@ class OnboardingLoginViewController: UIViewController {
 
     private func didTapSkipButton() {
         NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
-    }
-
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-
-        let keyboardFrameInViewCoordinates = view.convert(keyboardFrame, from: nil)
-        let intersection = view.frame.intersection(keyboardFrameInViewCoordinates)
-
-        let delta = intersection.height - view.safeAreaInsets.bottom
-        additionalSafeAreaInsets.bottom += delta
     }
 
     func setLoginButtonEnabled(_ isEnabled: Bool) {

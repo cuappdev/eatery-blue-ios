@@ -51,7 +51,9 @@ class SheetViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        stackView.edges(to: view.layoutMarginsGuide)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(view.layoutMarginsGuide)
+        }
     }
 
     func addHeader(title: String, image: UIImage? = nil) {
@@ -82,8 +84,9 @@ class SheetViewController: UIViewController {
             dismiss(animated: true)
         }
 
-        cancelButton.width(40)
-        cancelButton.height(40)
+        cancelButton.snp.makeConstraints { make in
+            make.width.height.equalTo(40)
+        }
 
         stackView.addArrangedSubview(header)
     }

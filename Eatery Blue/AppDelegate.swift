@@ -7,8 +7,8 @@
 
 import Hero
 import Kingfisher
+import SnapKit
 import Tactile
-import TinyConstraints
 import UIKit
 
 class AppDelegate: UIResponder, UIApplicationDelegate {

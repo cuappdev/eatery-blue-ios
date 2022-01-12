@@ -35,7 +35,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
     }
 
-    private let dayPickerView = DayPickerView()
+    private let dayPickerView = MenuDayPickerView()
 
     weak var delegate: MenuPickerSheetViewControllerDelegate?
 
@@ -69,7 +69,7 @@ class MenuPickerSheetViewController: SheetViewController {
         dayPickerView.layoutMargins = .zero
 
         for (i, day) in days.enumerated() {
-            let cell = DayPickerCell()
+            let cell = MenuDayPickerCell()
             cell.weekdayLabel.text = weekdayFormatter.string(from: day.date()).uppercased()
             cell.dayLabel.content.text = "\(day.day)"
             cell.on(UITapGestureRecognizer()) { [self] _ in

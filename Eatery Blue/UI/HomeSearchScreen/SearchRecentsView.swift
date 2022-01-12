@@ -45,10 +45,14 @@ class SearchRecentsView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.edges(to: layoutMarginsGuide, excluding: .bottom)
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(layoutMarginsGuide)
+        }
 
-        stackView.topToBottom(of: titleLabel, offset: 12)
-        stackView.edgesToSuperview(excluding: .top)
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 
     func addItem(_ itemView: SearchRecentItemView) {

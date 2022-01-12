@@ -1,5 +1,5 @@
 //
-//  EateryMediumCardView.swift
+//  EateryMediumCardContentView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/22/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EateryMediumCardView: UIView {
+class EateryMediumCardContentView: UIView {
 
     let imageView = UIImageView()
     let imageTintView = UIView()
@@ -72,26 +72,38 @@ class EateryMediumCardView: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.edgesToSuperview(excluding: .bottom)
+        snp.makeConstraints { make in
+            make.width.equalTo(snp.height).multipliedBy(295.0 / 186.0).priority(.high)
+        }
 
-        imageTintView.edgesToSuperview()
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
 
-        titleLabel.leadingToSuperview(offset: 12)
-        titleLabel.topToBottom(of: imageView, offset: 12)
-        titleLabel.trailingToLeading(of: favoriteImageView, offset: 4)
+        imageTintView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(12)
+            make.top.equalTo(imageView.snp.bottom).offset(12)
+        }
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        subtitleLabel.leadingToSuperview(offset: 12)
-        subtitleLabel.topToBottom(of: titleLabel, offset: 4)
-        subtitleLabel.bottomToSuperview(offset: -12)
-        subtitleLabel.trailingToLeading(of: favoriteImageView, offset: 4)
+        subtitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview().inset(12)
+        }
         subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        favoriteImageView.trailingToSuperview(offset: 12)
-        favoriteImageView.height(to: titleLabel)
-        favoriteImageView.topToBottom(of: imageView, offset: 12)
-        favoriteImageView.height(20)
-        favoriteImageView.width(20)
+        favoriteImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(4)
+            make.leading.equalTo(subtitleLabel.snp.trailing).offset(4)
+            make.trailing.equalToSuperview().inset(12)
+            make.width.height.equalTo(20)
+            make.top.equalTo(imageView.snp.bottom).offset(12)
+        }
     }
 
 }

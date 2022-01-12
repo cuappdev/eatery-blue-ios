@@ -1,5 +1,5 @@
 //
-//  CarouselView.swift
+//  CarouselViewCompact.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/22/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CarouselView: UIView {
+class CarouselViewCompact: UIView {
 
     let titleLabel = UILabel()
     let scrollView = UIScrollView()
@@ -50,7 +50,6 @@ class CarouselView: UIView {
     private func setUpScrollView() {
         scrollView.alwaysBounceHorizontal = true
         scrollView.clipsToBounds = false
-        scrollView.showsHorizontalScrollIndicator = false
 
         scrollView.addSubview(stackView)
         setUpStackView()
@@ -64,42 +63,35 @@ class CarouselView: UIView {
     }
 
     private func setUpConstraints() {
-        titleLabel.top(to: layoutMarginsGuide)
-        titleLabel.leading(to: layoutMarginsGuide)
-        titleLabel.trailingToLeading(of: buttonImageView)
-        titleLabel.height(to: buttonImageView)
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(layoutMarginsGuide)
+            make.centerY.equalTo(buttonImageView)
+        }
 
-        buttonImageView.top(to: layoutMarginsGuide)
-        buttonImageView.trailing(to: layoutMarginsGuide)
-        buttonImageView.height(40)
-        buttonImageView.width(40)
+        buttonImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing)
+            make.top.trailing.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(40)
+        }
 
-        scrollView.topToBottom(of: titleLabel, offset: 12)
-        scrollView.leadingToSuperview()
-        scrollView.trailingToSuperview()
-        scrollView.bottom(to: layoutMarginsGuide, layoutMarginsGuide.bottomAnchor)
-        scrollView.height(186)
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(layoutMarginsGuide)
+        }
 
-        stackView.edgesToSuperview()
-        stackView.height(186)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.equalTo(scrollView.frameLayoutGuide)
+            make.height.equalTo(140)
+        }
     }
 
-    func addCardView(_ cardView: EateryMediumCardView) {
-        let container = ContainerView(content: cardView)
-        container.cornerRadius = 8
-        container.shadowRadius = 4
-        container.shadowOffset = CGSize(width: 0, height: 4)
-        container.shadowColor = UIColor(named: "ShadowLight")
-        container.shadowOpacity = 0.25
-        container.width(295)
-        stackView.addArrangedSubview(container)
+    func addCardView(_ cardView: EaterySmallCardView) {
+        stackView.addArrangedSubview(cardView)
     }
 
-    func addAccessoryView(_ view: UIView) {
-        stackView.addArrangedSubview(view)
-    }
-
-    func resetCards() {
+    func removeAllCardViews() {
         for view in stackView.arrangedSubviews {
             view.removeFromSuperview()
         }

@@ -1,5 +1,5 @@
 //
-//  EateryLargeCardView.swift
+//  EateryLargeCardContentView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EateryLargeCardView: UIView {
+class EateryLargeCardContentView: UIView {
 
     let imageView = UIImageView()
     let imageTintView = UIView()
@@ -30,6 +30,8 @@ class EateryLargeCardView: UIView {
     }
 
     private func setUpSelf() {
+        insetsLayoutMarginsFromSafeArea = false
+        layoutMargins = .zero
         backgroundColor = UIColor(named: "OffWhite")
 
         addSubview(imageView)
@@ -86,24 +88,34 @@ class EateryLargeCardView: UIView {
     }
 
     private func setUpConstraints() {
+        snp.makeConstraints { make in
+            make.width.equalTo(snp.height).multipliedBy(343.0 / 216.0).priority(.high)
+        }
+
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
         imageView.setContentCompressionResistancePriority(
             titleLabel.contentCompressionResistancePriority(for: .vertical) - 1,
             for: .vertical
         )
-        imageView.edgesToSuperview(excluding: .bottom)
 
-        imageTintView.edgesToSuperview()
+        imageTintView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        labelStackView.topToBottom(of: imageView, offset: 12)
-        labelStackView.leadingToSuperview(offset: 12)
-        labelStackView.bottomToSuperview(offset: -12)
-        labelStackView.trailingToLeading(of: favoriteImageView, offset: -16)
+        labelStackView.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.leading.bottom.equalToSuperview().inset(12)
+        }
 
-        favoriteImageView.trailingToSuperview(offset: 12)
-        favoriteImageView.height(to: titleLabel)
-        favoriteImageView.topToBottom(of: imageView, offset: 12)
-        favoriteImageView.height(20)
-        favoriteImageView.width(20)
+        favoriteImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(12)
+            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.leading.equalTo(labelStackView.snp.trailing).offset(16)
+            make.width.equalTo(20)
+            make.height.equalTo(20)
+        }
     }
 
 }

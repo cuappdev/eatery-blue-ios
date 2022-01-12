@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/25/21.
 //
 
+import SnapKit
 import UIKit
 
 class WaitTimeCell: UIView {
@@ -15,7 +16,7 @@ class WaitTimeCell: UIView {
     private let barHeightLayoutGuide = UILayoutGuide()
     let bar = UIView()
 
-    private var barHeightConstraint: NSLayoutConstraint?
+    private var barHeightConstraint: Constraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,28 +52,51 @@ class WaitTimeCell: UIView {
     }
 
     private func setUpConstraints() {
-        separator.topToSuperview()
-        separator.leadingToSuperview()
-        separator.bottomToSuperview()
+        separator.snp.makeConstraints { make in
+            make.top.leading.bottom.equalToSuperview()
+        }
 
-        startTimeLabel.topToSuperview(offset: 16)
-        startTimeLabel.centerX(to: self, leadingAnchor)
+        startTimeLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(16)
+            make.centerX.equalTo(snp.leading)
+        }
 
         addLayoutGuide(barHeightLayoutGuide)
-        barHeightLayoutGuide.topToBottom(of: startTimeLabel, offset: 8)
-        barHeightLayoutGuide.edges(to: self, excluding: .top)
+        barHeightLayoutGuide.snp.makeConstraints { make in
+            make.top.equalTo(startTimeLabel.snp.bottom).offset(8)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
 
-        bar.leadingToSuperview(offset: 4)
-        bar.trailingToSuperview(offset: 4)
-        bar.bottomToSuperview()
-        barHeightConstraint = bar.height(to: barHeightLayoutGuide, multiplier: 0.5)
+        bar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.bottom.equalToSuperview()
+            barHeightConstraint = make.height.equalTo(barHeightLayoutGuide).multipliedBy(0.5).constraint
+        }
+
+//        separator.topToSuperview()
+//        separator.leadingToSuperview()
+//        separator.bottomToSuperview()
+//
+//        startTimeLabel.topToSuperview(offset: 16)
+//        startTimeLabel.centerX(to: self, leadingAnchor)
+//
+//        addLayoutGuide(barHeightLayoutGuide)
+//        barHeightLayoutGuide.topToBottom(of: startTimeLabel, offset: 8)
+//        barHeightLayoutGuide.edges(to: self, excluding: .top)
+//
+//        bar.leadingToSuperview(offset: 4)
+//        bar.trailingToSuperview(offset: 4)
+//        bar.bottomToSuperview()
+//        barHeightConstraint = bar.height(to: barHeightLayoutGuide, multiplier: 0.5)
     }
 
     func setDatum(startTime: String, fraction: Double) {
         startTimeLabel.text = startTime
 
-        barHeightConstraint?.isActive = false
-        barHeightConstraint = bar.height(to: barHeightLayoutGuide, multiplier: max(0, min(1, fraction)))
+        barHeightConstraint?.deactivate()
+        bar.snp.makeConstraints { make in
+            barHeightConstraint = make.height.equalTo(barHeightLayoutGuide).multipliedBy(max(0, min(1, fraction))).constraint
+        }
     }
 
 }

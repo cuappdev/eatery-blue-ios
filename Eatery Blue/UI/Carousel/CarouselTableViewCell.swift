@@ -1,5 +1,5 @@
 //
-//  EateryLargeCardTableViewCell.swift
+//  CarouselTableViewCell.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/29/21.
@@ -7,23 +7,12 @@
 
 import UIKit
 
-class EateryLargeCardTableViewCell: ClearTableViewCell {
+class CarouselTableViewCell: UITableViewCell {
 
-    let cell: EateryLargeCardCell
+    let carouselView = CarouselView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        self.cell = EateryLargeCardCell()
-
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        setUpContentView()
-        setUpConstraints()
-    }
-
-    init(cardView: EateryLargeCardView) {
-        self.cell = EateryLargeCardCell(cardView: cardView)
-
-        super.init(style: .default, reuseIdentifier: nil)
 
         setUpContentView()
         setUpConstraints()
@@ -34,11 +23,16 @@ class EateryLargeCardTableViewCell: ClearTableViewCell {
     }
 
     private func setUpContentView() {
-        contentView.addSubview(cell)
+        contentView.addSubview(carouselView)
+
+        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        carouselView.scrollView.contentInset = carouselView.layoutMargins
     }
 
     private func setUpConstraints() {
-        cell.edgesToSuperview()
+        carouselView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
 }

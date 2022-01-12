@@ -69,6 +69,21 @@ enum DummyData {
         macs.menuSummary = "Flatbreads, salads, pasta"
         macs.paymentMethods = [.brbs, .cash, .credit]
         macs.imageUrl = URL(string: "https://scontent-lga3-1.xx.fbcdn.net/v/t39.30808-6/242590986_530923285010728_5264780679289653070_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=OnHCbEW7uqoAX8Gog9J&_nc_ht=scontent-lga3-1.xx&oh=00_AT9VUFqgCt4eTeTCoTjCKdra3nyuzL5nwX19EgqdOTQfjg&oe=61C8901A")
+
+        let waitTimeSamples: [WaitTimeSample] = (0..<15).map({ (index: Int) -> WaitTimeSample in
+            WaitTimeSample(
+                timestamp: Date().timeIntervalSince1970 + TimeInterval(index) * 60 * 15,
+                low: TimeInterval(index + 1) * 60,
+                expected: TimeInterval(index + 2) * 60,
+                high: TimeInterval(index + 3) * 60
+            )
+        })
+        macs.waitTimesByDay = [
+            Day(): WaitTimes(
+                samples: waitTimeSamples,
+                samplingMethod: .nearestNeighbor
+            )
+        ]
         return macs
     }()
 

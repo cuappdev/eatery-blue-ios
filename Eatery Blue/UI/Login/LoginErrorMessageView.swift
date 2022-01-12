@@ -46,15 +46,15 @@ class LoginErrorMessageView: UIView {
     }
 
     private func setUpConstraints() {
-        imageView.leading(to: layoutMarginsGuide)
-        imageView.centerY(to: layoutMarginsGuide)
-        imageView.width(12)
-        imageView.height(12)
+        imageView.snp.makeConstraints { make in
+            make.leading.centerY.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(12)
+        }
 
-        messageLabel.leadingToTrailing(of: imageView, offset: 4)
-        messageLabel.top(to: layoutMarginsGuide)
-        messageLabel.trailing(to: layoutMarginsGuide)
-        messageLabel.bottom(to: layoutMarginsGuide)
+        messageLabel.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(4)
+            make.top.trailing.bottom.equalTo(layoutMarginsGuide)
+        }
     }
 
 }

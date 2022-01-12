@@ -68,13 +68,17 @@ class HomeSearchViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        searchBar.topToSuperview(usingSafeArea: true)
-        searchBar.leadingToSuperview()
-        searchBar.trailingToSuperview()
+        searchBar.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
 
-        emptyController.view.edgesToSuperview()
+        emptyController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        contentController.view.edgesToSuperview()
+        contentController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     private func updateChildSafeAreaInsets() {

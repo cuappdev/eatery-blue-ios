@@ -23,8 +23,11 @@ class OnboardingViewController: UIViewController {
     private func setUpView() {
         addChild(theNavigationController)
         view.addSubview(theNavigationController.view)
-        theNavigationController.view.edgesToSuperview()
         theNavigationController.didMove(toParent: self)
+
+        theNavigationController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     private func setUpNavigationController() {

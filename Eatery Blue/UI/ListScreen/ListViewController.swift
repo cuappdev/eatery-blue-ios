@@ -104,14 +104,22 @@ class ListViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        navigationView.edgesToSuperview(excluding: .bottom)
+        navigationView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
 
-        filtersView.edges(to: navigationView.filterPlaceholder)
+        filtersView.snp.makeConstraints { make in
+            make.edges.equalTo(navigationView.filterPlaceholder)
+        }
 
-        tableView.edgesToSuperview()
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        headerStackView.edgesToSuperview(excluding: .bottom)
-        headerStackView.widthToSuperview()
+        headerStackView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(tableView.contentLayoutGuide)
+            make.width.equalTo(tableView.frameLayoutGuide)
+        }
     }
 
     private func pushViewController(for eatery: Eatery) {
@@ -162,7 +170,9 @@ class ListViewController: UIViewController {
     func addFilterSpacerView() {
         headerStackView.addArrangedSubview(filterPlaceholder)
 
-        filterPlaceholder.height(to: filtersView)
+        filterPlaceholder.snp.makeConstraints { make in
+            make.height.equalTo(filtersView)
+        }
     }
 
     private func updateTableViewContentInset() {
@@ -226,25 +236,24 @@ extension ListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = UITableViewCell()
-            headerStackView.layoutIfNeeded()
             let container = ContainerView(content: UIView())
-            cell.contentView.addSubview(container)
-            container.height(headerStackView.frame.height + 12, priority: .defaultHigh)
-            container.edgesToSuperview()
-            return cell
+            headerStackView.layoutIfNeeded()
+            container.snp.makeConstraints { make in
+                make.height.equalTo(headerStackView.frame.height + 12).priority(.high)
+            }
+            return UITableViewCell(content: container)
 
         } else {
             let eatery = eateries[indexPath.row - 1]
-            let cardView = EateryLargeCardView()
-            cardView.imageView.kf.setImage(
+            let contentView = EateryLargeCardContentView()
+            contentView.imageView.kf.setImage(
                 with: eatery.imageUrl,
                 options: [
                     .backgroundDecode
                 ]
             )
-            cardView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
-            cardView.titleLabel.text = eatery.name
+            contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
+            contentView.titleLabel.text = eatery.name
             let lines = EateryFormatter.default.formatEatery(
                 eatery,
                 style: .long,
@@ -252,22 +261,20 @@ extension ListViewController: UITableViewDataSource {
                 userLocation: LocationManager.shared.userLocation,
                 date: Date()
             )
-            for (i, subtitleLabel) in cardView.subtitleLabels.enumerated() {
+            for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
                 if i < lines.count {
                     subtitleLabel.attributedText = lines[i]
                 } else {
                     subtitleLabel.isHidden = true
                 }
             }
-            cardView.on(UITapGestureRecognizer()) { [self] _ in
+            contentView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }
 
-            cardView.height(216)
-
-            let cell = EateryLargeCardTableViewCell(cardView: cardView)
-            cell.cell.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return cell
+            let cardView = EateryCardVisualEffectView(content: contentView)
+            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            return ClearTableViewCell(content: cardView)
         }
     }
 

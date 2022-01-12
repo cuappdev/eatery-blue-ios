@@ -119,7 +119,9 @@ class EateryFilterViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        filtersView.edgesToSuperview()
+        filtersView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     override func viewLayoutMarginsDidChange() {

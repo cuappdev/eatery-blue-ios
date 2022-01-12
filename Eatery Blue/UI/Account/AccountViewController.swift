@@ -87,7 +87,9 @@ class AccountViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        tableView.edgesToSuperview()
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     func updateCells(balances: [BalanceCell], transactions: [TransactionCell]) {
@@ -130,7 +132,9 @@ extension AccountViewController: UITableViewDataSource {
             } else if indexPath.row == balanceCells.count + 1 {
                 let view = UIView()
                 view.backgroundColor = UIColor(named: "Gray00")
-                view.height(16)
+                view.snp.makeConstraints { make in
+                    make.height.equalTo(16)
+                }
                 return UITableViewCell(content: view)
 
             } else {

@@ -22,8 +22,6 @@ class ListNavigationView: UIView {
     let titleLabel = UILabel()
     let searchButton = ContainerView(content: UIImageView())
 
-//    let filtersView = PillFiltersView()
-
     // A view that holds the place of the filtersView in the navigation view
     let filterPlaceholder = UIView()
 
@@ -52,7 +50,6 @@ class ListNavigationView: UIView {
         setUpNormalNavigationBar()
 
         addSubview(filterPlaceholder)
-//        addSubview(filtersView)
 
         addSubview(separator)
         setUpSeparator()
@@ -97,35 +94,42 @@ class ListNavigationView: UIView {
     }
 
     private func setUpConstraints() {
-        blurView.edgesToSuperview()
+        blurView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        normalNavigationBar.height(44)
-        normalNavigationBar.edges(to: layoutMarginsGuide, excluding: .bottom)
+        normalNavigationBar.snp.makeConstraints { make in
+            make.height.equalTo(44)
+            make.top.leading.trailing.equalTo(layoutMarginsGuide)
+        }
 
-        backButton.width(24)
-        backButton.height(44)
-        backButton.centerYToSuperview()
-        backButton.leadingToSuperview()
+        backButton.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(44)
+            make.centerY.leading.equalToSuperview()
+        }
 
-        titleLabel.leadingToTrailing(of: backButton, offset: 8, relation: .equalOrGreater)
-        titleLabel.topToSuperview()
-        titleLabel.centerXToSuperview()
-        titleLabel.bottomToSuperview()
-        titleLabel.trailingToLeading(of: searchButton, offset: 8, relation: .equalOrLess)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.greaterThanOrEqualTo(backButton.snp.trailing).offset(8)
+            make.top.centerX.bottom.equalToSuperview()
+            make.trailing.lessThanOrEqualTo(searchButton.snp.leading).offset(-8)
+        }
 
-        searchButton.width(24)
-        searchButton.height(44)
-        searchButton.centerYToSuperview()
-        searchButton.trailingToSuperview()
+        searchButton.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(44)
+            make.centerY.trailing.equalToSuperview()
+        }
 
-        filterPlaceholder.topToBottom(of: normalNavigationBar, offset: 12)
-        filterPlaceholder.leadingToSuperview()
-        filterPlaceholder.trailingToSuperview()
-        filterPlaceholder.bottom(to: layoutMarginsGuide)
+        filterPlaceholder.snp.makeConstraints { make in
+            make.top.equalTo(normalNavigationBar.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(layoutMarginsGuide)
+        }
 
-//        filtersView.edges(to: filterPlaceholder)
-
-        separator.edgesToSuperview(excluding: .top)
+        separator.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 
     override func layoutSubviews() {

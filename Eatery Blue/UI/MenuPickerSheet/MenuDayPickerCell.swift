@@ -1,5 +1,5 @@
 //
-//  DayPickerCell.swift
+//  MenuDayPickerCell.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/26/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DayPickerCell: UIView {
+class MenuDayPickerCell: UIView {
 
     let weekdayLabel = UILabel()
     let dayLabel = ContainerView(pillContent: UILabel())
@@ -43,13 +43,16 @@ class DayPickerCell: UIView {
     }
 
     private func setUpConstraints() {
-        weekdayLabel.edges(to: layoutMarginsGuide, excluding: .bottom)
+        weekdayLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(layoutMarginsGuide)
+        }
 
-        dayLabel.topToBottom(of: weekdayLabel, offset: 16)
-        dayLabel.bottom(to: layoutMarginsGuide)
-        dayLabel.centerXToSuperview()
-        dayLabel.width(34)
-        dayLabel.height(34)
+        dayLabel.snp.makeConstraints { make in
+            make.top.equalTo(weekdayLabel.snp.bottom).offset(16)
+            make.bottom.equalTo(layoutMarginsGuide)
+            make.centerX.equalTo(layoutMarginsGuide)
+            make.width.height.equalTo(34)
+        }
     }
 
 }

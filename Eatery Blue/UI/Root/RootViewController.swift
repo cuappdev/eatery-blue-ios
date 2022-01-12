@@ -103,15 +103,19 @@ class RootViewController: UIViewController {
     private func addToForeground(_ controller: UIViewController) {
         addChild(controller)
         view.addSubview(controller.view)
-        controller.view.edgesToSuperview()
         controller.didMove(toParent: self)
+
+
     }
 
     private func addToBackground(_ controller: UIViewController) {
         addChild(controller)
         view.insertSubview(controller.view, at: 0)
-        controller.view.edgesToSuperview()
         controller.didMove(toParent: self)
+
+        controller.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     private func removeController(_ controller: UIViewController) {
