@@ -73,7 +73,7 @@
 		5DA434BE278B6EC7001337FD /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434BD278B6EC7001337FD /* UITableViewCell.swift */; };
 		5DA434C0278B9566001337FD /* AccountPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */; };
 		5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434C1278B9700001337FD /* AccountPickerCell.swift */; };
-		5DAE72D5278FC12600284A72 /* GetKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE72D4278FC12600284A72 /* GetKeychainManager.swift */; };
+		5DAE72D5278FC12600284A72 /* NetIDKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE72D4278FC12600284A72 /* NetIDKeychainManager.swift */; };
 		5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 5DAE72D6278FC2F600284A72 /* EateryGetAPI */; };
 		5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */; };
 		5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */; };
@@ -211,7 +211,7 @@
 		5DA434BD278B6EC7001337FD /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerSheetViewController.swift; sourceTree = "<group>"; };
 		5DA434C1278B9700001337FD /* AccountPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerCell.swift; sourceTree = "<group>"; };
-		5DAE72D4278FC12600284A72 /* GetKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetKeychainManager.swift; sourceTree = "<group>"; };
+		5DAE72D4278FC12600284A72 /* NetIDKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetIDKeychainManager.swift; sourceTree = "<group>"; };
 		5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoRefreshControl.swift; sourceTree = "<group>"; };
 		5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStartViewController.swift; sourceTree = "<group>"; };
@@ -302,9 +302,7 @@
 			children = (
 				5D698F982788AE7E0054E1AB /* InMemoryCache.swift */,
 				5D468A14277E3FDC00986AFF /* Networking.swift */,
-				5DAE72D4278FC12600284A72 /* GetKeychainManager.swift */,
-				5DBA89AC27861BA2002DCA6B /* Get */,
-				5D698F962788AE600054E1AB /* Eatery */,
+				5DAE72D4278FC12600284A72 /* NetIDKeychainManager.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -330,13 +328,6 @@
 				5D698F8B27889F0A0054E1AB /* AccountViewController.swift */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		5D698F962788AE600054E1AB /* Eatery */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Eatery;
 			sourceTree = "<group>";
 		};
 		5D6C3D7927888DF8000C518D /* Profile */ = {
@@ -463,13 +454,6 @@
 				5DDAD4762773DA9800CC98DD /* RootViewController.swift */,
 			);
 			path = Root;
-			sourceTree = "<group>";
-		};
-		5DBA89AC27861BA2002DCA6B /* Get */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Get;
 			sourceTree = "<group>";
 		};
 		5DBB59E0278FA3AB0028FE59 /* Frameworks */ = {
@@ -915,7 +899,7 @@
 				5D0CDC432774E5F400AD0E27 /* EateryPillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
-				5DAE72D5278FC12600284A72 /* GetKeychainManager.swift in Sources */,
+				5DAE72D5278FC12600284A72 /* NetIDKeychainManager.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
 				5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */,
 				5D75D6D3278E084E00832359 /* SettingsMainMenuCell.swift in Sources */,

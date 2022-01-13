@@ -37,7 +37,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         setUpPasswordTextField()
         setUpSettingsButton()
 
-        if let credentials = try? GetKeychainManager.shared.get() {
+        if let credentials = try? NetIDKeychainManager.shared.get() {
             netIdTextField.text = credentials.netId
             passwordTextField.text = "        "
             attemptLogin()
@@ -69,15 +69,15 @@ class ProfileLoginModelController: ProfileLoginViewController {
         super.didTapLoginButton()
 
         do {
-            let credentials = GetKeychainManager.Credentials(netId: netId, password: password)
-            try GetKeychainManager.shared.save(credentials)
+            let credentials = NetIDKeychainManager.Credentials(netId: netId, password: password)
+            try NetIDKeychainManager.shared.save(credentials)
 
             Task {
                 await Networking.default.sessionId.invalidate()
                 attemptLogin()
             }
 
-        } catch GetKeychainManager.KeychainError.unhandledError(status: let status) {
+        } catch NetIDKeychainManager.KeychainError.unhandledError(status: let status) {
             logger.error("\(#function): \(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
             updateErrorMessage("Internal error, please try again later")
 

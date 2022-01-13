@@ -52,7 +52,7 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             }
         ))
         setCustomSpacing(24)
-        if let credentials = try? GetKeychainManager.shared.get() {
+        if let credentials = try? NetIDKeychainManager.shared.get() {
             var didAttemptLogOut = false
 
             addLoginStatusView(credentials.netId, logOut: {

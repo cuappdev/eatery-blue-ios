@@ -15,8 +15,6 @@ class Networking {
 
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
-    static var logger = Logger(label: "com.appdev.Eatery-Blue.Networking.logger")
-
     let eateries: InMemoryCache<[Eatery]>
     let sessionId: InMemoryCache<String>
     let accounts: FetchAccounts
@@ -27,7 +25,7 @@ class Networking {
 
         let getApi = GetAPI()
         self.sessionId = InMemoryCache(fetch: {
-            let credentials = try GetKeychainManager.shared.get()
+            let credentials = try NetIDKeychainManager.shared.get()
             return try await getApi.sessionId(netId: credentials.netId, password: credentials.password)
         })
 
@@ -36,9 +34,9 @@ class Networking {
 
     func logOut() async {
         do {
-            try GetKeychainManager.shared.delete()
+            try NetIDKeychainManager.shared.delete()
         } catch {
-            Networking.logger.error("Unable to delete credentials while logging out: \(error)")
+            logger.error("Unable to delete credentials while logging out: \(error)")
         }
         await sessionId.invalidate()
 
@@ -68,7 +66,7 @@ struct FetchAccounts {
 
         } catch {
             if retryAttempts > 0 {
-                Networking.logger.info(
+                logger.info(
                     """
                     FetchAccount failed with error: \(error)
                     Will invalidate sessionId and retry \(retryAttempts) more times.

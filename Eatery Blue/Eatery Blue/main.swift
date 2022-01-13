@@ -6,6 +6,8 @@
 //
 
 import ArgumentParser
+import EateryModel
+import EateryGetAPI
 import Foundation
 import Logging
 
@@ -28,9 +30,6 @@ struct EateryBlue: ParsableCommand {
     @Flag
     var forceOnboarding: Bool = false
 
-    @Option
-    var networkingLogLevel: String?
-
     @Flag
     var forceDeleteCredentials: Bool = false
 
@@ -38,18 +37,12 @@ struct EateryBlue: ParsableCommand {
         if let logLevel = logLevel {
             if let logLevel = Logger.Level(rawValue: logLevel) {
                 logger.logLevel = logLevel
+                EateryModel.logger.logLevel = logLevel
+                EateryGetAPI.logger.logLevel = logLevel
                 logger.log(level: logLevel, "Set log level to \(logLevel)")
+
             } else {
                 logger.error("Could not parse Logger.Level from \"\(String(describing: logLevel))\"")
-            }
-        }
-
-        if let getLogLevel = networkingLogLevel {
-            if let logLevel = Logger.Level(rawValue: getLogLevel) {
-                Networking.logger.logLevel = logLevel
-                Networking.logger.log(level: logLevel, "Set log level to \(logLevel)")
-            } else {
-                Networking.logger.error("Could not parse Logger.Level from \"\(String(describing: getLogLevel))\"")
             }
         }
 
@@ -75,7 +68,7 @@ struct EateryBlue: ParsableCommand {
 
         if forceDeleteCredentials {
             logger.info("\(#function): Deleting credentials")
-            try! GetKeychainManager.shared.delete()
+            try! NetIDKeychainManager.shared.delete()
         }
 
         AppDelegate.main()

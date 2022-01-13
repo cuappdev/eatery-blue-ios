@@ -21,15 +21,15 @@ actor InMemoryCache<Value> {
 
     func fetch(maxStaleness: TimeInterval) async throws -> Value {
         if !isExpired(maxStaleness: maxStaleness), let cachedValue = cachedValue {
-            Networking.logger.info("\(self): Returning cached value")
+            logger.info("\(self): Returning cached value")
             return cachedValue
 
         } else if let task = fetchTask {
-            Networking.logger.info("\(self): Awaiting existing fetch task")
+            logger.info("\(self): Awaiting existing fetch task")
             return try await task.value
 
         } else {
-            Networking.logger.info("\(self): Creating new fetch task")
+            logger.info("\(self): Creating new fetch task")
             let task = Task { () -> Value in
                 defer { fetchTask = nil }
                 let result = try await fetch()

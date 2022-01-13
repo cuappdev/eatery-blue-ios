@@ -7,4 +7,4 @@
 
 import Logging
 
-var logger = Logger(label: "com.appdev.EateryGetAPI")
+public var logger = Logger(label: "com.appdev.EateryGetAPI")

@@ -74,15 +74,15 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
 
         Task {
             do {
-                let credentials = GetKeychainManager.Credentials(netId: netId, password: password)
-                try GetKeychainManager.shared.save(credentials)
+                let credentials = NetIDKeychainManager.Credentials(netId: netId, password: password)
+                try NetIDKeychainManager.shared.save(credentials)
                 _ = try await Networking.default.sessionId.fetch(maxStaleness: 0)
                 finishOnboarding()
 
             } catch GetAPIError.loginFailed {
                 updateErrorMessage("NetID and/or password incorrect, please try again")
                 
-            } catch GetKeychainManager.KeychainError.unhandledError(status: let status) {
+            } catch NetIDKeychainManager.KeychainError.unhandledError(status: let status) {
                 logger.error("\(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
                 updateErrorMessage("Internal error, please try again later")
 
