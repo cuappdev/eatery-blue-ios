@@ -48,7 +48,7 @@ public struct Day: Codable, Hashable {
         let components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute)
 
         guard let date = Calendar.eatery.date(from: components) else {
-            EateryModel.logger.error("\(#function): could not form date from components \(components)")
+            logger.error("\(#function): could not form date from components \(components)")
             return Date()
         }
 
@@ -64,7 +64,7 @@ public struct Day: Codable, Hashable {
             matchingPolicy: .nextTime,
             direction: .backward
         ) else {
-            EateryModel.logger.error("\(#function): could not find start of week for \(self)")
+            logger.error("\(#function): could not find start of week for \(self)")
             return self
         }
 
@@ -83,7 +83,7 @@ extension Day: Strideable {
         let currentDate = date()
 
         guard let date = Calendar.eatery.date(byAdding: .day, value: n, to: currentDate) else {
-            EateryModel.logger.error("\(#function): could not add \(n) days to \(currentDate)")
+            logger.error("\(#function): could not add \(n) days to \(currentDate)")
             return self
         }
 
@@ -94,7 +94,7 @@ extension Day: Strideable {
         if let day = Calendar.eatery.dateComponents([.day], from: date(), to: other.date()).day {
             return day
         } else {
-            EateryModel.logger.error("\(#function): unable to compute distance between \(date()) and \(other.date())")
+            logger.error("\(#function): unable to compute distance between \(date()) and \(other.date())")
             return 0
         }
     }

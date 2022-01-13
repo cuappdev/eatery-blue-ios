@@ -6,28 +6,29 @@
 //
 
 import Alamofire
-import EateryModel
 import Foundation
 
-class GetSessionManager {
+internal class GetSessionManager {
 
-    struct ResponseWrapper<Response: Decodable>: Decodable {
+    private struct ResponseWrapper<Response: Decodable>: Decodable {
+
         let response: Response
+
     }
 
-    private let base: String
+    private let base: String = "https://services.get.cbord.com/GETServices/services/json"
+
     private let sessionId: String
 
     private var session: Session
 
-    init(base: String = "https://services.get.cbord.com/GETServices/services/json", sessionId: String) {
-        self.base = base
+    internal init(sessionId: String) {
         self.sessionId = sessionId
 
         session = Session(cachedResponseHandler: ResponseCacher.doNotCache)
     }
 
-    @MainActor func userId() async throws -> String {
+    @MainActor internal func userId() async throws -> String {
         struct Parameters: Encodable {
             let version = "1"
             let method = "retrieve"
@@ -50,13 +51,13 @@ class GetSessionManager {
         )
 
         let responseData = try await dataTask.serializingData().value
-        Networking.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
+        logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.id
     }
 
-    @MainActor func accountInfo(userId: String) async throws -> [Get.RawAccount] {
+    @MainActor internal func accountInfo(userId: String) async throws -> [Schema.RawAccount] {
         struct Parameters: Encodable {
             let version = "1"
             let method = "retrieveAccountsByUser"
@@ -71,7 +72,7 @@ class GetSessionManager {
         }
 
         struct Response: Decodable {
-            let accounts: [Get.RawAccount]
+            let accounts: [Schema.RawAccount]
         }
 
         let dataTask = session.request(
@@ -85,13 +86,17 @@ class GetSessionManager {
         )
 
         let responseData = try await dataTask.serializingData().value
-        Networking.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
+        logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.accounts
     }
 
-    @MainActor func transactions(userId: String, start: Day, end: Day) async throws -> [Get.RawTransaction] {
+    @MainActor internal func transactions(
+        userId: String,
+        start: String,
+        end: String
+    ) async throws -> [Schema.RawTransaction] {
         struct Parameters: Encodable {
             struct Params: Encodable {
                 struct QueryCriteria: Encodable {
@@ -130,7 +135,7 @@ class GetSessionManager {
         }
 
         struct Response: Decodable {
-            let transactions: [Get.RawTransaction]
+            let transactions: [Schema.RawTransaction]
         }
 
         let dataTask = session.request(
@@ -139,14 +144,14 @@ class GetSessionManager {
             parameters: Parameters(
                 sessionId: sessionId,
                 userId: userId,
-                startDate: start.rawValue,
-                endDate: end.rawValue
+                startDate: start,
+                endDate: end
             ),
             encoder: JSONParameterEncoder.default
         )
 
         let responseData = try await dataTask.serializingData().value
-        Networking.logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
+        logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
         return response.response.transactions

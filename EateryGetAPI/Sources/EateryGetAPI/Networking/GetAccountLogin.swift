@@ -12,16 +12,8 @@ import Logging
 import SwiftSoup
 import WebKit
 
-class GetAccountLogin: NSObject, WKNavigationDelegate {
+internal class GetAccountLogin: NSObject, WKNavigationDelegate {
 
-    enum LoginError: Error {
-        case invalidLoginUrl
-        case loginFailed
-        case internalError
-        case emptyNetId
-        case emptyPassword
-    }
-    
     private enum Stage {
         case loginScreen
         case transition
@@ -29,20 +21,19 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         case samlResponse
     }
 
-    private let webView: WKWebView
+    internal let webView: WKWebView
 
     private var evaluateJavaScriptContinuation: CheckedContinuation<Any?, Error>?
+
     private var loadUrlContinuation: CheckedContinuation<Void, Error>?
+
     private var loginAttempts: Int = 0
 
     private let netId: String
+
     private let password: String
 
-    @MainActor convenience init(credentials: GetKeychainManager.Credentials) {
-        self.init(netId: credentials.netId, password: credentials.password)
-    }
-
-    @MainActor init(netId: String, password: String) {
+    @MainActor internal init(netId: String, password: String) {
         self.netId = netId
         self.password = password
 
@@ -54,23 +45,15 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         super.init()
 
         webView.navigationDelegate = self
-
-        if Get.debugAttachAccountLoginWebViewToWindow,
-            let delegate = UIApplication.shared.connectedScenes.first!.delegate as? SceneDelegate {
-            delegate.window?.addSubview(webView)
-            webView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-        }
     }
 
     deinit {
         webView.removeFromSuperview()
     }
 
-    @MainActor func sessionId() async throws -> String {
+    @MainActor internal func sessionId() async throws -> String {
         guard let loginUrl = URL(string: "https://get.cbord.com/cornell/full/login.php?mobileapp=1") else {
-            throw LoginError.invalidLoginUrl
+            throw GetAPIError.invalidLoginUrl
         }
 
         loginAttempts = 0
@@ -79,7 +62,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         for _ in 1...100 {
             let stage = try await stage()
 
-            Networking.logger.debug("\(#function): \(stage)")
+            logger.debug("\(#function): \(stage)")
 
             switch stage {
             case .loginScreen:
@@ -87,21 +70,21 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
                     try await webLogIn()
                     loginAttempts += 1
                 } else {
-                    throw LoginError.loginFailed
+                    throw GetAPIError.loginFailed
                 }
 
             case .transition:
                 try await Task.sleep(nanoseconds: 1_000_000_000)
 
             case .loginFailed:
-                throw LoginError.loginFailed
+                throw GetAPIError.loginFailed
 
             case .samlResponse:
                 return try await handleSamlForm()
             }
         }
 
-        throw LoginError.internalError
+        throw GetAPIError.internalError
     }
 
     @MainActor private func html() async throws -> String? {
@@ -133,9 +116,9 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
 
     @MainActor private func webLogIn() async throws {
         if netId.isEmpty {
-            throw LoginError.emptyNetId
+            throw GetAPIError.emptyNetId
         } else if password.isEmpty {
-            throw LoginError.emptyPassword
+            throw GetAPIError.emptyPassword
         }
 
         let script = """
@@ -174,7 +157,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         }
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
+    internal func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
         if let loadUrlContinuation = loadUrlContinuation {
             loadUrlContinuation.resume()
             self.loadUrlContinuation = nil
@@ -186,7 +169,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         }
     }
 
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation?, withError error: Error) {
+    internal func webView(_ webView: WKWebView, didFail navigation: WKNavigation?, withError error: Error) {
         if let loadUrlContinuation = loadUrlContinuation {
             loadUrlContinuation.resume(throwing: error)
             self.loadUrlContinuation = nil
@@ -198,24 +181,24 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         }
     }
 
-    @MainActor func webView(
+    @MainActor internal  func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
     ) async -> WKNavigationActionPolicy {
-        Networking.logger.debug("\(#function): \(navigationAction.request)")
+        logger.debug("\(#function): \(navigationAction.request)")
         return .allow
     }
 
     @MainActor private func handleSamlForm() async throws -> String {
         guard let html = try await html() else {
-            throw LoginError.internalError
+            throw GetAPIError.internalError
         }
 
-        Networking.logger.trace("\(html)")
+        logger.trace("\(html)")
 
         let document: Document = try SwiftSoup.parse(html)
         guard let form = try document.select("form").first() else {
-            throw LoginError.internalError
+            throw GetAPIError.internalError
         }
 
         var samlResponse: String?
@@ -235,7 +218,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         }
 
         guard let samlResponse = samlResponse else {
-            throw LoginError.internalError
+            throw GetAPIError.internalError
         }
 
         return try await makeSamlRequest(samlResponse: samlResponse)
@@ -248,7 +231,7 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
             guard let encodedKey = key.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
                   let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
             else {
-                throw LoginError.internalError
+                throw GetAPIError.internalError
             }
 
             encoded.append("\(encodedKey)=\(encodedValue)")
@@ -271,13 +254,13 @@ class GetAccountLogin: NSObject, WKNavigationDelegate {
         )
 
         let response = await dataTask.serializingString().response
-        Networking.logger.trace("\(String(describing: response))")
+        logger.trace("\(String(describing: response))")
 
         guard let url = response.response?.url,
               let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
               let sessionId = components.queryItems?.first(where: { $0.name == "sessionId" })?.value
         else {
-            throw LoginError.internalError
+            throw GetAPIError.internalError
         }
 
         return sessionId

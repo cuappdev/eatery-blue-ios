@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EateryGetAPI
 
 class OnboardingLoginModelController: OnboardingLoginViewController {
 
@@ -78,7 +79,7 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
                 _ = try await Networking.default.sessionId.fetch(maxStaleness: 0)
                 finishOnboarding()
 
-            } catch GetAccountLogin.LoginError.loginFailed {
+            } catch GetAPIError.loginFailed {
                 updateErrorMessage("NetID and/or password incorrect, please try again")
                 
             } catch GetKeychainManager.KeychainError.unhandledError(status: let status) {

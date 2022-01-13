@@ -6,6 +6,7 @@
 //
 
 import EateryModel
+import EateryGetAPI
 import UIKit
 
 // The accounts which are displayed on the profile page in Eatery.
@@ -212,7 +213,7 @@ class AccountModelController: AccountViewController {
         return cells
     }
 
-    private func getTransactionCells(_ transactions: [Account.Transaction]) -> [TransactionCell] {
+    private func getTransactionCells(_ transactions: [Transaction]) -> [TransactionCell] {
         var cells: [TransactionCell] = []
 
         for transaction in transactions {

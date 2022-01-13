@@ -34,12 +34,8 @@
 		5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F912788A7FE0054E1AB /* AccountModelController.swift */; };
 		5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F982788AE7E0054E1AB /* InMemoryCache.swift */; };
 		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
-		5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6327876460000C518D /* GetSessionManager.swift */; };
 		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
-		5D6C3D6B27878A7E000C518D /* Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6A27878A7E000C518D /* Get.swift */; };
-		5D6C3D7127879F8E000C518D /* GetToModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D7027879F8E000C518D /* GetToModel.swift */; };
 		5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */; };
-		5D6C3D752787BA1D000C518D /* GetKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */; };
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
@@ -77,7 +73,8 @@
 		5DA434BE278B6EC7001337FD /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434BD278B6EC7001337FD /* UITableViewCell.swift */; };
 		5DA434C0278B9566001337FD /* AccountPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */; };
 		5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434C1278B9700001337FD /* AccountPickerCell.swift */; };
-		5DAE72D3278FAEC800284A72 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE72D2278FAEC800284A72 /* Account.swift */; };
+		5DAE72D5278FC12600284A72 /* GetKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE72D4278FC12600284A72 /* GetKeychainManager.swift */; };
+		5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 5DAE72D6278FC2F600284A72 /* EateryGetAPI */; };
 		5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */; };
 		5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */; };
 		5DBA899C2783EE07002DCA6B /* OnboardingStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */; };
@@ -87,7 +84,6 @@
 		5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */; };
 		5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */; };
 		5DBA89AB278528F5002DCA6B /* OnboardingLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */; };
-		5DBA89AE27861C8B002DCA6B /* GetAccountLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */; };
 		5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */; };
 		5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DE278FA3200028FE59 /* EateryFilter.swift */; };
 		5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5DBB59E1278FA3AB0028FE59 /* EateryModel */; };
@@ -179,11 +175,7 @@
 		5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginModelController.swift; sourceTree = "<group>"; };
 		5D698F912788A7FE0054E1AB /* AccountModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModelController.swift; sourceTree = "<group>"; };
 		5D698F982788AE7E0054E1AB /* InMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCache.swift; sourceTree = "<group>"; };
-		5D6C3D6327876460000C518D /* GetSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSessionManager.swift; sourceTree = "<group>"; };
-		5D6C3D6A27878A7E000C518D /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
-		5D6C3D7027879F8E000C518D /* GetToModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToModel.swift; sourceTree = "<group>"; };
 		5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginModelController.swift; sourceTree = "<group>"; };
-		5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetKeychainManager.swift; sourceTree = "<group>"; };
 		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
 		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
 		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
@@ -219,7 +211,7 @@
 		5DA434BD278B6EC7001337FD /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerSheetViewController.swift; sourceTree = "<group>"; };
 		5DA434C1278B9700001337FD /* AccountPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerCell.swift; sourceTree = "<group>"; };
-		5DAE72D2278FAEC800284A72 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		5DAE72D4278FC12600284A72 /* GetKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetKeychainManager.swift; sourceTree = "<group>"; };
 		5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoRefreshControl.swift; sourceTree = "<group>"; };
 		5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStartViewController.swift; sourceTree = "<group>"; };
@@ -229,7 +221,6 @@
 		5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeaturesViewController.swift; sourceTree = "<group>"; };
 		5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureView.swift; sourceTree = "<group>"; };
 		5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginViewController.swift; sourceTree = "<group>"; };
-		5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAccountLogin.swift; sourceTree = "<group>"; };
 		5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFormatter.swift; sourceTree = "<group>"; };
 		5DBB59DE278FA3200028FE59 /* EateryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilter.swift; sourceTree = "<group>"; };
 		5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPredicate.swift; sourceTree = "<group>"; };
@@ -290,6 +281,7 @@
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
 				5D75D6DF278E1DF500832359 /* SnapKit in Frameworks */,
+				5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +302,7 @@
 			children = (
 				5D698F982788AE7E0054E1AB /* InMemoryCache.swift */,
 				5D468A14277E3FDC00986AFF /* Networking.swift */,
+				5DAE72D4278FC12600284A72 /* GetKeychainManager.swift */,
 				5DBA89AC27861BA2002DCA6B /* Get */,
 				5D698F962788AE600054E1AB /* Eatery */,
 			);
@@ -475,11 +468,6 @@
 		5DBA89AC27861BA2002DCA6B /* Get */ = {
 			isa = PBXGroup;
 			children = (
-				5D6C3D6A27878A7E000C518D /* Get.swift */,
-				5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */,
-				5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */,
-				5D6C3D6327876460000C518D /* GetSessionManager.swift */,
-				5D6C3D7027879F8E000C518D /* GetToModel.swift */,
 			);
 			path = Get;
 			sourceTree = "<group>";
@@ -511,7 +499,6 @@
 		5DF304B227797BBA00E2C9A4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5DAE72D2278FAEC800284A72 /* Account.swift */,
 				5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */,
 				5DBB59DE278FA3200028FE59 /* EateryFilter.swift */,
 				5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */,
@@ -754,6 +741,7 @@
 				5D6C3D6627877980000C518D /* Alamofire */,
 				5D75D6DE278E1DF500832359 /* SnapKit */,
 				5DBB59E1278FA3AB0028FE59 /* EateryModel */,
+				5DAE72D6278FC2F600284A72 /* EateryGetAPI */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -825,11 +813,9 @@
 				5DA434AD2789FEB1001337FD /* NavigationView.swift in Sources */,
 				5D73C39127812C4F0020507C /* SearchResultsCountView.swift in Sources */,
 				5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */,
-				5D6C3D6B27878A7E000C518D /* Get.swift in Sources */,
 				5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */,
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */,
-				5DAE72D3278FAEC800284A72 /* Account.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
 				5D75D6D5278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift in Sources */,
@@ -847,7 +833,6 @@
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
-				5D6C3D7127879F8E000C518D /* GetToModel.swift in Sources */,
 				5DA434B4278B5A10001337FD /* AccountBalanceTableViewCell.swift in Sources */,
 				5D0CDC602776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift in Sources */,
 				5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */,
@@ -889,7 +874,6 @@
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
 				5DF304D1277A69E000E2C9A4 /* ListViewController.swift in Sources */,
 				5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */,
-				5DBA89AE27861C8B002DCA6B /* GetAccountLogin.swift in Sources */,
 				5D73C38A27810F370020507C /* FuseFuture.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
@@ -912,11 +896,9 @@
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */,
-				5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */,
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */,
-				5D6C3D752787BA1D000C518D /* GetKeychainManager.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
@@ -933,6 +915,7 @@
 				5D0CDC432774E5F400AD0E27 /* EateryPillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
+				5DAE72D5278FC12600284A72 /* GetKeychainManager.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
 				5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */,
 				5D75D6D3278E084E00832359 /* SettingsMainMenuCell.swift in Sources */,
@@ -1259,6 +1242,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5D75D6DD278E1DF400832359 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		5DAE72D6278FC2F600284A72 /* EateryGetAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EateryGetAPI;
 		};
 		5DBB59E1278FA3AB0028FE59 /* EateryModel */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -7,12 +7,6 @@
 
 import Foundation
 
-public enum EateryAPIError: Error {
-
-    case apiResponseError(String)
-
-}
-
 public struct EateryAPI {
 
     private let decoder: JSONDecoder

@@ -1,5 +1,5 @@
 //
-//  GetToModel.swift
+//  SchemaToModel.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/6/22.
@@ -7,16 +7,16 @@
 
 import Foundation
 
-enum GetToModel {
+internal enum SchemaToModel {
 
     private static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.calendar = .eatery
+        dateFormatter.timeZone = TimeZone(identifier: "America/New_York") ?? Calendar.current.timeZone
         return dateFormatter
     }()
 
-    static func convert(getAccounts: [Get.RawAccount], getTransactions: [Get.RawTransaction]) -> [Account] {
+    internal static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> [Account] {
         let transactions = convert(getTransactions)
 
         var accounts: [Account] = []
@@ -36,8 +36,8 @@ enum GetToModel {
         return accounts
     }
 
-    static func convert(_ getTransactions: [Get.RawTransaction]) -> [Account.Transaction] {
-        var transactions: [Account.Transaction] = []
+    internal static func convert(_ getTransactions: [Schema.RawTransaction]) -> [Transaction] {
+        var transactions: [Transaction] = []
 
         for getTransaction in getTransactions {
             guard let location = getTransaction.locationName,
@@ -49,18 +49,18 @@ enum GetToModel {
                 continue
             }
 
-            transactions.append(Account.Transaction(
-                location: location,
-                date: date,
+            transactions.append(Transaction(
+                accountType: accountType,
                 amount: amount,
-                accountType: accountType
+                date: date,
+                location: location
             ))
         }
 
         return transactions
     }
 
-    static func parseAccountType(from getAccountDisplayName: String?) -> Account.AccountType? {
+    internal static func parseAccountType(from getAccountDisplayName: String?) -> AccountType? {
         guard let name = getAccountDisplayName else {
             return nil
         }
@@ -74,7 +74,6 @@ enum GetToModel {
         if name.contains("Laundry") {
             return .laundry
         }
-
         if name.contains("Unlimited") {
             return .unlimited
         }
@@ -87,7 +86,6 @@ enum GetToModel {
         if name.contains("Basic") {
             return .bearBasic
         }
-
         if name.contains("Off") {
             return .offCampusValue
         }

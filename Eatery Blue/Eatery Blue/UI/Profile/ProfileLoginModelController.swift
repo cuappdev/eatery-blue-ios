@@ -5,6 +5,7 @@
 //  Created by William Ma on 1/7/22.
 //
 
+import EateryGetAPI
 import UIKit
 
 protocol ProfileLoginModelControllerDelegate: AnyObject {
@@ -105,13 +106,13 @@ class ProfileLoginModelController: ProfileLoginViewController {
                 let sessionId = try await Networking.default.sessionId.fetch(maxStaleness: .infinity)
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
 
-            } catch GetAccountLogin.LoginError.loginFailed {
+            } catch GetAPIError.loginFailed {
                 updateErrorMessage("NetID and/or password incorrect, please try again")
 
-            } catch GetAccountLogin.LoginError.emptyNetId {
+            } catch GetAPIError.emptyNetId {
                 updateErrorMessage("Please enter a NetID")
 
-            } catch GetAccountLogin.LoginError.emptyPassword {
+            } catch GetAPIError.emptyPassword {
                 updateErrorMessage("Please enter a password")
 
             } catch {

@@ -7,6 +7,7 @@
 
 import Combine
 import EateryModel
+import EateryGetAPI
 import Foundation
 import Logging
 
@@ -24,10 +25,13 @@ class Networking {
         let eateryApi = EateryAPI(url: fetchUrl)
         self.eateries = InMemoryCache(fetch: eateryApi.eateries)
 
-        let sessionId = FetchGETSessionID()
-        self.sessionId = InMemoryCache(fetch: sessionId.fetch)
+        let getApi = GetAPI()
+        self.sessionId = InMemoryCache(fetch: {
+            let credentials = try GetKeychainManager.shared.get()
+            return try await getApi.sessionId(netId: credentials.netId, password: credentials.password)
+        })
 
-        self.accounts = FetchAccounts(self.sessionId)
+        self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
     }
 
     func logOut() async {
@@ -43,20 +47,13 @@ class Networking {
 
 }
 
-struct FetchGETSessionID {
-
-    func fetch() async throws -> String {
-        let credentials = try GetKeychainManager.shared.get()
-        return try await GetAccountLogin(credentials: credentials).sessionId()
-    }
-
-}
-
 struct FetchAccounts {
 
-    let sessionId: InMemoryCache<String>
+    private let getApi: GetAPI
+    private let sessionId: InMemoryCache<String>
 
-    init(_ sessionId: InMemoryCache<String>) {
+    fileprivate init(getApi: GetAPI, sessionId: InMemoryCache<String>) {
+        self.getApi = getApi
         self.sessionId = sessionId
     }
 
@@ -67,18 +64,7 @@ struct FetchAccounts {
     func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
         do {
             let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
-            let sessionManager = GetSessionManager(sessionId: sessionId)
-
-            let userId = try await sessionManager.userId()
-
-            async let rawAccountInfo = sessionManager.accountInfo(userId: userId)
-            async let rawTransactions = sessionManager.transactions(
-                userId: userId,
-                start: start,
-                end: end
-            )
-
-            return try await GetToModel.convert(getAccounts: rawAccountInfo, getTransactions: rawTransactions)
+            return try await getApi.accounts(sessionId: sessionId, start: start.rawValue, end: end.rawValue)
 
         } catch {
             if retryAttempts > 0 {
