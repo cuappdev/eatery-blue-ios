@@ -125,6 +125,7 @@ class HomeModelController: HomeViewController {
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         Task {
             await updateStateFromNetworking()
+            try? await Task.sleep(nanoseconds: 200_000_000)
             updateCellsFromState()
             sender.endRefreshing()
         }

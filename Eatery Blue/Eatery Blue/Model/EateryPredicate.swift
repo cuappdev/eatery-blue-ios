@@ -6,9 +6,10 @@
 //
 
 import CoreLocation
+import EateryModel
 import Foundation
 
-public indirect enum EateryPredicate {
+indirect enum EateryPredicate {
 
     case acceptsPaymentMethod(_ paymentMethod: PaymentMethod)
 
@@ -26,8 +27,7 @@ public indirect enum EateryPredicate {
 
     case underNMinutes(_ n: Int, userLocation: CLLocation)
 
-
-    public func isSatisfiedBy(_ eatery: Eatery) -> Bool {
+    func isSatisfiedBy(_ eatery: Eatery) -> Bool {
         switch self {
         case .true:
             return true

@@ -5,7 +5,6 @@
 //  Created by William Ma on 12/30/21.
 //
 
-import EateryModel
 import Foundation
 
 enum SchemaToModel {
@@ -68,10 +67,10 @@ enum SchemaToModel {
 
         return Event(
             canonicalDay: day,
-            startTimestamp: TimeInterval(schemaEvent.startTimestamp),
-            endTimestamp: TimeInterval(schemaEvent.endTimestamp),
             description: schemaEvent.description,
-            menu: menu
+            endTimestamp: TimeInterval(schemaEvent.endTimestamp),
+            menu: menu,
+            startTimestamp: TimeInterval(schemaEvent.startTimestamp)
         )
     }
 

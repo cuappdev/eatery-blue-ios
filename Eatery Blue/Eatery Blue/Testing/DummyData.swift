@@ -40,9 +40,9 @@ enum DummyData {
         events: (0..<5).map { offset in
             Event(
                 canonicalDay: Day().advanced(by: offset),
-                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970,
                 endTimestamp: Day().advanced(by: offset).date(hour: 17, minute: 30).timeIntervalSince1970,
-                menu: macsMenu
+                menu: macsMenu,
+                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970
             )
         },
         id: 1001,

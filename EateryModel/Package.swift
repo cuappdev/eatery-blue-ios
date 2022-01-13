@@ -5,6 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "EateryModel",
+    platforms: [
+        .iOS(.v15),
+        .watchOS(.v8)
+    ],
     products: [
         .library(name: "EateryModel", targets: ["EateryModel"])
     ],

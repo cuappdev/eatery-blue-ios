@@ -8,10 +8,12 @@
 import Foundation
 
 // A day, specifically in New York timezone
-public struct Day {
+public struct Day: Codable, Hashable {
 
     public let year: Int
+
     public let month: Int
+
     public let day: Int
 
     public init(date: Date = Date()) {
@@ -72,14 +74,6 @@ public struct Day {
     public func weekday() -> Int {
         Calendar.eatery.component(.weekday, from: date())
     }
-
-}
-
-extension Day: Codable {
-
-}
-
-extension Day: Hashable {
 
 }
 

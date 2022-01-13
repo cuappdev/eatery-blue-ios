@@ -25,8 +25,6 @@
 		5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FF277D146500986AFF /* ClearTableViewCell.swift */; };
 		5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */; };
 		5D468A15277E3FDC00986AFF /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A14277E3FDC00986AFF /* Networking.swift */; };
-		5D468A17277E401800986AFF /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A16277E401800986AFF /* Schema.swift */; };
-		5D468A19277E440300986AFF /* SchemaToModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A18277E440300986AFF /* SchemaToModel.swift */; };
 		5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */; };
 		5D698F8627888EC80054E1AB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8527888EC80054E1AB /* LoginView.swift */; };
 		5D698F88278892A10054E1AB /* LoginErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */; };
@@ -39,7 +37,6 @@
 		5D6C3D6427876460000C518D /* GetSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6327876460000C518D /* GetSessionManager.swift */; };
 		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
 		5D6C3D6B27878A7E000C518D /* Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6A27878A7E000C518D /* Get.swift */; };
-		5D6C3D6D27879B4A000C518D /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D6C27879B4A000C518D /* Account.swift */; };
 		5D6C3D7127879F8E000C518D /* GetToModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D7027879F8E000C518D /* GetToModel.swift */; };
 		5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */; };
 		5D6C3D752787BA1D000C518D /* GetKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */; };
@@ -80,6 +77,7 @@
 		5DA434BE278B6EC7001337FD /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434BD278B6EC7001337FD /* UITableViewCell.swift */; };
 		5DA434C0278B9566001337FD /* AccountPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */; };
 		5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA434C1278B9700001337FD /* AccountPickerCell.swift */; };
+		5DAE72D3278FAEC800284A72 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE72D2278FAEC800284A72 /* Account.swift */; };
 		5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */; };
 		5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */; };
 		5DBA899C2783EE07002DCA6B /* OnboardingStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */; };
@@ -93,6 +91,7 @@
 		5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */; };
 		5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DE278FA3200028FE59 /* EateryFilter.swift */; };
 		5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5DBB59E1278FA3AB0028FE59 /* EateryModel */; };
+		5DBB59E4278FA7F80028FE59 /* EateryPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */; };
 		5DCB869C2782396000134066 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB869B2782396000134066 /* main.swift */; };
 		5DCB86A22783544C00134066 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB86A12783544C00134066 /* LocationManager.swift */; };
 		5DCB86A427835EF900134066 /* DummyLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB86A327835EF900134066 /* DummyLocationManager.swift */; };
@@ -172,8 +171,6 @@
 		5D4689FF277D146500986AFF /* ClearTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearTableViewCell.swift; sourceTree = "<group>"; };
 		5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselMoreEateriesView.swift; sourceTree = "<group>"; };
 		5D468A14277E3FDC00986AFF /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
-		5D468A16277E401800986AFF /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
-		5D468A18277E440300986AFF /* SchemaToModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaToModel.swift; sourceTree = "<group>"; };
 		5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginViewController.swift; sourceTree = "<group>"; };
 		5D698F8527888EC80054E1AB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginErrorMessageView.swift; sourceTree = "<group>"; };
@@ -184,7 +181,6 @@
 		5D698F982788AE7E0054E1AB /* InMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCache.swift; sourceTree = "<group>"; };
 		5D6C3D6327876460000C518D /* GetSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSessionManager.swift; sourceTree = "<group>"; };
 		5D6C3D6A27878A7E000C518D /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
-		5D6C3D6C27879B4A000C518D /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		5D6C3D7027879F8E000C518D /* GetToModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToModel.swift; sourceTree = "<group>"; };
 		5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginModelController.swift; sourceTree = "<group>"; };
 		5D6C3D742787BA1D000C518D /* GetKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetKeychainManager.swift; sourceTree = "<group>"; };
@@ -223,6 +219,7 @@
 		5DA434BD278B6EC7001337FD /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerSheetViewController.swift; sourceTree = "<group>"; };
 		5DA434C1278B9700001337FD /* AccountPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerCell.swift; sourceTree = "<group>"; };
+		5DAE72D2278FAEC800284A72 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		5DBA89952783CCAA002DCA6B /* LogoRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoRefreshControl.swift; sourceTree = "<group>"; };
 		5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStartViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +232,7 @@
 		5DBA89AD27861C8B002DCA6B /* GetAccountLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAccountLogin.swift; sourceTree = "<group>"; };
 		5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFormatter.swift; sourceTree = "<group>"; };
 		5DBB59DE278FA3200028FE59 /* EateryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilter.swift; sourceTree = "<group>"; };
+		5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPredicate.swift; sourceTree = "<group>"; };
 		5DCB869B2782396000134066 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5DCB86A12783544C00134066 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		5DCB86A327835EF900134066 /* DummyLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyLocationManager.swift; sourceTree = "<group>"; };
@@ -344,8 +342,6 @@
 		5D698F962788AE600054E1AB /* Eatery */ = {
 			isa = PBXGroup;
 			children = (
-				5D468A16277E401800986AFF /* Schema.swift */,
-				5D468A18277E440300986AFF /* SchemaToModel.swift */,
 			);
 			path = Eatery;
 			sourceTree = "<group>";
@@ -515,9 +511,10 @@
 		5DF304B227797BBA00E2C9A4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5D6C3D6C27879B4A000C518D /* Account.swift */,
+				5DAE72D2278FAEC800284A72 /* Account.swift */,
 				5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */,
 				5DBB59DE278FA3200028FE59 /* EateryFilter.swift */,
+				5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -832,6 +829,7 @@
 				5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */,
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */,
+				5DAE72D3278FAEC800284A72 /* Account.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
 				5D75D6D5278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift in Sources */,
@@ -863,7 +861,6 @@
 				5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
 				5DCB86A427835EF900134066 /* DummyLocationManager.swift in Sources */,
-				5D6C3D6D27879B4A000C518D /* Account.swift in Sources */,
 				5D0CDC592775346600AD0E27 /* PillView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
 				5DF5F7E72774C800001ADCDC /* EateryLargeCardContentView.swift in Sources */,
@@ -894,12 +891,12 @@
 				5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */,
 				5DBA89AE27861C8B002DCA6B /* GetAccountLogin.swift in Sources */,
 				5D73C38A27810F370020507C /* FuseFuture.swift in Sources */,
-				5D468A17277E401800986AFF /* Schema.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
 				5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */,
 				5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */,
 				5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */,
+				5DBB59E4278FA7F80028FE59 /* EateryPredicate.swift in Sources */,
 				5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */,
 				5DCB86A22783544C00134066 /* LocationManager.swift in Sources */,
 				5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */,
@@ -907,7 +904,6 @@
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
 				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
 				5D75D6E4278E2B9D00832359 /* EateryCardVisualEffectView.swift in Sources */,
-				5D468A19277E440300986AFF /* SchemaToModel.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */,

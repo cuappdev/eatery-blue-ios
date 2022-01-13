@@ -9,6 +9,6 @@ import Logging
 
 public enum EateryModel {
 
-    private(set) static var logger = Logger(label: "com.appdev.EateryModel")
+    static var logger = Logger(label: "com.appdev.EateryModel")
 
 }

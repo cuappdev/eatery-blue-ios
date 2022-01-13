@@ -21,8 +21,8 @@ class Networking {
     let accounts: FetchAccounts
 
     init(fetchUrl: URL) {
-        let fetchEateries = FetchEateries(url: fetchUrl)
-        self.eateries = InMemoryCache(fetch: fetchEateries.fetch)
+        let eateryApi = EateryAPI(url: fetchUrl)
+        self.eateries = InMemoryCache(fetch: eateryApi.eateries)
 
         let sessionId = FetchGETSessionID()
         self.sessionId = InMemoryCache(fetch: sessionId.fetch)
@@ -39,34 +39,6 @@ class Networking {
         await sessionId.invalidate()
 
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
-    }
-
-}
-
-struct FetchEateries {
-
-    enum FetchError: Error {
-        case apiError(String)
-    }
-
-    private let url: URL
-    private let decoder: JSONDecoder
-
-    init(url: URL) {
-        self.url = url
-        self.decoder = JSONDecoder()
-        self.decoder.keyDecodingStrategy = .convertFromSnakeCase
-    }
-
-    func fetch() async throws -> [Eatery] {
-        let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
-        let schemaApiResponse = try decoder.decode(Schema.APIResponse.self, from: data)
-
-        if let error = schemaApiResponse.error {
-            throw FetchError.apiError(error)
-        }
-
-        return schemaApiResponse.data.map(SchemaToModel.convert)
     }
 
 }
