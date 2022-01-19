@@ -13,16 +13,10 @@ import Kingfisher
 
 class HomeViewController: UIViewController {
 
-    struct EateryCollection: Hashable {
-        var title: String
-        var description: String?
-        var eateries: [Eatery]
-    }
-
-    enum Cell: Hashable {
+    enum Cell {
         case searchBar
         case customView(view: UIView)
-        case carouselView(collection: EateryCollection)
+        case carouselView(CarouselView)
         case titleLabel(title: String)
         case eateryCard(eatery: Eatery)
     }
@@ -166,54 +160,7 @@ extension HomeViewController: UITableViewDataSource {
 
             return ClearTableViewCell(content: container)
             
-        case .carouselView(collection: let collection):
-            let carouselView = CarouselView()
-            carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            carouselView.scrollView.contentInset = carouselView.layoutMargins
-            carouselView.titleLabel.text = collection.title
-
-            for eatery in collection.eateries.prefix(3) {
-                let contentView = EateryMediumCardContentView()
-                contentView.imageView.kf.setImage(
-                    with: eatery.imageUrl,
-                    options: [
-                        .backgroundDecode
-                    ]
-                )
-                contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
-                contentView.titleLabel.text = eatery.name
-
-                $userLocation
-                    .sink { userLocation in
-                        contentView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
-                            eatery,
-                            style: .medium,
-                            font: .preferredFont(for: .footnote, weight: .medium),
-                            userLocation: userLocation,
-                            date: Date()
-                        ).first
-                    }
-                    .store(in: &cancellables)
-
-                contentView.on(UITapGestureRecognizer()) { [self] _ in
-                    pushViewController(for: eatery)
-                }
-
-                carouselView.addCardView(contentView)
-            }
-
-            if collection.eateries.count > 3 {
-                let view = CarouselMoreEateriesView()
-                view.on(UITapGestureRecognizer()) { [self] _ in
-                    didTapMoreButton(collection)
-                }
-                carouselView.addAccessoryView(view)
-            }
-
-            carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
-                didTapMoreButton(collection)
-            }
-
+        case .carouselView(let carouselView):
             let container = ContainerView(content: carouselView)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
             return ClearTableViewCell(content: container)
@@ -228,6 +175,13 @@ extension HomeViewController: UITableViewDataSource {
             )
             contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
+
+            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
+            if metadata.isFavorite {
+                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
+            } else {
+                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
+            }
 
             $userLocation
                 .sink { userLocation in
@@ -257,18 +211,6 @@ extension HomeViewController: UITableViewDataSource {
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
             return ClearTableViewCell(content: cardView)
         }
-    }
-
-    private func didTapMoreButton(_ collection: EateryCollection) {
-        let viewController = ListModelController()
-        viewController.setUp(
-            collection.eateries,
-            title: collection.title,
-            description: collection.description
-        )
-
-        navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(viewController, animated: true)
     }
 
     func updateCells(_ cells: [Cell]) {

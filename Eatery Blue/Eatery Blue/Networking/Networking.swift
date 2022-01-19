@@ -68,7 +68,7 @@ struct FetchAccounts {
             if retryAttempts > 0 {
                 logger.info(
                     """
-                    FetchAccount failed with error: \(error)
+                    FetchAccount failed with error: "\(error)"
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )

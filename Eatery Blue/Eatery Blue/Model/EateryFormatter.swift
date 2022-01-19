@@ -185,12 +185,17 @@ class EateryFormatter {
 
             let secondLine = NSMutableAttributedString()
             secondLine.append(NSAttributedString(attachment: NSTextAttachment(
-                image: UIImage(named: "Watch"),
+                image: UIImage(named: "Walk"),
                 scaledToMatch: font
             )))
             secondLine.append(NSAttributedString(string: " "))
             secondLine.append(NSAttributedString(string: formatEateryWalkTime(eatery, userLocation: userLocation)))
             secondLine.append(NSAttributedString(string: " · "))
+            secondLine.append(NSAttributedString(attachment: NSTextAttachment(
+                image: UIImage(named: "Clock"),
+                scaledToMatch: font
+            )))
+            secondLine.append(NSAttributedString(string: " "))
             secondLine.append(NSAttributedString(string: formatEateryWaitTime(
                 eatery,
                 font: font,

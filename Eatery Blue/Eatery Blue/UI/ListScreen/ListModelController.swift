@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/31/21.
 //
 
+import CoreData
 import EateryModel
 import Foundation
 
@@ -31,7 +32,17 @@ class ListModelController: ListViewController {
     func updateEateriesFromState() {
         if filter.isEnabled {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
-            updateEateries(allEateries.filter(predicate.isSatisfiedBy(_:)))
+            let coreDataStack = AppDelegate.shared.coreDataStack
+
+            var filteredEateries: [Eatery] = []
+            for eatery in allEateries {
+                if predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id)) {
+                    filteredEateries.append(eatery)
+                }
+            }
+
+            updateEateries(filteredEateries)
+
         } else {
             updateEateries(allEateries)
         }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="EateryMetadata" representedClassName="EateryMetadata" syncable="YES" codeGenerationType="class">
+        <attribute name="eateryId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+    </entity>
     <entity name="RecentSearch" representedClassName="RecentSearch" syncable="YES" codeGenerationType="class">
         <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="subtitle" optional="YES" attributeType="String"/>
@@ -8,5 +12,6 @@
     </entity>
     <elements>
         <element name="RecentSearch" positionX="-99.05078125" positionY="-39.5859375" width="128" height="103"/>
+        <element name="EateryMetadata" positionX="-99" positionY="0" width="128" height="59"/>
     </elements>
 </model>

@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/27/21.
 //
 
+import Combine
 import EateryModel
 import UIKit
 
@@ -25,6 +26,8 @@ class ListViewController: UIViewController {
 
     private(set) var eateries: [Eatery] = []
 
+    private var cancellables: Set<AnyCancellable> = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,6 +38,7 @@ class ListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        tableView.reloadData()
         RootViewController.setStatusBarStyle(.darkContent)
     }
 
@@ -255,20 +259,32 @@ extension ListViewController: UITableViewDataSource {
             )
             contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
-            let lines = EateryFormatter.default.formatEatery(
-                eatery,
-                style: .long,
-                font: .preferredFont(for: .footnote, weight: .medium),
-                userLocation: LocationManager.shared.userLocation,
-                date: Date()
-            )
-            for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
-                if i < lines.count {
-                    subtitleLabel.attributedText = lines[i]
-                } else {
-                    subtitleLabel.isHidden = true
-                }
+
+            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
+            if metadata.isFavorite {
+                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
+            } else {
+                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
             }
+
+            LocationManager.shared.$userLocation.sink { userLocation in
+                let lines = EateryFormatter.default.formatEatery(
+                    eatery,
+                    style: .long,
+                    font: .preferredFont(for: .footnote, weight: .medium),
+                    userLocation: userLocation,
+                    date: Date()
+                )
+
+                for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
+                    if i < lines.count {
+                        subtitleLabel.attributedText = lines[i]
+                    } else {
+                        subtitleLabel.isHidden = true
+                    }
+                }
+            }.store(in: &cancellables)
+
             contentView.on(UITapGestureRecognizer()) { [self] _ in
                 pushViewController(for: eatery)
             }

@@ -13,6 +13,8 @@ import UIKit
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static let shared = UIApplication.shared.delegate as! AppDelegate
+
     private(set) lazy var coreDataStack = CoreDataStack()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

@@ -47,7 +47,18 @@ class EateryModelController: EateryViewController {
 
     private func setUpNavigationView(_ eatery: Eatery) {
         navigationView.titleLabel.text = eatery.name
-        updateNavigationViewFromState()
+
+        navigationView.favoriteButton.on(UITapGestureRecognizer()) { [self] _ in
+            let coreDataStack = AppDelegate.shared.coreDataStack
+            let metadata = coreDataStack.metadata(eateryId: eatery.id)
+            metadata.isFavorite.toggle()
+            coreDataStack.save()
+
+            updateNavigationViewFavoriteButtonFromCoreData()
+        }
+
+        updateNavigationViewFavoriteButtonFromCoreData()
+        updateNavigationViewCategoriesFromState()
     }
 
     private func setUpStackView(_ eatery: Eatery) {
@@ -65,10 +76,21 @@ class EateryModelController: EateryViewController {
         setUpMenuFromState()
     }
 
-    private func updateNavigationViewFromState() {
-        guard let event = selectedEvent,
-              let menu = event.menu
-        else {
+    private func updateNavigationViewFavoriteButtonFromCoreData() {
+        guard let eatery = eatery else {
+            return
+        }
+
+        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
+        if metadata.isFavorite {
+            navigationView.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+        } else {
+            navigationView.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+        }
+    }
+
+    private func updateNavigationViewCategoriesFromState() {
+        guard let event = selectedEvent, let menu = event.menu else {
             navigationView.scrollView.isHidden = true
             return
         }
@@ -181,7 +203,7 @@ extension EateryModelController: MenuPickerSheetViewControllerDelegate {
     func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) {
         selectedEventIndex = index
 
-        updateNavigationViewFromState()
+        updateNavigationViewCategoriesFromState()
         removeMenuFromStackView()
         setUpMenuFromState()
 
@@ -191,7 +213,7 @@ extension EateryModelController: MenuPickerSheetViewControllerDelegate {
     func menuPickerSheetViewControllerDidResetMenuChoice(_ vc: MenuPickerSheetViewController) {
         resetSelectedEventIndex()
 
-        updateNavigationViewFromState()
+        updateNavigationViewCategoriesFromState()
         removeMenuFromStackView()
         setUpMenuFromState()
 

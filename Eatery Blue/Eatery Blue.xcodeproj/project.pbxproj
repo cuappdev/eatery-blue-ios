@@ -340,15 +340,6 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		5D73C3952782277A0020507C /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				5D73C3BC27822AD30020507C /* EateryBlue.xcdatamodeld */,
-				5D73C3BF27822CD20020507C /* CoreDataStack.swift */,
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		5D75D6E5278E402300832359 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,7 +374,6 @@
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
-				5D73C3952782277A0020507C /* CoreData */,
 				5DF304B327797BD200E2C9A4 /* Extensions */,
 				5DCB86A02783543900134066 /* Location */,
 				5DF304B227797BBA00E2C9A4 /* Model */,
@@ -483,8 +473,10 @@
 		5DF304B227797BBA00E2C9A4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */,
+				5D73C3BC27822AD30020507C /* EateryBlue.xcdatamodeld */,
+				5D73C3BF27822CD20020507C /* CoreDataStack.swift */,
 				5DBB59DE278FA3200028FE59 /* EateryFilter.swift */,
+				5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */,
 				5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */,
 			);
 			path = Model;

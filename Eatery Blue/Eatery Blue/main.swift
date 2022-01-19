@@ -50,7 +50,7 @@ struct EateryBlue: ParsableCommand {
         if let fetchUrl = fetchUrl, let fetchUrl = URL(string: fetchUrl) {
             url = fetchUrl
         } else {
-            url = URL(string: "http://eatery-dev.cornellappdev.com/api")!
+            url = URL(string: "https://eatery-dev.cornellappdev.com/api/")!
         }
         Networking.default = Networking(fetchUrl: url)
 

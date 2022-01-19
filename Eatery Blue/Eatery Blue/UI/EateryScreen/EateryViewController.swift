@@ -70,10 +70,6 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpNavigationView() {
-        navigationView.favoriteButton.content.image = Bool.random()
-            ? UIImage(named: "FavoriteSelected")
-            : UIImage(named: "FavoriteUnselected")
-
         navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
             navigationController?.popViewController(animated: true)
         }

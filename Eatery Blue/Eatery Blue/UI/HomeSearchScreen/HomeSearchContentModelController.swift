@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CoreData
 import EateryModel
 import Fuse
 import UIKit
@@ -67,8 +68,11 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             .flatMap({ [self] (searchText, filter, allEateries) -> AnyPublisher<([SearchItem], [Fuse.FusableSearchResult]), Never> in
                 let eateries: [Eatery]
                 if filter.isEnabled {
+                    let coreDataStack = AppDelegate.shared.coreDataStack
                     let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
-                    eateries = allEateries.filter(predicate.isSatisfiedBy(_:))
+                    eateries = allEateries.filter({
+                        predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
+                    })
                 } else {
                     eateries = allEateries
                 }
@@ -200,27 +204,32 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     }
 
     private func addRecentSearch(type: String, title: String, subtitle: String?) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let coreData = appDelegate.coreDataStack
+        let coreDataStack = AppDelegate.shared.coreDataStack
+        let context = coreDataStack.context
 
-        let sortDescriptor = NSSortDescriptor(keyPath: \RecentSearch.dateAdded, ascending: false)
+        let fetchRequest = NSFetchRequest<RecentSearch>()
+        fetchRequest.entity = RecentSearch.entity()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.dateAdded, ascending: false)]
+        fetchRequest.fetchLimit = 5
 
-        coreData.fetch(RecentSearch.self, sortDescriptors: [sortDescriptor], fetchLimit: 5).sink { completion in
-            switch completion {
-            case .failure(let error): logger.error("\(#function): \(error)")
-            case .finished: break
-            }
-        } receiveValue: { recentSearches in
-            if !recentSearches.contains(where: { $0.title == title }) {
-                let recentSearch = coreData.create(RecentSearch.self)
-                recentSearch.dateAdded = Date()
-                recentSearch.type = type
-                recentSearch.title = title
-                recentSearch.subtitle = subtitle
-                coreData.save()
-            }
+        let recentSearches: [RecentSearch]
+        do {
+            recentSearches = try context.fetch(fetchRequest)
+        } catch {
+            logger.error("\(#function): \(error)")
+            return
         }
-        .store(in: &cancellables)
+
+        if recentSearches.contains(where: { $0.title == title }) {
+            return
+        }
+
+        let recentSearch = RecentSearch(context: context)
+        recentSearch.dateAdded = Date()
+        recentSearch.type = type
+        recentSearch.title = title
+        recentSearch.subtitle = subtitle
+        coreDataStack.save()
     }
 
 }

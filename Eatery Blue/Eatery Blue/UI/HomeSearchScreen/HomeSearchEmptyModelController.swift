@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CoreData
 import EateryModel
 import UIKit
 
@@ -37,28 +38,23 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
     }
 
     private func updateRecentSearchesFromCoreData() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        let context = AppDelegate.shared.coreDataStack.context
+
+        let fetchRequest = NSFetchRequest<RecentSearch>()
+        fetchRequest.entity = RecentSearch.entity()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.dateAdded, ascending: false)]
+        fetchRequest.fetchLimit = 5
+
+        let recentSearches: [RecentSearch]
+        do {
+            recentSearches = try context.fetch(fetchRequest)
+            logger.debug("Fetched \(recentSearches.count) recent searches")
+        } catch {
+            recentSearches = []
+            logger.debug("\(#function): \(error)")
         }
 
-        let stack = appDelegate.coreDataStack
-
-        let sortDescriptor = NSSortDescriptor(keyPath: \RecentSearch.dateAdded, ascending: false)
-
-        stack
-            .fetch(RecentSearch.self, sortDescriptors: [sortDescriptor], fetchLimit: 5)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    logger.error("\(error)")
-                }
-            } receiveValue: { [self] recentSearches in
-                logger.debug("Fetched \(recentSearches.count) recent searches", metadata: nil)
-                updateRecentSearches(recentSearches)
-            }
-            .store(in: &cancellables)
+        updateRecentSearches(recentSearches)
     }
 
     func updateFavorites(_ favorites: [Eatery]) {
