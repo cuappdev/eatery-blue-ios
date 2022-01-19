@@ -17,4 +17,11 @@ public struct Transaction: Codable {
 
     public let location: String
 
+    public init(accountType: AccountType, amount: Double, date: Date, location: String) {
+        self.accountType = accountType
+        self.amount = amount
+        self.date = date
+        self.location = location
+    }
+
 }

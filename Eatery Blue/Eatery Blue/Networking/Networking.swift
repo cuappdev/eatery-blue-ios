@@ -26,7 +26,12 @@ class Networking {
         let getApi = GetAPI()
         self.sessionId = InMemoryCache(fetch: {
             let credentials = try NetIDKeychainManager.shared.get()
-            return try await getApi.sessionId(netId: credentials.netId, password: credentials.password)
+            if credentials.netId == "abc123", credentials.password == "password" {
+                try await Task.sleep(nanoseconds: 1_000_000_000)
+                return "App Store Testing Session ID"
+            } else {
+                return try await getApi.sessionId(netId: credentials.netId, password: credentials.password)
+            }
         })
 
         self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
@@ -62,7 +67,13 @@ struct FetchAccounts {
     func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
         do {
             let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
-            return try await getApi.accounts(sessionId: sessionId, start: start.rawValue, end: end.rawValue)
+
+            if sessionId == "App Store Testing Session ID" {
+                try await Task.sleep(nanoseconds: 1_000_000_000)
+                return AccountDummyData.accounts
+            } else {
+                return try await getApi.accounts(sessionId: sessionId, start: start.rawValue, end: end.rawValue)
+            }
 
         } catch {
             if retryAttempts > 0 {
@@ -80,5 +91,28 @@ struct FetchAccounts {
             }
         }
     }
+
+}
+
+private enum AccountDummyData {
+
+    static let accounts = [
+        Account(accountType: .bearBasic, balance: 10, transactions: [
+            Transaction(accountType: .bearBasic, amount: 1, date: Day().date(hour: 12, minute: 0), location: "Okenshields"),
+            Transaction(accountType: .bearBasic, amount: 1, date: Day().advanced(by: -1).date(hour: 12, minute: 0), location: "North Star"),
+            Transaction(accountType: .bearBasic, amount: 1, date: Day().advanced(by: -2).date(hour: 12, minute: 0), location: "RPCC")
+        ]),
+        Account(accountType: .bigRedBucks, balance: 500, transactions: [
+            Transaction(accountType: .bigRedBucks, amount: 1, date: Day().date(hour: 12, minute: 0), location: "Mattin's Cafe"),
+            Transaction(accountType: .bigRedBucks, amount: 1, date: Day().advanced(by: -1).date(hour: 12, minute: 0), location: "Mac's Cafe"),
+            Transaction(accountType: .bigRedBucks, amount: 1, date: Day().advanced(by: -2).date(hour: 12, minute: 0), location: "Mac's Cafe")
+        ]),
+        Account(accountType: .cityBucks, balance: 0, transactions: []),
+        Account(accountType: .laundry, balance: 37.54, transactions: [
+            Transaction(accountType: .laundry, amount: 1, date: Day().date(hour: 12, minute: 0), location: "Donlon 32 Dryer"),
+            Transaction(accountType: .laundry, amount: 1, date: Day().advanced(by: -1).date(hour: 12, minute: 0), location: "Dolon 32 Washer"),
+            Transaction(accountType: .laundry, amount: 1, date: Day().advanced(by: -2).date(hour: 12, minute: 0), location: "Dolon 27 Dryer")
+        ]),
+    ]
 
 }

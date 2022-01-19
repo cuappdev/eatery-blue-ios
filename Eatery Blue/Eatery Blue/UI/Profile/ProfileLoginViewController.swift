@@ -85,10 +85,12 @@ class ProfileLoginViewController: UIViewController {
 
     private func setUpNetIdTextField() {
         netIdTextField.font = .preferredFont(for: .footnote, weight: .medium)
+        netIdTextField.placeholder = "Type your NetID (i.e. abc123)"
     }
 
     private func setUpPasswordTextField() {
         passwordTextField.font = .preferredFont(for: .footnote, weight: .medium)
+        passwordTextField.placeholder = "Type your password..."
     }
 
     private func setUpLoginButton() {
