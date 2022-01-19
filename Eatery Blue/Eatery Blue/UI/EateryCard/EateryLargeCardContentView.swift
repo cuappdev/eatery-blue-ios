@@ -89,7 +89,7 @@ class EateryLargeCardContentView: UIView {
 
     private func setUpConstraints() {
         snp.makeConstraints { make in
-            make.width.equalTo(snp.height).multipliedBy(343.0 / 216.0).priority(.high)
+            make.width.equalTo(snp.height).multipliedBy(343.0 / 216.0).priority(.required.advanced(by: -1))
         }
 
         imageView.snp.makeConstraints { make in

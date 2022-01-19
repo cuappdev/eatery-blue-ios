@@ -39,7 +39,9 @@ class HoursSheetViewController: SheetViewController {
         for day in stride(from: current, to: current.advanced(by: 7), by: 1) {
             dayToDescription[day] = EateryFormatter.default.formatEventTimes(events.filter {
                 $0.canonicalDay == day
-            })
+            }.sorted(by: { lhs, rhs in
+                lhs.startDate < rhs.startDate
+            }))
         }
 
         var weekdayToDay: [Int: Day] = [:]

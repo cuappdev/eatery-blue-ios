@@ -8,6 +8,7 @@
 import Combine
 import EateryModel
 import UIKit
+import CoreLocation
 
 class HomeModelController: HomeViewController {
 
@@ -67,9 +68,8 @@ class HomeModelController: HomeViewController {
     }
 
     private func setUpUserLocationSubscription() {
-        LocationManager.shared.$userLocation.assign(to: &$userLocation)
-
-        $userLocation.sink { [self] _ in
+        // Update cells when the user location changes because we may need to display the "Nearest to You" carousel
+        LocationManager.shared.userLocationDidChange.sink { [self] _ in
             updateCellsFromState()
         }.store(in: &cancellables)
     }
@@ -114,7 +114,7 @@ class HomeModelController: HomeViewController {
                 contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
             }
 
-            $userLocation
+            LocationManager.shared.$userLocation
                 .sink { userLocation in
                     contentView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
                         eatery,
@@ -210,6 +210,7 @@ class HomeModelController: HomeViewController {
     }
 
     private func createNearestEateriesCarouselView() -> CarouselView? {
+        let userLocation = LocationManager.shared.userLocation
         let departureDate = Date()
 
         let nearestEateriesAndTotalTime: [(eatery: Eatery, totalTime: TimeInterval)] = allEateries.compactMap {
@@ -245,9 +246,10 @@ class HomeModelController: HomeViewController {
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
+        LocationManager.shared.requestLocation()
+
         Task {
             await updateAllEateriesFromNetworking()
-            LocationManager.shared.requestLocation()
             try? await Task.sleep(nanoseconds: 200_000_000)
             updateCellsFromState()
             sender.endRefreshing()

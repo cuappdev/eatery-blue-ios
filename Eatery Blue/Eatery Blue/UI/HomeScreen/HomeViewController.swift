@@ -26,7 +26,6 @@ class HomeViewController: UIViewController {
     private let tableHeaderView = UIView()
 
     private(set) var cells: [Cell] = []
-    @Published var userLocation: CLLocation? = nil
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -183,7 +182,7 @@ extension HomeViewController: UITableViewDataSource {
                 contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
             }
 
-            $userLocation
+            LocationManager.shared.$userLocation
                 .sink { userLocation in
                     let lines = EateryFormatter.default.formatEatery(
                         eatery,

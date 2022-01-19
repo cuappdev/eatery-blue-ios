@@ -113,7 +113,9 @@ class AccountModelController: AccountViewController {
 
         setUpTransactionsHeaderView()
 
+        updateCellsFromState()
         updateTransactionsHeaderViewFromState()
+
         Task {
             await updateAccountsFromNetworking()
             updateCellsFromState()
@@ -193,21 +195,29 @@ class AccountModelController: AccountViewController {
             }
 
             cells.append(BalanceCell(icon: UIImage(named: "MealSwipes"), title: "Meal Swipes", subtitle: subtitle))
+        } else {
+            cells.append(BalanceCell(icon: UIImage(named: "MealSwipes"), title: "Meal Swipes", subtitle: NSAttributedString()))
         }
 
         if let brbBalance = accounts.bigRedBucks?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: brbBalance)) ?? "")
             cells.append(BalanceCell(icon: UIImage(named: "BRBs"), title: "Big Red Bucks", subtitle: subtitle))
+        } else {
+            cells.append(BalanceCell(icon: UIImage(named: "BRBs"), title: "Big Red Bucks", subtitle: NSAttributedString()))
         }
 
         if let cityBucksBalance = accounts.cityBucks?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: cityBucksBalance)) ?? "")
             cells.append(BalanceCell(icon: UIImage(named: "Payment"), title: "City Bucks", subtitle: subtitle))
+        } else {
+            cells.append(BalanceCell(icon: UIImage(named: "Payment"), title: "City Bucks", subtitle: NSAttributedString()))
         }
 
         if let laundry = accounts.laundry?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: laundry)) ?? "")
             cells.append(BalanceCell(icon: UIImage(named: "Laundry"), title: "Laundry", subtitle: subtitle))
+        } else {
+            cells.append(BalanceCell(icon: UIImage(named: "Laundry"), title: "Laundry", subtitle: NSAttributedString()))
         }
 
         return cells

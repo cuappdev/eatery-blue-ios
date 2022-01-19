@@ -46,19 +46,13 @@ struct EateryBlue: ParsableCommand {
             }
         }
 
-        let url: URL
         if let fetchUrl = fetchUrl, let fetchUrl = URL(string: fetchUrl) {
-            url = fetchUrl
-        } else {
-            url = URL(string: "https://eatery-dev.cornellappdev.com/api/")!
+            Networking.default = Networking(fetchUrl: fetchUrl)
         }
-        Networking.default = Networking(fetchUrl: url)
 
         if locationUrisHall {
             logger.info("\(#function): Setting location to uris hall")
             LocationManager.shared = DummyLocationManager()
-        } else {
-            LocationManager.shared = LocationManager()
         }
 
         if forceOnboarding {
@@ -78,13 +72,13 @@ struct EateryBlue: ParsableCommand {
 
 extension Networking {
 
-    static var `default`: Networking!
+    static var `default` = Networking(fetchUrl: URL(string: "https://eatery-dev.cornellappdev.com/api/")!)
 
 }
 
 extension LocationManager {
 
-    static var shared: LocationManager!
+    static var shared = LocationManager()
 
 }
 
