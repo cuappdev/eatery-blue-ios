@@ -19,45 +19,43 @@ protocol HomeSearchEmptyModelControllerDelegate: AnyObject {
 
 }
 
+@MainActor
 class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
 
     weak var delegate: HomeSearchEmptyModelControllerDelegate?
 
     private var cancellables: Set<AnyCancellable> = []
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        updateFavorites([DummyData.macs])
-    }
+    private var allEateries: [Eatery] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         updateRecentSearchesFromCoreData()
+        updateFavoritesFromCoreData()
     }
 
-    private func updateRecentSearchesFromCoreData() {
-        let context = AppDelegate.shared.coreDataStack.context
+    func setUp(_ eateries: [Eatery]) {
+        allEateries = eateries
+    }
 
-        let fetchRequest = NSFetchRequest<RecentSearch>()
-        fetchRequest.entity = RecentSearch.entity()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.dateAdded, ascending: false)]
-        fetchRequest.fetchLimit = 5
-
-        let recentSearches: [RecentSearch]
-        do {
-            recentSearches = try context.fetch(fetchRequest)
-            logger.debug("Fetched \(recentSearches.count) recent searches")
-        } catch {
-            recentSearches = []
-            logger.debug("\(#function): \(error)")
+    private func updateFavoritesFromCoreData() {
+        let coreData = AppDelegate.shared.coreDataStack
+        let favorites = allEateries.filter { eatery in
+            coreData.metadata(eateryId: eatery.id).isFavorite
         }
 
-        updateRecentSearches(recentSearches)
+        updateFavorites(favorites)
     }
 
-    func updateFavorites(_ favorites: [Eatery]) {
+    private func updateFavorites(_ favorites: [Eatery]) {
+        guard !favorites.isEmpty else {
+            favoritesView.isHidden = true
+            return
+        }
+
+        favoritesView.isHidden = false
+
         favoritesView.removeAllCardViews()
 
         favoritesView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
@@ -81,7 +79,27 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
         }
     }
 
-    func updateRecentSearches(_ recentSearches: [RecentSearch]) {
+    private func updateRecentSearchesFromCoreData() {
+        let context = AppDelegate.shared.coreDataStack.context
+
+        let fetchRequest = NSFetchRequest<RecentSearch>()
+        fetchRequest.entity = RecentSearch.entity()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.dateAdded, ascending: false)]
+        fetchRequest.fetchLimit = 5
+
+        let recentSearches: [RecentSearch]
+        do {
+            recentSearches = try context.fetch(fetchRequest)
+            logger.debug("Fetched \(recentSearches.count) recent searches")
+        } catch {
+            recentSearches = []
+            logger.debug("\(#function): \(error)")
+        }
+
+        updateRecentSearches(recentSearches)
+    }
+
+    private func updateRecentSearches(_ recentSearches: [RecentSearch]) {
         recentsView.removeAllItems()
 
         for recentSearch in recentSearches {

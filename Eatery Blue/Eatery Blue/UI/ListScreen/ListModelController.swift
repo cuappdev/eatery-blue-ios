@@ -31,7 +31,7 @@ class ListModelController: ListViewController {
 
     func updateEateriesFromState() {
         if filter.isEnabled {
-            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
+            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             var filteredEateries: [Eatery] = []

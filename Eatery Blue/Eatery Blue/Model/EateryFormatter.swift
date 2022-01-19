@@ -81,7 +81,7 @@ class EateryFormatter {
     }
 
     private func firstLineSecondComponent(_ eatery: Eatery, date: Date) -> NSAttributedString? {
-        if EateryStatus(eatery.events).isOpen {
+        if eatery.isOpen {
             if eatery.paymentMethods.contains(.mealSwipes) {
                 return NSAttributedString(
                     string: "Meal swipes allowed",
@@ -214,21 +214,24 @@ class EateryFormatter {
         userLocation: CLLocation?,
         departureDate: Date
     ) -> String {
-
-        let (walkTime, waitTime) = EateryTiming.timing(
-            eatery: eatery,
-            userLocation: userLocation,
-            departureDate: departureDate
-        )
+        let (walkTime, waitTime) = eatery.timingInfo(userLocation: userLocation, departureDate: departureDate)
 
         if let waitTime = waitTime {
             let minutesLow = Int(round((((walkTime ?? 0) + waitTime.low) / 60)))
             let minutesHigh = Int(round(((walkTime ?? 0) + waitTime.high) / 60))
 
-            if min(minutesLow, minutesHigh) > walkTimeMinutesCap + waitTimeMinutesCap {
+            if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
                 return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min"
             } else {
                 return "\(minutesLow)-\(minutesHigh) min"
+            }
+
+        } else if let walkTime = walkTime {
+            let minutes = Int(round(walkTime / 60))
+            if minutes > walkTimeMinutesCap {
+                return ">\(walkTimeMinutesCap) min"
+            } else {
+                return "\(minutes) min"
             }
 
         } else {
@@ -237,7 +240,7 @@ class EateryFormatter {
     }
 
     func formatEateryWalkTime(_ eatery: Eatery, userLocation: CLLocation?) -> String {
-        if let walkTime = EateryTiming.walkTime(eatery: eatery, userLocation: userLocation) {
+        if let walkTime = eatery.walkTime(userLocation: userLocation) {
             let minutes = Int(round(walkTime / 60))
             if minutes > walkTimeMinutesCap {
                 return ">\(walkTimeMinutesCap) min walk"
@@ -251,17 +254,13 @@ class EateryFormatter {
     }
 
     func formatEateryWaitTime(_ eatery: Eatery, font: UIFont, userLocation: CLLocation?, departureDate: Date) -> String {
-        let (_, waitTime) = EateryTiming.timing(
-            eatery: eatery,
-            userLocation: userLocation,
-            departureDate: departureDate
-        )
+        let (_, waitTime) = eatery.timingInfo(userLocation: userLocation, departureDate: departureDate)
 
         if let waitTime = waitTime {
             let minutesLow = Int(round(waitTime.low / 60))
             let minutesHigh = Int(round(waitTime.high / 60))
 
-            if min(minutesLow, minutesHigh) > walkTimeMinutesCap + waitTimeMinutesCap {
+            if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
                 return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min wait"
             } else if minutesLow == minutesHigh {
                 return "\(minutesLow) min wait"

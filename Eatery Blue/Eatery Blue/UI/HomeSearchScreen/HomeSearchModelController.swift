@@ -35,6 +35,7 @@ class HomeSearchModelController: HomeSearchViewController {
         do {
             let eateries = try await Networking.default.eateries.fetch(maxStaleness: .infinity)
             contentController.setUp(eateries)
+            emptyController.setUp(eateries)
         } catch {
             logger.error("\(error)")
         }

@@ -69,7 +69,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                 let eateries: [Eatery]
                 if filter.isEnabled {
                     let coreDataStack = AppDelegate.shared.coreDataStack
-                    let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
+                    let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                     eateries = allEateries.filter({
                         predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
                     })

@@ -27,8 +27,6 @@ class CarouselMoreEateriesView: UIView {
     private func setUpSelf() {
         backgroundColor = UIColor(named: "OffWhite")
         layer.cornerRadius = 8
-        layer.borderWidth = 1
-        layer.borderColor = UIColor(named: "Gray01")?.cgColor
 
         addSubview(stackView)
         setUpStackView()
@@ -49,7 +47,7 @@ class CarouselMoreEateriesView: UIView {
 
     private func setUpImageView() {
         imageView.image = UIImage(named: "ButtonNext")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "Gray05")
+        imageView.tintColor = UIColor(named: "EateryBlue")
         imageView.contentMode = .scaleAspectFit
     }
 

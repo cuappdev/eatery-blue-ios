@@ -283,7 +283,7 @@ class EateryViewController: UIViewController {
         text.append(NSAttributedString(string: " Hours"))
         cell.titleLabel.attributedText = text
 
-        cell.statusLabel.attributedText = EateryFormatter.default.formatStatus(EateryStatus(eatery.events))
+        cell.statusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
 
         cell.on(UITapGestureRecognizer()) { [self] _ in
             let viewController = HoursSheetViewController()

@@ -23,7 +23,7 @@ indirect enum EateryPredicate {
     case campusArea(String)
     case isFavorite
     case isOpen
-    case underNMinutes(_ n: Int, userLocation: CLLocation)
+    case underNMinutes(_ n: Int, userLocation: CLLocation, departureDate: Date)
 
     func isSatisfied(by eatery: Eatery, metadata: EateryMetadata?) -> Bool {
         if let metadata = metadata, metadata.eateryId != eatery.id {
@@ -49,19 +49,12 @@ indirect enum EateryPredicate {
         case .or(let predicates):
             return predicates.contains { $0.isSatisfied(by: eatery, metadata: metadata) }
 
-        case .underNMinutes(let n, let userLocation):
-            let (walkTime, waitTime) = EateryTiming.timing(
-                eatery: eatery,
-                userLocation: userLocation,
-                departureDate: Date()
-            )
-
-            if let waitTime = waitTime {
-                let totalTime = (walkTime ?? 0) + waitTime.expected
-                return totalTime <= TimeInterval(60 * n)
-            } else {
+        case .underNMinutes(let n, let userLocation, let departureDate):
+            guard let totalTime = eatery.expectedTotalTime(userLocation: userLocation, departureDate: departureDate) else {
                 return false
             }
+
+            return totalTime < TimeInterval(60 * n)
 
         case .acceptsPaymentMethod(let paymentMethod):
             return eatery.paymentMethods.contains(paymentMethod)
@@ -77,7 +70,7 @@ indirect enum EateryPredicate {
             }
 
         case .isOpen:
-            return EateryStatus(eatery.events).isOpen
+            return eatery.isOpen
         }
     }
 

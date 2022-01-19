@@ -257,7 +257,7 @@ extension ListViewController: UITableViewDataSource {
                     .backgroundDecode
                 ]
             )
-            contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
+            contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
 
             let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)

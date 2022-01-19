@@ -32,6 +32,7 @@ class HomeModelController: HomeViewController {
 
         setUpFilterController()
         setUpNavigationView()
+        setUpUserLocationSubscription()
 
         Task {
             await updateAllEateriesFromNetworking()
@@ -46,7 +47,6 @@ class HomeModelController: HomeViewController {
 
         LocationManager.shared.requestAuthorization()
         LocationManager.shared.requestLocation()
-        LocationManager.shared.$userLocation.assign(to: &$userLocation)
     }
 
     private func setUpFilterController() {
@@ -66,6 +66,14 @@ class HomeModelController: HomeViewController {
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
     }
 
+    private func setUpUserLocationSubscription() {
+        LocationManager.shared.$userLocation.assign(to: &$userLocation)
+
+        $userLocation.sink { [self] _ in
+            updateCellsFromState()
+        }.store(in: &cancellables)
+    }
+
     private func updateAllEateriesFromNetworking() async {
         do {
             let eateries = try await Networking.default.eateries.fetch(maxStaleness: 0)
@@ -78,25 +86,17 @@ class HomeModelController: HomeViewController {
         }
     }
 
-    private func filterFavoriteEateries() -> [Eatery] {
-        allEateries.filter({
-            AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
-        })
-    }
+    private func createCarouselView(
+        title: String,
+        description: String?,
+        carouselEateries: [Eatery],
+        listEateries: [Eatery]
+    ) -> CarouselView {
 
-    private func createCarouselView(title: String, description: String?, eateries: [Eatery]) -> CarouselView {
         let carouselView = CarouselView()
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.scrollView.contentInset = carouselView.layoutMargins
         carouselView.titleLabel.text = title
-
-        let carouselEateries = eateries.sorted { lhs, rhs in
-            if EateryStatus(lhs.events).isOpen, !EateryStatus(rhs.events).isOpen {
-                return true
-            } else {
-                return lhs.name < rhs.name
-            }
-        }
 
         for eatery in carouselEateries.prefix(3) {
             let contentView = EateryMediumCardContentView()
@@ -104,7 +104,7 @@ class HomeModelController: HomeViewController {
                 with: eatery.imageUrl,
                 options: [.backgroundDecode]
             )
-            contentView.imageTintView.alpha = EateryStatus(eatery.events).isOpen ? 0 : 0.5
+            contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
 
             let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
@@ -136,22 +136,18 @@ class HomeModelController: HomeViewController {
         if carouselEateries.count > 3 {
             let view = CarouselMoreEateriesView()
             view.on(UITapGestureRecognizer()) { [self] _ in
-                pushListViewController(title: title, description: description, eateries: eateries)
+                pushListViewController(title: title, description: description, eateries: listEateries)
             }
-            carouselView.addAccessoryView(view)
+            carouselView.addAccessoryView(EateryCardVisualEffectView(content: view))
         }
 
         carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
-            pushListViewController(title: title, description: description, eateries: eateries)
+            pushListViewController(title: title, description: description, eateries: listEateries)
         }
 
         return carouselView
     }
 
-    /// Update cells based on
-    /// - Eatery metadata in core data
-    /// - Filter
-    /// - All eateries
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
@@ -160,13 +156,11 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if !filter.isEnabled {
-            let favoriteEateries = filterFavoriteEateries()
-            if !favoriteEateries.isEmpty {
-                cells.append(.carouselView(createCarouselView(
-                    title: "Favorites",
-                    description: nil,
-                    eateries: favoriteEateries
-                )))
+            if let carouselView = createFavoriteEateriesCarouselView() {
+                cells.append(.carouselView(carouselView))
+            }
+            if let carouselView = createNearestEateriesCarouselView() {
+                cells.append(.carouselView(carouselView))
             }
 
             if !allEateries.isEmpty {
@@ -178,7 +172,7 @@ class HomeModelController: HomeViewController {
             }
 
         } else {
-            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation)
+            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let filteredEateries = allEateries.filter({
                 predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
             })
@@ -190,9 +184,70 @@ class HomeModelController: HomeViewController {
         updateCells(cells)
     }
 
+    private func createFavoriteEateriesCarouselView() -> CarouselView? {
+        let favoriteEateries = allEateries.filter {
+            AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
+        }
+
+        guard !favoriteEateries.isEmpty else {
+            return nil
+        }
+
+        let carouselEateries = favoriteEateries.sorted { lhs, rhs in
+            if lhs.isOpen == rhs.isOpen {
+                return lhs.name < rhs.name
+            } else {
+                return lhs.isOpen && !rhs.isOpen
+            }
+        }
+
+        return createCarouselView(
+            title: "Favorites",
+            description: nil,
+            carouselEateries: Array(carouselEateries),
+            listEateries: favoriteEateries
+        )
+    }
+
+    private func createNearestEateriesCarouselView() -> CarouselView? {
+        let departureDate = Date()
+
+        let nearestEateriesAndTotalTime: [(eatery: Eatery, totalTime: TimeInterval)] = allEateries.compactMap {
+            if let totalTime = $0.expectedTotalTime(userLocation: userLocation, departureDate: departureDate) {
+                return (eatery: $0, totalTime: totalTime)
+            } else {
+                return nil
+            }
+        }
+
+        guard !nearestEateriesAndTotalTime.isEmpty else {
+            return nil
+        }
+
+        let carouselEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
+            if lhs.eatery.isOpen == rhs.eatery.isOpen {
+                return lhs.totalTime < rhs.totalTime
+            } else {
+                return lhs.eatery.isOpen && !rhs.eatery.isOpen
+            }
+        }.map(\.eatery)
+
+        let listEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
+            lhs.totalTime < rhs.totalTime
+        }.map(\.eatery)
+
+        return createCarouselView(
+            title: "Nearest to You",
+            description: nil,
+            carouselEateries: carouselEateries,
+            listEateries: listEateries
+        )
+    }
+
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         Task {
             await updateAllEateriesFromNetworking()
+            LocationManager.shared.requestLocation()
             try? await Task.sleep(nanoseconds: 200_000_000)
             updateCellsFromState()
             sender.endRefreshing()

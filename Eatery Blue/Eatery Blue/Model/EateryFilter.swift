@@ -23,19 +23,19 @@ struct EateryFilter: Codable {
         under10MinutesEnabled || !paymentMethods.isEmpty || favoriteEnabled || north || west || central
     }
 
-    func predicate(userLocation: CLLocation?) -> EateryPredicate {
+    func predicate(userLocation: CLLocation?, departureDate: Date) -> EateryPredicate {
         .and([
-            under10MinutesPredicate(userLocation: userLocation),
+            under10MinutesPredicate(userLocation: userLocation, departureDate: departureDate),
             paymentMethodsPredicate(),
             favoritePredicate(),
             campusAreaPredicate()
         ])
     }
 
-    func under10MinutesPredicate(userLocation: CLLocation?) -> EateryPredicate {
+    func under10MinutesPredicate(userLocation: CLLocation?, departureDate: Date) -> EateryPredicate {
         if under10MinutesEnabled {
             if let userLocation = userLocation {
-                return .underNMinutes(10, userLocation: userLocation)
+                return .underNMinutes(10, userLocation: userLocation, departureDate: departureDate)
             } else {
                 return .false
             }
