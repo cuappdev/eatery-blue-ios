@@ -97,9 +97,21 @@ class OnboardingFeaturesViewController: UIViewController {
         nextButton.backgroundColor = UIColor(named: "Gray00")
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        nextButton.on(UITapGestureRecognizer()) { [self] _ in
-            didTapNextButton()
-        }
+        let longPress = UILongPressGestureRecognizer()
+        longPress.minimumPressDuration = 0
+        nextButton.on(longPress, [
+            .began: { [self] (gesture: UILongPressGestureRecognizer) in
+                UIView.animate(withDuration: 0.05, delay: 0, options: .beginFromCurrentState) {
+                    nextButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+                }
+            },
+            .ended: { [self] (gesture: UILongPressGestureRecognizer) in
+                UIView.animate(withDuration: 0.05, delay: 0, options: .beginFromCurrentState) {
+                    nextButton.transform = .identity
+                }
+                didTapNextButton()
+            }
+        ])
     }
 
     private func setUpConstraints() {

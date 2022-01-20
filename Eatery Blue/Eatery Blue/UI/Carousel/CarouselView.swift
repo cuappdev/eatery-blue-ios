@@ -51,6 +51,7 @@ class CarouselView: UIView {
         scrollView.alwaysBounceHorizontal = true
         scrollView.clipsToBounds = false
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.isPagingEnabled = true
 
         scrollView.addSubview(stackView)
         setUpStackView()
@@ -58,7 +59,7 @@ class CarouselView: UIView {
 
     private func setUpStackView() {
         stackView.axis = .horizontal
-        stackView.spacing = 12
+        stackView.spacing = 0
         stackView.alignment = .fill
         stackView.distribution = .fill
     }
@@ -77,7 +78,7 @@ class CarouselView: UIView {
 
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalTo(layoutMarginsGuide)
             make.bottom.equalTo(layoutMarginsGuide)
         }
 
@@ -89,7 +90,13 @@ class CarouselView: UIView {
     }
 
     func addCardView(_ contentView: EateryMediumCardContentView) {
-        stackView.addArrangedSubview(EateryCardVisualEffectView(content: contentView))
+        let cardView = EateryCardVisualEffectView(content: contentView)
+        cardView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        stackView.addArrangedSubview(cardView)
+
+        cardView.snp.makeConstraints { make in
+            make.width.equalTo(scrollView.frameLayoutGuide.snp.width)
+        }
     }
 
     func addAccessoryView(_ view: UIView) {
@@ -99,6 +106,15 @@ class CarouselView: UIView {
     func resetCards() {
         for view in stackView.arrangedSubviews {
             view.removeFromSuperview()
+        }
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, with: event)
+        if view === self {
+            return scrollView
+        } else {
+            return view
         }
     }
 
