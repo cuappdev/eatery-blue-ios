@@ -80,7 +80,7 @@ class SheetViewController: UIViewController {
         cancelButton.isUserInteractionEnabled = true
         header.addArrangedSubview(cancelButton)
         cancelButton.image = UIImage(named: "ButtonClose")
-        cancelButton.on(UITapGestureRecognizer()) { [self] _ in
+        cancelButton.tap { [self] _ in
             dismiss(animated: true)
         }
 
@@ -102,7 +102,7 @@ class SheetViewController: UIViewController {
 
         container.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        container.on(UITapGestureRecognizer()) { _ in
+        container.tap { _ in
             action()
         }
 
@@ -125,7 +125,7 @@ class SheetViewController: UIViewController {
         titleLabel.textAlignment = .center
 
         let container = ContainerView(content: titleLabel)
-        container.on(UITapGestureRecognizer()) { _ in
+        container.tap { _ in
             action()
         }
         stackView.addArrangedSubview(container)

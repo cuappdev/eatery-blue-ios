@@ -70,7 +70,7 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpNavigationView() {
-        navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
+        navigationView.backButton.tap { [self] _ in
             navigationController?.popViewController(animated: true)
         }
 
@@ -184,7 +184,7 @@ class EateryViewController: UIViewController {
             make.bottom.equalTo(headerView).offset(-16)
         }
 
-        container.on(UITapGestureRecognizer()) { [self] _ in
+        container.tap { [self] _ in
             let viewController = PaymentMethodsSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setPaymentMethods(paymentMethods)
@@ -253,7 +253,7 @@ class EateryViewController: UIViewController {
         buttonStackView.addPillButton(buttonDirections)
         buttonDirections.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         buttonDirections.backgroundColor = UIColor(named: "Gray00")
-        buttonDirections.imageView.image = UIImage(named: "Walk")
+        buttonDirections.imageView.image = UIImage(named: "Walk")?.withRenderingMode(.alwaysTemplate)
         buttonDirections.imageView.tintColor = UIColor(named: "Black")
         buttonDirections.titleLabel.textColor = UIColor(named: "Black")
         buttonDirections.titleLabel.text = "Get directions"
@@ -285,7 +285,7 @@ class EateryViewController: UIViewController {
 
         cell.statusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
 
-        cell.on(UITapGestureRecognizer()) { [self] _ in
+        cell.tap { [self] _ in
             let viewController = HoursSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setUp(eatery.events)
@@ -307,12 +307,14 @@ class EateryViewController: UIViewController {
         text.append(NSAttributedString(string: " Wait Time"))
         cell.titleLabel.attributedText = text
 
-        if let waitTimes = eatery.waitTimesByDay[Day()] {
+        if let waitTimes = eatery.waitTimesByDay[Day()], let sample = waitTimes.sample(at: Date()) {
             cell.statusLabel.textColor = UIColor(named: "Black")
-            cell.statusLabel.text = "12-15 minutes"
+            let low = Int(round(sample.low / 60))
+            let high = Int(round(sample.high / 60))
+            cell.statusLabel.text = "\(low)-\(high) minutes"
 
             let events = eatery.events
-            cell.on(UITapGestureRecognizer()) { [self] _ in
+            cell.tap { [self] _ in
                 let viewController = WaitTimesSheetViewController()
                 viewController.setUpSheetPresentation()
                 viewController.setUp(waitTimes, events: events)
@@ -350,7 +352,7 @@ class EateryViewController: UIViewController {
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        menuHeaderView.buttonImageView.on(UITapGestureRecognizer()) { _ in
+        menuHeaderView.buttonImageView.tap { _ in
             dropDownButtonAction?()
         }
         stackView.addArrangedSubview(menuHeaderView)
@@ -407,7 +409,7 @@ class EateryViewController: UIViewController {
     func addReportIssueView() {
         let view = ReportIssueView()
         view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        view.button.on(UITapGestureRecognizer()) { [self] _ in
+        view.button.tap { [self] _ in
             let viewController = ReportIssueViewController()
             present(viewController, animated: true)
         }

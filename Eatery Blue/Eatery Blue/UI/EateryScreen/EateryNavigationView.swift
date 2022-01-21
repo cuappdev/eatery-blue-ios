@@ -221,7 +221,7 @@ class EateryNavigationView: UIView {
             make.width.equalTo(foregroundContainer)
         }
 
-        backgroundContainer.on(UITapGestureRecognizer()) { _ in
+        backgroundContainer.tap { _ in
             onTap?()
         }
         foregroundContainer.isUserInteractionEnabled = false

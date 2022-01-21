@@ -88,11 +88,11 @@ class ListViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
 
-        navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
+        navigationView.backButton.tap { [self] _ in
             navigationController?.popViewController(animated: true)
         }
 
-        navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
+        navigationView.searchButton.tap { [self] _ in
             guard let navigationController = navigationController else { return }
 
             if navigationController.children.count > 1 {
@@ -285,7 +285,7 @@ extension ListViewController: UITableViewDataSource {
                 }
             }.store(in: &cancellables)
 
-            contentView.on(UITapGestureRecognizer()) { [self] _ in
+            contentView.tap { [self] _ in
                 pushViewController(for: eatery)
             }
 

@@ -62,7 +62,7 @@ class OnboardingStartViewController: UIViewController {
         nextButton.shadowOpacity = 0.25
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        nextButton.on(UITapGestureRecognizer()) { [self] _ in
+        nextButton.tap { [self] _ in
             let viewController = OnboardingFeaturesViewController()
             navigationController?.pushViewController(viewController, animated: true)
         }

@@ -63,7 +63,7 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpUnder10Minutes() {
         under10Minutes.label.text = "Under 10 min"
-        under10Minutes.on(UITapGestureRecognizer()) { [self] _ in
+        under10Minutes.tap { [self] _ in
             filter.under10MinutesEnabled.toggle()
             updateFilterButtonsFromState()
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -73,7 +73,7 @@ class EateryFilterViewController: UIViewController {
     private func setUpPaymentMethods() {
         paymentMethods.label.text = "Payment Methods"
         paymentMethods.imageView.isHidden = false
-        paymentMethods.on(UITapGestureRecognizer()) { [self] _ in
+        paymentMethods.tap { [self] _ in
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods)
@@ -84,7 +84,7 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpFavorites() {
         favorites.label.text = "Favorites"
-        favorites.on(UITapGestureRecognizer()) { [self] _ in
+        favorites.tap { [self] _ in
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState()
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -93,7 +93,7 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpNorth() {
         north.label.text = "North"
-        north.on(UITapGestureRecognizer()) { [self] _ in
+        north.tap { [self] _ in
             filter.north.toggle()
             updateFilterButtonsFromState()
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -102,7 +102,7 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpWest() {
         west.label.text = "West"
-        west.on(UITapGestureRecognizer()) { [self] _ in
+        west.tap { [self] _ in
             filter.west.toggle()
             updateFilterButtonsFromState()
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -112,7 +112,7 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpCentral() {
         central.label.text = "Central"
-        central.on(UITapGestureRecognizer()) { [self] _ in
+        central.tap { [self] _ in
             filter.central.toggle()
             updateFilterButtonsFromState()
             delegate?.eateryFilterViewController(self, filterDidChange: filter)

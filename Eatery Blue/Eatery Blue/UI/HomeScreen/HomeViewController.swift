@@ -202,7 +202,7 @@ extension HomeViewController: UITableViewDataSource {
                 }
                 .store(in: &cancellables)
 
-            contentView.on(UITapGestureRecognizer()) { [self] _ in
+            contentView.tap { [self] _ in
                 pushViewController(for: eatery)
             }
 

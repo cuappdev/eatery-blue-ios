@@ -45,11 +45,11 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
     }
 
     @objc private func netIdTextFieldEditingChanged() {
-        updateLoginButtonEnabledFromState()
+        updateLoginButtonFromState()
     }
 
     @objc private func passwordTextFieldEditingChanged() {
-        updateLoginButtonEnabledFromState()
+        updateLoginButtonFromState()
     }
 
     override func didTapLoginButton() {
@@ -58,8 +58,14 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
         attemptLogin()
     }
 
-    private func updateLoginButtonEnabledFromState() {
+    private func updateLoginButtonFromState() {
         setLoginButtonEnabled(isLoginEnabled)
+
+        if isLoggingIn {
+            setLoginButtonTitle("Logging in...")
+        } else {
+            setLoginButtonTitle("Log in")
+        }
     }
 
     private func attemptLogin() {
@@ -70,7 +76,7 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
         isLoggingIn = true
         view.endEditing(true)
         updateErrorMessage(nil)
-        updateLoginButtonEnabledFromState()
+        updateLoginButtonFromState()
 
         Task {
             do {
@@ -91,7 +97,7 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
             }
 
             isLoggingIn = false
-            updateLoginButtonEnabledFromState()
+            updateLoginButtonFromState()
         }
     }
 

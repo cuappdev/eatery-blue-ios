@@ -160,7 +160,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                     subtitleLabel.isHidden = true
                 }
             }
-            contentView.on(UITapGestureRecognizer()) { [self] _ in
+            contentView.tap { [self] _ in
                 didSelectEatery(eatery, at: indexPath)
             }
 
@@ -197,7 +197,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                 view.sourceLabel.isHidden = true
             }
 
-            view.on(UITapGestureRecognizer()) { [self] _ in
+            view.tap { [self] _ in
                 didSelectItem(item, at: indexPath, eatery: eatery)
             }
 

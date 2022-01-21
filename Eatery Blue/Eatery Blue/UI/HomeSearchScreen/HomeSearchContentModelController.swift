@@ -153,7 +153,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                 countView.titleLabel.text = "\(displayed.count) results"
             }
 
-            countView.resetButton.on(UITapGestureRecognizer()) { [self] _ in
+            countView.resetButton.tap { [self] _ in
                 filter = EateryFilter()
                 filterController.setFilter(EateryFilter())
             }

@@ -57,7 +57,7 @@ class ProfileLoginViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.isPagingEnabled = true
 
-        scrollView.on(UITapGestureRecognizer()) { [self] _ in
+        scrollView.tap { [self] _ in
             view.endEditing(true)
         }
 
@@ -99,7 +99,7 @@ class ProfileLoginViewController: UIViewController {
         loginButton.content.textAlignment = .center
         loginButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        loginButton.on(UITapGestureRecognizer()) { [self] _ in
+        loginButton.tap { [self] _ in
             didTapLoginButton()
         }
     }
@@ -149,6 +149,10 @@ class ProfileLoginViewController: UIViewController {
             loginButton.content.textColor = UIColor(named: "EateryBlack")
             loginButton.backgroundColor = UIColor(named: "Gray00")
         }
+    }
+
+    func setLoginButtonTitle(_ title: String) {
+        loginButton.content.text = title
     }
 
     func updateErrorMessage(_ message: String?) {

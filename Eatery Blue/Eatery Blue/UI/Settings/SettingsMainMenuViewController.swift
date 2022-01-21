@@ -96,7 +96,7 @@ class SettingsMainMenuViewController: UIViewController {
         cell.imageView.image = settingsItem.image
         cell.titleLabel.text = settingsItem.title
         cell.subtitleLabel.text = settingsItem.subtitle
-        cell.on(UITapGestureRecognizer()) { _ in
+        cell.tap { _ in
             settingsItem.action()
         }
 
@@ -116,7 +116,7 @@ class SettingsMainMenuViewController: UIViewController {
         let loginView = SettingsMainMenuLoginStatusView()
         loginView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         loginView.label.text = "Logged in as \(netId)"
-        loginView.logoutButton.on(UITapGestureRecognizer()) { _ in
+        loginView.logoutButton.tap { _ in
             logOut()
         }
 

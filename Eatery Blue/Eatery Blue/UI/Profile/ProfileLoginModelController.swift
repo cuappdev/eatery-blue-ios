@@ -58,11 +58,11 @@ class ProfileLoginModelController: ProfileLoginViewController {
     }
 
     @objc private func netIdTextFieldEditingChanged() {
-        updateLoginButtonEnabledFromState()
+        updateLoginButtonFromState()
     }
 
     @objc private func passwordTextFieldEditingChanged() {
-        updateLoginButtonEnabledFromState()
+        updateLoginButtonFromState()
     }
 
     override func didTapLoginButton() {
@@ -87,8 +87,14 @@ class ProfileLoginModelController: ProfileLoginViewController {
         }
     }
 
-    private func updateLoginButtonEnabledFromState() {
+    private func updateLoginButtonFromState() {
         setLoginButtonEnabled(isLoginEnabled)
+
+        if isLoggingIn {
+            setLoginButtonTitle("Logging in...")
+        } else {
+            setLoginButtonTitle("Log in")
+        }
     }
 
     private func attemptLogin() {
@@ -99,7 +105,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         isLoggingIn = true
         view.endEditing(true)
         updateErrorMessage(nil)
-        updateLoginButtonEnabledFromState()
+        updateLoginButtonFromState()
 
         Task {
             do {
@@ -120,12 +126,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
             }
 
             isLoggingIn = false
-            updateLoginButtonEnabledFromState()
+            updateLoginButtonFromState()
         }
     }
 
     private func setUpSettingsButton() {
-        settingsButton.on(UITapGestureRecognizer()) { [self] _ in
+        settingsButton.tap { [self] _ in
             let viewController = SettingsMainMenuModelController()
             navigationController?.pushViewController(viewController, animated: true)
         }
