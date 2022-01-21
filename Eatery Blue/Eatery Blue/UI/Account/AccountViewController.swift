@@ -17,7 +17,6 @@ class AccountViewController: UIViewController {
     }
 
     struct BalanceCell {
-        let icon: UIImage?
         let title: String
         let subtitle: NSAttributedString
     }
@@ -149,7 +148,6 @@ extension AccountViewController: UITableViewDataSource {
             } else {
                 let balance = balanceCells[indexPath.row - 1]
                 let cell = tableView.dequeueReusableCell(withIdentifier: "balance", for: indexPath) as! AccountBalanceTableViewCell
-                cell.iconView.image = balance.icon
                 cell.titleLabel.text = balance.title
                 cell.subtitleLabel.attributedText = balance.subtitle
                 return cell

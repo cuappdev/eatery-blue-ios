@@ -50,7 +50,7 @@ class PillFilterButtonView: UIView {
     }
 
     private func setUpLabel() {
-        label.font = .preferredFont(for: .subheadline, weight: .semibold)
+        label.font = .preferredFont(for: .footnote, weight: .semibold)
     }
 
     private func setUpImageView() {

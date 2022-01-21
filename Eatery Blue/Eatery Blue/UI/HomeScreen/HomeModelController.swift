@@ -246,8 +246,16 @@ class HomeModelController: HomeViewController {
         LocationManager.shared.requestLocation()
 
         Task {
-            await updateAllEateriesFromNetworking()
-            try? await Task.sleep(nanoseconds: 200_000_000)
+            await withTaskGroup(of: Void.self) { [self] group in
+                group.addTask {
+                    await updateAllEateriesFromNetworking()
+                }
+                // Create a task to let the logo view do one complete animation cycle
+                group.addTask {
+                    try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                }
+            }
+
             updateCellsFromState()
             sender.endRefreshing()
         }

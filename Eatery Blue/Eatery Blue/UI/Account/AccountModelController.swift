@@ -194,30 +194,30 @@ class AccountModelController: AccountViewController {
                 break
             }
 
-            cells.append(BalanceCell(icon: UIImage(named: "MealSwipes"), title: "Meal Swipes", subtitle: subtitle))
+            cells.append(BalanceCell(title: "Meal Swipes", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(icon: UIImage(named: "MealSwipes"), title: "Meal Swipes", subtitle: NSAttributedString()))
+            cells.append(BalanceCell(title: "Meal Swipes", subtitle: NSAttributedString()))
         }
 
         if let brbBalance = accounts.bigRedBucks?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: brbBalance)) ?? "")
-            cells.append(BalanceCell(icon: UIImage(named: "BRBs"), title: "Big Red Bucks", subtitle: subtitle))
+            cells.append(BalanceCell(title: "Big Red Bucks", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(icon: UIImage(named: "BRBs"), title: "Big Red Bucks", subtitle: NSAttributedString()))
+            cells.append(BalanceCell(title: "Big Red Bucks", subtitle: NSAttributedString()))
         }
 
         if let cityBucksBalance = accounts.cityBucks?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: cityBucksBalance)) ?? "")
-            cells.append(BalanceCell(icon: UIImage(named: "Payment"), title: "City Bucks", subtitle: subtitle))
+            cells.append(BalanceCell(title: "City Bucks", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(icon: UIImage(named: "Payment"), title: "City Bucks", subtitle: NSAttributedString()))
+            cells.append(BalanceCell(title: "City Bucks", subtitle: NSAttributedString()))
         }
 
         if let laundry = accounts.laundry?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: laundry)) ?? "")
-            cells.append(BalanceCell(icon: UIImage(named: "Laundry"), title: "Laundry", subtitle: subtitle))
+            cells.append(BalanceCell(title: "Laundry", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(icon: UIImage(named: "Laundry"), title: "Laundry", subtitle: NSAttributedString()))
+            cells.append(BalanceCell(title: "Laundry", subtitle: NSAttributedString()))
         }
 
         return cells

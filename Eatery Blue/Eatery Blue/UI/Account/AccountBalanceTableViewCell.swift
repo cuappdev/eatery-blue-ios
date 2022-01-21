@@ -9,7 +9,6 @@ import UIKit
 
 class AccountBalanceTableViewCell: UITableViewCell {
 
-    let iconView = UIImageView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let separator = HDivider()
@@ -28,9 +27,6 @@ class AccountBalanceTableViewCell: UITableViewCell {
     private func setUpContentView() {
         contentView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
 
-        contentView.addSubview(iconView)
-        setUpIconView()
-
         contentView.addSubview(titleLabel)
         setUpTitleLabel()
 
@@ -38,11 +34,6 @@ class AccountBalanceTableViewCell: UITableViewCell {
         setUpSubtitleLabel()
 
         contentView.addSubview(separator)
-    }
-
-    private func setUpIconView() {
-        iconView.tintColor = UIColor(named: "Gray05")
-        iconView.contentMode = .scaleAspectFit
     }
 
     private func setUpTitleLabel() {
@@ -56,14 +47,8 @@ class AccountBalanceTableViewCell: UITableViewCell {
     }
 
     private func setUpConstraints() {
-        iconView.snp.makeConstraints { make in
-            make.centerY.equalTo(contentView.layoutMarginsGuide)
-            make.width.height.equalTo(16)
-            make.leading.equalTo(contentView.layoutMarginsGuide)
-        }
-
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconView.snp.trailing).offset(8)
+            make.leading.equalTo(contentView.layoutMarginsGuide)
             make.top.bottom.equalTo(contentView.layoutMarginsGuide)
         }
 
