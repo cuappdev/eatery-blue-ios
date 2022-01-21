@@ -123,7 +123,7 @@ class AccountModelController: AccountViewController {
     }
 
     private func setUpTransactionsHeaderView() {
-        transactionsHeaderView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
+        transactionsHeaderView.buttonImageView.tap { [self] _ in
             let viewController = AccountPickerSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setUp(EateryAccountType.allCases.map(\.description))

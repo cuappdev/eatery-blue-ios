@@ -73,7 +73,7 @@ class MenuPickerSheetViewController: SheetViewController {
             let cell = MenuDayPickerCell()
             cell.weekdayLabel.text = weekdayFormatter.string(from: day.date()).uppercased()
             cell.dayLabel.content.text = "\(day.day)"
-            cell.on(UITapGestureRecognizer()) { [self] _ in
+            cell.tap { [self] _ in
                 didTapDayPickerCellAt(at: i)
             }
             dayPickerView.addCell(cell)
@@ -156,7 +156,7 @@ class MenuPickerSheetViewController: SheetViewController {
                 let menuChoiceView = MenuChoiceView()
                 menuChoiceView.layoutMargins = .zero
                 stackView.addArrangedSubview(menuChoiceView)
-                menuChoiceView.on(UITapGestureRecognizer()) { [self] _ in
+                menuChoiceView.tap { [self] _ in
                     didTapMenuChoiceView(at: i)
                 }
                 menuChoiceViews.append(menuChoiceView)

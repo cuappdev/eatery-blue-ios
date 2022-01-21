@@ -89,12 +89,15 @@ class CarouselView: UIView {
         }
     }
 
-    func addCardView(_ contentView: EateryMediumCardContentView) {
+    func addCardView(_ contentView: UIView, buttonPress: ((UIButton) -> Void)? = nil) {
         let cardView = EateryCardVisualEffectView(content: contentView)
         cardView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
-        stackView.addArrangedSubview(cardView)
 
-        cardView.snp.makeConstraints { make in
+        let buttonView = ButtonView(content: cardView)
+        buttonView.buttonPress(buttonPress)
+        stackView.addArrangedSubview(buttonView)
+
+        buttonView.snp.makeConstraints { make in
             make.width.equalTo(scrollView.frameLayoutGuide.snp.width)
         }
     }

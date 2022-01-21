@@ -133,7 +133,7 @@ class WaitTimesView: UIView {
             make.width.equalTo(self).multipliedBy(1.0 / 6.0)
         }
 
-        container.on(UITapGestureRecognizer()) { [self] _ in
+        container.tap { [self] _ in
             highlightCell(at: index, notifyDelegate: true, animated: true)
         }
 

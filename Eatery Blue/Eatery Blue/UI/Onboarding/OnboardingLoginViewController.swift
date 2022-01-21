@@ -16,7 +16,7 @@ class OnboardingLoginViewController: UIViewController {
     let netIdTextField = UITextField()
     let passwordTextField = UITextField()
     private let errorMessageView = LoginErrorMessageView()
-    private let loginButton = ContainerView(pillContent: UILabel())
+    private let loginButton = ButtonView(pillContent: UILabel())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +54,7 @@ class OnboardingLoginViewController: UIViewController {
         backButton.content.contentMode = .scaleAspectFit
         backButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
 
-        backButton.on(UITapGestureRecognizer()) { [self] _ in
+        backButton.tap { [self] _ in
             navigationController?.popViewController(animated: true)
         }
     }
@@ -63,7 +63,7 @@ class OnboardingLoginViewController: UIViewController {
         skipButton.content.font = .preferredFont(for: .body, weight: .semibold)
         skipButton.content.text = "Skip"
 
-        skipButton.on(UITapGestureRecognizer()) { [self] _ in
+        skipButton.tap { [self] _ in
             didTapSkipButton()
         }
     }
@@ -73,7 +73,7 @@ class OnboardingLoginViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.isPagingEnabled = true
 
-        scrollView.on(UITapGestureRecognizer()) { [self] _ in
+        scrollView.tap { [self] _ in
             view.endEditing(true)
         }
 
@@ -115,7 +115,7 @@ class OnboardingLoginViewController: UIViewController {
         loginButton.content.textAlignment = .center
         loginButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        loginButton.on(UITapGestureRecognizer()) { [self] _ in
+        loginButton.buttonPress { [self] _ in
             didTapLoginButton()
         }
     }
@@ -170,6 +170,10 @@ class OnboardingLoginViewController: UIViewController {
             loginButton.content.textColor = UIColor(named: "EateryBlack")
             loginButton.backgroundColor = UIColor(named: "Gray00")
         }
+    }
+
+    func setLoginButtonTitle(_ title: String) {
+        loginButton.content.text = title
     }
 
     func updateErrorMessage(_ message: String?) {

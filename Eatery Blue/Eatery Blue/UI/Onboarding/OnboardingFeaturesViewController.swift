@@ -18,7 +18,7 @@ class OnboardingFeaturesViewController: UIViewController {
     private let backButton = ContainerView(content: UIImageView())
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
-    private let nextButton = ContainerView(pillContent: UILabel())
+    private let nextButton = ButtonView(pillContent: UILabel())
 
     private var pages: [OnboardingPage] = []
     private var pageViews: [OnboardingFeatureView] = []
@@ -70,7 +70,7 @@ class OnboardingFeaturesViewController: UIViewController {
         backButton.content.contentMode = .scaleAspectFit
         backButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
 
-        backButton.on(UITapGestureRecognizer()) { [self] _ in
+        backButton.tap { [self] _ in
             navigationController?.popViewController(animated: true)
         }
     }
@@ -97,21 +97,9 @@ class OnboardingFeaturesViewController: UIViewController {
         nextButton.backgroundColor = UIColor(named: "Gray00")
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        let longPress = UILongPressGestureRecognizer()
-        longPress.minimumPressDuration = 0
-        nextButton.on(longPress, [
-            .began: { [self] (gesture: UILongPressGestureRecognizer) in
-                UIView.animate(withDuration: 0.05, delay: 0, options: .beginFromCurrentState) {
-                    nextButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-                }
-            },
-            .ended: { [self] (gesture: UILongPressGestureRecognizer) in
-                UIView.animate(withDuration: 0.05, delay: 0, options: .beginFromCurrentState) {
-                    nextButton.transform = .identity
-                }
-                didTapNextButton()
-            }
-        ])
+        nextButton.buttonPress { [self] _ in
+            didTapNextButton()
+        }
     }
 
     private func setUpConstraints() {

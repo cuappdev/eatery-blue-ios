@@ -58,7 +58,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
 
         favoritesView.removeAllCardViews()
 
-        favoritesView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
+        favoritesView.buttonImageView.tap { [self] _ in
             let viewController = ListModelController()
             viewController.setUp(favorites, title: "Favorite Eateries", description: nil)
             navigationController?.hero.isEnabled = false
@@ -69,7 +69,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             let cardView = EaterySmallCardView()
             cardView.imageView.kf.setImage(with: favorite.imageUrl)
             cardView.titleLabel.text = favorite.name
-            cardView.on(UITapGestureRecognizer()) { [self] _ in
+            cardView.tap { [self] _ in
                 let viewController = EateryModelController()
                 viewController.setUp(eatery: favorite)
                 navigationController?.hero.isEnabled = false
@@ -121,7 +121,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
                 itemView.subtitleLabel.isHidden = true
             }
 
-            itemView.on(UITapGestureRecognizer()) { [self] _ in
+            itemView.tap { [self] _ in
                 delegate?.homeSearchEmptyModelController(self, didSelectRecentSearch: recentSearch)
             }
 

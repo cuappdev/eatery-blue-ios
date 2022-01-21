@@ -32,7 +32,7 @@ class AccountPickerSheetViewController: SheetViewController {
             cell.titleLabel.text = account
             cell.layoutMargins = .zero
 
-            cell.on(UITapGestureRecognizer()) { [self] _ in
+            cell.tap { [self] _ in
                 selectedAccountIndex = i
                 updateCellsFromState()
             }

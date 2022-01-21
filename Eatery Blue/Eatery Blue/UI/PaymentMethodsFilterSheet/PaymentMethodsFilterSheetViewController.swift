@@ -53,7 +53,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
 
         stack.addArrangedSubview(mealSwipesView)
         mealSwipesView.label.text = "Meal swipes"
-        mealSwipesView.on(UITapGestureRecognizer()) { [self] _ in
+        mealSwipesView.tap { [self] _ in
             if selectedPaymentMethods.contains(.mealSwipes) {
                 selectedPaymentMethods.remove(.mealSwipes)
             } else {
@@ -65,7 +65,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
 
         stack.addArrangedSubview(brbsView)
         brbsView.label.text = "BRBs"
-        brbsView.on(UITapGestureRecognizer()) { [self] _ in
+        brbsView.tap { [self] _ in
             if selectedPaymentMethods.contains(.brbs) {
                 selectedPaymentMethods.remove(.brbs)
             } else {
@@ -77,7 +77,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
 
         stack.addArrangedSubview(cashOrCreditView)
         cashOrCreditView.label.text = "Cash or credit"
-        cashOrCreditView.on(UITapGestureRecognizer()) { [self] _ in
+        cashOrCreditView.tap { [self] _ in
             if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
                 selectedPaymentMethods.remove(.cash)
                 selectedPaymentMethods.remove(.credit)

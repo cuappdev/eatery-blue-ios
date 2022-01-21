@@ -72,7 +72,7 @@ class ReportIssueViewController: UIViewController {
         addIssueDescriptionView()
         addSubmitButton()
 
-        view.on(UITapGestureRecognizer()) { [self] _ in
+        view.tap { [self] _ in
             issueDescriptionView.textView.resignFirstResponder()
         }
     }
@@ -91,7 +91,7 @@ class ReportIssueViewController: UIViewController {
         cancelButton.isUserInteractionEnabled = true
         header.addArrangedSubview(cancelButton)
         cancelButton.image = UIImage(named: "ButtonClose")
-        cancelButton.on(UITapGestureRecognizer()) { [self] _ in
+        cancelButton.tap { [self] _ in
             dismiss(animated: true)
         }
 
@@ -105,7 +105,7 @@ class ReportIssueViewController: UIViewController {
     private func addTypeOfIssueButton() {
         stackView.addArrangedSubview(issueTypeButton)
 
-        issueTypeButton.on(UITapGestureRecognizer()) { [self] _ in
+        issueTypeButton.tap { [self] _ in
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             for choice in IssueType.allCases {
                 alertController.addAction(UIAlertAction(title: choice.description, style: .default) { [self] _ in
@@ -170,7 +170,7 @@ class ReportIssueViewController: UIViewController {
         submitButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
         submitButton.content.text = "Submit"
 
-        submitButton.on(UITapGestureRecognizer()) { [self] _ in
+        submitButton.tap { [self] _ in
             if submitEnabled {
                 submit()
             }

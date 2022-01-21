@@ -73,7 +73,7 @@ class LoginView: UIView {
         container.backgroundColor = UIColor(named: "Gray00")
         container.cornerRadius = 8
         container.layoutMargins = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
-        container.on(UITapGestureRecognizer()) { _ in
+        container.tap { _ in
             textField.becomeFirstResponder()
         }
         stackView.addArrangedSubview(container)

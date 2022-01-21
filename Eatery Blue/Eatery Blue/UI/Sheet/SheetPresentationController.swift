@@ -60,12 +60,14 @@ class SheetPresentationController: UIPresentationController {
             make.edges.equalToSuperview()
         }
 
+        dimmingView.alpha = 0
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { [self] _ in
             dimmingView.alpha = 1
         })
     }
 
     override func dismissalTransitionWillBegin() {
+        dimmingView.alpha = 1
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { [self] _ in
             dimmingView.alpha = 0
         })

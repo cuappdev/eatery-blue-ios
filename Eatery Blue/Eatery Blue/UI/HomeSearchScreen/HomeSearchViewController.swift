@@ -23,12 +23,15 @@ class HomeSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        searchBar.setShowsCancelButton(false, animated: false)
+
         RootViewController.setStatusBarStyle(.darkContent)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        searchBar.setShowsCancelButton(true, animated: animated)
         searchBar.searchTextField.becomeFirstResponder()
 
         navigationController?.hero.isEnabled = true

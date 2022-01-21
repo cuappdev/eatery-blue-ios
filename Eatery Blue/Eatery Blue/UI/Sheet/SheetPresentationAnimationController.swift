@@ -18,7 +18,7 @@ class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTr
     }
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        0.25
+        0.35
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -47,7 +47,9 @@ class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTr
         UIView.animate(
             withDuration: transitionDuration(using: transitionContext),
             delay: 0,
-            options: .curveEaseOut
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 0,
+            options: []
         ) {
             presentedView.transform = endTransform
         } completion: { _ in

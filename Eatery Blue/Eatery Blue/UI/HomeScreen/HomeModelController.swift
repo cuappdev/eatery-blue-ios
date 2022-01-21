@@ -58,7 +58,7 @@ class HomeModelController: HomeViewController {
     }
 
     private func setUpNavigationView() {
-        navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
+        navigationView.searchButton.tap { [self] _ in
             let searchViewController = HomeSearchModelController()
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
@@ -125,22 +125,20 @@ class HomeModelController: HomeViewController {
                 }
                 .store(in: &cancellables)
 
-            contentView.on(UITapGestureRecognizer()) { [self] _ in
+            carouselView.addCardView(contentView, buttonPress: { [self] _ in
                 pushViewController(for: eatery)
-            }
-
-            carouselView.addCardView(contentView)
+            })
         }
 
         if carouselEateries.count > 3 {
             let view = CarouselMoreEateriesView()
-            view.on(UITapGestureRecognizer()) { [self] _ in
+            view.tap { [self] _ in
                 pushListViewController(title: title, description: description, eateries: listEateries)
             }
             carouselView.addAccessoryView(EateryCardVisualEffectView(content: view))
         }
 
-        carouselView.buttonImageView.on(UITapGestureRecognizer()) { [self] _ in
+        carouselView.buttonImageView.tap { [self] _ in
             pushListViewController(title: title, description: description, eateries: listEateries)
         }
 

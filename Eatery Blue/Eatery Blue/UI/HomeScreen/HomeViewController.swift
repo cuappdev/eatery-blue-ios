@@ -66,7 +66,6 @@ class HomeViewController: UIViewController {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 216
-        tableView.allowsSelection = false
         tableView.tableHeaderView = tableHeaderView
         tableView.tableFooterView = UIView()
     }
@@ -142,12 +141,18 @@ extension HomeViewController: UITableViewDataSource {
             searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             searchBar.backgroundImage = UIImage()
             searchBar.hero.id = "searchBar"
-            return ClearTableViewCell(content: searchBar)
+
+            let cell = ClearTableViewCell(content: searchBar)
+            cell.selectionStyle = .none
+            return cell
 
         case .customView(let view):
             let container = ContainerView(content: view)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
-            return ClearTableViewCell(content: container)
+
+            let cell = ClearTableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
 
         case .titleLabel(title: let title):
             let label = UILabel()
@@ -157,12 +162,17 @@ extension HomeViewController: UITableViewDataSource {
             let container = ContainerView(content: label)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
-            return ClearTableViewCell(content: container)
+            let cell = ClearTableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
             
         case .carouselView(let carouselView):
             let container = ContainerView(content: carouselView)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
-            return ClearTableViewCell(content: container)
+
+            let cell = ClearTableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
 
         case .eateryCard(eatery: let eatery):
             let contentView = EateryLargeCardContentView()
@@ -202,13 +212,12 @@ extension HomeViewController: UITableViewDataSource {
                 }
                 .store(in: &cancellables)
 
-            contentView.on(UITapGestureRecognizer()) { [self] _ in
-                pushViewController(for: eatery)
-            }
-
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return ClearTableViewCell(content: cardView)
+
+            let cell = ClearTableViewCell(content: cardView)
+            cell.selectionStyle = .none
+            return cell
         }
     }
 
@@ -220,6 +229,42 @@ extension HomeViewController: UITableViewDataSource {
 }
 
 extension HomeViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        switch cells[indexPath.row] {
+        case .eateryCard:
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
+                cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            }
+
+        default:
+            break
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        switch cells[indexPath.row] {
+        case .eateryCard:
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
+                cell?.transform = .identity
+            }
+
+        default:
+            break
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch cells[indexPath.row] {
+        case .eateryCard(eatery: let eatery):
+            pushViewController(for: eatery)
+
+        default:
+            break
+        }
+    }
 
 }
 
