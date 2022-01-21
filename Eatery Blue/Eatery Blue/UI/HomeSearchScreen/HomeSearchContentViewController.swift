@@ -69,7 +69,6 @@ class HomeSearchContentViewController: UIViewController {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 216
-        tableView.allowsSelection = false
     }
 
     private func setUpConstraints() {
@@ -134,7 +133,9 @@ extension HomeSearchContentViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch cells[indexPath.row] {
         case .customView(view: let view):
-            return ClearTableViewCell(content: view)
+            let cell = ClearTableViewCell(content: view)
+            cell.selectionStyle = .none
+            return cell
 
         case .eatery(let eatery):
             let contentView = EateryLargeCardContentView()
@@ -160,13 +161,13 @@ extension HomeSearchContentViewController: UITableViewDataSource {
                     subtitleLabel.isHidden = true
                 }
             }
-            contentView.tap { [self] _ in
-                didSelectEatery(eatery, at: indexPath)
-            }
 
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return ClearTableViewCell(content: cardView)
+
+            let cell = ClearTableViewCell(content: cardView)
+            cell.selectionStyle = .none
+            return cell
 
         case .item(let item, let eatery):
             let view = SearchItemView()
@@ -203,7 +204,10 @@ extension HomeSearchContentViewController: UITableViewDataSource {
 
             let cardView = EateryCardVisualEffectView(content: view)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return ClearTableViewCell(content: cardView)
+
+            let cell = ClearTableViewCell(content: cardView)
+            cell.selectionStyle = .none
+            return cell
         }
     }
 
@@ -215,6 +219,33 @@ extension HomeSearchContentViewController: UITableViewDelegate {
         let offset = scrollView.contentOffset.y + scrollView.contentInset.top
         blurView.alpha = offset > 0 ? 1 : 0
         separator.alpha = offset > 0 ? 1 : 0
+    }
+
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
+            cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
+            cell?.transform = .identity
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch cells[indexPath.row] {
+        case .eatery(eatery: let eatery):
+            didSelectEatery(eatery, at: indexPath)
+
+        case .item(let item, let eatery):
+            didSelectItem(item, at: indexPath, eatery: eatery)
+
+        case .customView:
+            break
+        }
     }
 
 }

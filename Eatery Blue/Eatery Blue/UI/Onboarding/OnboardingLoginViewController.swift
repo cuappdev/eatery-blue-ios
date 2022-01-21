@@ -16,7 +16,7 @@ class OnboardingLoginViewController: UIViewController {
     let netIdTextField = UITextField()
     let passwordTextField = UITextField()
     private let errorMessageView = LoginErrorMessageView()
-    private let loginButton = ContainerView(pillContent: UILabel())
+    private let loginButton = ButtonView(pillContent: UILabel())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +115,7 @@ class OnboardingLoginViewController: UIViewController {
         loginButton.content.textAlignment = .center
         loginButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        loginButton.tap { [self] _ in
+        loginButton.buttonPress { [self] _ in
             didTapLoginButton()
         }
     }

@@ -18,7 +18,7 @@ class OnboardingFeaturesViewController: UIViewController {
     private let backButton = ContainerView(content: UIImageView())
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
-    private let nextButton = ContainerView(pillContent: UILabel())
+    private let nextButton = ButtonView(pillContent: UILabel())
 
     private var pages: [OnboardingPage] = []
     private var pageViews: [OnboardingFeatureView] = []
@@ -97,7 +97,7 @@ class OnboardingFeaturesViewController: UIViewController {
         nextButton.backgroundColor = UIColor(named: "Gray00")
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        nextButton.tap { [self] _ in
+        nextButton.buttonPress { [self] _ in
             didTapNextButton()
         }
     }

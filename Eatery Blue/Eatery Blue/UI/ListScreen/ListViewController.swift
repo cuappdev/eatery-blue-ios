@@ -68,7 +68,6 @@ class ListViewController: UIViewController {
         tableView.alwaysBounceVertical = true
         tableView.estimatedRowHeight = 44
         tableView.tableFooterView = UIView()
-        tableView.allowsSelection = false
         tableView.separatorStyle = .none
 
         tableView.dataSource = self
@@ -88,11 +87,11 @@ class ListViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
 
-        navigationView.backButton.tap { [self] _ in
+        navigationView.backButton.on(UITapGestureRecognizer()) { [self] _ in
             navigationController?.popViewController(animated: true)
         }
 
-        navigationView.searchButton.tap { [self] _ in
+        navigationView.searchButton.on(UITapGestureRecognizer()) { [self] _ in
             guard let navigationController = navigationController else { return }
 
             if navigationController.children.count > 1 {
@@ -246,7 +245,10 @@ extension ListViewController: UITableViewDataSource {
             container.snp.makeConstraints { make in
                 make.height.equalTo(headerStackView.frame.height + 12).priority(.high)
             }
-            return UITableViewCell(content: container)
+
+            let cell = UITableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
 
         } else {
             let eatery = eateries[indexPath.row - 1]
@@ -285,18 +287,42 @@ extension ListViewController: UITableViewDataSource {
                 }
             }.store(in: &cancellables)
 
-            contentView.tap { [self] _ in
-                pushViewController(for: eatery)
-            }
-
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-            return ClearTableViewCell(content: cardView)
+
+            let cell = ClearTableViewCell(content: cardView)
+            cell.selectionStyle = .none
+            return cell
         }
     }
 
 }
 
 extension ListViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
+                cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
+                cell?.transform = .identity
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            let eatery = eateries[indexPath.row - 1]
+            pushViewController(for: eatery)
+        }
+    }
 
 }

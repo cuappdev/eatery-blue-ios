@@ -125,11 +125,9 @@ class HomeModelController: HomeViewController {
                 }
                 .store(in: &cancellables)
 
-            contentView.tap { [self] _ in
+            carouselView.addCardView(contentView, buttonPress: { [self] _ in
                 pushViewController(for: eatery)
-            }
-
-            carouselView.addCardView(contentView)
+            })
         }
 
         if carouselEateries.count > 3 {

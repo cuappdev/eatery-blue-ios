@@ -97,12 +97,12 @@ class SheetViewController: UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.text = title
 
-        let container = ContainerView(pillContent: titleLabel)
+        let container = ButtonView(pillContent: titleLabel)
         stackView.addArrangedSubview(container)
 
         container.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        container.tap { _ in
+        container.buttonPress { _ in
             action()
         }
 
@@ -124,7 +124,7 @@ class SheetViewController: UIViewController {
         titleLabel.textColor = UIColor(named: "Black")
         titleLabel.textAlignment = .center
 
-        let container = ContainerView(content: titleLabel)
+        let container = ButtonView(content: titleLabel)
         container.tap { _ in
             action()
         }

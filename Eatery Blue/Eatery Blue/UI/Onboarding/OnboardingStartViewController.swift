@@ -11,7 +11,7 @@ class OnboardingStartViewController: UIViewController {
 
     private let eateryLogoView = UIImageView()
     private let titleLabel = UILabel()
-    private let nextButton = ContainerView(pillContent: UILabel())
+    private let nextButton = ButtonView(pillContent: UILabel())
     private let appDevLogoView = UIImageView()
 
     override func viewDidLoad() {
@@ -62,7 +62,7 @@ class OnboardingStartViewController: UIViewController {
         nextButton.shadowOpacity = 0.25
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
-        nextButton.tap { [self] _ in
+        nextButton.buttonPress { [self] _ in
             let viewController = OnboardingFeaturesViewController()
             navigationController?.pushViewController(viewController, animated: true)
         }
