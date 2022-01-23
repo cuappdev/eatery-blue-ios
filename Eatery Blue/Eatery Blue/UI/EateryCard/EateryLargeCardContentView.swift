@@ -11,6 +11,7 @@ class EateryLargeCardContentView: UIView {
 
     let imageView = UIImageView()
     let imageTintView = UIView()
+    let alertsStackView = UIStackView()
 
     let labelStackView = UIStackView() 
     let titleLabel = UILabel()
@@ -50,11 +51,21 @@ class EateryLargeCardContentView: UIView {
 
         imageView.addSubview(imageTintView)
         setUpImageTintView()
+
+        imageView.addSubview(alertsStackView)
+        setUpAlertsStackView()
     }
 
     private func setUpImageTintView() {
         imageTintView.backgroundColor = .white
         imageTintView.alpha = 0
+    }
+
+    private func setUpAlertsStackView() {
+        alertsStackView.spacing = 8
+        alertsStackView.axis = .vertical
+        alertsStackView.alignment = .trailing
+        alertsStackView.distribution = .equalSpacing
     }
 
     private func setUpLabelStackView() {
@@ -104,6 +115,10 @@ class EateryLargeCardContentView: UIView {
             make.edges.equalToSuperview()
         }
 
+        alertsStackView.snp.makeConstraints { make in
+            make.top.trailing.equalToSuperview().inset(12)
+        }
+
         labelStackView.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(12)
             make.leading.bottom.equalToSuperview().inset(12)
@@ -116,6 +131,10 @@ class EateryLargeCardContentView: UIView {
             make.width.equalTo(20)
             make.height.equalTo(20)
         }
+    }
+
+    func addAlertView(_ view: UIView) {
+        alertsStackView.addArrangedSubview(view)
     }
 
 }

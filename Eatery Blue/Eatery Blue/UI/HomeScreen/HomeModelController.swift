@@ -12,15 +12,6 @@ import CoreLocation
 
 class HomeModelController: HomeViewController {
 
-    private struct FilterButtons {
-        let under10Minutes = PillFilterButtonView()
-        let paymentMethods = PillFilterButtonView()
-        let favorites = PillFilterButtonView()
-        let north = PillFilterButtonView()
-        let west = PillFilterButtonView()
-        let central = PillFilterButtonView()
-    }
-
     private var filter = EateryFilter()
     private var allEateries: [Eatery] = []
 

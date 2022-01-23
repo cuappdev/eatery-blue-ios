@@ -212,6 +212,24 @@ extension HomeViewController: UITableViewDataSource {
                 }
                 .store(in: &cancellables)
 
+            let now = Date()
+            switch eatery.status {
+            case .closingSoon(let event):
+                let alert = EateryCardAlertView()
+                let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
+                alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
+                contentView.addAlertView(alert)
+
+            case .openingSoon(let event):
+                let alert = EateryCardAlertView()
+                let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
+                alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
+                contentView.addAlertView(alert)
+
+            default:
+                break
+            }
+
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
