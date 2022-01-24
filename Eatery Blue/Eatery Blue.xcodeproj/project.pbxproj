@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */; };
+		5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */; };
 		5D0CDC432774E5F400AD0E27 /* EateryPillButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC422774E5F400AD0E27 /* EateryPillButtonView.swift */; };
 		5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC442774E7EA00AD0E27 /* EateryPillButtonStackView.swift */; };
 		5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */; };
@@ -151,6 +153,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesViewController.swift; sourceTree = "<group>"; };
+		5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesModelController.swift; sourceTree = "<group>"; };
 		5D0CDC422774E5F400AD0E27 /* EateryPillButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPillButtonView.swift; sourceTree = "<group>"; };
 		5D0CDC442774E7EA00AD0E27 /* EateryPillButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPillButtonStackView.swift; sourceTree = "<group>"; };
 		5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingDataView.swift; sourceTree = "<group>"; };
@@ -292,6 +296,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */ = {
+			isa = PBXGroup;
+			children = (
+				5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */,
+				5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */,
+			);
+			path = SettingsFavorites;
+			sourceTree = "<group>";
+		};
 		5D157CD82783818C0014B63A /* LogoRefreshControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -400,7 +413,7 @@
 			path = NavigationView;
 			sourceTree = "<group>";
 		};
-		5DA434C4278CD0DF001337FD /* Settings */ = {
+		5DA434C4278CD0DF001337FD /* SettingsMain */ = {
 			isa = PBXGroup;
 			children = (
 				5D75D6D2278E084E00832359 /* SettingsMainMenuCell.swift */,
@@ -409,7 +422,7 @@
 				5D75D6D0278CD59000832359 /* SettingsMainMenuViewController.swift */,
 				5D75D6D6278E0D7000832359 /* SettingsLogoutPillButton.swift */,
 			);
-			path = Settings;
+			path = SettingsMain;
 			sourceTree = "<group>";
 		};
 		5DBA89982783ECEB002DCA6B /* Onboarding */ = {
@@ -522,7 +535,8 @@
 				5DF304C7277A343000E2C9A4 /* ReportIssueScreen */,
 				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
 				5DBA89A52784D898002DCA6B /* Root */,
-				5DA434C4278CD0DF001337FD /* Settings */,
+				5DA434C4278CD0DF001337FD /* SettingsMain */,
+				5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */,
 				5DF304B727797CE400E2C9A4 /* Sheet */,
 				5DBA89A02784D2ED002DCA6B /* Splash */,
 				5DF304B527797CB600E2C9A4 /* Util */,
@@ -821,8 +835,10 @@
 				5D34F090279B48CE000F9056 /* EateryCardAlertView.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
 				5DF304C6277A22AD00E2C9A4 /* ReportIssueButtonView.swift in Sources */,
+				5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */,
 				5D34F08E279AF9E1000F9056 /* ButtonView.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
+				5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* EateryMediumCardContentView.swift in Sources */,
 				5DA434AF278A01F1001337FD /* HomeNavigationView.swift in Sources */,
 				5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */,

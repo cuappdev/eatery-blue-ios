@@ -91,6 +91,7 @@ extension ProfileViewController: UINavigationControllerDelegate {
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         let hideNavigationBar = viewController is ProfileLoginViewController
+            || viewController is EateryViewController
         navigationController.setNavigationBarHidden(hideNavigationBar, animated: animated)
     }
 

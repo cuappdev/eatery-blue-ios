@@ -24,7 +24,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "FavoriteUnselected"),
             title: "Favorites",
             subtitle: "Manage your favorite eateries",
-            action: {
+            action: { [self] in
+                let viewController = SettingsFavoritesModelController()
+                navigationController?.pushViewController(viewController, animated: true)
             }
         ))
         addSeparator()

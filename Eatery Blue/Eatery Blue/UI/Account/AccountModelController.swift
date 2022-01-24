@@ -81,14 +81,14 @@ class AccountModelController: AccountViewController {
         case past365Days
     }
 
-    private let priceFormatter: NumberFormatter = {
+    private static let priceFormatter: NumberFormatter = {
         let priceFormatter = NumberFormatter()
         priceFormatter.numberStyle = .currency
         priceFormatter.locale = .eatery
         return priceFormatter
     }()
 
-    private let timeFormatter: DateFormatter = {
+    private static let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
@@ -96,7 +96,7 @@ class AccountModelController: AccountViewController {
         return formatter
     }()
 
-    private let dateFormatter: DateFormatter = {
+    private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
@@ -154,13 +154,13 @@ class AccountModelController: AccountViewController {
     }
 
     private func updateCellsFromState() {
-        let balances = getBalanceCells(accounts)
-        let transactions = getTransactionCells(accounts[selectedAccount]?.transactions ?? [])
+        let balances = AccountModelController.getBalanceItems(accounts)
+        let transactions = AccountModelController.getTransactionItems(accounts[selectedAccount]?.transactions ?? [])
         updateCells(balances: balances, transactions: transactions)
     }
 
-    private func getBalanceCells(_ accounts: EateryAccounts) -> [BalanceCell] {
-        var cells: [BalanceCell] = []
+    private static func getBalanceItems(_ accounts: EateryAccounts) -> [BalanceItem] {
+        var items: [BalanceItem] = []
 
         if let mealPlan = accounts.mealPlan, let balance = mealPlan.balance {
             let remaining = Int(balance)
@@ -194,37 +194,37 @@ class AccountModelController: AccountViewController {
                 break
             }
 
-            cells.append(BalanceCell(title: "Meal Swipes", subtitle: subtitle))
+            items.append(BalanceItem(title: "Meal Swipes", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(title: "Meal Swipes", subtitle: NSAttributedString()))
+            items.append(BalanceItem(title: "Meal Swipes", subtitle: NSAttributedString()))
         }
 
         if let brbBalance = accounts.bigRedBucks?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: brbBalance)) ?? "")
-            cells.append(BalanceCell(title: "Big Red Bucks", subtitle: subtitle))
+            items.append(BalanceItem(title: "Big Red Bucks", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(title: "Big Red Bucks", subtitle: NSAttributedString()))
+            items.append(BalanceItem(title: "Big Red Bucks", subtitle: NSAttributedString()))
         }
 
         if let cityBucksBalance = accounts.cityBucks?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: cityBucksBalance)) ?? "")
-            cells.append(BalanceCell(title: "City Bucks", subtitle: subtitle))
+            items.append(BalanceItem(title: "City Bucks", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(title: "City Bucks", subtitle: NSAttributedString()))
+            items.append(BalanceItem(title: "City Bucks", subtitle: NSAttributedString()))
         }
 
         if let laundry = accounts.laundry?.balance {
             let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: laundry)) ?? "")
-            cells.append(BalanceCell(title: "Laundry", subtitle: subtitle))
+            items.append(BalanceItem(title: "Laundry", subtitle: subtitle))
         } else {
-            cells.append(BalanceCell(title: "Laundry", subtitle: NSAttributedString()))
+            items.append(BalanceItem(title: "Laundry", subtitle: NSAttributedString()))
         }
 
-        return cells
+        return items
     }
 
-    private func getTransactionCells(_ transactions: [Transaction]) -> [TransactionCell] {
-        var cells: [TransactionCell] = []
+    private static func getTransactionItems(_ transactions: [Transaction]) -> [TransactionItem] {
+        var items: [TransactionItem] = []
 
         for transaction in transactions {
             let amount = NSMutableAttributedString()
@@ -240,16 +240,16 @@ class AccountModelController: AccountViewController {
                 ))
             }
 
-            let cell = TransactionCell(
+            let cell = TransactionItem(
                 title: transaction.location,
                 time: timeFormatter.string(from: transaction.date),
                 date: dateFormatter.string(from: transaction.date),
                 amount: amount
             )
-            cells.append(cell)
+            items.append(cell)
         }
 
-        return cells
+        return items
     }
 
     private func updateTransactionsHeaderViewFromState() {

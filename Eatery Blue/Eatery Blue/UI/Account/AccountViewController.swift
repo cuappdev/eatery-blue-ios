@@ -9,14 +9,14 @@ import UIKit
 
 class AccountViewController: UIViewController {
 
-    struct TransactionCell {
+    struct TransactionItem {
         let title: String
         let time: String
         let date: String
         let amount: NSAttributedString
     }
 
-    struct BalanceCell {
+    struct BalanceItem {
         let title: String
         let subtitle: NSAttributedString
     }
@@ -26,8 +26,8 @@ class AccountViewController: UIViewController {
 
     private let refreshControl = UIRefreshControl()
 
-    private(set) var balanceCells: [BalanceCell] = []
-    private(set) var transactionCells: [TransactionCell] = []
+    private(set) var balanceItems: [BalanceItem] = []
+    private(set) var transactionItems: [TransactionItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,9 +97,9 @@ class AccountViewController: UIViewController {
         }
     }
 
-    func updateCells(balances: [BalanceCell], transactions: [TransactionCell]) {
-        balanceCells = balances
-        transactionCells = transactions
+    func updateCells(balances: [BalanceItem], transactions: [TransactionItem]) {
+        balanceItems = balances
+        transactionItems = transactions
         tableView.reloadData()
     }
 
@@ -121,8 +121,8 @@ extension AccountViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0: return 2 + balanceCells.count // First cell is the header, last cell is a large separator
-        case 1: return 1 + transactionCells.count // First cell is the header
+        case 0: return 2 + balanceItems.count // First cell is the header, last cell is a large separator
+        case 1: return 1 + transactionItems.count // First cell is the header
         default: return 0
         }
     }
@@ -137,7 +137,7 @@ extension AccountViewController: UITableViewDataSource {
                 view.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
                 return UITableViewCell(content: view)
                 
-            } else if indexPath.row == balanceCells.count + 1 {
+            } else if indexPath.row == balanceItems.count + 1 {
                 let view = UIView()
                 view.backgroundColor = UIColor(named: "Gray00")
                 view.snp.makeConstraints { make in
@@ -146,7 +146,7 @@ extension AccountViewController: UITableViewDataSource {
                 return UITableViewCell(content: view)
 
             } else {
-                let balance = balanceCells[indexPath.row - 1]
+                let balance = balanceItems[indexPath.row - 1]
                 let cell = tableView.dequeueReusableCell(withIdentifier: "balance", for: indexPath) as! AccountBalanceTableViewCell
                 cell.titleLabel.text = balance.title
                 cell.subtitleLabel.attributedText = balance.subtitle
@@ -158,7 +158,7 @@ extension AccountViewController: UITableViewDataSource {
                 return UITableViewCell(content: transactionsHeaderView)
 
             } else {
-                let transaction = transactionCells[indexPath.row - 1]
+                let transaction = transactionItems[indexPath.row - 1]
                 let cell = tableView.dequeueReusableCell(withIdentifier: "transaction", for: indexPath) as! AccountTransactionTableViewCell
                 cell.titleLabel.text = transaction.title
                 cell.subtitleLabel.text = "\(transaction.time) · \(transaction.date)"

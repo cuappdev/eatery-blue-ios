@@ -389,7 +389,6 @@ extension HomeViewController: UIScrollViewDelegate {
 extension HomeViewController: LogoRefreshControlDelegate {
 
     func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl) {
-
     }
 
     func logoRefreshControlDidEndRefreshing(_ sender: LogoRefreshControl) {
