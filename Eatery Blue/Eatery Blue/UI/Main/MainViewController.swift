@@ -26,6 +26,7 @@ class MainViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         theTabBarController.didMove(toParent: self)
+        theTabBarController.delegate = self
 
         let homeNavigationController = UINavigationController(rootViewController: home)
         homeNavigationController.tabBarItem = UITabBarItem(
@@ -52,6 +53,18 @@ class MainViewController: UIViewController {
         tabBarAppearance.configureWithDefaultBackground()
         theTabBarController.tabBar.standardAppearance = tabBarAppearance
         theTabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance
+    }
+
+}
+
+extension MainViewController: UITabBarControllerDelegate {
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let navigationController = viewController as? UINavigationController,
+           navigationController.viewControllers.count == 1,
+           navigationController.viewControllers.first === home {
+            home.scrollToTop()
+        }
     }
 
 }

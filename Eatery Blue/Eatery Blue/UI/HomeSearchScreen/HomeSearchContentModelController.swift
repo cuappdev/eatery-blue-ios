@@ -155,7 +155,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
             countView.resetButton.tap { [self] _ in
                 filter = EateryFilter()
-                filterController.setFilter(EateryFilter())
+                filterController.setFilter(EateryFilter(), animated: false)
             }
 
             cells.append(.customView(view: countView))

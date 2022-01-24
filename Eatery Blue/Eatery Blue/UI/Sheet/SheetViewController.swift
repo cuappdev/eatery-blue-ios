@@ -36,6 +36,8 @@ class SheetViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.insetsLayoutMarginsFromSafeArea = false
+        view.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
 
         view.addSubview(stackView)
         setUpStackView()
@@ -125,7 +127,7 @@ class SheetViewController: UIViewController {
         titleLabel.textAlignment = .center
 
         let container = ButtonView(content: titleLabel)
-        container.tap { _ in
+        container.buttonPress { _ in
             action()
         }
         stackView.addArrangedSubview(container)

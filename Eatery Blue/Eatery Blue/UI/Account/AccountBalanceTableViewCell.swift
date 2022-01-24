@@ -37,12 +37,12 @@ class AccountBalanceTableViewCell: UITableViewCell {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .footnote, weight: .semibold)
+        titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
         titleLabel.textColor = UIColor(named: "Black")
     }
 
     private func setUpSubtitleLabel() {
-        subtitleLabel.font = .preferredFont(for: .footnote, weight: .semibold)
+        subtitleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
         subtitleLabel.textColor = UIColor(named: "Black")
     }
 

@@ -65,7 +65,7 @@ class EateryFilterViewController: UIViewController {
         under10Minutes.label.text = "Under 10 min"
         under10Minutes.tap { [self] _ in
             filter.under10MinutesEnabled.toggle()
-            updateFilterButtonsFromState()
+            updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
         }
     }
@@ -76,7 +76,7 @@ class EateryFilterViewController: UIViewController {
         paymentMethods.tap { [self] _ in
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
-            viewController.setSelectedPaymentMethods(filter.paymentMethods)
+            viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
             viewController.delegate = self
             present(viewController, animated: true)
         }
@@ -86,7 +86,7 @@ class EateryFilterViewController: UIViewController {
         favorites.label.text = "Favorites"
         favorites.tap { [self] _ in
             filter.favoriteEnabled.toggle()
-            updateFilterButtonsFromState()
+            updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
         }
     }
@@ -95,7 +95,7 @@ class EateryFilterViewController: UIViewController {
         north.label.text = "North"
         north.tap { [self] _ in
             filter.north.toggle()
-            updateFilterButtonsFromState()
+            updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
         }
     }
@@ -104,17 +104,16 @@ class EateryFilterViewController: UIViewController {
         west.label.text = "West"
         west.tap { [self] _ in
             filter.west.toggle()
-            updateFilterButtonsFromState()
+            updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
         }
     }
-
 
     private func setUpCentral() {
         central.label.text = "Central"
         central.tap { [self] _ in
             filter.central.toggle()
-            updateFilterButtonsFromState()
+            updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
         }
     }
@@ -129,7 +128,14 @@ class EateryFilterViewController: UIViewController {
         filtersView.scrollView.contentInset = view.layoutMargins
     }
 
-    private func updateFilterButtonsFromState() {
+    private func updateFilterButtonsFromState(animated: Bool) {
+        guard !animated else {
+            UIView.transition(with: view, duration: 0.1, options: [.allowUserInteraction, .transitionCrossDissolve]) {
+                self.updateFilterButtonsFromState(animated: false)
+            }
+            return
+        }
+
         under10Minutes.setHighlighted(filter.under10MinutesEnabled)
         favorites.setHighlighted(filter.favoriteEnabled)
         north.setHighlighted(filter.north)
@@ -145,9 +151,9 @@ class EateryFilterViewController: UIViewController {
         }
     }
 
-    func setFilter(_ filter: EateryFilter) {
+    func setFilter(_ filter: EateryFilter, animated: Bool) {
         self.filter = filter
-        updateFilterButtonsFromState()
+        updateFilterButtonsFromState(animated: animated)
     }
 
 }
@@ -160,7 +166,7 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
     ) {
         filter.paymentMethods = paymentMethods
 
-        updateFilterButtonsFromState()
+        updateFilterButtonsFromState(animated: true)
         delegate?.eateryFilterViewController(self, filterDidChange: filter)
         viewController.dismiss(animated: true)
     }

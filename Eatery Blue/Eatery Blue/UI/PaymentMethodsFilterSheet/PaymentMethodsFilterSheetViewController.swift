@@ -40,7 +40,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         }
         addTextButton(title: "Reset") { [self] in
             selectedPaymentMethods = []
-            updatePaymentMethodViewsFromState()
+            updatePaymentMethodViewsFromState(animated: true)
             delegate?.paymentMethodsFilterSheetViewController(self, didSelectPaymentMethods: selectedPaymentMethods)
         }
     }
@@ -60,7 +60,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
                 selectedPaymentMethods.insert(.mealSwipes)
             }
 
-            updatePaymentMethodViewsFromState()
+            updatePaymentMethodViewsFromState(animated: true)
         }
 
         stack.addArrangedSubview(brbsView)
@@ -72,7 +72,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
                 selectedPaymentMethods.insert(.brbs)
             }
 
-            updatePaymentMethodViewsFromState()
+            updatePaymentMethodViewsFromState(animated: true)
         }
 
         stack.addArrangedSubview(cashOrCreditView)
@@ -86,7 +86,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
                 selectedPaymentMethods.insert(.credit)
             }
 
-            updatePaymentMethodViewsFromState()
+            updatePaymentMethodViewsFromState(animated: true)
         }
 
         mealSwipesView.snp.makeConstraints { make in
@@ -98,7 +98,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.addArrangedSubview(container)
 
-        updatePaymentMethodViewsFromState()
+        updatePaymentMethodViewsFromState(animated: false)
     }
 
     private func setUpConstraints() {
@@ -111,7 +111,14 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         view.layoutMargins = UIEdgeInsets(top: 24, left: 16, bottom: view.safeAreaInsets.bottom, right: 16)
     }
 
-    private func updatePaymentMethodViewsFromState() {
+    private func updatePaymentMethodViewsFromState(animated: Bool) {
+        guard !animated else {
+            UIView.transition(with: view, duration: 0.1, options: [.allowUserInteraction, .transitionCrossDissolve]) { [self] in
+                updatePaymentMethodViewsFromState(animated: false)
+            }
+            return
+        }
+
         if selectedPaymentMethods.contains(.mealSwipes) {
             mealSwipesView.imageView.image = UIImage(named: "MealSwipesSelected")
             mealSwipesView.label.textColor = UIColor(named: "EateryBlue")
@@ -137,9 +144,9 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         }
     }
 
-    func setSelectedPaymentMethods(_ paymentMethods: Set<PaymentMethod>) {
+    func setSelectedPaymentMethods(_ paymentMethods: Set<PaymentMethod>, animated: Bool) {
         selectedPaymentMethods = paymentMethods
-        updatePaymentMethodViewsFromState()
+        updatePaymentMethodViewsFromState(animated: animated)
     }
 
 }

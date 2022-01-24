@@ -111,6 +111,10 @@ class HomeViewController: UIViewController {
         updateScrollViewContentInset()
     }
 
+    func scrollToTop() {
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+
 }
 
 extension HomeViewController: UISearchBarDelegate {

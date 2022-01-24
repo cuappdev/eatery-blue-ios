@@ -21,7 +21,7 @@ class ListModelController: ListViewController {
         description: String? = nil
     ) {
         filterController.delegate = self
-        filterController.setFilter(filter)
+        filterController.setFilter(filter, animated: false)
 
         super.setUp(title: title, description: description)
         self.allEateries = eateries
