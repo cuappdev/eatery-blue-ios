@@ -48,6 +48,7 @@ class CarouselViewCompact: UIView {
     }
 
     private func setUpScrollView() {
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.alwaysBounceHorizontal = true
         scrollView.clipsToBounds = false
 

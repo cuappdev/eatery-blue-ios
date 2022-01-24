@@ -59,12 +59,18 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITabBarControllerDelegate {
 
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if let navigationController = viewController as? UINavigationController,
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+
+        // If the home view controller is re-selected, scroll it to the top
+        if tabBarController.selectedViewController == viewController,
+           let navigationController = viewController as? UINavigationController,
            navigationController.viewControllers.count == 1,
            navigationController.viewControllers.first === home {
+
             home.scrollToTop()
         }
+
+        return true
     }
 
 }
