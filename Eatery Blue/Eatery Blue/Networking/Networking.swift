@@ -65,6 +65,7 @@ struct FetchAccounts {
     }
 
     func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
+        logger.info("Attempting to fetch accounts start=\(start), end=\(end), retryAttempts=\(retryAttempts)")
         do {
             let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
 
@@ -77,7 +78,7 @@ struct FetchAccounts {
 
         } catch {
             if retryAttempts > 0 {
-                logger.info(
+                logger.warning(
                     """
                     FetchAccount failed with error: "\(error)"
                     Will invalidate sessionId and retry \(retryAttempts) more times.
