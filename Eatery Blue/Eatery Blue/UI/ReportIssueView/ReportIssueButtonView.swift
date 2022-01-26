@@ -54,9 +54,7 @@ class ReportIssueButtonView: UIView {
 
     private func setUpConstraints() {
         container.snp.makeConstraints { make in
-            make.centerX.equalTo(layoutMarginsGuide)
-            make.leading.greaterThanOrEqualTo(layoutMarginsGuide)
-            make.top.bottom.equalTo(layoutMarginsGuide)
+            make.edges.equalTo(layoutMarginsGuide)
         }
 
         imageView.snp.makeConstraints { make in
@@ -70,6 +68,7 @@ class ReportIssueButtonView: UIView {
             make.top.trailing.bottom.equalToSuperview()
         }
         titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
     }
 
     override func layoutSubviews() {

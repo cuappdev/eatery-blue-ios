@@ -41,18 +41,12 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
         ))
         addSeparator()
         addSettingsItem(SettingsItem(
-            image: UIImage(named: "Gavel"),
-            title: "Legal",
-            subtitle: "Find terms, conditions, and privacy policy",
-            action: {
-            }
-        ))
-        addSeparator()
-        addSettingsItem(SettingsItem(
             image: UIImage(named: "Help"),
             title: "Support",
             subtitle: "Report issues and contact Cornell AppDev",
-            action: {
+            action: { [self] in
+                let viewController = SettingsSupportViewController()
+                navigationController?.pushViewController(viewController, animated: true)
             }
         ))
         setCustomSpacing(24)
