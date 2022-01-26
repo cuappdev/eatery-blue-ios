@@ -186,7 +186,7 @@ class OnboardingLoginViewController: UIViewController {
     }
 
     func finishOnboarding() {
-        UserDefaults.standard.set(true, forKey: "didOnboard")
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didOnboard)
         NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
     }
 

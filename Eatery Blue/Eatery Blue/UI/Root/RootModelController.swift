@@ -19,7 +19,7 @@ class RootModelController: RootViewController {
 
         setMode(.splash)
 
-        if UserDefaults.standard.bool(forKey: "didOnboard") {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didOnboard) {
             transitionTo(.main)
         } else {
             transitionTo(.onboarding)
@@ -47,7 +47,7 @@ class RootModelController: RootViewController {
     }
 
     @objc private func didFinishOnboarding(_ notification: Notification) {
-        UserDefaults.standard.set(true, forKey: "didOnboard")
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didOnboard)
         transitionTo(.main)
     }
 

@@ -57,7 +57,7 @@ struct EateryBlue: ParsableCommand {
 
         if forceOnboarding {
             logger.info("\(#function): Force onboarding")
-            UserDefaults.standard.set(false, forKey: "didOnboard")
+            UserDefaults.standard.set(false, forKey: UserDefaultsKeys.didOnboard)
         }
 
         if forceDeleteCredentials {

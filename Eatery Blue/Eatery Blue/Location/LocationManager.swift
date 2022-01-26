@@ -20,6 +20,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     /// This is necessary since the userLocation publisher only publishes willChange events.
     var userLocationDidChange = PassthroughSubject<CLLocation?, Never>()
 
+    var authorizationStatus: CLAuthorizationStatus {
+        locationManager.authorizationStatus
+    }
+
     override init() {
         locationManager = CLLocationManager()
         super.init()

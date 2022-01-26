@@ -34,7 +34,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "Lock"),
             title: "Privacy",
             subtitle: "Manage permissions and analytics",
-            action: {
+            action: { [self] in
+                let viewController = SettingsPrivacyViewController()
+                navigationController?.pushViewController(viewController, animated: true) 
             }
         ))
         addSeparator()
