@@ -16,7 +16,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "AppDevLogo"),
             title: "About Eatery",
             subtitle: "Learn more about Cornell AppDev",
-            action: {
+            action: { [self] in
+                let viewController = SettingsAboutModelController()
+                navigationController?.pushViewController(viewController, animated: true)
             }
         ))
         addSeparator()

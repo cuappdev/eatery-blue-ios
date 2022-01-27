@@ -9,7 +9,6 @@ import UIKit
 
 class ProfileLoginViewController: UIViewController {
 
-    let settingsButton = ContainerView(content: UIImageView())
     private let scrollView = UIScrollView()
     private let loginView = LoginView()
     let netIdTextField = UITextField()
@@ -20,6 +19,7 @@ class ProfileLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpNavigationItem()
         setUpView()
         setUpConstraints()
 
@@ -33,23 +33,45 @@ class ProfileLoginViewController: UIViewController {
         RootViewController.setStatusBarStyle(.darkContent)
     }
 
+    private func setUpNavigationItem() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor(named: "Black") as Any,
+            .font: UIFont.eateryNavigationBarTitleFont
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor(named: "EateryBlue") as Any,
+            .font: UIFont.eateryNavigationBarLargeTitleFont
+        ]
+
+        navigationItem.title = "Log in with Eatery"
+
+        let standardAppearance = appearance.copy()
+        standardAppearance.configureWithDefaultBackground()
+        navigationItem.standardAppearance = standardAppearance
+
+        let scrollEdgeAppearance = appearance.copy()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+
+        let settingsItem = UIBarButtonItem(
+            image: UIImage(named: "Settings"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSettingsButton)
+        )
+        settingsItem.tintColor = UIColor(named: "Black")
+        navigationItem.rightBarButtonItem = settingsItem
+    }
+
     private func setUpView() {
         view.backgroundColor = .white
-
-        view.addSubview(settingsButton)
-        setUpSettingsButton()
 
         view.addSubview(scrollView)
         setUpScrollView()
 
         view.addSubview(loginButton)
         setUpLoginButton()
-    }
-
-    private func setUpSettingsButton() {
-        settingsButton.content.image = UIImage(named: "Settings")?.withRenderingMode(.alwaysTemplate)
-        settingsButton.content.tintColor = UIColor(named: "Black")
-        settingsButton.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 
     private func setUpScrollView() {
@@ -66,7 +88,6 @@ class ProfileLoginViewController: UIViewController {
     }
 
     private func setUpLoginView() {
-        loginView.addTitleLabel("Log in with Eatery")
         loginView.setCustomSpacing(8)
         loginView.addSubtitleLabel("See your meal swipes, BRBs, and more")
         loginView.setCustomSpacing(24)
@@ -105,15 +126,8 @@ class ProfileLoginViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        settingsButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(6)
-            make.width.height.equalTo(44)
-        }
-
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(settingsButton.snp.bottom)
-            make.leading.trailing.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
         }
 
         loginView.snp.makeConstraints { make in
@@ -135,10 +149,11 @@ class ProfileLoginViewController: UIViewController {
     }
 
     func didTapLoginButton() {
+        // Override point for a sublcass
     }
 
-    private func didTapSkipButton() {
-        NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
+    @objc func didTapSettingsButton() {
+        // Override point for a sublcass
     }
 
     func setLoginButtonEnabled(_ isEnabled: Bool) {

@@ -240,7 +240,7 @@ class EateryViewController: UIViewController {
         let buttonStackView = EateryPillButtonStackView()
         buttonStackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
-        let buttonOrderOnline = EateryPillButtonView()
+        let buttonOrderOnline = PillButtonView()
         buttonStackView.addPillButton(buttonOrderOnline)
         buttonOrderOnline.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         buttonOrderOnline.backgroundColor = UIColor(named: "EateryBlue")
@@ -249,7 +249,7 @@ class EateryViewController: UIViewController {
         buttonOrderOnline.titleLabel.textColor = .white
         buttonOrderOnline.titleLabel.text = "Order online"
 
-        let buttonDirections = EateryPillButtonView()
+        let buttonDirections = PillButtonView()
         buttonStackView.addPillButton(buttonDirections)
         buttonDirections.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         buttonDirections.backgroundColor = UIColor(named: "Gray00")

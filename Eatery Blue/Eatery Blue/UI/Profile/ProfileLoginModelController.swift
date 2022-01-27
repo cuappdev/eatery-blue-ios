@@ -35,7 +35,6 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
         setUpNetIdTextField()
         setUpPasswordTextField()
-        setUpSettingsButton()
 
         if let credentials = try? NetIDKeychainManager.shared.get() {
             netIdTextField.text = credentials.netId
@@ -130,11 +129,9 @@ class ProfileLoginModelController: ProfileLoginViewController {
         }
     }
 
-    private func setUpSettingsButton() {
-        settingsButton.tap { [self] _ in
-            let viewController = SettingsMainMenuModelController()
-            navigationController?.pushViewController(viewController, animated: true)
-        }
+    override func didTapSettingsButton() {
+        let viewController = SettingsMainMenuModelController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
 }
