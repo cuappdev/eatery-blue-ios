@@ -52,7 +52,6 @@ class CarouselView: UIView {
         scrollView.clipsToBounds = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isPagingEnabled = true
-        scrollView.delaysContentTouches = false
 
         scrollView.addSubview(stackView)
         setUpStackView()

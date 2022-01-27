@@ -158,10 +158,11 @@ class EateryModelController: EateryViewController {
         ) { [self] in
             presentMenuPicker()
         }
-        setCustomSpacing(0)
-        addSearchBar()
-        setCustomSpacing(0)
-        addThinSpacer()
+
+        // Search bar is currently unimplemented
+        // addSearchBar()
+
+        addSpacer(height: 16)
 
         if let menu = event.menu {
             let categories = menu.categories

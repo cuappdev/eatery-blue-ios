@@ -9,11 +9,23 @@ import UIKit
 
 class AccountTransactionsHeaderView: UIView {
 
+    private let stackView = UIStackView()
+
+    private let titleContainer = ContainerView(content: UIView())
     let titleLabel = UILabel()
     let buttonImageView = UIImageView()
-    let searchBar = UISearchBar()
-    private let separator = HDivider()
-    let headerLabel = UILabel()
+
+    private let searchBarContainer = ContainerView(content: UISearchBar())
+    var searchBar: UISearchBar {
+        searchBarContainer.content
+    }
+
+    private let separatorContainer = ContainerView(content: HDivider())
+
+    private let headerLabelContainer = ContainerView(content: UILabel())
+    var headerLabel: UILabel {
+        headerLabelContainer.content
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,21 +39,37 @@ class AccountTransactionsHeaderView: UIView {
     }
 
     private func setUpSelf() {
+        insetsLayoutMarginsFromSafeArea = false
         layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
 
-        addSubview(titleLabel)
+        addSubview(stackView)
+        setUpStackView()
+    }
+
+    private func setUpStackView() {
+        stackView.axis = .vertical
+
+        stackView.addArrangedSubview(titleContainer)
+        setUpTitleContainer()
+
+        // stackView.addArrangedSubview(searchBarContainer)
+        // setUpSearchBar()
+
+        stackView.addArrangedSubview(separatorContainer)
+        setUpSeparator()
+
+        stackView.addArrangedSubview(headerLabelContainer)
+        setUpHeaderLabel()
+    }
+
+    private func setUpTitleContainer() {
+        titleContainer.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 6, right: 16)
+
+        titleContainer.content.addSubview(titleLabel)
         setUpTitleLabel()
 
-        addSubview(buttonImageView)
+        titleContainer.content.addSubview(buttonImageView)
         setUpButtonImageView()
-
-        addSubview(searchBar)
-        setUpSearchBar()
-
-        addSubview(separator)
-
-        addSubview(headerLabel)
-        setUpHeaderLabel()
     }
 
     private func setUpTitleLabel() {
@@ -57,39 +85,33 @@ class AccountTransactionsHeaderView: UIView {
     private func setUpSearchBar() {
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Search for transactions..."
-        searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
+        searchBarContainer.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    }
+
+    private func setUpSeparator() {
+        separatorContainer.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
     }
 
     private func setUpHeaderLabel() {
         headerLabel.font = .preferredFont(for: .body, weight: .semibold)
         headerLabel.textColor = UIColor(named: "Black")
+
+        headerLabelContainer.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
     }
 
     private func setUpConstraints() {
+        stackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalTo(layoutMarginsGuide)
-            make.height.equalTo(buttonImageView)
+            make.top.leading.bottom.equalToSuperview()
         }
 
         buttonImageView.snp.makeConstraints { make in
-            make.top.trailing.equalTo(layoutMarginsGuide)
-            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.top.trailing.bottom.equalToSuperview()
             make.width.height.equalTo(40)
-        }
-
-        searchBar.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(2)
-            make.leading.trailing.equalTo(layoutMarginsGuide).inset(-8)
-        }
-
-        separator.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(2)
-            make.leading.trailing.equalTo(layoutMarginsGuide)
-        }
-
-        headerLabel.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(12)
-            make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
         }
     }
 
