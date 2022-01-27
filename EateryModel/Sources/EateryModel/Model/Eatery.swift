@@ -28,6 +28,8 @@ public struct Eatery: Codable, Hashable {
 
     public let name: String
 
+    public let onlineOrderUrl: URL?
+
     public let paymentMethods: Set<PaymentMethod>
 
     public let waitTimesByDay: [Day: WaitTimes]
@@ -40,8 +42,9 @@ public struct Eatery: Codable, Hashable {
         latitude: Double? = nil,
         locationDescription: String? = nil,
         longitude: Double? = nil,
-        menuSummary: String?,
+        menuSummary: String? = nil,
         name: String,
+        onlineOrderUrl: URL? = nil,
         paymentMethods: Set<PaymentMethod> = [],
         waitTimesByDay: [Day: WaitTimes] = [:]
     ) {
@@ -54,6 +57,7 @@ public struct Eatery: Codable, Hashable {
         self.longitude = longitude
         self.menuSummary = menuSummary
         self.name = name
+        self.onlineOrderUrl = onlineOrderUrl
         self.paymentMethods = paymentMethods
         self.waitTimesByDay = waitTimesByDay
     }

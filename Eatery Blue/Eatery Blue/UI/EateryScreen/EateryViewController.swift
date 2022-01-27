@@ -8,6 +8,8 @@
 import Combine
 import EateryModel
 import UIKit
+import CoreLocation
+import MapKit
 
 class EateryViewController: UIViewController {
 
@@ -236,29 +238,53 @@ class EateryViewController: UIViewController {
         stackView.addArrangedSubview(container)
     }
 
-    func addButtons(_ eatery: Eatery) {
-        let buttonStackView = EateryPillButtonStackView()
-        buttonStackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    func addButtons(
+        orderOnlineAction: (() -> Void)?,
+        directionsAction: (() -> Void)?
+    ) {
+        let buttons = UIStackView()
+        buttons.axis = .horizontal
+        buttons.alignment = .fill
+        buttons.distribution = .fillEqually
+        buttons.spacing = 12
 
-        let buttonOrderOnline = PillButtonView()
-        buttonStackView.addPillButton(buttonOrderOnline)
-        buttonOrderOnline.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        buttonOrderOnline.backgroundColor = UIColor(named: "EateryBlue")
-        buttonOrderOnline.imageView.image = UIImage(named: "iPhone")
-        buttonOrderOnline.imageView.tintColor = .white
-        buttonOrderOnline.titleLabel.textColor = .white
-        buttonOrderOnline.titleLabel.text = "Order online"
+        if let orderOnlineAction = orderOnlineAction {
+            let content = PillButtonView()
+            content.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            content.backgroundColor = UIColor(named: "EateryBlue")
+            content.imageView.image = UIImage(named: "iPhone")
+            content.imageView.tintColor = .white
+            content.titleLabel.textColor = .white
+            content.titleLabel.text = "Order online"
 
-        let buttonDirections = PillButtonView()
-        buttonStackView.addPillButton(buttonDirections)
-        buttonDirections.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        buttonDirections.backgroundColor = UIColor(named: "Gray00")
-        buttonDirections.imageView.image = UIImage(named: "Walk")?.withRenderingMode(.alwaysTemplate)
-        buttonDirections.imageView.tintColor = UIColor(named: "Black")
-        buttonDirections.titleLabel.textColor = UIColor(named: "Black")
-        buttonDirections.titleLabel.text = "Get directions"
+            let button = ButtonView(content: content)
+            button.buttonPress { _ in
+                orderOnlineAction()
+            }
+            buttons.addArrangedSubview(button)
+        }
 
-        stackView.addArrangedSubview(buttonStackView)
+        if let directionsAction = directionsAction {
+            let content = PillButtonView()
+            content.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            content.backgroundColor = UIColor(named: "Gray00")
+            content.imageView.image = UIImage(named: "Walk")?.withRenderingMode(.alwaysTemplate)
+            content.imageView.tintColor = UIColor(named: "Black")
+            content.titleLabel.textColor = UIColor(named: "Black")
+            content.titleLabel.text = "Get directions"
+
+            let button = ButtonView(content: content)
+            button.buttonPress { _ in
+                directionsAction()
+            }
+            buttons.addArrangedSubview(button)
+        }
+
+        if !buttons.arrangedSubviews.isEmpty {
+            let container = ContainerView(content: buttons)
+            container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            stackView.addArrangedSubview(container)
+        }
     }
 
     func addTimingView(_ eatery: Eatery) {

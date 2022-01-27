@@ -55,7 +55,11 @@ internal enum Schema {
 
         internal let onlineOrderUrl: URL?
 
-        internal let paymentMethods: [Schema.PaymentMethod]?
+        internal let paymentAcceptsCash: Bool?
+
+        internal let paymentAcceptsBrbs: Bool?
+
+        internal let paymentAcceptsMealSwipes: Bool?
 
         internal let waitTimesByDay: [Schema.WaitTimesByDay]?
 
@@ -88,16 +92,6 @@ internal enum Schema {
         internal let healthy: Bool?
 
         internal let name: String
-
-    }
-
-    internal enum PaymentMethod: String, Codable {
-
-        case cash
-
-        case brbs
-
-        case swipes
 
     }
 

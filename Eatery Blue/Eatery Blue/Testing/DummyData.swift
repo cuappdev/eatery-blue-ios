@@ -52,6 +52,7 @@ enum DummyData {
         longitude: nil,
         menuSummary: "Flatbreads, salads, pasta",
         name: "Mac's Café",
+        onlineOrderUrl: nil,
         paymentMethods: [.brbs, .cash, .credit],
         waitTimesByDay:  [
             Day(): WaitTimes(

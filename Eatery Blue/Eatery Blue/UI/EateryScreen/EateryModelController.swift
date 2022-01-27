@@ -5,7 +5,9 @@
 //  Created by William Ma on 12/26/21.
 //
 
+import CoreLocation
 import EateryModel
+import MapKit
 import UIKit
 
 class EateryModelController: EateryViewController {
@@ -74,6 +76,13 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 16)
 
         setUpMenuFromState()
+    }
+
+    private func addButtons(_ eatery: Eatery) {
+        addButtons(
+            orderOnlineAction: eatery.onlineOrderUrl != nil ? didPressOrderOnlineButton : nil,
+            directionsAction: eatery.latitude != nil && eatery.longitude != nil ? didPressDirectionsButton : nil
+        )
     }
 
     private func updateNavigationViewFavoriteButtonFromCoreData() {
@@ -194,6 +203,25 @@ class EateryModelController: EateryViewController {
         viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
 
         present(viewController, animated: true)
+    }
+
+    private func didPressOrderOnlineButton() {
+        if let url = eatery?.onlineOrderUrl {
+            UIApplication.shared.open(url, options: [:])
+        }
+    }
+
+    private func didPressDirectionsButton() {
+        guard let eatery = eatery, let latitude = eatery.latitude, let longitude = eatery.longitude else {
+            return
+        }
+
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
+        mapItem.name = eatery.name
+        mapItem.openInMaps(launchOptions: [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
+        ])
     }
 
 }

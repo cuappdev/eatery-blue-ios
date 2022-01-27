@@ -40,7 +40,7 @@ class EateryPillButtonStackView: UIView {
         }
     }
 
-    func addPillButton(_ view: PillButtonView) {
+    func addPillButton(_ view: UIView) {
         stackView.addArrangedSubview(view)
     }
 

@@ -20,28 +20,31 @@ enum SchemaToModel {
             longitude: schemaEatery.longitude,
             menuSummary: schemaEatery.menuSummary,
             name: schemaEatery.name,
-            paymentMethods: convert(schemaEatery.paymentMethods),
+            onlineOrderUrl: schemaEatery.onlineOrderUrl,
+            paymentMethods: convert(
+                acceptsBrbs: schemaEatery.paymentAcceptsBrbs,
+                acceptsCash: schemaEatery.paymentAcceptsCash,
+                acceptsMealSwipes: schemaEatery.paymentAcceptsMealSwipes
+            ),
             waitTimesByDay: convert(schemaEatery.waitTimesByDay)
         )
     }
 
-    static func convert(_ schemaPaymentMethods: [Schema.PaymentMethod]?) -> Set<PaymentMethod> {
-        guard let schemaPaymentMethods = schemaPaymentMethods else {
-            return []
+    static func convert(acceptsBrbs: Bool?, acceptsCash: Bool?, acceptsMealSwipes: Bool?) -> Set<PaymentMethod> {
+        var paymentMethods: Set<PaymentMethod> = []
+
+        if acceptsBrbs ?? false {
+            paymentMethods.insert(.brbs)
         }
 
-        var paymentMethods: Set<PaymentMethod> = []
-        for schemaPaymentMethod in schemaPaymentMethods {
-            switch schemaPaymentMethod {
-            case .brbs:
-                paymentMethods.insert(.brbs)
-            case .cash:
-                paymentMethods.insert(.cash)
-                paymentMethods.insert(.credit)
-            case .swipes:
-                paymentMethods.insert(.mealSwipes)
-            }
+        if acceptsCash ?? false {
+            paymentMethods.insert(.cash)
         }
+
+        if acceptsMealSwipes ?? false {
+            paymentMethods.insert(.mealSwipes)
+        }
+
         return paymentMethods
     }
 
