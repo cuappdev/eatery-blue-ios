@@ -79,10 +79,6 @@ class LoginView: UIView {
         stackView.addArrangedSubview(container)
     }
 
-    func addErrorMessageView(_ view: LoginErrorMessageView) {
-        stackView.addArrangedSubview(view)
-    }
-
     func addCustomView(_ view: UIView) {
         stackView.addArrangedSubview(view)
     }

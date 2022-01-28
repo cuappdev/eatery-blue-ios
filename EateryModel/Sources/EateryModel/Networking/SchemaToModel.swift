@@ -7,10 +7,11 @@
 
 import Foundation
 
-enum SchemaToModel {
+internal enum SchemaToModel {
 
-    static func convert(_ schemaEatery: Schema.Eatery) -> Eatery {
+    internal static func convert(_ schemaEatery: Schema.Eatery) -> Eatery {
         Eatery(
+            alerts: convert(schemaEatery.alerts),
             campusArea: schemaEatery.campusArea,
             events: convert(schemaEatery.events),
             id: schemaEatery.id,
@@ -30,7 +31,24 @@ enum SchemaToModel {
         )
     }
 
-    static func convert(acceptsBrbs: Bool?, acceptsCash: Bool?, acceptsMealSwipes: Bool?) -> Set<PaymentMethod> {
+    internal static func convert(_ schemaAlerts: [Schema.Alert]?) -> [EateryAlert] {
+        guard let schemaAlerts = schemaAlerts else {
+            return []
+        }
+
+        return schemaAlerts.map(convert)
+    }
+
+    internal static func convert(_ schemaAlert: Schema.Alert) -> EateryAlert {
+        EateryAlert(
+            description: schemaAlert.description,
+            endTimestamp: schemaAlert.endTimestamp,
+            id: schemaAlert.id,
+            startTimestamp: schemaAlert.startTimestamp
+        )
+    }
+
+    internal static func convert(acceptsBrbs: Bool?, acceptsCash: Bool?, acceptsMealSwipes: Bool?) -> Set<PaymentMethod> {
         var paymentMethods: Set<PaymentMethod> = []
 
         if acceptsBrbs ?? false {
@@ -48,7 +66,7 @@ enum SchemaToModel {
         return paymentMethods
     }
 
-    static func convert(_ schemaEvents: [Schema.Event]?) -> [Event] {
+    internal static func convert(_ schemaEvents: [Schema.Event]?) -> [Event] {
         guard let schemaEvents = schemaEvents else {
             return []
         }
@@ -56,7 +74,7 @@ enum SchemaToModel {
         return schemaEvents.compactMap(convert)
     }
 
-    static func convert(_ schemaEvent: Schema.Event) -> Event? {
+    internal static func convert(_ schemaEvent: Schema.Event) -> Event? {
         guard let day = Day(string: schemaEvent.canonicalDate) else {
             return nil
         }
@@ -77,14 +95,14 @@ enum SchemaToModel {
         )
     }
 
-    static func convert(_ schemaMenuCategory: Schema.MenuCategory) -> MenuCategory {
+    internal static func convert(_ schemaMenuCategory: Schema.MenuCategory) -> MenuCategory {
         MenuCategory(
             category: schemaMenuCategory.category,
             items: schemaMenuCategory.items.map(convert)
         )
     }
 
-    static func convert(_ schemaMenuItem: Schema.MenuItem) -> MenuItem {
+    internal static func convert(_ schemaMenuItem: Schema.MenuItem) -> MenuItem {
         MenuItem(
             description: nil,
             healthy: schemaMenuItem.healthy ?? false,
@@ -93,7 +111,7 @@ enum SchemaToModel {
         )
     }
 
-    static func convert(_ schemaWaitTimesByDay: [Schema.WaitTimesByDay]?) -> [Day: WaitTimes] {
+    internal static func convert(_ schemaWaitTimesByDay: [Schema.WaitTimesByDay]?) -> [Day: WaitTimes] {
         guard let schemaWaitTimesByDay = schemaWaitTimesByDay else {
             return [:]
         }
@@ -118,7 +136,7 @@ enum SchemaToModel {
         return waitTimesByDay
     }
 
-    static func convert(_ schemaWaitTimes: Schema.WaitTimes) -> WaitTimeSample {
+    internal static func convert(_ schemaWaitTimes: Schema.WaitTimes) -> WaitTimeSample {
         WaitTimeSample(
             timestamp: TimeInterval(schemaWaitTimes.timestamp),
             low: TimeInterval(schemaWaitTimes.waitTimeLow),

@@ -10,6 +10,8 @@ import Foundation
 
 public struct Eatery: Codable, Hashable {
 
+    public let alerts: [EateryAlert]
+
     public let campusArea: String?
 
     public let events: [Event]
@@ -35,6 +37,7 @@ public struct Eatery: Codable, Hashable {
     public let waitTimesByDay: [Day: WaitTimes]
 
     public init(
+        alerts: [EateryAlert] = [],
         campusArea: String? = nil,
         events: [Event] = [],
         id: Int64,
@@ -48,6 +51,7 @@ public struct Eatery: Codable, Hashable {
         paymentMethods: Set<PaymentMethod> = [],
         waitTimesByDay: [Day: WaitTimes] = [:]
     ) {
+        self.alerts = alerts
         self.campusArea = campusArea
         self.events = events
         self.id = id

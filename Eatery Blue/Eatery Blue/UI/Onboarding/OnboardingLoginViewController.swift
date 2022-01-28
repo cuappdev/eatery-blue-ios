@@ -15,7 +15,7 @@ class OnboardingLoginViewController: UIViewController {
     private let loginView = LoginView()
     let netIdTextField = UITextField()
     let passwordTextField = UITextField()
-    private let errorMessageView = LoginErrorMessageView()
+    private let errorMessageView = AlertMessageView()
     private let loginButton = ButtonView(pillContent: UILabel())
 
     override func viewDidLoad() {
@@ -97,6 +97,7 @@ class OnboardingLoginViewController: UIViewController {
         setUpPasswordTextField()
         loginView.setCustomSpacing(24)
         loginView.addCustomView(errorMessageView)
+        setUpErrorMessageView()
     }
 
     private func setUpNetIdTextField() {
@@ -107,6 +108,10 @@ class OnboardingLoginViewController: UIViewController {
     private func setUpPasswordTextField() {
         passwordTextField.font = .preferredFont(for: .footnote, weight: .medium)
         passwordTextField.placeholder = "Type your password..."
+    }
+
+    private func setUpErrorMessageView() {
+        errorMessageView.setStyleError()
     }
 
     private func setUpLoginButton() {

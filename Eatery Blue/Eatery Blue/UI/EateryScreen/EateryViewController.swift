@@ -287,6 +287,17 @@ class EateryViewController: UIViewController {
         }
     }
 
+    func addAlertInfoView(_ message: String) {
+        let alertView = AlertMessageView()
+        alertView.setStyleInfo()
+        alertView.messageLabel.text = message
+
+        let containerView = ContainerView(content: alertView)
+        containerView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        stackView.addArrangedSubview(containerView)
+    }
+
     func addTimingView(_ eatery: Eatery) {
         let timingView = TimingDataView()
         timingView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

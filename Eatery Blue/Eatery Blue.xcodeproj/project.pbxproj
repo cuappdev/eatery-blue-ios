@@ -25,6 +25,7 @@
 		5D0CDC602776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift */; };
 		5D157CDC2783B7140014B63A /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D157CDB2783B7140014B63A /* LogoView.swift */; };
 		5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */; };
+		5D212AD527A44D3D008B070D /* AlertMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D212AD427A44D3D008B070D /* AlertMessageView.swift */; };
 		5D34F08E279AF9E1000F9056 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D34F08D279AF9E1000F9056 /* ButtonView.swift */; };
 		5D34F090279B48CE000F9056 /* EateryCardAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D34F08F279B48CE000F9056 /* EateryCardAlertView.swift */; };
 		5D377CE527A19B0200F8DC37 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D377CE427A19B0200F8DC37 /* UserDefaultsKeys.swift */; };
@@ -40,7 +41,6 @@
 		5D468A15277E3FDC00986AFF /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A14277E3FDC00986AFF /* Networking.swift */; };
 		5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */; };
 		5D698F8627888EC80054E1AB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8527888EC80054E1AB /* LoginView.swift */; };
-		5D698F88278892A10054E1AB /* LoginErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */; };
 		5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8927889DE30054E1AB /* ProfileViewController.swift */; };
 		5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8B27889F0A0054E1AB /* AccountViewController.swift */; };
 		5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */; };
@@ -180,6 +180,7 @@
 		5D0CDC5F2776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsFilterSheetViewController.swift; sourceTree = "<group>"; };
 		5D157CDB2783B7140014B63A /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		5D1F13B1277638D4001A21B9 /* SheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationController.swift; sourceTree = "<group>"; };
+		5D212AD427A44D3D008B070D /* AlertMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageView.swift; sourceTree = "<group>"; };
 		5D34F08D279AF9E1000F9056 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5D34F08F279B48CE000F9056 /* EateryCardAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardAlertView.swift; sourceTree = "<group>"; };
 		5D377CE427A19B0200F8DC37 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
@@ -195,7 +196,6 @@
 		5D468A14277E3FDC00986AFF /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginViewController.swift; sourceTree = "<group>"; };
 		5D698F8527888EC80054E1AB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginErrorMessageView.swift; sourceTree = "<group>"; };
 		5D698F8927889DE30054E1AB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5D698F8B27889F0A0054E1AB /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginModelController.swift; sourceTree = "<group>"; };
@@ -341,6 +341,14 @@
 			path = LogoRefreshControl;
 			sourceTree = "<group>";
 		};
+		5D212AD627A44D49008B070D /* AlertMessage */ = {
+			isa = PBXGroup;
+			children = (
+				5D212AD427A44D3D008B070D /* AlertMessageView.swift */,
+			);
+			path = AlertMessage;
+			sourceTree = "<group>";
+		};
 		5D377CE627A1AB7200F8DC37 /* SettingsSupport */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,7 +390,6 @@
 		5D698F8427888EB90054E1AB /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				5D698F87278892A10054E1AB /* LoginErrorMessageView.swift */,
 				5D698F8527888EC80054E1AB /* LoginView.swift */,
 			);
 			path = Login;
@@ -571,6 +578,7 @@
 			isa = PBXGroup;
 			children = (
 				5D698F932788ACDA0054E1AB /* Account */,
+				5D212AD627A44D49008B070D /* AlertMessage */,
 				5D75D6E5278E402300832359 /* Carousel */,
 				5DF304D5277AA96300E2C9A4 /* EateryCard */,
 				5DF304D4277A73B700E2C9A4 /* EateryFilter */,
@@ -885,7 +893,6 @@
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
 				5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */,
-				5D698F88278892A10054E1AB /* LoginErrorMessageView.swift in Sources */,
 				5DA434B6278B5A17001337FD /* AccountTransactionTableViewCell.swift in Sources */,
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
@@ -893,6 +900,7 @@
 				5DA434B4278B5A10001337FD /* AccountBalanceTableViewCell.swift in Sources */,
 				5D377CE527A19B0200F8DC37 /* UserDefaultsKeys.swift in Sources */,
 				5D0CDC602776324800AD0E27 /* PaymentMethodsFilterSheetViewController.swift in Sources */,
+				5D212AD527A44D3D008B070D /* AlertMessageView.swift in Sources */,
 				5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */,
 				5D34F090279B48CE000F9056 /* EateryCardAlertView.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
