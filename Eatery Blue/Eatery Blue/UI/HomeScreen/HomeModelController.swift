@@ -98,11 +98,7 @@ class HomeModelController: HomeViewController {
             contentView.titleLabel.text = eatery.name
 
             let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            if metadata.isFavorite {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
-            } else {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
-            }
+            contentView.setFavoriteImage(metadata.isFavorite)
 
             LocationManager.shared.$userLocation
                 .sink { userLocation in

@@ -15,7 +15,8 @@ class EateryMediumCardContentView: UIView {
 
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
-    let favoriteImageView = UIImageView()
+    
+    private let favoriteImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -124,6 +125,14 @@ class EateryMediumCardContentView: UIView {
 
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
+    }
+
+    func setFavoriteImage(_ isFavorite: Bool) {
+        if isFavorite {
+            favoriteImageView.image = UIImage(named: "FavoriteSelected")
+        } else {
+            favoriteImageView.image = UIImage(named: "FavoriteUnselected")
+        }
     }
 
 }
