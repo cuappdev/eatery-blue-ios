@@ -106,10 +106,6 @@ class EateryLargeCardContentView: UIView {
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
-        imageView.setContentCompressionResistancePriority(
-            titleLabel.contentCompressionResistancePriority(for: .vertical) - 1,
-            for: .vertical
-        )
 
         imageTintView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -124,12 +120,14 @@ class EateryLargeCardContentView: UIView {
             make.leading.bottom.equalToSuperview().inset(12)
         }
 
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
         favoriteImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(12)
             make.top.equalTo(imageView.snp.bottom).offset(12)
             make.leading.equalTo(labelStackView.snp.trailing).offset(16)
-            make.width.equalTo(20)
-            make.height.equalTo(20)
+            make.width.height.equalTo(titleLabel.snp.height)
         }
     }
 

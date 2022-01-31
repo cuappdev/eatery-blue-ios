@@ -103,6 +103,7 @@ class EateryMediumCardContentView: UIView {
             make.leading.equalToSuperview().inset(12)
             make.top.equalTo(imageView.snp.bottom).offset(12)
         }
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         subtitleLabel.snp.makeConstraints { make in
@@ -116,7 +117,7 @@ class EateryMediumCardContentView: UIView {
             make.leading.equalTo(titleLabel.snp.trailing).offset(4)
             make.leading.equalTo(subtitleLabel.snp.trailing).offset(4)
             make.trailing.equalToSuperview().inset(12)
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(titleLabel.snp.height)
             make.top.equalTo(imageView.snp.bottom).offset(12)
         }
     }
