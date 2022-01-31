@@ -18,7 +18,7 @@ class HoursSheetViewController: SheetViewController {
     }()
 
     func setUp(_ events: [Event]) {
-        addHeader(title: "Hours", image: UIImage(named: "Clock"))
+        addHeader(title: "Hours")
         addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
         addSchedule(events)
         setCustomSpacing(24)
