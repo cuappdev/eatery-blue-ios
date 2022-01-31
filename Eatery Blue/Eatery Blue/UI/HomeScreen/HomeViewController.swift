@@ -164,7 +164,7 @@ extension HomeViewController: UITableViewDataSource {
             label.font = .preferredFont(for: .title2, weight: .semibold)
 
             let container = ContainerView(content: label)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            container.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 6, right: 16)
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
@@ -172,7 +172,7 @@ extension HomeViewController: UITableViewDataSource {
             
         case .carouselView(let carouselView):
             let container = ContainerView(content: carouselView)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            container.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
