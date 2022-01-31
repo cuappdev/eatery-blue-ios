@@ -136,8 +136,10 @@ class PaymentMethodsSheetViewController: SheetViewController {
             )
             attributedString.append(NSAttributedString(attachment: attachment))
             attributedString.append(NSAttributedString(string: " Meal swipes"))
-            attributedString.addAttributes(
-                [.foregroundColor: UIColor(named: "EateryBlue") as Any],
+            attributedString.addAttributes([
+                    .foregroundColor: UIColor(named: "EateryBlue") as Any,
+                    .font: UIFont.preferredFont(for: .subheadline, weight: .medium)
+                ],
                 range: NSRange(location: 0, length: attributedString.length)
             )
             result.append(attributedString)
@@ -151,8 +153,10 @@ class PaymentMethodsSheetViewController: SheetViewController {
             )
             attributedString.append(NSAttributedString(attachment: attachment))
             attributedString.append(NSAttributedString(string: " BRBs"))
-            attributedString.addAttributes(
-                [.foregroundColor: UIColor(named: "EateryRed") as Any],
+            attributedString.addAttributes([
+                    .foregroundColor: UIColor(named: "EateryRed") as Any,
+                    .font: UIFont.preferredFont(for: .subheadline, weight: .medium)
+                ],
                 range: NSRange(location: 0, length: attributedString.length)
             )
             result.append(attributedString)
@@ -166,8 +170,10 @@ class PaymentMethodsSheetViewController: SheetViewController {
             )
             attributedString.append(NSAttributedString(attachment: attachment))
             attributedString.append(NSAttributedString(string: " Cash or credit"))
-            attributedString.addAttributes(
-                [.foregroundColor: UIColor(named: "EateryGreen") as Any],
+            attributedString.addAttributes([
+                    .foregroundColor: UIColor(named: "EateryGreen") as Any,
+                    .font: UIFont.preferredFont(for: .subheadline, weight: .medium)
+                ],
                 range: NSRange(location: 0, length: attributedString.length)
             )
             result.append(attributedString)
