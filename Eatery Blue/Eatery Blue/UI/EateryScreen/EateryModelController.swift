@@ -72,10 +72,11 @@ class EateryModelController: EateryViewController {
         setCustomSpacing(8)
         addShortDescriptionLabel(eatery)
         addButtons(eatery)
+        addAlertsIfNeeded(eatery)
         addTimingView(eatery)
         addSpacer(height: 16)
 
-        setUpMenuFromState()
+        addMenuFromState()
     }
 
     private func addButtons(_ eatery: Eatery) {
@@ -83,6 +84,19 @@ class EateryModelController: EateryViewController {
             orderOnlineAction: eatery.onlineOrderUrl != nil ? didPressOrderOnlineButton : nil,
             directionsAction: eatery.latitude != nil && eatery.longitude != nil ? didPressDirectionsButton : nil
         )
+    }
+
+    private func addAlertsIfNeeded(_ eatery: Eatery) {
+        let now = Date()
+        let relevantAlerts = eatery.alerts.filter { alert in
+            alert.startDate <= now && now <= alert.endDate
+        }
+
+        for alert in relevantAlerts {
+            if let description = alert.description {
+                addAlertInfoView(description)
+            }
+        }
     }
 
     private func updateNavigationViewFavoriteButtonFromCoreData() {
@@ -131,7 +145,7 @@ class EateryModelController: EateryViewController {
         categoryViews.removeAll()
     }
 
-    private func setUpMenuFromState() {
+    private func addMenuFromState() {
         guard let event = selectedEvent else {
             addMenuHeaderView(
                 title: "Closed Today",
@@ -234,7 +248,7 @@ extension EateryModelController: MenuPickerSheetViewControllerDelegate {
 
         updateNavigationViewCategoriesFromState()
         removeMenuFromStackView()
-        setUpMenuFromState()
+        addMenuFromState()
 
         vc.dismiss(animated: true)
     }
@@ -244,7 +258,7 @@ extension EateryModelController: MenuPickerSheetViewControllerDelegate {
 
         updateNavigationViewCategoriesFromState()
         removeMenuFromStackView()
-        setUpMenuFromState()
+        addMenuFromState()
 
         vc.dismiss(animated: true)
     }
