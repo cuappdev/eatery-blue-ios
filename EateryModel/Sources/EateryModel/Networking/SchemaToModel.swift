@@ -27,7 +27,7 @@ internal enum SchemaToModel {
                 acceptsCash: schemaEatery.paymentAcceptsCash,
                 acceptsMealSwipes: schemaEatery.paymentAcceptsMealSwipes
             ),
-            waitTimesByDay: convert(schemaEatery.waitTimesByDay)
+            waitTimesByDay: convert(schemaEatery.waitTimes)
         )
     }
 
@@ -124,7 +124,7 @@ internal enum SchemaToModel {
         for schemaWaitTimesByDay in schemaWaitTimesByDay {
             guard let dayString = schemaWaitTimesByDay.canonicalDate,
                   let day = Day(string: dayString),
-                  let waitTimes = schemaWaitTimesByDay.waitTimes,
+                  let waitTimes = schemaWaitTimesByDay.data,
                   !waitTimes.isEmpty
             else {
                 continue
