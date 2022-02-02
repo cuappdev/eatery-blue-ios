@@ -61,7 +61,7 @@ internal enum Schema {
 
         internal let paymentAcceptsMealSwipes: Bool?
 
-        internal let waitTimesByDay: [Schema.WaitTimesByDay]?
+        internal let waitTimes: [Schema.WaitTimesByDay]?
 
     }
 
@@ -111,7 +111,7 @@ internal enum Schema {
 
         internal let canonicalDate: String?
 
-        internal let waitTimes: [Schema.WaitTimes]?
+        internal let data: [Schema.WaitTimes]?
 
     }
 
