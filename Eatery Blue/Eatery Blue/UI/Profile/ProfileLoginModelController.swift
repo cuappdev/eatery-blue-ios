@@ -30,17 +30,25 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
     weak var delegate: ProfileLoginModelControllerDelegate?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setUpNetIdTextField()
-        setUpPasswordTextField()
+    init() {
+        super.init(nibName: nil, bundle: nil)
 
         if let credentials = try? NetIDKeychainManager.shared.get() {
             netIdTextField.text = credentials.netId
             passwordTextField.text = "        "
             attemptLogin()
         }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setUpNetIdTextField()
+        setUpPasswordTextField()
     }
 
     private func setUpNetIdTextField() {

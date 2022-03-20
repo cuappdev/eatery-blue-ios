@@ -72,6 +72,7 @@ class HomeViewController: UIViewController {
 
     private func setUpNavigationView() {
         navigationView.logoRefreshControl.delegate = self
+        navigationView.setFadeInProgress(0)
     }
 
     private func setUpConstraints() {

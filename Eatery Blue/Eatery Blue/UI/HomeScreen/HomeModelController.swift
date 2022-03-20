@@ -68,7 +68,9 @@ class HomeModelController: HomeViewController {
     private func updateAllEateriesFromNetworking() async {
         do {
             let eateries = try await Networking.default.eateries.fetch(maxStaleness: 0)
-            allEateries = eateries.sorted(by: { lhs, rhs in
+            allEateries = eateries.filter { eatery in
+                return eatery.name != ""
+            }.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
 
