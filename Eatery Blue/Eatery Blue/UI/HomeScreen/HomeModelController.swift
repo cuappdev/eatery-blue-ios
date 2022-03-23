@@ -69,7 +69,7 @@ class HomeModelController: HomeViewController {
         do {
             let eateries = try await Networking.default.eateries.fetch(maxStaleness: 0)
             allEateries = eateries.filter { eatery in
-                return eatery.name != ""
+                return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
