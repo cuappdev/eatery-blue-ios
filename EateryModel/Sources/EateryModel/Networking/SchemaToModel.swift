@@ -20,7 +20,7 @@ internal enum SchemaToModel {
             locationDescription: schemaEatery.location,
             longitude: schemaEatery.longitude,
             menuSummary: schemaEatery.menuSummary,
-            name: schemaEatery.name,
+            name: schemaEatery.name ?? "",
             onlineOrderUrl: schemaEatery.onlineOrderUrl,
             paymentMethods: convert(
                 acceptsBrbs: schemaEatery.paymentAcceptsBrbs,

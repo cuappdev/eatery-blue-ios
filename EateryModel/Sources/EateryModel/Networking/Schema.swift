@@ -51,7 +51,7 @@ internal enum Schema {
 
         internal let menuSummary: String?
 
-        internal let name: String
+        internal let name: String?
 
         internal let onlineOrderUrl: URL?
 

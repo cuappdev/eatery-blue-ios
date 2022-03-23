@@ -18,13 +18,20 @@ class ProfileViewController: UIViewController {
 
     private var currentMode: Mode = .login
 
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        setMode(currentMode, animated: false)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpNavigationController()
         setUpConstraints()
-
-        setMode(currentMode, animated: false)
 
         NotificationCenter.default.addObserver(
             self,
