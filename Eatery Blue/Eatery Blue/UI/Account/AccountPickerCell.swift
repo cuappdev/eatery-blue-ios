@@ -51,11 +51,13 @@ class AccountPickerCell: UIView {
         titleLabel.snp.makeConstraints { make in
             make.centerY.leading.equalTo(layoutMarginsGuide)
         }
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         imageView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(8)
             make.centerY.trailing.equalTo(layoutMarginsGuide)
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(titleLabel.snp.height)
         }
 
         bottomSeparator.snp.makeConstraints { make in

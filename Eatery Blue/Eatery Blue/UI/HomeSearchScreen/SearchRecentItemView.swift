@@ -63,13 +63,16 @@ class SearchRecentItemView: UIView {
     private func setUpConstraints() {
         imageView.snp.makeConstraints { make in
             make.leading.centerY.equalTo(layoutMarginsGuide)
-            make.width.height.equalTo(16)
+            make.width.height.equalTo(titleLabel.snp.height).multipliedBy(0.75)
         }
 
         stackView.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(8)
             make.top.trailing.bottom.equalToSuperview()
         }
+
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
     }
 
 }

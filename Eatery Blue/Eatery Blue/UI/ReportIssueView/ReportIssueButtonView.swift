@@ -58,7 +58,7 @@ class ReportIssueButtonView: UIView {
         }
 
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
+            make.width.height.equalTo(titleLabel.snp.height)
             make.leading.centerY.equalToSuperview()
             make.top.greaterThanOrEqualToSuperview()
         }
@@ -69,6 +69,7 @@ class ReportIssueButtonView: UIView {
         }
         titleLabel.setContentHuggingPriority(.required, for: .horizontal)
         titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     override func layoutSubviews() {

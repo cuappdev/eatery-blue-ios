@@ -64,13 +64,15 @@ class SettingsMainMenuCell: UIView {
     private func setUpConstraints() {
         imageView.snp.makeConstraints { make in
             make.leading.centerY.equalTo(layoutMarginsGuide)
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(titleLabel.snp.height)
         }
 
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(layoutMarginsGuide)
             make.leading.equalTo(imageView.snp.trailing).offset(8)
         }
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)

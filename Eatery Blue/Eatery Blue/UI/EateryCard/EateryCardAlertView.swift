@@ -26,7 +26,7 @@ class EateryCardAlertView: UIView {
 
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
-        layoutMargins = UIEdgeInsets(top: 2, left: 12, bottom: 2, right: 12)
+        layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         tintColor = UIColor(named: "EateryOrange")
         backgroundColor = .white
 
@@ -60,9 +60,12 @@ class EateryCardAlertView: UIView {
         }
 
         imageView.snp.makeConstraints { make in
-            make.width.equalTo(12)
-            make.height.greaterThanOrEqualTo(12)
+            make.width.equalTo(titleLabel.snp.height).multipliedBy(0.75)
+            make.height.greaterThanOrEqualTo(titleLabel.snp.height).multipliedBy(0.75)
         }
+
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     override func layoutSubviews() {

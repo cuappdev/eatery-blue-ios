@@ -62,7 +62,7 @@ class WaitTimesSheetViewController: SheetViewController {
         self.day = day
         self.events = events
 
-        addHeader(title: "Wait Time", image: UIImage(named: "Watch"))
+        addHeader(title: "Wait Time")
         setUpWaitTimeLabel()
         setUpDayLabel()
         setCustomSpacing(4)
