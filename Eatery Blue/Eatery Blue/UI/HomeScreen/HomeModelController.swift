@@ -259,7 +259,7 @@ class HomeModelController: HomeViewController {
         Task {
             await withTaskGroup(of: Void.self) { [self] group in
                 group.addTask {
-                    await updateAllEateriesFromNetworking()
+                    await self.updateAllEateriesFromNetworking()
                 }
                 // Create a task to let the logo view do one complete animation cycle
                 group.addTask {

@@ -73,4 +73,12 @@ extension MainViewController: UITabBarControllerDelegate {
         return true
     }
 
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == 0 {
+            AppDevAnalytics.shared.logFirebase(EateryPressPayload())
+        } else if tabBarController.selectedIndex == 1 {
+            AppDevAnalytics.shared.logFirebase(AccountPressPayload())
+        }
+    }
+
 }

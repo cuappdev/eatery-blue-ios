@@ -35,6 +35,12 @@ class EateryModelController: EateryViewController {
 
         setUpNavigationView(eatery)
         setUpStackView(eatery)
+
+        if eatery.paymentMethods.contains(.mealSwipes) {
+            AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
+        } else {
+            AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
+        }
     }
 
     private func resetSelectedEventIndex() {
@@ -154,7 +160,7 @@ class EateryModelController: EateryViewController {
                 presentMenuPicker()
             }
             addSpacer(height: 16)
-            addReportIssueView()
+            addReportIssueView(eateryID: Int(eatery?.id ?? 0))
             addViewProportionalSpacer(multiplier: 0.5)
             return
         }
@@ -194,7 +200,7 @@ class EateryModelController: EateryViewController {
         }
 
         addSpacer(height: 8)
-        addReportIssueView()
+        addReportIssueView(eateryID: Int(eatery?.id ?? 0))
         addViewProportionalSpacer(multiplier: 0.5)
     }
 

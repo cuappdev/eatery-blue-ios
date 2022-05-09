@@ -26,7 +26,7 @@ class HoursSheetViewController: SheetViewController {
             dismiss(animated: true)
         }
         addTextButton(title: "Report an issue") { [self] in
-            let viewController = ReportIssueViewController()
+            let viewController = ReportIssueViewController(eateryID: 0)
             viewController.setSelectedIssueType(.incorrectHours)
             present(viewController, animated: true)
         }

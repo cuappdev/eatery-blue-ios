@@ -443,11 +443,11 @@ class EateryViewController: UIViewController {
         stackView.addArrangedSubview(categoryView)
     }
 
-    func addReportIssueView() {
+    func addReportIssueView(eateryID: Int) {
         let view = ReportIssueView()
         view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         view.button.tap { [self] _ in
-            let viewController = ReportIssueViewController()
+            let viewController = ReportIssueViewController(eateryID: eateryID)
             present(viewController, animated: true)
         }
         stackView.addArrangedSubview(view)
