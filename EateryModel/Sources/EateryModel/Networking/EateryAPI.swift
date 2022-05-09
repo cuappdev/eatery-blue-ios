@@ -31,7 +31,7 @@ public struct EateryAPI {
         return schemaApiResponse.data.map(SchemaToModel.convert)
     }
 
-    public func reportError(eateryID: Int, type: String, content: String) -> Void {
+    public func reportError(eateryID: Int, type: String, content: String) {
         let data: [String: Any] = ["eatery_id": eateryID, "type": type, "content": content]
         let body = try? JSONSerialization.data(withJSONObject: data, options: [])
 

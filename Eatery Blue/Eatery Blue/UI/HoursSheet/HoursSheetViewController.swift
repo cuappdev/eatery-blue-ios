@@ -17,7 +17,7 @@ class HoursSheetViewController: SheetViewController {
         return formatter
     }()
 
-    func setUp(_ events: [Event]) {
+    func setUp(_ eateryId: Int, _ events: [Event]) {
         addHeader(title: "Hours", image: UIImage(named: "Clock"))
         addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
         addSchedule(events)
@@ -26,7 +26,7 @@ class HoursSheetViewController: SheetViewController {
             dismiss(animated: true)
         }
         addTextButton(title: "Report an issue") { [self] in
-            let viewController = ReportIssueViewController(eateryID: 0)
+            let viewController = ReportIssueViewController(eateryID: eateryId)
             viewController.setSelectedIssueType(.incorrectHours)
             present(viewController, animated: true)
         }

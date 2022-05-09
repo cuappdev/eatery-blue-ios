@@ -210,7 +210,7 @@ class ReportIssueViewController: UIViewController {
         EateryAPI(url: URL(string: "https://eatery-dev.cornellappdev.com/api/report")!)
             .reportError(
                 eateryID: self.eateryID,
-                type: selectedIssueType!.description,
+                type: selectedIssueType?.description ?? "Other",
                 content: issueDescriptionView.textView.text
             )
 
