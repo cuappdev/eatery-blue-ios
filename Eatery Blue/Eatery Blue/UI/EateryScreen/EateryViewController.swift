@@ -354,7 +354,7 @@ class EateryViewController: UIViewController {
             cell.tap { [self] _ in
                 let viewController = WaitTimesSheetViewController()
                 viewController.setUpSheetPresentation()
-                viewController.setUp(waitTimes, events: events)
+                viewController.setUp(Int(eatery.id), waitTimes, events: events)
                 present(viewController, animated: true)
             }
 

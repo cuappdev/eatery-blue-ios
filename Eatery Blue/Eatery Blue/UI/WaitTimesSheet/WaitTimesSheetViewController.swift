@@ -57,7 +57,7 @@ class WaitTimesSheetViewController: SheetViewController {
         updateWaitTimeLabel()
     }
 
-    func setUp(_ waitTimes: WaitTimes, events: [Event], day: Day = Day()) {
+    func setUp(_ eateryID: Int, _ waitTimes: WaitTimes, events: [Event], day: Day = Day()) {
         self.waitTimes = waitTimes
         self.day = day
         self.events = events
@@ -73,7 +73,7 @@ class WaitTimesSheetViewController: SheetViewController {
             dismiss(animated: true)
         }
         addTextButton(title: "Report an issue") { [self] in
-            let viewController = ReportIssueViewController(eateryID: 0)
+            let viewController = ReportIssueViewController(eateryID: eateryID)
             viewController.setSelectedIssueType(.inaccurateWaitTime)
             present(viewController, animated: true)
         }
