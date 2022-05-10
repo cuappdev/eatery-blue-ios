@@ -163,7 +163,7 @@ class EateryModelController: EateryViewController {
                 presentMenuPicker()
             }
             addSpacer(height: 16)
-            addReportIssueView(eateryID: Int(eatery?.id ?? 0))
+            addReportIssueView(eateryId: eatery?.id)
             addViewProportionalSpacer(multiplier: 0.5)
             return
         }
@@ -203,7 +203,7 @@ class EateryModelController: EateryViewController {
         }
 
         addSpacer(height: 8)
-        addReportIssueView(eateryID: Int(eatery?.id ?? 0))
+        addReportIssueView(eateryId: eatery?.id)
         addViewProportionalSpacer(multiplier: 0.5)
     }
 

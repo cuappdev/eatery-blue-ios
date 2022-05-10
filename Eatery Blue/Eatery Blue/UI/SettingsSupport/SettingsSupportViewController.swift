@@ -86,7 +86,7 @@ class SettingsSupportViewController: UIViewController {
 extension SettingsSupportViewController: SettingsSupportViewDelegate {
 
     func openReportIssue(preselectedIssueType: ReportIssueViewController.IssueType?) {
-        let viewController = ReportIssueViewController(eateryID: 0)
+        let viewController = ReportIssueViewController(eateryId: 0)
         if let issueType = preselectedIssueType {
             viewController.setSelectedIssueType(issueType)
         }

@@ -44,10 +44,10 @@ class ReportIssueViewController: UIViewController {
         !isSubmitting && selectedIssueType != nil && !issueDescriptionView.textView.text.isEmpty
     }
 
-    private var eateryID: Int
+    private var eateryId: Int64?
 
-    init(eateryID: Int) {
-        self.eateryID = eateryID
+    init(eateryId: Int64? = nil) {
+        self.eateryId = eateryId
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -207,14 +207,13 @@ class ReportIssueViewController: UIViewController {
         view.isUserInteractionEnabled = false
         view.endEditing(true)
 
-        EateryAPI(url: URL(string: "https://eatery-dev.cornellappdev.com/api/report")!)
-            .reportError(
-                eateryID: self.eateryID,
-                type: selectedIssueType?.description ?? "Other",
-                content: issueDescriptionView.textView.text
-            )
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in
+        Task {
+            await EateryAPI(url: URL(string: "https://eatery-dev.cornellappdev.com/api/report")!)
+                .reportError(
+                    eateryId: self.eateryId,
+                    type: selectedIssueType?.description ?? "Other",
+                    content: issueDescriptionView.textView.text
+                )
             dismiss(animated: true)
         }
     }
