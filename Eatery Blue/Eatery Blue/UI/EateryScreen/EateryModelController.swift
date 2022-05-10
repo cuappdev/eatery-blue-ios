@@ -35,6 +35,7 @@ class EateryModelController: EateryViewController {
 
         setUpNavigationView(eatery)
         setUpStackView(eatery)
+        setUpAnalytics(eatery)
     }
 
     private func resetSelectedEventIndex() {
@@ -77,6 +78,14 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 16)
 
         addMenuFromState()
+    }
+
+    private func setUpAnalytics(_ eatery: Eatery) {
+        if eatery.paymentMethods.contains(.mealSwipes) {
+            AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
+        } else {
+            AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
+        }
     }
 
     private func addButtons(_ eatery: Eatery) {
@@ -154,7 +163,7 @@ class EateryModelController: EateryViewController {
                 presentMenuPicker()
             }
             addSpacer(height: 16)
-            addReportIssueView()
+            addReportIssueView(eateryId: eatery?.id)
             addViewProportionalSpacer(multiplier: 0.5)
             return
         }
@@ -194,7 +203,7 @@ class EateryModelController: EateryViewController {
         }
 
         addSpacer(height: 8)
-        addReportIssueView()
+        addReportIssueView(eateryId: eatery?.id)
         addViewProportionalSpacer(multiplier: 0.5)
     }
 

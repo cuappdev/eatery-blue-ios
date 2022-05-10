@@ -67,6 +67,9 @@ class EateryFilterViewController: UIViewController {
             filter.under10MinutesEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.under10MinutesEnabled {
+                AppDevAnalytics.shared.logFirebase(NearestFilterPressPayload())
+            }
         }
     }
 
@@ -88,6 +91,9 @@ class EateryFilterViewController: UIViewController {
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.favoriteEnabled {
+                AppDevAnalytics.shared.logFirebase(FavoriteItemsPressPayload())
+            }
         }
     }
 
@@ -97,6 +103,9 @@ class EateryFilterViewController: UIViewController {
             filter.north.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.north {
+                AppDevAnalytics.shared.logFirebase(NorthFilterPressPayload())
+            }
         }
     }
 
@@ -106,6 +115,9 @@ class EateryFilterViewController: UIViewController {
             filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.west {
+                AppDevAnalytics.shared.logFirebase(WestFilterPressPayload())
+            }
         }
     }
 
@@ -115,6 +127,9 @@ class EateryFilterViewController: UIViewController {
             filter.central.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.central {
+                AppDevAnalytics.shared.logFirebase(CentralFilterPressPayload())
+            }
         }
     }
 
@@ -165,6 +180,13 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
         didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
     ) {
         filter.paymentMethods = paymentMethods
+        filter.paymentMethods.forEach { paymentMethod in
+            switch paymentMethod {
+            case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
+            case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            default: break
+            }
+        }
 
         updateFilterButtonsFromState(animated: true)
         delegate?.eateryFilterViewController(self, filterDidChange: filter)

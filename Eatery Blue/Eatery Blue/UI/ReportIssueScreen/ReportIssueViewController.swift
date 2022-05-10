@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/27/21.
 //
 
+import EateryModel
 import UIKit
 
 class ReportIssueViewController: UIViewController {
@@ -41,6 +42,17 @@ class ReportIssueViewController: UIViewController {
     private var isSubmitting: Bool = false
     private var submitEnabled: Bool {
         !isSubmitting && selectedIssueType != nil && !issueDescriptionView.textView.text.isEmpty
+    }
+
+    private var eateryId: Int64?
+
+    init(eateryId: Int64? = nil) {
+        self.eateryId = eateryId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -195,7 +207,13 @@ class ReportIssueViewController: UIViewController {
         view.isUserInteractionEnabled = false
         view.endEditing(true)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in
+        Task {
+            await EateryAPI(url: URL(string: "https://eatery-dev.cornellappdev.com/api/report")!)
+                .reportError(
+                    eateryId: self.eateryId,
+                    type: selectedIssueType?.description ?? "Other",
+                    content: issueDescriptionView.textView.text
+                )
             dismiss(animated: true)
         }
     }

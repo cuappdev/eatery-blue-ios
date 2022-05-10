@@ -113,6 +113,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         view.endEditing(true)
         updateErrorMessage(nil)
         updateLoginButtonFromState()
+        AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
         Task {
             do {
