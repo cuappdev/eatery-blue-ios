@@ -54,7 +54,7 @@ class WaitTimesView: UIView {
         clipsToBounds = true
         layer.cornerRadius = 8
         layer.borderWidth = 1
-        layer.borderColor = UIColor(named: "Gray01")?.cgColor
+        layer.borderColor = UIColor.Eatery.gray01.cgColor
 
         addSubview(scrollView)
         setUpScrollView()
@@ -76,7 +76,7 @@ class WaitTimesView: UIView {
     }
 
     private func setUpConnectingLine() {
-        connectingLine.backgroundColor = UIColor(named: "EateryBlue")
+        connectingLine.backgroundColor = UIColor.Eatery.blue
         connectingLine.alpha = 0
     }
 
@@ -84,7 +84,7 @@ class WaitTimesView: UIView {
         waitTimeLabel.content.font = .preferredFont(for: .caption2, weight: .semibold)
         waitTimeLabel.content.textColor = .white
         waitTimeLabel.cornerRadius = 4
-        waitTimeLabel.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
+        waitTimeLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
         waitTimeLabel.layoutMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         waitTimeLabel.alpha = 0
     }
@@ -150,7 +150,7 @@ class WaitTimesView: UIView {
 
     func dehighlightCells() {
         if let previousIndex = highlightedIndex {
-            cells[previousIndex].bar.backgroundColor = UIColor(named: "EateryBlueMedium")
+            cells[previousIndex].bar.backgroundColor = UIColor.Eatery.blueMedium
         }
         highlightedIndex = nil
 
@@ -173,12 +173,12 @@ class WaitTimesView: UIView {
         }
 
         if let previousIndex = highlightedIndex {
-            cells[previousIndex].bar.backgroundColor = UIColor(named: "EateryBlueMedium")
+            cells[previousIndex].bar.backgroundColor = UIColor.Eatery.blueMedium
         }
         highlightedIndex = index
 
 
-        cell.bar.backgroundColor = UIColor(named: "EateryBlue")
+        cell.bar.backgroundColor = UIColor.Eatery.blue
 
         connectingLine.alpha = 1
         waitTimeLabel.alpha = 1

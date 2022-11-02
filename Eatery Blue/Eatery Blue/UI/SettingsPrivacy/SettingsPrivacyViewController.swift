@@ -37,11 +37,11 @@ class SettingsPrivacyViewController: UIViewController {
     private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(named: "Black") as Any,
+            .foregroundColor: UIColor.Eatery.black as Any,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(named: "EateryBlue") as Any,
+            .foregroundColor: UIColor.Eatery.blue as Any,
             .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
 
@@ -61,7 +61,7 @@ class SettingsPrivacyViewController: UIViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
-        backButton.tintColor = UIColor(named: "Black")
+        backButton.tintColor = UIColor.Eatery.black
         navigationItem.leftBarButtonItem = backButton
     }
 

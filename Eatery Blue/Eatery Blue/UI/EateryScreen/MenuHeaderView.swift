@@ -37,12 +37,12 @@ class MenuHeaderView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        subtitleLabel.textColor = UIColor(named: "Gray05")
+        subtitleLabel.textColor = UIColor.Eatery.gray05
     }
 
     private func setUpButtonImageView() {

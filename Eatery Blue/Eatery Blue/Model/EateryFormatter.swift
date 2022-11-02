@@ -38,27 +38,27 @@ class EateryFormatter {
             let timeString = timeFormatter.string(from: event.endDate)
             return NSAttributedString(
                 string: "Open until \(timeString)",
-                attributes: [.foregroundColor: UIColor(named: "EateryOrange") as Any]
+                attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
             )
 
         case .closed:
             return NSAttributedString(
                 string: "Closed",
-                attributes: [.foregroundColor: UIColor(named: "EateryRed") as Any]
+                attributes: [.foregroundColor: UIColor.Eatery.red as Any]
             )
 
         case .openingSoon(let event):
             let timeString = timeFormatter.string(from: event.startDate)
             return NSAttributedString(
                 string: "Opening at \(timeString)",
-                attributes: [.foregroundColor: UIColor(named: "EateryOrange") as Any]
+                attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
             )
 
         case .closingSoon(let event):
             let timeString = timeFormatter.string(from: event.endDate)
             return NSAttributedString(
                 string: "Closing at \(timeString)",
-                attributes: [.foregroundColor: UIColor(named: "EateryOrange") as Any]
+                attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
             )
 
         }
@@ -85,12 +85,12 @@ class EateryFormatter {
             if eatery.paymentMethods.contains(.mealSwipes) {
                 return NSAttributedString(
                     string: "Meal swipes allowed",
-                    attributes: [.foregroundColor: UIColor(named: "EateryBlue") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.blue as Any]
                 )
             } else if eatery.paymentMethods == [.cash, .credit] {
                 return NSAttributedString(
                     string: "Cash or credit only",
-                    attributes: [.foregroundColor: UIColor(named: "EateryGreen") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.green as Any]
                 )
             } else if let menuSummary = eatery.menuSummary {
                 return NSAttributedString(string: menuSummary)
@@ -104,28 +104,28 @@ class EateryFormatter {
                 if let _ = EateryStatus.previousEvent(eatery.events, date: date, on: day) {
                     return NSAttributedString(
                         string: "Re-opens at \(timeFormatter.string(from: nextEventOfDay.startDate))",
-                        attributes: [.foregroundColor: UIColor(named: "EateryOrange") as Any]
+                        attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
                     )
                 } else {
                     return NSAttributedString(
                         string: "Opens at \(timeFormatter.string(from: nextEventOfDay.startDate))",
-                        attributes: [.foregroundColor: UIColor(named: "EateryOrange") as Any]
+                        attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
                     )
                 }
             } else if let nextEventOfNextDay = EateryStatus.nextEvent(eatery.events, date: date, on: day.advanced(by: 1)) {
                 return NSAttributedString(
                     string: "Closed until \(timeFormatter.string(from: nextEventOfNextDay.startDate))",
-                    attributes: [.foregroundColor: UIColor(named: "EateryRed") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.red as Any]
                 )
             } else if let nextEvent = EateryStatus.nextEvent(eatery.events, date: date) {
                 return NSAttributedString(
                     string: "Closed until \(mediumDayMonthFormatter.string(from: nextEvent.startDate))",
-                    attributes: [.foregroundColor: UIColor(named: "EateryRed") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.red as Any]
                 )
             } else {
                 return NSAttributedString(
                     string: "Closed today",
-                    attributes: [.foregroundColor: UIColor(named: "EateryRed") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.red as Any]
                 )
             }
         }

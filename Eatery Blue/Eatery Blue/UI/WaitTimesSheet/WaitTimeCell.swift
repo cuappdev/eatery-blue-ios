@@ -41,14 +41,14 @@ class WaitTimeCell: UIView {
 
     private func setUpStartTimeLabel() {
         startTimeLabel.font = .preferredFont(for: .caption2, weight: .semibold)
-        startTimeLabel.textColor = UIColor(named: "Gray02")
+        startTimeLabel.textColor = UIColor.Eatery.gray02
         startTimeLabel.backgroundColor = .white
     }
 
     private func setUpBar() {
         bar.layer.cornerRadius = 8
         bar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        bar.backgroundColor = UIColor(named: "EateryBlueMedium")
+        bar.backgroundColor = UIColor.Eatery.blueMedium
     }
 
     private func setUpConstraints() {

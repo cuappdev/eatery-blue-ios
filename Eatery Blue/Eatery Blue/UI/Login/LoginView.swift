@@ -45,7 +45,7 @@ class LoginView: UIView {
         let titleLabel = UILabel()
         titleLabel.text = text
         titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
-        titleLabel.textColor = UIColor(named: "EateryBlue")
+        titleLabel.textColor = UIColor.Eatery.blue
 
         stackView.addArrangedSubview(titleLabel)
     }
@@ -54,7 +54,7 @@ class LoginView: UIView {
         let subtitleLabel = UILabel()
         subtitleLabel.text = text
         subtitleLabel.font = .preferredFont(for: .body, weight: .medium)
-        subtitleLabel.textColor = UIColor(named: "Gray06")
+        subtitleLabel.textColor = UIColor.Eatery.gray06
 
         stackView.addArrangedSubview(subtitleLabel)
     }
@@ -63,14 +63,14 @@ class LoginView: UIView {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
 
         stackView.addArrangedSubview(titleLabel)
     }
 
     func addTextField(_ textField: UITextField) {
         let container = ContainerView(content: textField)
-        container.backgroundColor = UIColor(named: "Gray00")
+        container.backgroundColor = UIColor.Eatery.gray00
         container.cornerRadius = 8
         container.layoutMargins = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
         container.tap { _ in

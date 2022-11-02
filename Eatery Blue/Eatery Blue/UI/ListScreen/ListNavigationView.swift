@@ -74,7 +74,7 @@ class ListNavigationView: UIView {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
-        backButton.content.tintColor = UIColor(named: "Black")
+        backButton.content.tintColor = UIColor.Eatery.black
         backButton.content.contentMode = .scaleAspectFit
     }
 
@@ -85,12 +85,12 @@ class ListNavigationView: UIView {
 
     private func setUpSearchButton() {
         searchButton.content.image = UIImage(named: "Search")?.withRenderingMode(.alwaysTemplate)
-        searchButton.content.tintColor = UIColor(named: "Black")
+        searchButton.content.tintColor = UIColor.Eatery.black
         searchButton.content.contentMode = .scaleAspectFit
     }
 
     private func setUpSeparator() {
-        separator.backgroundColor = UIColor(named: "Gray01")
+        separator.backgroundColor = UIColor.Eatery.gray01
     }
 
     private func setUpConstraints() {

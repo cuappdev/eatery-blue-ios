@@ -50,7 +50,7 @@ class OnboardingLoginViewController: UIViewController {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
-        backButton.content.tintColor = UIColor(named: "Black")
+        backButton.content.tintColor = UIColor.Eatery.black
         backButton.content.contentMode = .scaleAspectFit
         backButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
 
@@ -170,10 +170,10 @@ class OnboardingLoginViewController: UIViewController {
     func setLoginButtonEnabled(_ isEnabled: Bool) {
         if isEnabled {
             loginButton.content.textColor = .white
-            loginButton.backgroundColor = UIColor(named: "EateryBlue")
+            loginButton.backgroundColor = UIColor.Eatery.blue
         } else {
-            loginButton.content.textColor = UIColor(named: "EateryBlack")
-            loginButton.backgroundColor = UIColor(named: "Gray00")
+            loginButton.content.textColor = UIColor.Eatery.black
+            loginButton.backgroundColor = UIColor.Eatery.gray00
         }
     }
 

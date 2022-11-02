@@ -27,7 +27,7 @@ class EateryCardAlertView: UIView {
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
         layoutMargins = UIEdgeInsets(top: 2, left: 12, bottom: 2, right: 12)
-        tintColor = UIColor(named: "EateryOrange")
+        tintColor = UIColor.Eatery.orange
         backgroundColor = .white
 
         addSubview(stackView)

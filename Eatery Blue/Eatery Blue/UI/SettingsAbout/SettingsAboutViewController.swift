@@ -41,11 +41,11 @@ class SettingsAboutViewController: UIViewController {
     private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(named: "Black") as Any,
+            .foregroundColor: UIColor.Eatery.black as Any,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(named: "EateryBlue") as Any,
+            .foregroundColor: UIColor.Eatery.blue as Any,
             .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
 
@@ -65,7 +65,7 @@ class SettingsAboutViewController: UIViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
-        backButton.tintColor = UIColor(named: "Black")
+        backButton.tintColor = UIColor.Eatery.black
         navigationItem.leftBarButtonItem = backButton
     }
 
@@ -87,7 +87,7 @@ class SettingsAboutViewController: UIViewController {
 
     private func setUpSubtitleLabel() {
         subtitleLabel.text = "Learn more about Cornell AppDev"
-        subtitleLabel.textColor = UIColor(named: "Gray06")
+        subtitleLabel.textColor = UIColor.Eatery.gray06
         subtitleLabel.font = .preferredFont(for: .body, weight: .medium)
     }
 
@@ -107,8 +107,8 @@ class SettingsAboutViewController: UIViewController {
         let pillView = websiteButton.content
         pillView.titleLabel.text = "Visit our website"
         pillView.imageView.image = UIImage(named: "Globe")?.withRenderingMode(.alwaysTemplate)
-        pillView.tintColor = UIColor(named: "Black")
-        pillView.backgroundColor = UIColor(named: "Gray00")
+        pillView.tintColor = UIColor.Eatery.black
+        pillView.backgroundColor = UIColor.Eatery.gray00
         pillView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
         websiteButton.buttonPress { _ in

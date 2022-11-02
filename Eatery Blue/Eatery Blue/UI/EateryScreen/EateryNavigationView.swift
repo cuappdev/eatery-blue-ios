@@ -80,7 +80,7 @@ class EateryNavigationView: UIView {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")
-        backButton.shadowColor = UIColor(named: "Black")
+        backButton.shadowColor = UIColor.Eatery.black
         backButton.shadowOffset = CGSize(width: 0, height: 4)
         backButton.backgroundColor = .white
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -88,13 +88,13 @@ class EateryNavigationView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
         titleLabel.textAlignment = .center
     }
 
     private func setUpFavoriteButton() {
         favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-        favoriteButton.shadowColor = UIColor(named: "Black")
+        favoriteButton.shadowColor = UIColor.Eatery.black
         favoriteButton.shadowOffset = CGSize(width: 0, height: 4)
         favoriteButton.backgroundColor = .white
         favoriteButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -112,7 +112,7 @@ class EateryNavigationView: UIView {
 
         setUpCategoriesStackView(categoriesForeground)
         categoriesForeground.isUserInteractionEnabled = false
-        categoriesForeground.backgroundColor = UIColor(named: "Black")
+        categoriesForeground.backgroundColor = UIColor.Eatery.black
 
         // Set some completely opaque color for the foregroundMask
         foregroundMask.backgroundColor = .white
@@ -211,7 +211,7 @@ class EateryNavigationView: UIView {
         backgroundContainer.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
         foregroundContainer.layoutMargins = backgroundContainer.layoutMargins
 
-        backgroundContainer.content.textColor = UIColor(named: "Gray05")
+        backgroundContainer.content.textColor = UIColor.Eatery.gray05
         foregroundContainer.content.textColor = .white
 
         categoriesBackground.addArrangedSubview(backgroundContainer)

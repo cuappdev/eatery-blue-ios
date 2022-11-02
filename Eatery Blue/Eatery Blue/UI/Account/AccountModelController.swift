@@ -170,11 +170,11 @@ class AccountModelController: AccountViewController {
             case .bearBasic, .bearChoice, .bearTraditional:
                 subtitle.append(NSAttributedString(
                     string: "\(remaining)",
-                    attributes: [.foregroundColor: UIColor(named: "Black") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.black as Any]
                 ))
                 subtitle.append(NSAttributedString(
                     string: " remaining this week",
-                    attributes: [.foregroundColor: UIColor(named: "Gray05") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
                 ))
 
             case .unlimited:
@@ -183,11 +183,11 @@ class AccountModelController: AccountViewController {
             case .offCampusValue, .flex:
                 subtitle.append(NSAttributedString(
                     string: "\(remaining)",
-                    attributes: [.foregroundColor: UIColor(named: "Black") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.black as Any]
                 ))
                 subtitle.append(NSAttributedString(
                     string: " remaining this semester",
-                    attributes: [.foregroundColor: UIColor(named: "Gray05") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
                 ))
 
             default:
@@ -232,7 +232,7 @@ class AccountModelController: AccountViewController {
                 amount.append(NSAttributedString(string: "1"))
                 amount.append(NSAttributedString(
                     string: " swipe",
-                    attributes: [.foregroundColor: UIColor(named: "Gray05") as Any]
+                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
                 ))
             } else {
                 amount.append(NSAttributedString(

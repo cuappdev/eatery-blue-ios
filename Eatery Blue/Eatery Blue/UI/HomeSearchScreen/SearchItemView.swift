@@ -59,24 +59,24 @@ class SearchItemView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpPriceLabel() {
         priceLabel.font = .preferredFont(for: .subheadline, weight: .regular)
-        priceLabel.textColor = UIColor(named: "Gray05")
+        priceLabel.textColor = UIColor.Eatery.gray05
     }
 
     private func setUpDescriptionLabel() {
         descriptionLabel.font = .preferredFont(for: .footnote, weight: .regular)
-        descriptionLabel.textColor = UIColor(named: "Gray05")
+        descriptionLabel.textColor = UIColor.Eatery.gray05
         descriptionLabel.isHidden = true
         descriptionLabel.numberOfLines = 0
     }
 
     private func setUpSourceLabel() {
         sourceLabel.font = .preferredFont(for: .caption1, weight: .medium)
-        sourceLabel.textColor = UIColor(named: "EateryBlue")
+        sourceLabel.textColor = UIColor.Eatery.blue
     }
 
     private func setUpConstraints() {

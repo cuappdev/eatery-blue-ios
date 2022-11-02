@@ -24,7 +24,7 @@ class IssueTypeButtonView: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColor(named: "Gray00")
+        backgroundColor = UIColor.Eatery.gray00
         layer.cornerRadius = 8
 
         addSubview(label)
@@ -40,7 +40,7 @@ class IssueTypeButtonView: UIView {
 
     private func setUpImageView() {
         imageView.image = UIImage(named: "ChevronDown")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "Gray05")
+        imageView.tintColor = UIColor.Eatery.gray05
     }
 
     private func setUpConstraints() {

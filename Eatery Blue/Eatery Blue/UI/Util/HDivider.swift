@@ -12,7 +12,7 @@ class HDivider: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = UIColor(named: "Gray00")
+        backgroundColor = UIColor.Eatery.gray00
         snp.makeConstraints { make in
             make.height.equalTo(1)
         }

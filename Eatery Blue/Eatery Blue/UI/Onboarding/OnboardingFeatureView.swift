@@ -37,12 +37,12 @@ class OnboardingFeatureView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
-        titleLabel.textColor = UIColor(named: "EateryBlue")
+        titleLabel.textColor = UIColor.Eatery.blue
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .body, weight: .medium)
-        subtitleLabel.textColor = UIColor(named: "Gray06")
+        subtitleLabel.textColor = UIColor.Eatery.gray06
     }
 
     private func setUpImageView() {

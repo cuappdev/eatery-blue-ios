@@ -29,7 +29,7 @@ class EateryMediumCardContentView: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColor(named: "OffWhite")
+        backgroundColor = UIColor.Eatery.offWhite
 
         addSubview(imageView)
         setUpImageView()
@@ -69,12 +69,12 @@ class EateryMediumCardContentView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor(named: "Gray05")
+        subtitleLabel.textColor = UIColor.Eatery.gray05
     }
 
     private func setUpFavoriteImageView() {

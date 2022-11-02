@@ -43,7 +43,7 @@ class EaterySmallCardView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
         titleLabel.numberOfLines = 2
         titleLabel.textAlignment = .center
     }
