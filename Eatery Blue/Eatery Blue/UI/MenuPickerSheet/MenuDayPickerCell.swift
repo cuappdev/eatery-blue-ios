@@ -33,7 +33,7 @@ class MenuDayPickerCell: UIView {
 
     private func setUpWeekdayLabel() {
         weekdayLabel.font = .preferredFont(for: .caption1, weight: .semibold)
-        weekdayLabel.textColor = UIColor(named: "Gray05")
+        weekdayLabel.textColor = UIColor.Eatery.gray05
         weekdayLabel.textAlignment = .center
     }
 

@@ -41,7 +41,7 @@ class EateryCardVisualEffectView<Content: UIView>: UIView {
         container.cornerRadius = 8
         container.shadowRadius = 4
         container.shadowOffset = CGSize(width: 0, height: 4)
-        container.shadowColor = UIColor(named: "ShadowLight")
+        container.shadowColor = UIColor.Eatery.shadowLight
         container.shadowOpacity = 0.25
         addSubview(container)
     }

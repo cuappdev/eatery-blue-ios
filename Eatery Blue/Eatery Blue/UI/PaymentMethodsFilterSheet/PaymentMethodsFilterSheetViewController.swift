@@ -121,26 +121,26 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
 
         if selectedPaymentMethods.contains(.mealSwipes) {
             mealSwipesView.imageView.image = UIImage(named: "MealSwipesSelected")
-            mealSwipesView.label.textColor = UIColor(named: "EateryBlue")
+            mealSwipesView.label.textColor = UIColor.Eatery.blue
         } else {
             mealSwipesView.imageView.image = UIImage(named: "MealSwipesUnselected")
-            mealSwipesView.label.textColor = UIColor(named: "Gray05")
+            mealSwipesView.label.textColor = UIColor.Eatery.gray05
         }
 
         if selectedPaymentMethods.contains(.brbs) {
             brbsView.imageView.image = UIImage(named: "BRBsSelected")
-            brbsView.label.textColor = UIColor(named: "EateryRed")
+            brbsView.label.textColor = UIColor.Eatery.red
         } else {
             brbsView.imageView.image = UIImage(named: "BRBsUnselected")
-            brbsView.label.textColor = UIColor(named: "Gray05")
+            brbsView.label.textColor = UIColor.Eatery.gray05
         }
 
         if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
             cashOrCreditView.imageView.image = UIImage(named: "CashSelected")
-            cashOrCreditView.label.textColor = UIColor(named: "EateryGreen")
+            cashOrCreditView.label.textColor = UIColor.Eatery.green
         } else {
             cashOrCreditView.imageView.image = UIImage(named: "CashUnselected")
-            cashOrCreditView.label.textColor = UIColor(named: "Gray05")
+            cashOrCreditView.label.textColor = UIColor.Eatery.gray05
         }
     }
 

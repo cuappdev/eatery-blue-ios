@@ -45,7 +45,7 @@ class AccountViewController: UIViewController {
 
     private func setUpNavigation() {
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(named: "EateryBlue")
+        appearance.backgroundColor = UIColor.Eatery.blue
         appearance.titleTextAttributes = [
             .foregroundColor: UIColor.white,
             .font: UIFont.eateryNavigationBarTitleFont
@@ -139,7 +139,7 @@ extension AccountViewController: UITableViewDataSource {
                 
             } else if indexPath.row == balanceItems.count + 1 {
                 let view = UIView()
-                view.backgroundColor = UIColor(named: "Gray00")
+                view.backgroundColor = UIColor.Eatery.gray00
                 view.snp.makeConstraints { make in
                     make.height.equalTo(16)
                 }

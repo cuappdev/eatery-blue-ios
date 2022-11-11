@@ -47,13 +47,13 @@ class ReportIssueView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.text = "Make Eatery Better"
     }
 
     private func setUpDescriptionLabel() {
-        descriptionLabel.textColor = UIColor(named: "Gray05")
+        descriptionLabel.textColor = UIColor.Eatery.gray05
         descriptionLabel.font = .preferredFont(for: .footnote, weight: .regular)
         descriptionLabel.text = "Help us make this info more accurate by letting us know what's wrong."
         descriptionLabel.numberOfLines = 0

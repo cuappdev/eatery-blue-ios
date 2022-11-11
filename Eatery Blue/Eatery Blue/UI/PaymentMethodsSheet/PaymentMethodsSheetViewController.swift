@@ -77,16 +77,16 @@ class PaymentMethodsSheetViewController: SheetViewController {
         self.paymentMethods = paymentMethods
 
         mealSwipesImageView.tintColor = paymentMethods.contains(.mealSwipes)
-            ? UIColor(named: "EateryBlue")
-            : UIColor(named: "Gray05")
+            ? UIColor.Eatery.blue
+            : UIColor.Eatery.gray05
 
         brbsImageView.tintColor = paymentMethods.contains(.brbs)
-            ? UIColor(named: "EateryRed")
-            : UIColor(named: "Gray05")
+            ? UIColor.Eatery.red
+            : UIColor.Eatery.gray05
 
         cashOrCardImageView.tintColor = paymentMethods.contains(.cash) && paymentMethods.contains(.credit)
-            ? UIColor(named: "EateryGreen")
-            : UIColor(named: "Gray05")
+            ? UIColor.Eatery.green
+            : UIColor.Eatery.gray05
 
         descriptionLabel.attributedText = getAttributedString(paymentMethods)
     }
@@ -137,7 +137,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             attributedString.append(NSAttributedString(attachment: attachment))
             attributedString.append(NSAttributedString(string: " Meal swipes"))
             attributedString.addAttributes(
-                [.foregroundColor: UIColor(named: "EateryBlue") as Any],
+                [.foregroundColor: UIColor.Eatery.blue as Any],
                 range: NSRange(location: 0, length: attributedString.length)
             )
             result.append(attributedString)
@@ -152,7 +152,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             attributedString.append(NSAttributedString(attachment: attachment))
             attributedString.append(NSAttributedString(string: " BRBs"))
             attributedString.addAttributes(
-                [.foregroundColor: UIColor(named: "EateryRed") as Any],
+                [.foregroundColor: UIColor.Eatery.red as Any],
                 range: NSRange(location: 0, length: attributedString.length)
             )
             result.append(attributedString)
@@ -167,7 +167,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             attributedString.append(NSAttributedString(attachment: attachment))
             attributedString.append(NSAttributedString(string: " Cash or credit"))
             attributedString.addAttributes(
-                [.foregroundColor: UIColor(named: "EateryGreen") as Any],
+                [.foregroundColor: UIColor.Eatery.green as Any],
                 range: NSRange(location: 0, length: attributedString.length)
             )
             result.append(attributedString)

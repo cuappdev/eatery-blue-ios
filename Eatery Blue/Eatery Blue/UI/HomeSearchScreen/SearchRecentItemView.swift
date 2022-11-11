@@ -35,7 +35,7 @@ class SearchRecentItemView: UIView {
 
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColor(named: "EateryBlue")
+        imageView.tintColor = UIColor.Eatery.blue
     }
 
     private func setUpStackView() {
@@ -51,12 +51,12 @@ class SearchRecentItemView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.textColor = UIColor(named: "EateryBlue")
+        titleLabel.textColor = UIColor.Eatery.blue
         titleLabel.font = .preferredFont(for: .body, weight: .medium)
     }
 
     private func setUpSubtitleLabel() {
-        subtitleLabel.textColor = UIColor(named: "Gray05")
+        subtitleLabel.textColor = UIColor.Eatery.gray05
         subtitleLabel.font = .preferredFont(for: .caption1, weight: .medium)
     }
 

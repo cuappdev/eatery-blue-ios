@@ -31,7 +31,7 @@ class AlertMessageView: UIView {
         layoutMargins = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
 
         layer.cornerRadius = 8
-        backgroundColor = UIColor(named: "EateryRedLight")
+        backgroundColor = UIColor.Eatery.redLight
 
         addSubview(stackView)
         setUpStackView()
@@ -70,17 +70,17 @@ class AlertMessageView: UIView {
     }
 
     func setStyleError() {
-        backgroundColor = UIColor(named: "EateryRedLight")
+        backgroundColor = UIColor.Eatery.redLight
         imageView.image = UIImage(named: "Error")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "EateryRed")
-        messageLabel.textColor = UIColor(named: "EateryRed")
+        imageView.tintColor = UIColor.Eatery.red
+        messageLabel.textColor = UIColor.Eatery.red
     }
 
     func setStyleInfo() {
-        backgroundColor = UIColor(named: "EateryBlueLight")
+        backgroundColor = UIColor.Eatery.blueLight
         imageView.image = UIImage(named: "Info")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "EateryBlue")
-        messageLabel.textColor = UIColor(named: "EateryBlue")
+        imageView.tintColor = UIColor.Eatery.blue
+        messageLabel.textColor = UIColor.Eatery.blue
     }
 
 }

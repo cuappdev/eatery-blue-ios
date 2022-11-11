@@ -71,7 +71,7 @@ class SettingsAboutMembersCarouselView: UIView {
 
         let container = ContainerView(pillContent: label)
         container.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
-        container.backgroundColor = UIColor(named: "Gray00")
+        container.backgroundColor = UIColor.Eatery.gray00
 
         stackView.addArrangedSubview(container)
     }
@@ -79,7 +79,7 @@ class SettingsAboutMembersCarouselView: UIView {
     func addSeparator() {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "FavoriteSelected")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "Gray01")
+        imageView.tintColor = UIColor.Eatery.gray01
         imageView.snp.makeConstraints { make in
             make.width.height.equalTo(8)
         }

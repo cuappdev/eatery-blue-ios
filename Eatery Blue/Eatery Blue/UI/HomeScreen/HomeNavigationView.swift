@@ -26,7 +26,7 @@ class HomeNavigationView: NavigationView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColor(named: "EateryBlue")
+        backgroundColor = UIColor.Eatery.blue
         layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         titleLabel.text = "Eatery"
