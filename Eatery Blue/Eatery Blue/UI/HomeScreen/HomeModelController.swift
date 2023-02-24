@@ -11,6 +11,8 @@ import UIKit
 import CoreLocation
 
 class HomeModelController: HomeViewController {
+    
+    private var isTesting = true
 
     private var filter = EateryFilter()
     private var allEateries: [Eatery] = []
@@ -67,7 +69,7 @@ class HomeModelController: HomeViewController {
 
     private func updateAllEateriesFromNetworking() async {
         do {
-            let eateries = try await Networking.default.eateries.fetch(maxStaleness: 0)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
             allEateries = eateries.filter { eatery in
                 return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
