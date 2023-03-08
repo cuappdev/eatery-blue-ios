@@ -20,6 +20,16 @@ class HomeModelController: HomeViewController {
     private let filterController = EateryFilterViewController()
 
     private var cancellables: Set<AnyCancellable> = []
+    
+    //ADDED
+    let swipe = UITapGestureRecognizer(target: self, action: #selector(touchHappen(_:)))
+    view.addGestureRecognizer(swipe)
+    view.userInteractionEnabled = true
+
+    func swipe(_ sender: UISwipeGestureRecognizer) {
+        print("swipe detected")
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
