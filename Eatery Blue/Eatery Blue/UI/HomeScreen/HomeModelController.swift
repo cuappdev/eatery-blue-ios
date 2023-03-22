@@ -21,16 +21,6 @@ class HomeModelController: HomeViewController {
 
     private var cancellables: Set<AnyCancellable> = []
     
-    //ADDED
-    let swipe = UITapGestureRecognizer(target: self, action: #selector(touchHappen(_:)))
-    view.addGestureRecognizer(swipe)
-    view.userInteractionEnabled = true
-
-    func swipe(_ sender: UISwipeGestureRecognizer) {
-        print("swipe detected")
-    }
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -149,9 +139,14 @@ class HomeModelController: HomeViewController {
             }
 
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
-                pushViewController(for: eatery)
+                navigationController?.hero.isEnabled = false
+                
+                let pageVC = EateryPageViewController(eateries: allEateries)
+                
+                navigationController?.pushViewController(pageVC, animated: true)
             })
         }
+
 
         if carouselEateries.count > 3 {
             let view = CarouselMoreEateriesView()

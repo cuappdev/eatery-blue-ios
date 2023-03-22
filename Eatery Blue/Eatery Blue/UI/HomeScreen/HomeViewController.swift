@@ -92,6 +92,7 @@ class HomeViewController: UIViewController {
         viewController.setUp(eatery: eatery)
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
+
     }
 
     private func updateScrollViewContentInset() {

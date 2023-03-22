@@ -145,6 +145,7 @@
 		5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */; };
 		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
 		5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */; };
+		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
@@ -291,6 +292,7 @@
 		5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodFilterView.swift; sourceTree = "<group>"; };
 		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
+		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -670,6 +672,7 @@
 				5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */,
 				5D0CDC442774E7EA00AD0E27 /* EateryPillButtonStackView.swift */,
 				5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */,
+				9920725729CA10E600FFFB92 /* EateryPageViewController.swift */,
 				5DF5F7EA2774D8FE001ADCDC /* EateryViewController.swift */,
 				5D0CDC522775059500AD0E27 /* MenuCategoryView.swift */,
 				5D0CDC4E2774FDAE00AD0E27 /* MenuHeaderView.swift */,
@@ -967,6 +970,7 @@
 				5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
 				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
+				9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */,
 				5D75D6E4278E2B9D00832359 /* EateryCardVisualEffectView.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,

@@ -11,11 +11,6 @@ import Foundation
 enum DummyData {
     
     static let eateries = [macs, terrace, rose]
-    //NEW BEGIN: Found list of eateries using dummy data --> how do we iterate without dummy data?
-//    for eatery in eateries {
-//        pass
-//    }
-    //NEW END
 
     static let macsMenu = Menu(categories: [
         MenuCategory(category: "Enchiladas", items: [
