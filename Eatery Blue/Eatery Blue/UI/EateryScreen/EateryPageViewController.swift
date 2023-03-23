@@ -5,8 +5,8 @@
 //  Created by Antoinette Marie Torres on 3/21/23.
 //
 
-import UIKit
 import EateryModel
+import UIKit
 
 class EateryPageViewController: UIPageViewController {
     
@@ -24,16 +24,15 @@ class EateryPageViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        delegate = self
+        view.backgroundColor = .clear
         dataSource = self
         
         let appearance = UIPageControl.appearance()
         appearance.pageIndicatorTintColor = .systemGray5
         appearance.currentPageIndicatorTintColor = .systemGray3
+        appearance.backgroundColor = .clear
         
         setUpPages()
-        
     }
     
     private func setUpPages() {
@@ -42,27 +41,22 @@ class EateryPageViewController: UIPageViewController {
             eateryVC.setUp(eatery: eatery)
             pages.append(eateryVC)
         }
-        
         setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
     }
     
 }
 
-extension EateryPageViewController: UIPageViewControllerDelegate {
-    
-}
-
 extension EateryPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let index = pages.firstIndex(of: viewController), index > 0 else { return pages[pages.count - 1] }
-        
-        return pages[index - 1]
+        guard let index = pages.firstIndex(of: viewController) else { return nil }
+        let previousIndex = abs((index - 1) % pages.count)
+        return pages[previousIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = pages.firstIndex(of: viewController), index + 1 < pages.count else { return pages[0] }
-        
-        return pages[index + 1]
+        guard let index = pages.firstIndex(of: viewController) else { return nil }
+        let nextIndex = abs((index + 1) % pages.count)
+        return pages[nextIndex]
     }
     
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
@@ -74,4 +68,15 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
         return index
     }
     
+}
+
+extension EateryPageViewController {
+    override func viewDidLayoutSubviews() {
+        for subview in self.view.subviews {
+            if subview is UIScrollView {
+                subview.frame = self.view.bounds
+            }
+        }
+        super.viewDidLayoutSubviews()
+    }
 }

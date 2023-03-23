@@ -11,7 +11,7 @@ import MapKit
 import UIKit
 
 class EateryModelController: EateryViewController {
-    
+
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
@@ -30,7 +30,6 @@ class EateryModelController: EateryViewController {
     }
 
     func setUp(eatery: Eatery) {
-        
         self.eatery = eatery
         resetSelectedEventIndex()
 

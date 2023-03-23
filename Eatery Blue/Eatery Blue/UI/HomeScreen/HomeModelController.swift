@@ -20,7 +20,7 @@ class HomeModelController: HomeViewController {
     private let filterController = EateryFilterViewController()
 
     private var cancellables: Set<AnyCancellable> = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -140,13 +140,11 @@ class HomeModelController: HomeViewController {
 
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
                 navigationController?.hero.isEnabled = false
-                
                 let pageVC = EateryPageViewController(eateries: allEateries)
-                
+                pageVC.modalPresentationStyle = .overCurrentContext
                 navigationController?.pushViewController(pageVC, animated: true)
             })
         }
-
 
         if carouselEateries.count > 3 {
             let view = CarouselMoreEateriesView()
@@ -286,6 +284,7 @@ class HomeModelController: HomeViewController {
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
     }
+    
 
 }
 
