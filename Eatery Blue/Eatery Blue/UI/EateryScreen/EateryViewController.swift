@@ -35,6 +35,7 @@ class EateryViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
+    
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -468,7 +469,6 @@ class EateryViewController: UIViewController {
             right: 0
         )
     }
-
 }
 
 extension EateryViewController: UISearchBarDelegate {
