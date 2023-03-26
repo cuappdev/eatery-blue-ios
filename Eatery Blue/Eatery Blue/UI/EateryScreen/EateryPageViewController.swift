@@ -36,9 +36,9 @@ class EateryPageViewController: UIPageViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        for subview in view.subviews {
+        view.subviews.forEach { subview in
             if subview is UIScrollView {
-                subview.frame = self.view.bounds
+                subview.frame = view.bounds
             }
         }
         super.viewDidLayoutSubviews()
