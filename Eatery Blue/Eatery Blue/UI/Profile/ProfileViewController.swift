@@ -76,12 +76,16 @@ class ProfileViewController: UIViewController {
         } else {
             viewControllers[0] = viewController
         }
-        theNavigationController.setViewControllers(viewControllers, animated: animated)
+        DispatchQueue.main.async {
+            self.theNavigationController.setViewControllers(viewControllers, animated: animated)
+        }
     }
 
     @objc private func didLogOut(_ notification: Notification) {
         setMode(.login, animated: false)
-        theNavigationController.popToRootViewController(animated: true)
+        DispatchQueue.main.async {
+            self.theNavigationController.popToRootViewController(animated: true)
+        }
     }
 
 }
