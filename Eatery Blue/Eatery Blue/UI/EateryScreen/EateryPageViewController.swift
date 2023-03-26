@@ -35,6 +35,15 @@ class EateryPageViewController: UIPageViewController {
         setUpPages()
     }
     
+    override func viewDidLayoutSubviews() {
+        view.subviews.forEach { subview in
+            if subview is UIScrollView {
+                subview.frame = view.bounds
+            }
+        }
+        super.viewDidLayoutSubviews()
+    }
+    
     private func setUpPages() {
         eateries.forEach { eatery in
             let eateryVC = EateryModelController()
@@ -68,15 +77,4 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
         return index
     }
     
-}
-
-extension EateryPageViewController {
-    override func viewDidLayoutSubviews() {
-        for subview in self.view.subviews {
-            if subview is UIScrollView {
-                subview.frame = self.view.bounds
-            }
-        }
-        super.viewDidLayoutSubviews()
-    }
 }
