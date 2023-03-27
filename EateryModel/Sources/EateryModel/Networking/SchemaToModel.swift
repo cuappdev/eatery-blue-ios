@@ -16,6 +16,7 @@ internal enum SchemaToModel {
             events: convert(schemaEatery.events),
             id: schemaEatery.id,
             imageUrl: schemaEatery.imageUrl,
+            index: schemaEatery.index,
             latitude: schemaEatery.latitude,
             locationDescription: schemaEatery.location,
             longitude: schemaEatery.longitude,

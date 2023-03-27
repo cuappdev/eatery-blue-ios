@@ -42,6 +42,8 @@ internal enum Schema {
         internal let events: [Schema.Event]?
         
         internal let imageUrl: URL?
+        
+        internal let index: Int
 
         internal let latitude: Double?
 
