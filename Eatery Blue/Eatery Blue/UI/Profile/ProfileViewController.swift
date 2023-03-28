@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController {
         case login
     }
 
-    private var theNavigationController = UINavigationController()
+    private var profileNavigationController = UINavigationController()
 
     private var currentMode: Mode = .login
 
@@ -42,16 +42,16 @@ class ProfileViewController: UIViewController {
     }
 
     private func setUpNavigationController() {
-        addChild(theNavigationController)
-        view.addSubview(theNavigationController.view)
-        theNavigationController.didMove(toParent: self)
+        addChild(profileNavigationController)
+        view.addSubview(profileNavigationController.view)
+        profileNavigationController.didMove(toParent: self)
 
-        theNavigationController.delegate = self
-        theNavigationController.navigationBar.prefersLargeTitles = true
+        profileNavigationController.delegate = self
+        profileNavigationController.navigationBar.prefersLargeTitles = true
     }
 
     private func setUpConstraints() {
-        theNavigationController.view.snp.makeConstraints { make in
+        profileNavigationController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -70,21 +70,21 @@ class ProfileViewController: UIViewController {
             viewController = AccountModelController()
         }
 
-        var viewControllers = theNavigationController.viewControllers
+        var viewControllers = profileNavigationController.viewControllers
         if viewControllers.isEmpty {
             viewControllers.append(viewController)
         } else {
             viewControllers[0] = viewController
         }
         DispatchQueue.main.async {
-            self.theNavigationController.setViewControllers(viewControllers, animated: animated)
+            self.profileNavigationController.setViewControllers(viewControllers, animated: animated)
         }
     }
 
     @objc private func didLogOut(_ notification: Notification) {
         setMode(.login, animated: false)
         DispatchQueue.main.async {
-            self.theNavigationController.popToRootViewController(animated: true)
+            self.profileNavigationController.popToRootViewController(animated: true)
         }
     }
 
