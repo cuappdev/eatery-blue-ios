@@ -12,7 +12,7 @@ import CoreLocation
 
 class HomeModelController: HomeViewController {
     
-    private var isTesting = true
+    private var isTesting = false
 
     private var filter = EateryFilter()
     private var allEateries: [Eatery] = []
