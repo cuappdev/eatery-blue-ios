@@ -22,13 +22,13 @@ public struct EateryAPI {
 
     public func eateries() async throws -> [Eatery] {
         let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
-        let schemaApiResponse = try decoder.decode(Schema.APIResponse.self, from: data)
+        let schemaApiResponse = try decoder.decode([Schema.Eatery].self, from: data)
 
-        if let error = schemaApiResponse.error {
-            throw EateryAPIError.apiResponseError(error)
-        }
+//        if let error = schemaApiResponse.error {
+//            throw EateryAPIError.apiResponseError(error)
+//        }
 
-        return schemaApiResponse.data.map(SchemaToModel.convert)
+        return schemaApiResponse.map(SchemaToModel.convert)
     }
 
 }

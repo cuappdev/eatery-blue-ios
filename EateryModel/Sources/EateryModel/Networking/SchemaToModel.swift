@@ -15,8 +15,7 @@ internal enum SchemaToModel {
             campusArea: schemaEatery.campusArea,
             events: convert(schemaEatery.events),
             id: schemaEatery.id,
-            imageUrl: schemaEatery.imageUrl,
-            index: schemaEatery.index,
+            imageUrl: convert(schemaEatery.imageUrl),
             latitude: schemaEatery.latitude,
             locationDescription: schemaEatery.location,
             longitude: schemaEatery.longitude,
@@ -30,6 +29,14 @@ internal enum SchemaToModel {
             ),
             waitTimesByDay: convert(schemaEatery.waitTimes)
         )
+    }
+
+    internal static func convert(_ schemaUrl: String?) -> URL? {
+        guard let url = schemaUrl else {
+            return nil
+        }
+
+        return URL(string: url)
     }
 
     internal static func convert(_ schemaAlerts: [Schema.Alert]?) -> [EateryAlert] {
@@ -76,9 +83,24 @@ internal enum SchemaToModel {
     }
 
     internal static func convert(_ schemaEvent: Schema.Event) -> Event? {
-        guard let day = Day(string: schemaEvent.canonicalDate) else {
+        let df = ISO8601DateFormatter()
+        guard let start = schemaEvent.start, let end = schemaEvent.end, let startDate = df.date(from: start), let endDate = df.date(from: end) else {
             return nil
         }
+        
+        // For testing
+        if Day(date: startDate) != Day(date: endDate) {
+            print(schemaEvent.id, startDate, endDate)
+            print(Calendar.eatery.component(.second, from: startDate))
+        }
+        
+        func getTimeInSeconds(from date : Date) -> Int {
+            let calendar = Calendar.eatery
+            return calendar.component(.hour, from: date) * 360 + calendar.component(.minute, from: date) * 60 + calendar.component(.second, from: date)
+        }
+        
+        let startTime = getTimeInSeconds(from: startDate)
+        let endTime = getTimeInSeconds(from: endDate)
 
         let menu: Menu?
         if let schemaMenuCategories = schemaEvent.menu {
@@ -88,11 +110,11 @@ internal enum SchemaToModel {
         }
 
         return Event(
-            canonicalDay: day,
-            description: schemaEvent.description,
-            endTimestamp: TimeInterval(schemaEvent.endTimestamp),
+            canonicalDay: Day(date: startDate),
+            description: schemaEvent.eventDescription,
+            endTimestamp: TimeInterval(startTime),
             menu: menu,
-            startTimestamp: TimeInterval(schemaEvent.startTimestamp)
+            startTimestamp: TimeInterval(endTime)
         )
     }
 
