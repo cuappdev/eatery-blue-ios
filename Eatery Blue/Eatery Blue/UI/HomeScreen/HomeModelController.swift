@@ -140,7 +140,7 @@ class HomeModelController: HomeViewController {
 
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
                 navigationController?.hero.isEnabled = false
-                let pageVC = EateryPageViewController(eateries: allEateries)
+                let pageVC = EateryPageViewController(eateries: allEateries, selectedIndex: eatery.index)
                 pageVC.modalPresentationStyle = .overCurrentContext
                 navigationController?.pushViewController(pageVC, animated: true)
             })
@@ -262,9 +262,10 @@ class HomeModelController: HomeViewController {
         LocationManager.shared.requestLocation()
 
         Task {
-            await withTaskGroup(of: Void.self) { [self] group in
+            await withTaskGroup(of: Void.self) { [weak self] group in
+                guard let strongSelf = self else { return }
                 group.addTask {
-                    await updateAllEateriesFromNetworking()
+                    await strongSelf.updateAllEateriesFromNetworking()
                 }
                 // Create a task to let the logo view do one complete animation cycle
                 group.addTask {

@@ -19,6 +19,8 @@ public struct Eatery: Codable, Hashable {
     public let id: Int64
 
     public let imageUrl: URL?
+    
+    public let index: Int
 
     public let latitude: Double?
 
@@ -42,6 +44,7 @@ public struct Eatery: Codable, Hashable {
         events: [Event] = [],
         id: Int64,
         imageUrl: URL? = nil,
+        index: Int,
         latitude: Double? = nil,
         locationDescription: String? = nil,
         longitude: Double? = nil,
@@ -56,6 +59,7 @@ public struct Eatery: Codable, Hashable {
         self.events = events
         self.id = id
         self.imageUrl = imageUrl
+        self.index = index
         self.latitude = latitude
         self.locationDescription = locationDescription
         self.longitude = longitude

@@ -12,10 +12,12 @@ class EateryPageViewController: UIPageViewController {
     
     private var pages = [UIViewController]()
     private var eateries = [Eatery]()
+    private var selectedIndex: Int
     
-    init(eateries: [Eatery]) {
-        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    init(eateries: [Eatery], selectedIndex: Int) {
         self.eateries = eateries
+        self.selectedIndex = eateries.indices.contains(selectedIndex) ? selectedIndex : 0
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
     required init?(coder: NSCoder) {
@@ -45,12 +47,13 @@ class EateryPageViewController: UIPageViewController {
     }
     
     private func setUpPages() {
-        eateries.forEach { eatery in
+        let sortedEateries = eateries.sorted(by: { $0.index < $1.index })
+        sortedEateries.forEach { eatery in
             let eateryVC = EateryModelController()
             eateryVC.setUp(eatery: eatery)
             pages.append(eateryVC)
         }
-        setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
+        setViewControllers([pages[selectedIndex]], direction: .forward, animated: true, completion: nil)
     }
     
 }
