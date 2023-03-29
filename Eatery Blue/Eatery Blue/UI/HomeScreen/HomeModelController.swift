@@ -262,9 +262,10 @@ class HomeModelController: HomeViewController {
         LocationManager.shared.requestLocation()
 
         Task {
-            await withTaskGroup(of: Void.self) { [self] group in
+            await withTaskGroup(of: Void.self) { [weak self] group in
+                guard let strongSelf = self else { return }
                 group.addTask {
-                    await self.updateAllEateriesFromNetworking()
+                    await strongSelf.updateAllEateriesFromNetworking()
                 }
                 // Create a task to let the logo view do one complete animation cycle
                 group.addTask {
