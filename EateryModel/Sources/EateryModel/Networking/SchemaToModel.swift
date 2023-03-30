@@ -88,12 +88,6 @@ internal enum SchemaToModel {
             return nil
         }
         
-        // For testing
-        if Day(date: startDate) != Day(date: endDate) {
-            print(schemaEvent.id, startDate, endDate)
-            print(Calendar.eatery.component(.second, from: startDate))
-        }
-        
         func getTimeInSeconds(from date : Date) -> Int {
             let calendar = Calendar.eatery
             return calendar.component(.hour, from: date) * 360 + calendar.component(.minute, from: date) * 60 + calendar.component(.second, from: date)
