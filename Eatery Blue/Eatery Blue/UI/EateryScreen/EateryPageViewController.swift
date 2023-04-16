@@ -12,9 +12,11 @@ class EateryPageViewController: UIPageViewController {
     
     private var pages = [UIViewController]()
     private var eateries = [Eatery]()
+    private var index: Int
     
-    init(eateries: [Eatery]) {
+    init(eateries: [Eatery], index: Int) {
         self.eateries = eateries
+        self.index = index
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -50,7 +52,7 @@ class EateryPageViewController: UIPageViewController {
             eateryVC.setUp(eatery: eatery)
             pages.append(eateryVC)
         }
-        setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil) // fix index bug
+        setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil) // fix index bug
     }
     
 }

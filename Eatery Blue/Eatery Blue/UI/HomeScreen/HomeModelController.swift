@@ -92,7 +92,8 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
 
-        for eatery in carouselEateries.prefix(3) {
+        for i in 0...2 {
+            let eatery = carouselEateries[i]
             let contentView = EateryMediumCardContentView()
             contentView.imageView.kf.setImage(
                 with: eatery.imageUrl,
@@ -140,7 +141,7 @@ class HomeModelController: HomeViewController {
 
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
                 navigationController?.hero.isEnabled = false
-                let pageVC = EateryPageViewController(eateries: allEateries)
+                let pageVC = EateryPageViewController(eateries: carouselEateries, index: i)
                 pageVC.modalPresentationStyle = .overCurrentContext
                 navigationController?.pushViewController(pageVC, animated: true)
             })
