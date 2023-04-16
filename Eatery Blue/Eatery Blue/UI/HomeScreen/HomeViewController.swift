@@ -28,12 +28,14 @@ class HomeViewController: UIViewController {
     private(set) var cells: [Cell] = []
 
     private var cancellables: Set<AnyCancellable> = []
+    
+    private var allEateries: [Eatery] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-
+        
         setUpView()
         setUpConstraints()
     }
@@ -87,11 +89,10 @@ class HomeViewController: UIViewController {
         }
     }
 
-    func pushViewController(for eatery: Eatery) {
-        let viewController = EateryModelController()
-        viewController.setUp(eatery: eatery)
+    func pushViewController() {
+        let pageVC = EateryPageViewController(eateries: allEateries)
         navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(pageVC, animated: true)
     }
 
     private func updateScrollViewContentInset() {
@@ -282,11 +283,12 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
         case .eateryCard(eatery: let eatery):
-            pushViewController(for: eatery)
-
+            allEateries.append(eatery)
+            
         default:
             break
         }
+        pushViewController()
     }
 
 }
