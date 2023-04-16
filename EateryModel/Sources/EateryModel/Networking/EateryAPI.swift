@@ -24,10 +24,6 @@ public struct EateryAPI {
         let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
         let schemaApiResponse = try decoder.decode([Schema.Eatery].self, from: data)
 
-//        if let error = schemaApiResponse.error {
-//            throw EateryAPIError.apiResponseError(error)
-//        }
-
         return schemaApiResponse.map(SchemaToModel.convert)
     }
 

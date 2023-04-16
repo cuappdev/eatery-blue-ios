@@ -21,16 +21,6 @@ internal enum Schema {
 
     }
 
-//    internal struct APIResponse: Codable {
-//
-//        internal let data: [Eatery]
-//
-//        internal let error: String?
-//
-//        internal let success: Bool
-//
-//    }
-
     internal struct Eatery: Codable {
 
         internal let alerts: [Alert]?
@@ -66,20 +56,16 @@ internal enum Schema {
     }
 
     internal struct Event: Codable {
-
-//        internal let canonicalDate: String
-
-//        internal let description: String?
         
         internal let eatery: Int? // Need to communicate with backend about purpose of this var
 
-        internal let end: String?
+        internal let end: Int?
         
         internal let eventDescription: String?
         
         internal let id: Int
 
-        internal let start: String?
+        internal let start: Int?
 
         internal let menu: [Schema.MenuCategory]?
 

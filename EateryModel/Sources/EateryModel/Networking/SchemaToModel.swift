@@ -83,24 +83,9 @@ internal enum SchemaToModel {
     }
 
     internal static func convert(_ schemaEvent: Schema.Event) -> Event? {
-        let df = ISO8601DateFormatter()
-        guard let start = schemaEvent.start, let end = schemaEvent.end, let startDate = df.date(from: start), let endDate = df.date(from: end) else {
+        guard let start = schemaEvent.start, let end = schemaEvent.end else {
             return nil
         }
-        
-        // For testing
-        if Day(date: startDate) != Day(date: endDate) {
-            print(schemaEvent.id, startDate, endDate)
-            print(Calendar.eatery.component(.second, from: startDate))
-        }
-        
-        func getTimeInSeconds(from date : Date) -> Int {
-            let calendar = Calendar.eatery
-            return calendar.component(.hour, from: date) * 360 + calendar.component(.minute, from: date) * 60 + calendar.component(.second, from: date)
-        }
-        
-        let startTime = getTimeInSeconds(from: startDate)
-        let endTime = getTimeInSeconds(from: endDate)
 
         let menu: Menu?
         if let schemaMenuCategories = schemaEvent.menu {
@@ -110,11 +95,11 @@ internal enum SchemaToModel {
         }
 
         return Event(
-            canonicalDay: Day(date: startDate),
+            canonicalDay: Day(date: Date(timeIntervalSince1970: TimeInterval(start))),
             description: schemaEvent.eventDescription,
-            endTimestamp: TimeInterval(startTime),
+            endTimestamp: TimeInterval(end),
             menu: menu,
-            startTimestamp: TimeInterval(endTime)
+            startTimestamp: TimeInterval(start)
         )
     }
 
