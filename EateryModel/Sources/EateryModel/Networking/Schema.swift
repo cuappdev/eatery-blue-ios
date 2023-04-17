@@ -60,9 +60,9 @@ internal enum Schema {
         internal let eatery: Int? // Need to communicate with backend about purpose of this var
 
         internal let end: Int?
-        
+
         internal let eventDescription: String?
-        
+
         internal let id: Int
 
         internal let start: Int?
