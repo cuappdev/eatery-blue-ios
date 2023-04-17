@@ -12,11 +12,9 @@ class EateryPageViewController: UIPageViewController {
     
     private var pages = [UIViewController]()
     private var eateries = [Eatery]()
-    private var selectedIndex: Int
     
-    init(eateries: [Eatery], selectedIndex: Int) {
+    init(eateries: [Eatery]) {
         self.eateries = eateries
-        self.selectedIndex = eateries.indices.contains(selectedIndex) ? selectedIndex : 0
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -47,13 +45,12 @@ class EateryPageViewController: UIPageViewController {
     }
     
     private func setUpPages() {
-        let sortedEateries = eateries.sorted(by: { $0.index < $1.index })
-        sortedEateries.forEach { eatery in
+       eateries.forEach { eatery in
             let eateryVC = EateryModelController()
             eateryVC.setUp(eatery: eatery)
             pages.append(eateryVC)
         }
-        setViewControllers([pages[selectedIndex]], direction: .forward, animated: true, completion: nil)
+        setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil) // fix index bug
     }
     
 }
