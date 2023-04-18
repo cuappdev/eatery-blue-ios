@@ -52,7 +52,7 @@ class EateryPageViewController: UIPageViewController {
             eateryVC.setUp(eatery: eatery)
             pages.append(eateryVC)
         }
-        setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil) // fix index bug
+        setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
     }
     
 }
