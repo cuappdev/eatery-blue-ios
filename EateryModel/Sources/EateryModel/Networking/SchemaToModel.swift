@@ -89,7 +89,17 @@ internal enum SchemaToModel {
 
         let menu: Menu?
         if let schemaMenuCategories = schemaEvent.menu {
-            menu = Menu(categories: schemaMenuCategories.map(convert))
+            var sortedMenuCategories: [Schema.MenuCategory] = schemaMenuCategories
+            for i in 0..<schemaMenuCategories.count {
+                let menuCategory = schemaMenuCategories[i]
+                if menuCategory.category == "Chef's Table" {
+                    sortedMenuCategories.swapAt(0, i)
+                }
+                if menuCategory.category == "Chef's Table - Sides" {
+                    sortedMenuCategories.swapAt(1, i)
+                }
+            }
+            menu = Menu(categories: sortedMenuCategories.map(convert))
         } else {
             menu = nil
         }
