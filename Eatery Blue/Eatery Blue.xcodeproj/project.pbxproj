@@ -145,6 +145,11 @@
 		5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */; };
 		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
 		5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */; };
+		957397AC2821BFD400FFB687 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 957397AB2821BFD400FFB687 /* GoogleService-Info.plist */; };
+		957397B32821C50200FFB687 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957397B22821C50200FFB687 /* Analytics.swift */; };
+		95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BC2819B68600285440 /* FirebaseAnalytics */; };
+		95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */; };
+		95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
 /* End PBXBuildFile section */
@@ -292,6 +297,8 @@
 		5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodFilterView.swift; sourceTree = "<group>"; };
 		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
+		957397AB2821BFD400FFB687 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		957397B22821C50200FFB687 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -303,6 +310,8 @@
 			files = (
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
 				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
+				95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */,
+				95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */,
 				5D73C38D278129100020507C /* Logging in Frameworks */,
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
 				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
@@ -310,6 +319,7 @@
 				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
+				95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				5D75D6DF278E1DF500832359 /* SnapKit in Frameworks */,
 				5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */,
 			);
@@ -454,10 +464,12 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				957397AB2821BFD400FFB687 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
 				5D377CE427A19B0200F8DC37 /* UserDefaultsKeys.swift */,
+				9596C042282736A7007F9278 /* Analytics */,
 				5DF304B327797BD200E2C9A4 /* Extensions */,
 				5DCB86A02783543900134066 /* Location */,
 				5DF304B227797BBA00E2C9A4 /* Model */,
@@ -782,6 +794,14 @@
 			path = EateryCard;
 			sourceTree = "<group>";
 		};
+		9596C042282736A7007F9278 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				957397B22821C50200FFB687 /* Analytics.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -811,6 +831,9 @@
 				5D75D6DE278E1DF500832359 /* SnapKit */,
 				5DBB59E1278FA3AB0028FE59 /* EateryModel */,
 				5DAE72D6278FC2F600284A72 /* EateryGetAPI */,
+				95A5A6BC2819B68600285440 /* FirebaseAnalytics */,
+				95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */,
+				95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -850,6 +873,7 @@
 				5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */,
 				5D75D6DD278E1DF400832359 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -867,6 +891,7 @@
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
+				957397AC2821BFD400FFB687 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +965,7 @@
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment.swift in Sources */,
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
+				957397B32821C50200FFB687 /* Analytics.swift in Sources */,
 				5DA434B1278A04A1001337FD /* NavigationImageButton.swift in Sources */,
 				5DA434BC278B69E1001337FD /* AccountTransactionsHeaderView.swift in Sources */,
 				5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */,
@@ -1143,7 +1169,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1159,8 +1185,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue.testing;
+				MARKETING_VERSION = 0.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1176,7 +1202,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1192,8 +1218,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue.testing;
+				MARKETING_VERSION = 0.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1298,6 +1324,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1353,6 +1387,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		95A5A6BC2819B68600285440 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAnalyticsSwift-Beta";
+		};
+		95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
 		};
 /* End XCSwiftPackageProductDependency section */
 

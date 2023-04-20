@@ -37,5 +37,28 @@ public struct EateryAPI {
         return schemaApiResponse.map(SchemaToModel.convert)
     }
 
+    public func reportError(eateryId: Int64? = nil, type: String, content: String) async {
+        let data: [String: Any] = ["eatery_id": eateryId as Any, "type": type, "content": content]
+        let body = try? JSONSerialization.data(withJSONObject: data, options: [])
+
+        var request = URLRequest(url: url)
+        request.httpBody = body
+        request.httpMethod = "POST"
+
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { (data, response, error) in
+
+            if let _ = error {
+                logger.error("Error submitting report: \(error.debugDescription)")
+            } else if let _ = data {
+                logger.info("Successfully reported Eatery Blue issue")
+            } else {
+                logger.error("Unknown error submitting report")
+            }
+        }
+
+        task.resume()
+    }
+
 }
 

@@ -326,7 +326,7 @@ class EateryViewController: UIViewController {
         cell.tap { [self] _ in
             let viewController = HoursSheetViewController()
             viewController.setUpSheetPresentation()
-            viewController.setUp(eatery.events)
+            viewController.setUp(eatery.id, eatery.events)
             present(viewController, animated: true)
         }
 
@@ -355,7 +355,7 @@ class EateryViewController: UIViewController {
             cell.tap { [self] _ in
                 let viewController = WaitTimesSheetViewController()
                 viewController.setUpSheetPresentation()
-                viewController.setUp(waitTimes, events: events)
+                viewController.setUp(eatery.id, waitTimes, events: events)
                 present(viewController, animated: true)
             }
 
@@ -444,11 +444,11 @@ class EateryViewController: UIViewController {
         stackView.addArrangedSubview(categoryView)
     }
 
-    func addReportIssueView() {
+    func addReportIssueView(eateryId: Int64? = nil) {
         let view = ReportIssueView()
         view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         view.button.tap { [self] _ in
-            let viewController = ReportIssueViewController()
+            let viewController = ReportIssueViewController(eateryId: eateryId)
             present(viewController, animated: true)
         }
         stackView.addArrangedSubview(view)
