@@ -14,6 +14,7 @@ import Logging
 class Networking {
 
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
+    static let didSubmitReportNotification = Notification.Name("Networking.didSubmitReportNotification")
 
     let eateries: InMemoryCache<[Eatery]>
     let sessionId: InMemoryCache<String>
@@ -49,62 +50,36 @@ class Networking {
     }
 
     func submitReport(eatery: Int?, content: String) {
-        guard let url = URL(string: "https://eatery-dev.cornellappdev.com/report/") else {
-            print("Error: cannot create URL")
-            return
-        }
-        
-        struct UploadData: Codable {
+        let url = URL(string: "https://eatery-dev.cornellappdev.com/report/")!
+
+        struct ReportData: Codable {
             let eatery: Int?
             let content: String
         }
-        
-        let dataModel = UploadData(eatery: eatery, content: content)
-        
-        guard let jsonData = try? JSONEncoder().encode(dataModel) else {
-            print("Error: Trying to convert model to JSON data")
+
+        let reportData = ReportData(eatery: eatery, content: content)
+
+        guard let jsonData = try? JSONEncoder().encode(reportData) else {
+            logger.error("Unable to convert report data to JSON")
             return
         }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = jsonData
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil else {
-                print("Error: error calling POST")
-                print(error!)
-                return
+            if let error = error {
+                logger.error("Failed to submit report: \(error)")
             }
-            guard let data = data else {
-                print("Error: Did not receive data")
-                return
+
+            if let response = response as? HTTPURLResponse {
+                logger.info("\(#function): Status Code \(response.statusCode)")
             }
-            guard let response = response as? HTTPURLResponse, (200 ..< 299) ~= response.statusCode else {
-                print("Error: HTTP request failed")
-                return
-            }
-            do {
-                guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                    print("Error: Cannot convert data to JSON object")
-                    return
-                }
-                guard let prettyJsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
-                    print("Error: Cannot convert JSON object to Pretty JSON data")
-                    return
-                }
-                guard let prettyPrintedJson = String(data: prettyJsonData, encoding: .utf8) else {
-                    print("Error: Couldn't print JSON in String")
-                    return
-                }
-                
-                print(prettyPrintedJson)
-            } catch {
-                print("Error: Trying to convert JSON data to string")
-                return
-            }
+
+            NotificationCenter.default.post(name: Networking.didSubmitReportNotification, object: self)
         }.resume()
         
     }
