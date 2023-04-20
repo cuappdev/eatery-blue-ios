@@ -25,7 +25,7 @@ class ReportIssueButtonView: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColor(named: "Gray00")
+        backgroundColor = UIColor.Eatery.gray00
         layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
 
         addSubview(container)
@@ -43,13 +43,13 @@ class ReportIssueButtonView: UIView {
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "Report")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "Black")
+        imageView.tintColor = UIColor.Eatery.black
     }
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .footnote, weight: .semibold)
         titleLabel.text = "Report an issue"
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpConstraints() {

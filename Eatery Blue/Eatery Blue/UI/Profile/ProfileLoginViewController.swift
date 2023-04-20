@@ -36,11 +36,11 @@ class ProfileLoginViewController: UIViewController {
     private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(named: "Black") as Any,
+            .foregroundColor: UIColor.Eatery.black as Any,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(named: "EateryBlue") as Any,
+            .foregroundColor: UIColor.Eatery.blue as Any,
             .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
 
@@ -60,7 +60,7 @@ class ProfileLoginViewController: UIViewController {
             target: self,
             action: #selector(didTapSettingsButton)
         )
-        settingsItem.tintColor = UIColor(named: "Black")
+        settingsItem.tintColor = UIColor.Eatery.black
         navigationItem.rightBarButtonItem = settingsItem
     }
 
@@ -164,10 +164,10 @@ class ProfileLoginViewController: UIViewController {
     func setLoginButtonEnabled(_ isEnabled: Bool) {
         if isEnabled {
             loginButton.content.textColor = .white
-            loginButton.backgroundColor = UIColor(named: "EateryBlue")
+            loginButton.backgroundColor = UIColor.Eatery.blue
         } else {
-            loginButton.content.textColor = UIColor(named: "EateryBlack")
-            loginButton.backgroundColor = UIColor(named: "Gray00")
+            loginButton.content.textColor = UIColor.Eatery.black
+            loginButton.backgroundColor = UIColor.Eatery.gray00
         }
     }
 

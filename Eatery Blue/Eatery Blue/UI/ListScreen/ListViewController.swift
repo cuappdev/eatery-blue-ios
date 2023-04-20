@@ -152,7 +152,7 @@ class ListViewController: UIViewController {
         let label = UILabel()
         label.text = title
         label.font = .systemFont(ofSize: 34, weight: .bold)
-        label.textColor = UIColor(named: "EateryBlue")
+        label.textColor = UIColor.Eatery.blue
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -164,7 +164,7 @@ class ListViewController: UIViewController {
         label.text = description
         label.numberOfLines = 0
         label.font = .preferredFont(for: .body, weight: .medium)
-        label.textColor = UIColor(named: "Gray06")
+        label.textColor = UIColor.Eatery.gray06
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

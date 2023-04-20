@@ -66,7 +66,7 @@ class OnboardingFeaturesViewController: UIViewController {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
-        backButton.content.tintColor = UIColor(named: "Black")
+        backButton.content.tintColor = UIColor.Eatery.black
         backButton.content.contentMode = .scaleAspectFit
         backButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
 
@@ -91,10 +91,10 @@ class OnboardingFeaturesViewController: UIViewController {
 
     private func setUpNextButton() {
         nextButton.content.text = "Next"
-        nextButton.content.textColor = UIColor(named: "EateryBlack")
+        nextButton.content.textColor = UIColor.Eatery.black
         nextButton.content.font = .preferredFont(for: .body, weight: .semibold)
         nextButton.content.textAlignment = .center
-        nextButton.backgroundColor = UIColor(named: "Gray00")
+        nextButton.backgroundColor = UIColor.Eatery.gray00
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
         nextButton.buttonPress { [self] _ in

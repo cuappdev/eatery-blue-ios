@@ -35,6 +35,7 @@ class EateryViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
+    
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +53,7 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpScrollView() {
-        scrollView.backgroundColor = UIColor(named: "Gray00")
+        scrollView.backgroundColor = UIColor.Eatery.gray00
         scrollView.alwaysBounceVertical = true
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.scrollIndicatorInsets = .zero
@@ -132,7 +133,7 @@ class EateryViewController: UIViewController {
         if paymentMethods.contains(.mealSwipes) {
             let imageView = UIImageView()
             imageView.image = UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate)
-            imageView.tintColor = UIColor(named: "EateryBlue")
+            imageView.tintColor = UIColor.Eatery.blue
             imageView.contentMode = .scaleAspectFit
 
             imageView.snp.makeConstraints { make in
@@ -145,7 +146,7 @@ class EateryViewController: UIViewController {
         if paymentMethods.contains(.brbs) {
             let imageView = UIImageView()
             imageView.image = UIImage(named: "BRBs")?.withRenderingMode(.alwaysTemplate)
-            imageView.tintColor = UIColor(named: "EateryRed")
+            imageView.tintColor = UIColor.Eatery.red
             imageView.contentMode = .scaleAspectFit
 
             imageView.snp.makeConstraints { make in
@@ -158,7 +159,7 @@ class EateryViewController: UIViewController {
         if paymentMethods.contains(.cash), paymentMethods.contains(.credit) {
             let imageView = UIImageView()
             imageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
-            imageView.tintColor = UIColor(named: "EateryGreen")
+            imageView.tintColor = UIColor.Eatery.green
             imageView.contentMode = .scaleAspectFit
             
             imageView.snp.makeConstraints { make in
@@ -176,7 +177,7 @@ class EateryViewController: UIViewController {
 
         container.layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         container.cornerRadiusView.backgroundColor = .white
-        container.shadowColor = UIColor(named: "Black")
+        container.shadowColor = UIColor.Eatery.black
         container.shadowOffset = CGSize(width: 0, height: 4)
         container.shadowOpacity = 0.25
         container.shadowRadius = 4
@@ -201,7 +202,7 @@ class EateryViewController: UIViewController {
 
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(named: "Gray05")
+        imageView.tintColor = UIColor.Eatery.gray05
 
         let container = ContainerView(pillContent: imageView)
         container.cornerRadiusView.backgroundColor = .white
@@ -220,7 +221,7 @@ class EateryViewController: UIViewController {
         let label = UILabel()
         label.text = name
         label.font = .preferredFont(for: .largeTitle, weight: .semibold)
-        label.textColor = UIColor(named: "Black")
+        label.textColor = UIColor.Eatery.black
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -230,7 +231,7 @@ class EateryViewController: UIViewController {
     func addShortDescriptionLabel(_ eatery: Eatery) {
         let label = UILabel()
         label.text = "\(eatery.locationDescription ?? "--") · \(eatery.menuSummary ?? "--")"
-        label.textColor = UIColor(named: "Gray05")
+        label.textColor = UIColor.Eatery.gray05
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
 
         let container = ContainerView(content: label)
@@ -251,7 +252,7 @@ class EateryViewController: UIViewController {
         if let orderOnlineAction = orderOnlineAction {
             let content = PillButtonView()
             content.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-            content.backgroundColor = UIColor(named: "EateryBlue")
+            content.backgroundColor = UIColor.Eatery.blue
             content.imageView.image = UIImage(named: "iPhone")
             content.imageView.tintColor = .white
             content.titleLabel.textColor = .white
@@ -267,10 +268,10 @@ class EateryViewController: UIViewController {
         if let directionsAction = directionsAction {
             let content = PillButtonView()
             content.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-            content.backgroundColor = UIColor(named: "Gray00")
+            content.backgroundColor = UIColor.Eatery.gray00
             content.imageView.image = UIImage(named: "Walk")?.withRenderingMode(.alwaysTemplate)
-            content.imageView.tintColor = UIColor(named: "Black")
-            content.titleLabel.textColor = UIColor(named: "Black")
+            content.imageView.tintColor = UIColor.Eatery.black
+            content.titleLabel.textColor = UIColor.Eatery.black
             content.titleLabel.text = "Get directions"
 
             let button = ButtonView(content: content)
@@ -312,7 +313,7 @@ class EateryViewController: UIViewController {
         let cell = TimingCellView()
         cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
-        cell.titleLabel.textColor = UIColor(named: "Gray05")
+        cell.titleLabel.textColor = UIColor.Eatery.gray05
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
             attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: cell.titleLabel.font))
@@ -336,7 +337,7 @@ class EateryViewController: UIViewController {
         let cell = TimingCellView()
         cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
-        cell.titleLabel.textColor = UIColor(named: "Gray05")
+        cell.titleLabel.textColor = UIColor.Eatery.gray05
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
             attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font))
@@ -345,7 +346,7 @@ class EateryViewController: UIViewController {
         cell.titleLabel.attributedText = text
 
         if let waitTimes = eatery.waitTimesByDay[Day()], let sample = waitTimes.sample(at: Date()) {
-            cell.statusLabel.textColor = UIColor(named: "Black")
+            cell.statusLabel.textColor = UIColor.Eatery.black
             let low = Int(round(sample.low / 60))
             let high = Int(round(sample.high / 60))
             cell.statusLabel.text = "\(low)-\(high) minutes"
@@ -359,14 +360,14 @@ class EateryViewController: UIViewController {
             }
 
         } else {
-            cell.statusLabel.textColor = UIColor(named: "Gray05")
+            cell.statusLabel.textColor = UIColor.Eatery.gray05
             cell.statusLabel.text = "-- minutes"
         }
 
         return cell
     }
 
-    func addSpacer(height: CGFloat, color: UIColor? = UIColor(named: "Gray00")) {
+    func addSpacer(height: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
         let spacer = UIView()
         spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
@@ -375,7 +376,7 @@ class EateryViewController: UIViewController {
         }
     }
 
-    func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor(named: "Gray00")) {
+    func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
         let spacer = UIView()
         spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
@@ -468,7 +469,6 @@ class EateryViewController: UIViewController {
             right: 0
         )
     }
-
 }
 
 extension EateryViewController: UISearchBarDelegate {

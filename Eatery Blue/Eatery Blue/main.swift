@@ -72,7 +72,7 @@ struct EateryBlue: ParsableCommand {
 
 extension Networking {
 
-    static var `default` = Networking(fetchUrl: URL(string: "https://eatery-dev.cornellappdev.com/api/")!)
+    static var `default` = Networking(fetchUrl: URL(string: "https://eatery-dev.cornellappdev.com/eatery/")!)
 
 }
 

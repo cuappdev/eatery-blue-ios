@@ -150,6 +150,8 @@
 		95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BC2819B68600285440 /* FirebaseAnalytics */; };
 		95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */; };
 		95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
+		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -297,6 +299,8 @@
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
 		957397AB2821BFD400FFB687 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		957397B22821C50200FFB687 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
+		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -582,6 +586,7 @@
 				5DF30490277696EF00E2C9A4 /* NSTextAttachment.swift */,
 				5DF5F7D5277404C8001ADCDC /* UIFont.swift */,
 				5DA434BD278B6EC7001337FD /* UITableViewCell.swift */,
+				BFD955942900A8150049D77C /* UIColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -679,6 +684,7 @@
 				5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */,
 				5D0CDC442774E7EA00AD0E27 /* EateryPillButtonStackView.swift */,
 				5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */,
+				9920725729CA10E600FFFB92 /* EateryPageViewController.swift */,
 				5DF5F7EA2774D8FE001ADCDC /* EateryViewController.swift */,
 				5D0CDC522775059500AD0E27 /* MenuCategoryView.swift */,
 				5D0CDC4E2774FDAE00AD0E27 /* MenuHeaderView.swift */,
@@ -966,6 +972,7 @@
 				5DBA899C2783EE07002DCA6B /* OnboardingStartViewController.swift in Sources */,
 				5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
+				BFD955952900A8150049D77C /* UIColor.swift in Sources */,
 				5D3A149B27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift in Sources */,
 				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,
 				5DF304AD2779209E00E2C9A4 /* MenuDayPickerCell.swift in Sources */,
@@ -989,6 +996,7 @@
 				5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
 				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
+				9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */,
 				5D75D6E4278E2B9D00832359 /* EateryCardVisualEffectView.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
@@ -1159,6 +1167,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
@@ -1179,6 +1188,7 @@
 				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1190,6 +1200,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
@@ -1210,6 +1221,7 @@
 				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

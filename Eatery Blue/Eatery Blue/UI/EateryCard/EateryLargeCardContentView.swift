@@ -33,7 +33,7 @@ class EateryLargeCardContentView: UIView {
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
         layoutMargins = .zero
-        backgroundColor = UIColor(named: "OffWhite")
+        backgroundColor = UIColor.Eatery.offWhite
 
         addSubview(imageView)
         setUpImageView()
@@ -85,12 +85,12 @@ class EateryLargeCardContentView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor(named: "Gray05")
+        subtitleLabel.textColor = UIColor.Eatery.gray05
     }
 
     private func setUpFavoriteImageView() {

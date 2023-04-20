@@ -21,27 +21,17 @@ internal enum Schema {
 
     }
 
-    internal struct APIResponse: Codable {
-
-        internal let data: [Eatery]
-
-        internal let error: String?
-
-        internal let success: Bool
-
-    }
-
     internal struct Eatery: Codable {
 
         internal let alerts: [Alert]?
 
         internal let campusArea: String?
 
-        internal let id: Int64
-
         internal let events: [Schema.Event]?
         
-        internal let imageUrl: URL?
+        internal let id: Int64
+        
+        internal let imageUrl: String?
 
         internal let latitude: Double?
 
@@ -61,19 +51,21 @@ internal enum Schema {
 
         internal let paymentAcceptsMealSwipes: Bool?
 
-        internal let waitTimes: [Schema.WaitTimesByDay]?
+        internal let waitTimes: [Schema.WaitTimesByDay]? // Not implemeneted on backend currently, will always be nil
 
     }
 
     internal struct Event: Codable {
+        
+        internal let eatery: Int? // Need to communicate with backend about purpose of this var
 
-        internal let canonicalDate: String
+        internal let end: Int?
 
-        internal let description: String?
+        internal let eventDescription: String?
 
-        internal let endTimestamp: Int
+        internal let id: Int
 
-        internal let startTimestamp: Int
+        internal let start: Int?
 
         internal let menu: [Schema.MenuCategory]?
 
@@ -83,13 +75,21 @@ internal enum Schema {
 
         internal let category: String
 
+        internal let event: Int? // Need to communciate about purpose of this var
+
+        internal let id: Int // And this
+
         internal let items: [Schema.MenuItem]
 
     }
 
     internal struct MenuItem: Codable {
 
+        internal let category: Int
+
         internal let healthy: Bool?
+
+        internal let id: Int
 
         internal let name: String
 

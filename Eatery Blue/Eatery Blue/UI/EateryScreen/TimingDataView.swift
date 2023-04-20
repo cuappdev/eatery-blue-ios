@@ -29,7 +29,7 @@ class TimingDataView: UIView {
 
     private func setUpStackView() {
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(named: "Gray00")?.cgColor
+        stackView.layer.borderColor = UIColor.Eatery.gray00.cgColor
         stackView.layer.cornerRadius = 8
 
         stackView.axis = .horizontal

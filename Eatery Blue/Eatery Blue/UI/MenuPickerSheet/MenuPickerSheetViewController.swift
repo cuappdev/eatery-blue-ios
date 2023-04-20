@@ -111,23 +111,23 @@ class MenuPickerSheetViewController: SheetViewController {
             if isToday {
                 if isSelected {
                     cell.dayLabel.content.textColor = .white
-                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
+                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
                 } else if isDisabled {
-                    cell.dayLabel.content.textColor = UIColor(named: "EateryBlueMedium")
+                    cell.dayLabel.content.textColor = UIColor.Eatery.blueMedium
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 } else {
-                    cell.dayLabel.content.textColor = UIColor(named: "EateryBlue")
+                    cell.dayLabel.content.textColor = UIColor.Eatery.blue
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 }
             } else {
                 if isSelected {
                     cell.dayLabel.content.textColor = .white
-                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor(named: "Black")
+                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.black
                 } else if isDisabled {
-                    cell.dayLabel.content.textColor = UIColor(named: "Gray03")
+                    cell.dayLabel.content.textColor = UIColor.Eatery.gray03
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 } else {
-                    cell.dayLabel.content.textColor = UIColor(named: "Black")
+                    cell.dayLabel.content.textColor = UIColor.Eatery.black
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 }
             }

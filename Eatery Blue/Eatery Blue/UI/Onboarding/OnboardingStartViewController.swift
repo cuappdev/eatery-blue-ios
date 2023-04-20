@@ -39,12 +39,12 @@ class OnboardingStartViewController: UIViewController {
 
     private func setUpEateryLogoView() {
         eateryLogoView.image = UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate)
-        eateryLogoView.tintColor = UIColor(named: "EateryBlue")
+        eateryLogoView.tintColor = UIColor.Eatery.blue
     }
 
     private func setUpTitleLabel() {
         titleLabel.text = "Eatery"
-        titleLabel.textColor = UIColor(named: "EateryBlue")
+        titleLabel.textColor = UIColor.Eatery.blue
         titleLabel.font = .systemFont(ofSize: 48, weight: .bold)
     }
 
@@ -58,7 +58,7 @@ class OnboardingStartViewController: UIViewController {
         nextButton.cornerRadius = 8
         nextButton.shadowRadius = 4
         nextButton.shadowOffset = CGSize(width: 0, height: 4)
-        nextButton.shadowColor = UIColor(named: "ShadowLight")
+        nextButton.shadowColor = UIColor.Eatery.shadowLight
         nextButton.shadowOpacity = 0.25
         nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
 
@@ -70,7 +70,7 @@ class OnboardingStartViewController: UIViewController {
 
     private func setUpAppDevLogoView() {
         appDevLogoView.image = UIImage(named: "AppDev")?.withRenderingMode(.alwaysTemplate)
-        appDevLogoView.tintColor = UIColor(named: "Gray03")
+        appDevLogoView.tintColor = UIColor.Eatery.gray03
     }
 
     private func setUpConstraints() {

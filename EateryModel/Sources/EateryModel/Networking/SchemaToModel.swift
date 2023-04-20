@@ -15,7 +15,7 @@ internal enum SchemaToModel {
             campusArea: schemaEatery.campusArea,
             events: convert(schemaEatery.events),
             id: schemaEatery.id,
-            imageUrl: schemaEatery.imageUrl,
+            imageUrl: convert(schemaEatery.imageUrl),
             latitude: schemaEatery.latitude,
             locationDescription: schemaEatery.location,
             longitude: schemaEatery.longitude,
@@ -29,6 +29,14 @@ internal enum SchemaToModel {
             ),
             waitTimesByDay: convert(schemaEatery.waitTimes)
         )
+    }
+
+    internal static func convert(_ schemaUrl: String?) -> URL? {
+        guard let url = schemaUrl else {
+            return nil
+        }
+
+        return URL(string: url)
     }
 
     internal static func convert(_ schemaAlerts: [Schema.Alert]?) -> [EateryAlert] {
@@ -75,7 +83,7 @@ internal enum SchemaToModel {
     }
 
     internal static func convert(_ schemaEvent: Schema.Event) -> Event? {
-        guard let day = Day(string: schemaEvent.canonicalDate) else {
+        guard let start = schemaEvent.start, let end = schemaEvent.end else {
             return nil
         }
 
@@ -87,11 +95,11 @@ internal enum SchemaToModel {
         }
 
         return Event(
-            canonicalDay: day,
-            description: schemaEvent.description,
-            endTimestamp: TimeInterval(schemaEvent.endTimestamp),
+            canonicalDay: Day(date: Date(timeIntervalSince1970: TimeInterval(start))),
+            description: schemaEvent.eventDescription,
+            endTimestamp: TimeInterval(end),
             menu: menu,
-            startTimestamp: TimeInterval(schemaEvent.startTimestamp)
+            startTimestamp: TimeInterval(start)
         )
     }
 

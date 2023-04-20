@@ -96,7 +96,7 @@ class ReportIssueViewController: UIViewController {
         let titleLabel = UILabel()
         header.addArrangedSubview(titleLabel)
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
         titleLabel.text = "Report an issue"
 
         let cancelButton = UIImageView()
@@ -136,7 +136,7 @@ class ReportIssueViewController: UIViewController {
     private func addHeader(title: String) {
         let label = UILabel()
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
-        label.textColor = UIColor(named: "Black")
+        label.textColor = UIColor.Eatery.black
         label.text = title
         stackView.addArrangedSubview(label)
     }
@@ -164,12 +164,12 @@ class ReportIssueViewController: UIViewController {
     private func updateIssueTypeButtonFromState() {
         if let selectedIssueType = selectedIssueType {
             issueTypeButton.label.text = selectedIssueType.description
-            issueTypeButton.label.textColor = UIColor(named: "Black")
+            issueTypeButton.label.textColor = UIColor.Eatery.black
             issueTypeButton.label.font = .preferredFont(for: .subheadline, weight: .medium)
 
         } else {
             issueTypeButton.label.text = "Choose an option..."
-            issueTypeButton.label.textColor = UIColor(named: "Gray05")
+            issueTypeButton.label.textColor = UIColor.Eatery.gray05
             issueTypeButton.label.font = .preferredFont(for: .subheadline, weight: .medium)
         }
     }
@@ -193,11 +193,11 @@ class ReportIssueViewController: UIViewController {
 
     private func updateSubmitButtonFromState() {
         if submitEnabled {
-            submitButton.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
+            submitButton.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
             submitButton.content.textColor = .white
         } else {
-            submitButton.cornerRadiusView.backgroundColor = UIColor(named: "Gray00")
-            submitButton.content.textColor = UIColor(named: "Gray03")
+            submitButton.cornerRadiusView.backgroundColor = UIColor.Eatery.gray00
+            submitButton.content.textColor = UIColor.Eatery.gray03
         }
     }
 

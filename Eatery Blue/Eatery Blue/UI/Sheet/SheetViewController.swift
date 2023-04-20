@@ -65,7 +65,7 @@ class SheetViewController: UIViewController {
         let titleLabel = UILabel()
         header.addArrangedSubview(titleLabel)
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
 
         let attributedText = NSMutableAttributedString()
         if let image = image {
@@ -110,12 +110,12 @@ class SheetViewController: UIViewController {
 
         switch style {
         case .regular:
-            titleLabel.textColor = UIColor(named: "Black")
-            container.cornerRadiusView.backgroundColor = UIColor(named: "Gray00")
+            titleLabel.textColor = UIColor.Eatery.black
+            container.cornerRadiusView.backgroundColor = UIColor.Eatery.gray00
 
         case .prominent:
             titleLabel.textColor = .white
-            container.cornerRadiusView.backgroundColor = UIColor(named: "EateryBlue")
+            container.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
         }
     }
 
@@ -123,7 +123,7 @@ class SheetViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.text = title
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
         titleLabel.textAlignment = .center
 
         let container = ButtonView(content: titleLabel)
@@ -142,13 +142,13 @@ class SheetViewController: UIViewController {
 
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.textColor = UIColor(named: "Gray05")
+        titleLabel.textColor = UIColor.Eatery.gray05
         titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         stack.addArrangedSubview(titleLabel)
 
         let descriptionLabel = UILabel()
         descriptionLabel.text = description
-        descriptionLabel.textColor = UIColor(named: "Black")
+        descriptionLabel.textColor = UIColor.Eatery.black
         descriptionLabel.font = .preferredFont(for: .body, weight: .semibold)
         descriptionLabel.numberOfLines = 0
         stack.addArrangedSubview(descriptionLabel)

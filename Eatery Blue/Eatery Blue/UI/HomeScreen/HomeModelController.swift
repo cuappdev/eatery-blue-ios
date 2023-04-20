@@ -11,6 +11,8 @@ import UIKit
 import CoreLocation
 
 class HomeModelController: HomeViewController {
+    
+    private var isTesting = false
 
     private var filter = EateryFilter()
     private var allEateries: [Eatery] = []
@@ -67,7 +69,7 @@ class HomeModelController: HomeViewController {
 
     private func updateAllEateriesFromNetworking() async {
         do {
-            let eateries = try await Networking.default.eateries.fetch(maxStaleness: 0)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
             allEateries = eateries.filter { eatery in
                 return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
@@ -90,7 +92,8 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
 
-        for eatery in carouselEateries.prefix(3) {
+        for i in 0...2 {
+            let eatery = carouselEateries[i]
             let contentView = EateryMediumCardContentView()
             contentView.imageView.kf.setImage(
                 with: eatery.imageUrl,
@@ -137,7 +140,10 @@ class HomeModelController: HomeViewController {
             }
 
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
-                pushViewController(for: eatery)
+                navigationController?.hero.isEnabled = false
+                let pageVC = EateryPageViewController(eateries: carouselEateries, index: i)
+                pageVC.modalPresentationStyle = .overCurrentContext
+                navigationController?.pushViewController(pageVC, animated: true)
             })
         }
 
@@ -257,9 +263,10 @@ class HomeModelController: HomeViewController {
         LocationManager.shared.requestLocation()
 
         Task {
-            await withTaskGroup(of: Void.self) { [self] group in
+            await withTaskGroup(of: Void.self) { [weak self] group in
+                guard let strongSelf = self else { return }
                 group.addTask {
-                    await self.updateAllEateriesFromNetworking()
+                    await strongSelf.updateAllEateriesFromNetworking()
                 }
                 // Create a task to let the logo view do one complete animation cycle
                 group.addTask {
@@ -279,6 +286,7 @@ class HomeModelController: HomeViewController {
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
     }
+    
 
 }
 

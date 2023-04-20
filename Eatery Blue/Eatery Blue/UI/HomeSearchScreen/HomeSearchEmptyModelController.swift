@@ -111,7 +111,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             default:
                 itemView.imageView.image = UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate)
             }
-            itemView.imageView.tintColor = UIColor(named: "EateryBlue")
+            itemView.imageView.tintColor = UIColor.Eatery.blue
             itemView.titleLabel.text = recentSearch.title
 
             if let subtitle = recentSearch.subtitle {

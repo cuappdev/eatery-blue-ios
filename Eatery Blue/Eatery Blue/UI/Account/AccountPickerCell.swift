@@ -36,11 +36,11 @@ class AccountPickerCell: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "Black")
+        titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpImageView() {
-        imageView.tintColor = UIColor(named: "Black")
+        imageView.tintColor = UIColor.Eatery.black
     }
 
     private func setUpConstraints() {
