@@ -194,6 +194,10 @@ class ReportIssueViewController: UIViewController {
         updateSubmitButtonFromState()
         view.isUserInteractionEnabled = false
         view.endEditing(true)
+        
+        if let issueType = selectedIssueType, let issueDescription = issueDescriptionView.textView.text {
+            Networking.default.submitReport(content: "\(issueType.description): \(issueDescription)")
+        }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in
             dismiss(animated: true)
