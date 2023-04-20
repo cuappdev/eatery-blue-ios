@@ -36,11 +36,25 @@ class ReportIssueViewController: UIViewController {
     private let issueDescriptionView = IssueDescriptionView()
     private let submitButton = ContainerView(pillContent: UILabel())
 
+    private(set) var eatery: Int?
     private(set) var selectedIssueType: IssueType?
 
     private var isSubmitting: Bool = false
     private var submitEnabled: Bool {
         !isSubmitting && selectedIssueType != nil && !issueDescriptionView.textView.text.isEmpty
+    }
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    init(eatery: Int?) {
+        self.eatery = eatery
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -196,7 +210,7 @@ class ReportIssueViewController: UIViewController {
         view.endEditing(true)
         
         if let issueType = selectedIssueType, let issueDescription = issueDescriptionView.textView.text {
-            Networking.default.submitReport(content: "\(issueType.description): \(issueDescription)")
+            Networking.default.submitReport(eatery: eatery, content: "\(issueType.description): \(issueDescription)")
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in

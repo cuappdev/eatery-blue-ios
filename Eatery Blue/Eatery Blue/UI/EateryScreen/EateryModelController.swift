@@ -75,7 +75,6 @@ class EateryModelController: EateryViewController {
         addAlertsIfNeeded(eatery)
         addTimingView(eatery)
         addSpacer(height: 16)
-
         addMenuFromState()
     }
 
@@ -154,7 +153,11 @@ class EateryModelController: EateryViewController {
                 presentMenuPicker()
             }
             addSpacer(height: 16)
-            addReportIssueView()
+            var id: Int?
+            if let eatery = eatery {
+                id = Int(eatery.id)
+            }
+            addReportIssueView(id)
             addViewProportionalSpacer(multiplier: 0.5)
             return
         }
@@ -194,7 +197,11 @@ class EateryModelController: EateryViewController {
         }
 
         addSpacer(height: 8)
-        addReportIssueView()
+        var id: Int?
+        if let eatery = eatery {
+            id = Int(eatery.id)
+        }
+        addReportIssueView(id)
         addViewProportionalSpacer(multiplier: 0.5)
     }
 

@@ -48,17 +48,18 @@ class Networking {
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 
-    func submitReport(content: String) {
+    func submitReport(eatery: Int?, content: String) {
         guard let url = URL(string: "https://eatery-dev.cornellappdev.com/report/") else {
             print("Error: cannot create URL")
             return
         }
         
         struct UploadData: Codable {
+            let eatery: Int?
             let content: String
         }
         
-        let dataModel = UploadData(content: content)
+        let dataModel = UploadData(eatery: eatery, content: content)
         
         guard let jsonData = try? JSONEncoder().encode(dataModel) else {
             print("Error: Trying to convert model to JSON data")
