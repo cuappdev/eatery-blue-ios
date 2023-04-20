@@ -208,11 +208,10 @@ class ReportIssueViewController: UIViewController {
         view.endEditing(true)
 
         Task {
-            await EateryAPI(url: URL(string: "https://eatery-dev.cornellappdev.com/api/report")!)
+            await EateryAPI(url: URL(string: "https://eatery-dev.cornellappdev.com/report/")!)
                 .reportError(
-                    eateryId: self.eateryId,
-                    type: selectedIssueType?.description ?? "Other",
-                    content: issueDescriptionView.textView.text
+                    eatery: self.eateryId,
+                    content: "\(selectedIssueType?.description ?? "Unknown"): \(issueDescriptionView.textView.text ?? "")"
                 )
             dismiss(animated: true)
         }

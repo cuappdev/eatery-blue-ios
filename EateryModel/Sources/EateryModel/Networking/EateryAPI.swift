@@ -37,27 +37,37 @@ public struct EateryAPI {
         return schemaApiResponse.map(SchemaToModel.convert)
     }
 
-    public func reportError(eateryId: Int64? = nil, type: String, content: String) async {
-        let data: [String: Any] = ["eatery_id": eateryId as Any, "type": type, "content": content]
-        let body = try? JSONSerialization.data(withJSONObject: data, options: [])
-
+    public func reportError(eatery: Int64? = nil, content: String) async {
+        struct ReportData: Codable {
+            let eatery: Int64?
+            let content: String
+        }
+        
+        let reportData = ReportData(eatery: eatery, content: content)
+        
+        guard let jsonData = try? JSONEncoder().encode(reportData) else {
+            logger.error("Unable to convert report data to JSON")
+            return
+        }
+        
         var request = URLRequest(url: url)
-        request.httpBody = body
         request.httpMethod = "POST"
-
-        let session = URLSession.shared
-        let task = session.dataTask(with: request) { (data, response, error) in
-
-            if let _ = error {
-                logger.error("Error submitting report: \(error.debugDescription)")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.httpBody = jsonData
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let response = response as? HTTPURLResponse {
+                logger.info("\(#function): Status Code \(response.statusCode)")
+            }
+            if let error = error {
+                logger.error("Error submitting report: \(error.localizedDescription)")
             } else if let _ = data {
                 logger.info("Successfully reported Eatery Blue issue")
             } else {
                 logger.error("Unknown error submitting report")
             }
-        }
-
-        task.resume()
+        }.resume()
     }
 
 }
