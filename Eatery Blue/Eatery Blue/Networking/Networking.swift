@@ -72,7 +72,11 @@ class Networking {
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                logger.error("Failed to submit report: \(error)")
+                logger.error("Failed to submit report: \(error.localizedDescription)")
+            } else if let _ = data {
+                logger.info("Successfully submitted report")
+            } else {
+                logger.error("Unknown error submitting report")
             }
 
             if let response = response as? HTTPURLResponse {
