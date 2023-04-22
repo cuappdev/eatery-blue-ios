@@ -31,6 +31,9 @@ DerivedData/
 *.dSYM
 **/.DS_Store
 
+## API Key
+GoogleService-Info.plist
+
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
