@@ -92,7 +92,7 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
 
-        for i in 0...2 {
+        for i in 0..<min(carouselEateries.count,3) {
             let eatery = carouselEateries[i]
             let contentView = EateryMediumCardContentView()
             contentView.imageView.kf.setImage(

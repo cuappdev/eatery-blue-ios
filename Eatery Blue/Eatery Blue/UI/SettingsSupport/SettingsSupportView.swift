@@ -203,8 +203,8 @@ struct SettingsSupportView: View {
     }
 }
 
-struct SettingsSupportView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsSupportView()
-    }
-}
+//struct SettingsSupportView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingsSupportView()
+//    }
+//}
