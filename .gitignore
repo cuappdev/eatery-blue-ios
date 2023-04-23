@@ -29,7 +29,12 @@ DerivedData/
 *.ipa
 *.dSYM.zip
 *.dSYM
-**/.DS_Store
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+
+## API Key
+GoogleService-Info.plist
 
 ## Playgrounds
 timeline.xctimeline
