@@ -8,6 +8,9 @@
       location = "group:EateryGetAPI">
    </FileRef>
    <FileRef
+      location = "group:Eatery Blue.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Eatery Blue/Eatery Blue.xcodeproj">
    </FileRef>
 </Workspace>
