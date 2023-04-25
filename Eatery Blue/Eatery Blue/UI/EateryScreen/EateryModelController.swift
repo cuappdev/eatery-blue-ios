@@ -189,14 +189,25 @@ class EateryModelController: EateryViewController {
 
         if let menu = event.menu {
             let categories = menu.categories
+            let categoryCount = categories.count
+            var sortedCategories: [MenuCategory] = categories
+            for i in 0..<categoryCount {
+                let menuCategory = categories[i]
+                if menuCategory.category == "Chef's Table" {
+                    sortedCategories.swapAt(0, i)
+                }
+                if menuCategory.category == "Chef's Table - Sides" {
+                    sortedCategories.swapAt(1, i)
+                }
+            }
 
-            if !categories.isEmpty {
-                for menuCategory in categories[..<(categories.count - 1)] {
+            if !sortedCategories.isEmpty {
+                for menuCategory in sortedCategories[..<(categoryCount - 1)] {
                     addMenuCategory(menuCategory)
                     addSpacer(height: 8)
                 }
 
-                if let last = categories.last {
+                if let last = sortedCategories.last {
                     addMenuCategory(last)
                 }
             }
