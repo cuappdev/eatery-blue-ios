@@ -890,8 +890,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
+				BC939CD729F45B8E00810787 /* GoogleService-Info.plist in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
+<<<<<<< HEAD
+=======
 				BC939CD529F451D400810787 /* GoogleService-Info.plist in Resources */,
+>>>>>>> main
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
