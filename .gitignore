@@ -2,8 +2,10 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
-## User settings
+## User/Workspace settings
 xcuserdata/
+*.xcodeproject/project.pbxproj
+*.xcworkspace
 
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
@@ -29,7 +31,10 @@ DerivedData/
 *.ipa
 *.dSYM.zip
 *.dSYM
-**/.DS_Store
+*/.DS_Store
+
+## API Key
+GoogleService-Info.plist
 
 ## API Key
 GoogleService-Info.plist
