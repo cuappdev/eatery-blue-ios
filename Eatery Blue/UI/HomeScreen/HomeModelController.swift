@@ -13,6 +13,7 @@ import CoreLocation
 class HomeModelController: HomeViewController {
     
     private var isTesting = false
+    private var isLoading = true
 
     private var filter = EateryFilter()
     private var allEateries: [Eatery] = []
@@ -23,6 +24,7 @@ class HomeModelController: HomeViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.isUserInteractionEnabled = false
 
         setUpFilterController()
         setUpNavigationView()
@@ -31,6 +33,7 @@ class HomeModelController: HomeViewController {
         Task {
             await updateAllEateriesFromNetworking()
             updateCellsFromState()
+            view.isUserInteractionEnabled = !isLoading
         }
     }
 
@@ -79,6 +82,26 @@ class HomeModelController: HomeViewController {
         } catch {
             logger.error("\(error)")
         }
+        isLoading = false
+    }
+    
+    private func createLoadingCarouselView(
+        title: String,
+        numEateries: Int
+    ) -> CarouselView {
+        
+        let carouselView = CarouselView()
+        carouselView.isUserInteractionEnabled = false
+        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        carouselView.titleLabel.text = title
+        carouselView.titleLabel.textColor = UIColor.Eatery.gray02
+        
+        for _ in 0...2 {
+            let contentView = EateryMediumLoadingCardView()
+            carouselView.addCardView(contentView)
+        }
+        
+        return carouselView
     }
 
     private func createCarouselView(
@@ -169,32 +192,36 @@ class HomeModelController: HomeViewController {
         cells.append(.searchBar)
         cells.append(.customView(view: filterController.view))
 
-        if !filter.isEnabled {
-            if let carouselView = createFavoriteEateriesCarouselView() {
-                cells.append(.carouselView(carouselView))
-            }
-            if let carouselView = createNearestEateriesCarouselView() {
-                cells.append(.carouselView(carouselView))
-            }
-
-            if !allEateries.isEmpty {
-                cells.append(.titleLabel(title: "All Eateries"))
-            }
-
-            for eatery in allEateries {
-                cells.append(.eateryCard(eatery: eatery))
-            }
-
+        if isLoading {
+            cells.append(.loadingView(createLoadingCarouselView(title: "Finding flavorful food...", numEateries: 40)))
+            cells.append(.loadingLabel(title: "Checking for chow..."))
+            cells.append(.loadingCard)
         } else {
-            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-            let filteredEateries = allEateries.filter({
-                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
-            })
-            for eatery in filteredEateries {
-                cells.append(.eateryCard(eatery: eatery))
+            if !filter.isEnabled {
+                if let carouselView = createFavoriteEateriesCarouselView() {
+                    cells.append(.carouselView(carouselView))
+                }
+                if let carouselView = createNearestEateriesCarouselView() {
+                    cells.append(.carouselView(carouselView))
+                }
+
+                if !allEateries.isEmpty {
+                    cells.append(.titleLabel(title: "All Eateries"))
+                }
+                for eatery in allEateries {
+                    cells.append(.eateryCard(eatery: eatery))
+                }
+
+            } else {
+                let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
+                let filteredEateries = allEateries.filter({
+                    predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
+                })
+                for eatery in filteredEateries {
+                    cells.append(.eateryCard(eatery: eatery))
+                }
             }
         }
-
         updateCells(cells)
     }
 
