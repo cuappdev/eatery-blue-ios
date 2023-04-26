@@ -29,6 +29,9 @@ class HomeViewController: UIViewController {
     private let tableHeaderView = UIView()
 
     private(set) var cells: [Cell] = []
+    private(set) var eateries: [Eatery] = []
+    private(set) var extraIndex: Int = 0
+
     private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
@@ -90,11 +93,10 @@ class HomeViewController: UIViewController {
         }
     }
 
-    func pushViewController(for eatery: Eatery) {
-        let viewController = EateryModelController()
-        viewController.setUp(eatery: eatery)
+    func pushViewController(eateryIndex: Int) {
+        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
         navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(pageVC, animated: true)
     }
 
     private func updateScrollViewContentInset() {
@@ -269,8 +271,10 @@ extension HomeViewController: UITableViewDataSource {
         }
     }
 
-    func updateCells(_ cells: [Cell]) {
+    func updateCells(cells: [Cell], allEateries: [Eatery], eateryStartIndex: Int) {
         self.cells = cells
+        self.eateries = allEateries
+        self.extraIndex = eateryStartIndex
         tableView.reloadData()
     }
 
@@ -306,8 +310,8 @@ extension HomeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
-        case .eateryCard(eatery: let eatery):
-            pushViewController(for: eatery)
+        case .eateryCard:
+            pushViewController(eateryIndex: indexPath.row - self.extraIndex)
 
         default:
             break
