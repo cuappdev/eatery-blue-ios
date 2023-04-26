@@ -188,10 +188,10 @@ class HomeModelController: HomeViewController {
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
-        
+
         cells.append(.searchBar)
         cells.append(.customView(view: filterController.view))
-        
+
         if isLoading {
             cells.append(.loadingView(createLoadingCarouselView(title: "Finding flavorful food...", numEateries: 40)))
             cells.append(.loadingLabel(title: "Checking for chow..."))
@@ -204,15 +204,14 @@ class HomeModelController: HomeViewController {
                 if let carouselView = createNearestEateriesCarouselView() {
                     cells.append(.carouselView(carouselView))
                 }
-                
+
                 if !allEateries.isEmpty {
                     cells.append(.titleLabel(title: "All Eateries"))
                 }
-                
                 for eatery in allEateries {
                     cells.append(.eateryCard(eatery: eatery))
                 }
-                
+
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                 let filteredEateries = allEateries.filter({
