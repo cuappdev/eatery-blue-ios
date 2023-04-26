@@ -29,7 +29,6 @@ class HomeViewController: UIViewController {
     private let tableHeaderView = UIView()
 
     private(set) var cells: [Cell] = []
-
     private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
@@ -61,6 +60,7 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpTableView() {
+        tableView.isScrollEnabled = true
         tableView.showsVerticalScrollIndicator = false
         tableView.alwaysBounceVertical = true
         tableView.showsHorizontalScrollIndicator = false
@@ -90,13 +90,12 @@ class HomeViewController: UIViewController {
         }
     }
 
-//    func pushViewController(for eatery: Eatery) {
-//        print("pushing here!")
-//        let viewController = EateryModelController()
-//        viewController.setUp(eatery: eatery)
-//        navigationController?.hero.isEnabled = false
-//        navigationController?.pushViewController(viewController, animated: true)
-//    }
+    func pushViewController(for eatery: Eatery) {
+        let viewController = EateryModelController()
+        viewController.setUp(eatery: eatery)
+        navigationController?.hero.isEnabled = false
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 
     private func updateScrollViewContentInset() {
         var top = navigationView.computeExpandedHeight()
@@ -200,6 +199,8 @@ extension HomeViewController: UITableViewDataSource {
             return cell
         case .loadingCard:
             let contentView = EateryLargeLoadingCardView()
+            
+            contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
 
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
@@ -310,8 +311,7 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
         case .eateryCard(eatery: let eatery):
-            let homeModelController = HomeModelController()
-            homeModelController.pushViewController(for: eatery)
+            pushViewController(for: eatery)
 
         default:
             break

@@ -24,6 +24,7 @@ class HomeModelController: HomeViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.isUserInteractionEnabled = false
 
         setUpFilterController()
         setUpNavigationView()
@@ -32,6 +33,7 @@ class HomeModelController: HomeViewController {
         Task {
             await updateAllEateriesFromNetworking()
             updateCellsFromState()
+            view.isUserInteractionEnabled = !isLoading
         }
     }
 
@@ -83,21 +85,13 @@ class HomeModelController: HomeViewController {
         isLoading = false
     }
     
-    //MARK: - Just added...need to figure out where to place so allEateries is not empty
-    func pushViewController(for eatery: Eatery) {
-        print("pushing!")
-        print(allEateries)
-        let pageVC = EateryPageViewController(eateries: allEateries, index: 0)
-        navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(pageVC, animated: true)
-    }
-    
     private func createLoadingCarouselView(
         title: String,
         numEateries: Int
     ) -> CarouselView {
         
         let carouselView = CarouselView()
+        carouselView.isUserInteractionEnabled = false
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
         carouselView.titleLabel.textColor = UIColor.Eatery.gray02
@@ -121,7 +115,7 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
 
-        for i in 0...2 {
+        for i in 0..<min(carouselEateries.count,3) {
             let eatery = carouselEateries[i]
             let contentView = EateryMediumCardContentView()
             contentView.imageView.kf.setImage(
@@ -201,9 +195,7 @@ class HomeModelController: HomeViewController {
         if isLoading {
             cells.append(.loadingView(createLoadingCarouselView(title: "Finding flavorful food...", numEateries: 40)))
             cells.append(.loadingLabel(title: "Checking for chow..."))
-            for _ in 0...10 {
-                cells.append(.loadingCard)
-            }
+            cells.append(.loadingCard)
         } else {
             if !filter.isEnabled {
                 if let carouselView = createFavoriteEateriesCarouselView() {
