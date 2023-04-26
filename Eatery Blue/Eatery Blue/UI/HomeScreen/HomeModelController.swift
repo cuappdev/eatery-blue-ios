@@ -194,7 +194,7 @@ class HomeModelController: HomeViewController {
             }
         }
 
-        updateCells(cells)
+        updateCells(cells: cells, allEateries: allEateries)
     }
 
     private func createFavoriteEateriesCarouselView() -> CarouselView? {

@@ -25,11 +25,10 @@ class HomeViewController: UIViewController {
     private let tableView = UITableView()
     private let tableHeaderView = UIView()
 
+    private(set) var eateries: [Eatery] = []
     private(set) var cells: [Cell] = []
 
     private var cancellables: Set<AnyCancellable> = []
-    
-    private var allEateries: [Eatery] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,7 +89,7 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController() {
-        let pageVC = EateryPageViewController(eateries: allEateries)
+        let pageVC = EateryPageViewController(eateries: eateries)
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(pageVC, animated: true)
     }
@@ -245,8 +244,9 @@ extension HomeViewController: UITableViewDataSource {
         }
     }
 
-    func updateCells(_ cells: [Cell]) {
+    func updateCells(cells: [Cell], allEateries: [Eatery]) {
         self.cells = cells
+        self.eateries = allEateries
         tableView.reloadData()
     }
 
@@ -281,13 +281,6 @@ extension HomeViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch cells[indexPath.row] {
-        case .eateryCard(eatery: let eatery):
-            allEateries.append(eatery)
-            
-        default:
-            break
-        }
         pushViewController()
     }
 
