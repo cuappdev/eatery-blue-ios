@@ -9,27 +9,26 @@ import UIKit
 
 class CarouselMoreLoadingCardsView: UIView {
 
-    let stackView = UIStackView()
-    let imageView = UIView()
-    let titleLabel = UILabel()
+    private let stackView = UIStackView()
+    private let imageView = UIView()
+    private let titleLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setUpSelf()
-        setUpConstraints()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setUpSelf() {
         backgroundColor = UIColor.Eatery.gray00
         layer.cornerRadius = 8
 
         addSubview(stackView)
         setUpStackView()
+        setUpImageView()
+        setUpTitleLabel()
+        
+        setUpConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setUpStackView() {
@@ -39,10 +38,8 @@ class CarouselMoreLoadingCardsView: UIView {
         stackView.distribution = .fill
 
         stackView.addArrangedSubview(imageView)
-        setUpImageView()
 
         stackView.addArrangedSubview(titleLabel)
-        setUpTitleLabel()
     }
 
     private func setUpImageView() {
@@ -54,7 +51,7 @@ class CarouselMoreLoadingCardsView: UIView {
     }
 
     private func setUpConstraints() {
-        snp.makeConstraints { make in
+        super.snp.makeConstraints { make in
             make.width.equalTo(186)
         }
 

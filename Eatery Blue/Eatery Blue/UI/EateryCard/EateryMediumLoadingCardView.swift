@@ -12,16 +12,12 @@ class EateryMediumLoadingCardView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUpSelf()
+        backgroundColor = UIColor.Eatery.gray00
         setUpConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setUpSelf() {
-        backgroundColor = UIColor.Eatery.gray00
     }
 
     private func setUpConstraints() {

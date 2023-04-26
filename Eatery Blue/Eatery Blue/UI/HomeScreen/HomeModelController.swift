@@ -83,6 +83,15 @@ class HomeModelController: HomeViewController {
         isLoading = false
     }
     
+    //MARK: - Just added...need to figure out where to place so allEateries is not empty
+    func pushViewController(for eatery: Eatery) {
+        print("pushing!")
+        print(allEateries)
+        let pageVC = EateryPageViewController(eateries: allEateries, index: 0)
+        navigationController?.hero.isEnabled = false
+        navigationController?.pushViewController(pageVC, animated: true)
+    }
+    
     private func createLoadingCarouselView(
         title: String,
         numEateries: Int
