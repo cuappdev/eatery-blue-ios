@@ -150,6 +150,9 @@
 		95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */; };
 		95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
+		99BA26F229F8A883007BE992 /* CarouselMoreLoadingCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F129F8A883007BE992 /* CarouselMoreLoadingCardsView.swift */; };
+		99BA26F429F8A8AF007BE992 /* EateryLargeLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */; };
+		99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */; };
 		BC939CE229F89A9100810787 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC939CE129F89A9000810787 /* GoogleService-Info.plist */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
 /* End PBXBuildFile section */
@@ -299,6 +302,9 @@
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
 		957397B22821C50200FFB687 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
+		99BA26F129F8A883007BE992 /* CarouselMoreLoadingCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselMoreLoadingCardsView.swift; sourceTree = "<group>"; };
+		99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryLargeLoadingCardView.swift; sourceTree = "<group>"; };
+		99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumLoadingCardView.swift; sourceTree = "<group>"; };
 		BC939CE129F89A9000810787 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -440,6 +446,7 @@
 				5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */,
 				5DF5F7D327740182001ADCDC /* CarouselView.swift */,
 				5DF5F7DE27742273001ADCDC /* CarouselViewCompact.swift */,
+				99BA26F129F8A883007BE992 /* CarouselMoreLoadingCardsView.swift */,
 			);
 			path = Carousel;
 			sourceTree = "<group>";
@@ -790,6 +797,8 @@
 				5DF5F7E62774C800001ADCDC /* EateryLargeCardContentView.swift */,
 				5DDAD4742773D70900CC98DD /* EateryMediumCardContentView.swift */,
 				5DF5F7E027742280001ADCDC /* EaterySmallCardView.swift */,
+				99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */,
+				99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */,
 			);
 			path = EateryCard;
 			sourceTree = "<group>";
@@ -969,6 +978,7 @@
 				5DA434B1278A04A1001337FD /* NavigationImageButton.swift in Sources */,
 				5DA434BC278B69E1001337FD /* AccountTransactionsHeaderView.swift in Sources */,
 				5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */,
+				99BA26F429F8A8AF007BE992 /* EateryLargeLoadingCardView.swift in Sources */,
 				5DBA899C2783EE07002DCA6B /* OnboardingStartViewController.swift in Sources */,
 				5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
@@ -1002,12 +1012,14 @@
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont.swift in Sources */,
+				99BA26F229F8A883007BE992 /* CarouselMoreLoadingCardsView.swift in Sources */,
 				5DF3049727778A7600E2C9A4 /* WaitTimesView.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */,
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
+				99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */,
 				5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
