@@ -60,14 +60,24 @@ class EateryPageViewController: UIPageViewController {
 extension EateryPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = pages.firstIndex(of: viewController) else { return nil }
-        let previousIndex = abs((index - 1) % pages.count)
-        return pages[previousIndex]
+        let previousIndex = index - 1
+        if previousIndex >= 0 {
+            return pages[previousIndex]
+        }
+        else {
+            return nil
+        }
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let index = pages.firstIndex(of: viewController) else { return nil }
-        let nextIndex = abs((index + 1) % pages.count)
-        return pages[nextIndex]
+        let nextIndex = index + 1
+        if nextIndex < pages.count {
+            return pages[nextIndex]
+        }
+        else {
+            return nil
+        }
     }
     
     func presentationCount(for pageViewController: UIPageViewController) -> Int {

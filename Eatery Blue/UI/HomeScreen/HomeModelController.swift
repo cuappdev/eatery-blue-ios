@@ -165,6 +165,7 @@ class HomeModelController: HomeViewController {
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
+        var eateryStartIndex: Int = 0
 
         cells.append(.searchBar)
         cells.append(.customView(view: filterController.view))
@@ -181,6 +182,7 @@ class HomeModelController: HomeViewController {
                 cells.append(.titleLabel(title: "All Eateries"))
             }
 
+            eateryStartIndex = cells.count // track the index of the first eateryCard in cells
             for eatery in allEateries {
                 cells.append(.eateryCard(eatery: eatery))
             }
@@ -195,7 +197,7 @@ class HomeModelController: HomeViewController {
             }
         }
 
-        updateCells(cells)
+        updateCells(cells: cells, allEateries: allEateries, eateryStartIndex: eateryStartIndex)
     }
 
     private func createFavoriteEateriesCarouselView() -> CarouselView? {
