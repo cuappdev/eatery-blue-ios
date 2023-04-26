@@ -24,7 +24,6 @@ class EateryLargeLoadingCardView: EateryCardShimmerView {
 
     private func setUpConstraints() {
         snp.makeConstraints { make in
-            make.height.equalTo(212)
             make.width.equalTo(snp.height).multipliedBy(343.0 / 216.0).priority(.required.advanced(by: -1))
         }
     }

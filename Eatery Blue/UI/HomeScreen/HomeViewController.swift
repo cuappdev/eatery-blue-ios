@@ -105,8 +105,6 @@ class HomeViewController: UIViewController {
         }
 
         tableView.contentInset.top = top
-
-        tableView.contentInset.bottom = view.safeAreaInsets.bottom
     }
 
     override func viewSafeAreaInsetsDidChange() {
