@@ -17,8 +17,11 @@ class HomeViewController: UIViewController {
         case searchBar
         case customView(view: UIView)
         case carouselView(CarouselView)
+        case loadingView(CarouselView)
         case titleLabel(title: String)
+        case loadingLabel(title: String)
         case eateryCard(eatery: Eatery)
+        case loadingCard
     }
 
     let navigationView = HomeNavigationView()
@@ -60,6 +63,7 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpTableView() {
+        tableView.isScrollEnabled = true
         tableView.showsVerticalScrollIndicator = false
         tableView.alwaysBounceVertical = true
         tableView.showsHorizontalScrollIndicator = false
@@ -103,8 +107,6 @@ class HomeViewController: UIViewController {
         }
 
         tableView.contentInset.top = top
-
-        tableView.contentInset.bottom = view.safeAreaInsets.bottom
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -151,7 +153,6 @@ extension HomeViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: searchBar)
             cell.selectionStyle = .none
             return cell
-
         case .customView(let view):
             let container = ContainerView(content: view)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
@@ -159,7 +160,6 @@ extension HomeViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
-
         case .titleLabel(title: let title):
             let label = UILabel()
             label.text = title
@@ -171,7 +171,25 @@ extension HomeViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
-            
+        case .loadingLabel(title: let title):
+            let label = UILabel()
+            label.text = title
+            label.textColor = UIColor.Eatery.gray02
+            label.font = .preferredFont(for: .title2, weight: .semibold)
+
+            let container = ContainerView(content: label)
+            container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+
+            let cell = ClearTableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
+        case .loadingView(let carouselView):
+            let container = ContainerView(content: carouselView)
+            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+
+            let cell = ClearTableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
         case .carouselView(let carouselView):
             let container = ContainerView(content: carouselView)
             container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
@@ -179,7 +197,15 @@ extension HomeViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
+        case .loadingCard:
+            let contentView = EateryLargeLoadingCardView()
 
+            let cardView = EateryCardVisualEffectView(content: contentView)
+            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+
+            let cell = ClearTableViewCell(content: cardView)
+            cell.selectionStyle = .none
+            return cell
         case .eateryCard(eatery: let eatery):
             let contentView = EateryLargeCardContentView()
             contentView.imageView.kf.setImage(
