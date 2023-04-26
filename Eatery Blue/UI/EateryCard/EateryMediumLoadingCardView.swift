@@ -7,12 +7,12 @@
 
 import UIKit
 
-class EateryMediumLoadingCardView: UIView {
+class EateryMediumLoadingCardView: EateryCardShimmerView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = UIColor.Eatery.gray00
+        setUpShimmerView(for: .Medium)
+        startLoadingAnimation()
         setUpConstraints()
     }
 

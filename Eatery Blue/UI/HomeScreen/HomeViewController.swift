@@ -199,8 +199,6 @@ extension HomeViewController: UITableViewDataSource {
             return cell
         case .loadingCard:
             let contentView = EateryLargeLoadingCardView()
-            
-            contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
 
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

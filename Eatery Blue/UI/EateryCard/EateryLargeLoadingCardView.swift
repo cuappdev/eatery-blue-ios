@@ -7,20 +7,17 @@
 
 import UIKit
 
-class EateryLargeLoadingCardView: UIView {
-    
-    private let imageView = UIView()
-    
+class EateryLargeLoadingCardView: EateryCardShimmerView {
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-                
         insetsLayoutMarginsFromSafeArea = false
         layoutMargins = .zero
-        backgroundColor = UIColor.Eatery.gray00
-        
+        setUpShimmerView(for: .Large)
+        startLoadingAnimation()
         setUpConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
