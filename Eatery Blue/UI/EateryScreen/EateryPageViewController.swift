@@ -64,9 +64,7 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
         if previousIndex >= 0 {
             return pages[previousIndex]
         }
-        else {
-            return nil
-        }
+        return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -75,9 +73,7 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
         if nextIndex < pages.count {
             return pages[nextIndex]
         }
-        else {
-            return nil
-        }
+        return nil
     }
     
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
