@@ -54,6 +54,11 @@ class HomeViewController: UIViewController {
         updateScrollViewContentInset()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollToTop(animated: false)
+    }
+
     private func setUpView() {
         view.addSubview(tableView)
         setUpTableView()
@@ -107,6 +112,7 @@ class HomeViewController: UIViewController {
         }
 
         tableView.contentInset.top = top
+        tableView.contentInset.bottom = view.safeAreaInsets.bottom
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -115,8 +121,8 @@ class HomeViewController: UIViewController {
         updateScrollViewContentInset()
     }
 
-    func scrollToTop() {
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    func scrollToTop(animated: Bool) {
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: animated)
     }
 
 }

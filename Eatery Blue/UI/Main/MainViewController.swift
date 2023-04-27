@@ -67,7 +67,7 @@ extension MainViewController: UITabBarControllerDelegate {
            navigationController.viewControllers.count == 1,
            navigationController.viewControllers.first === home {
 
-            home.scrollToTop()
+            home.scrollToTop(animated: true)
         }
 
         return true
