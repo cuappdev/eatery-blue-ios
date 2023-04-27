@@ -86,8 +86,7 @@ class HomeModelController: HomeViewController {
     }
     
     private func createLoadingCarouselView(
-        title: String,
-        numEateries: Int
+        title: String
     ) -> CarouselView {
         
         let carouselView = CarouselView()
@@ -194,7 +193,7 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if isLoading {
-            cells.append(.loadingView(createLoadingCarouselView(title: "Finding flavorful food...", numEateries: 40)))
+            cells.append(.loadingView(createLoadingCarouselView(title: "Finding flavorful food...")))
             cells.append(.loadingLabel(title: "Checking for chow..."))
             cells.append(.loadingCard)
         } else {
