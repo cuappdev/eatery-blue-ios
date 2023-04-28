@@ -31,6 +31,9 @@ class HomeViewController: UIViewController {
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
     private(set) var extraIndex: Int = 0
+    private lazy var setLoadingInset: Void = {
+        scrollToTop(animated: false)
+    }()
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -52,7 +55,7 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateScrollViewContentInset()
-        scrollToTop(animated: false)
+        _ = setLoadingInset
     }
 
     private func setUpView() {
