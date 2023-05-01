@@ -190,7 +190,7 @@ class EateryModelController: EateryViewController {
         if let menu = event.menu {
             let sortedCategories = sortMenuCategories(categories: menu.categories)
             if !sortedCategories.isEmpty {
-                for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
+                sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
                     addMenuCategory(menuCategory)
                     addSpacer(height: 8)
                 }

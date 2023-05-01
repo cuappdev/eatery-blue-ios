@@ -213,14 +213,14 @@ class HomeModelController: HomeViewController {
 
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-                let filteredEateries = allEateries.filter({
+                let filteredEateries = allEateries.filter{
                     predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
-                })
+                }
                 currentEateries = filteredEateries
             }
 
             eateryStartIndex = cells.count // track the index of the first eateryCard in cells
-            for eatery in currentEateries {
+            currentEateries.forEach { eatery in
                 cells.append(.eateryCard(eatery: eatery))
             }
         }
