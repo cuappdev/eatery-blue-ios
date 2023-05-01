@@ -188,6 +188,7 @@ class HomeModelController: HomeViewController {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
         var eateryStartIndex: Int = 0
+        var currentEateries: [Eatery] = []
 
         cells.append(.searchBar)
         cells.append(.customView(view: filterController.view))
@@ -205,13 +206,9 @@ class HomeModelController: HomeViewController {
                     cells.append(.carouselView(carouselView))
                 }
 
-                if !allEateries.isEmpty {
+                currentEateries = allEateries
+                if !currentEateries.isEmpty {
                     cells.append(.titleLabel(title: "All Eateries"))
-                }
-
-                eateryStartIndex = cells.count // track the index of the first eateryCard in cells
-                for eatery in allEateries {
-                    cells.append(.eateryCard(eatery: eatery))
                 }
 
             } else {
@@ -219,12 +216,15 @@ class HomeModelController: HomeViewController {
                 let filteredEateries = allEateries.filter({
                     predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
                 })
-                for eatery in filteredEateries {
-                    cells.append(.eateryCard(eatery: eatery))
-                }
+                currentEateries = filteredEateries
+            }
+
+            eateryStartIndex = cells.count // track the index of the first eateryCard in cells
+            for eatery in currentEateries {
+                cells.append(.eateryCard(eatery: eatery))
             }
         }
-        updateCells(cells: cells, allEateries: allEateries, eateryStartIndex: eateryStartIndex)
+        updateCells(cells: cells, allEateries: currentEateries, eateryStartIndex: eateryStartIndex)
     }
 
     private func createFavoriteEateriesCarouselView() -> CarouselView? {
