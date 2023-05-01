@@ -129,9 +129,9 @@ class EateryModelController: EateryViewController {
 
         navigationView.removeAllCategories()
 
-        let categories = menu.categories
-        navigationView.scrollView.isHidden = categories.isEmpty
-        for (i, menuCategory) in categories.enumerated() {
+        let sortedCategories = sortMenuCategories(categories: menu.categories)
+        navigationView.scrollView.isHidden = sortedCategories.isEmpty
+        for (i, menuCategory) in sortedCategories.enumerated() {
             navigationView.addCategory(menuCategory.category) { [self] in
                 scrollToCategoryView(at: i)
             }
@@ -188,21 +188,9 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 16)
 
         if let menu = event.menu {
-            let categories = menu.categories
-            let categoryCount = categories.count
-            var sortedCategories: [MenuCategory] = categories
-            for i in 0..<categoryCount {
-                let menuCategory = categories[i]
-                if menuCategory.category == "Chef's Table" {
-                    sortedCategories.swapAt(0, i)
-                }
-                if menuCategory.category == "Chef's Table - Sides" {
-                    sortedCategories.swapAt(1, i)
-                }
-            }
-
+            let sortedCategories = sortMenuCategories(categories: menu.categories)
             if !sortedCategories.isEmpty {
-                for menuCategory in sortedCategories[..<(categoryCount - 1)] {
+                sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
                     addMenuCategory(menuCategory)
                     addSpacer(height: 8)
                 }
@@ -216,6 +204,21 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 8)
         addReportIssueView(eateryId: eatery?.id)
         addViewProportionalSpacer(multiplier: 0.5)
+    }
+
+    private func sortMenuCategories(categories: [MenuCategory]) -> [MenuCategory] {
+        let categoryCount = categories.count
+        var sortedCategories: [MenuCategory] = categories
+        for i in 0..<categoryCount {
+            let menuCategory = categories[i]
+            if menuCategory.category == "Chef's Table" {
+                sortedCategories.swapAt(0, i)
+            }
+            if menuCategory.category == "Chef's Table - Sides" {
+                sortedCategories.swapAt(1, i)
+            }
+        }
+        return sortedCategories
     }
 
     private func presentMenuPicker() {
