@@ -528,9 +528,9 @@ extension EateryViewController: UIScrollViewDelegate {
     private func handleNavigationViewCategory() {
         let offset = scrollView.contentOffset.y + scrollView.contentInset.top
 
-        // We define a cursor that the user is looking at 50px below the navigation view in the scroll view's
+        // We define a cursor that the user is looking at 55px below the navigation view in the scroll view's
         // coordinate system.
-        let cursorPosition = offset + navigationView.frame.height + 50
+        let cursorPosition = offset + navigationView.frame.height + 55
 
         // The selected category is the menu category view that is under the cursor position
         let categoryView = stackView.arrangedSubviews.first { view in
