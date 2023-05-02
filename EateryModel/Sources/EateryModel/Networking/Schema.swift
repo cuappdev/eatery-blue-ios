@@ -51,7 +51,7 @@ internal enum Schema {
 
         internal let paymentAcceptsMealSwipes: Bool?
 
-        internal let waitTimes: [Schema.WaitTimesByDay]? // Not implemeneted on backend currently, will always be nil
+        internal let waitTime: [Schema.WaitTime]?
 
     }
 
@@ -95,24 +95,33 @@ internal enum Schema {
 
     }
 
-    internal struct WaitTimes: Codable {
+    internal struct WaitTime: Codable {
 
-        internal let timestamp: Int
+        internal let day: String
 
-        internal let waitTimeLow: Int
+        internal let eatery: Int // Not sure why this is needed
+
+        internal let hour: Int
+
+        internal let id: Int // Not sure why this is needed
+
+        internal let trials: Int // Not sure what this is for
 
         internal let waitTimeExpected: Int
 
         internal let waitTimeHigh: Int
 
-    }
-
-    internal struct WaitTimesByDay: Codable {
-
-        internal let canonicalDate: String?
-
-        internal let data: [Schema.WaitTimes]?
+        internal let waitTimeLow: Int
 
     }
+
+// MARK: - WaitTimesByDay (uncomment and modify once implemented)
+//    internal struct WaitTimesByDay: Codable {
+//
+//        internal let canonicalDate: String?
+//
+//        internal let data: [Schema.WaitTimes]?
+//
+//    }
 
 }
