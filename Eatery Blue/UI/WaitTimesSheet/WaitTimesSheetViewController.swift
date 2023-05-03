@@ -167,8 +167,11 @@ class WaitTimesSheetViewController: SheetViewController {
 
         let low = Int(round(sample.low / 60))
         let high = Int(round(sample.high / 60))
-
-        waitTimeLabel.text = "\(low)-\(high) minutes"
+        if low < high {
+            waitTimeLabel.text = "\(low)-\(high) minutes"
+        } else {
+            waitTimeLabel.text = "\(low) minutes"
+        }
     }
 
 }
@@ -182,7 +185,11 @@ extension WaitTimesSheetViewController: WaitTimeViewDelegate {
 
         let lowMinutes = Int(round(sample.low / 60))
         let highMinutes = Int(round(sample.high / 60))
-        return "\(lowMinutes)-\(highMinutes) min"
+        if lowMinutes < highMinutes {
+            return "\(lowMinutes)-\(highMinutes) min"
+        } else {
+            return "\(lowMinutes) min"
+        }
     }
 
     func waitTimesViewDidScroll(_ sender: WaitTimesView) {

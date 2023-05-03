@@ -349,7 +349,11 @@ class EateryViewController: UIViewController {
             cell.statusLabel.textColor = UIColor.Eatery.black
             let low = Int(round(sample.low / 60))
             let high = Int(round(sample.high / 60))
-            cell.statusLabel.text = "\(low)-\(high) minutes"
+            if low < high {
+                cell.statusLabel.text = "\(low)-\(high) minutes"
+            } else {
+                cell.statusLabel.text = "\(low) minutes"
+            }
 
             let events = eatery.events
             cell.tap { [self] _ in
