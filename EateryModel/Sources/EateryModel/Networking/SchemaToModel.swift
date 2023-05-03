@@ -27,7 +27,7 @@ internal enum SchemaToModel {
                 acceptsCash: schemaEatery.paymentAcceptsCash,
                 acceptsMealSwipes: schemaEatery.paymentAcceptsMealSwipes
             ),
-            waitTimesByDay: convert(schemaEatery.waitTimes)
+            waitTimesByDay: convert(schemaEatery.waitTime)
         )
     }
 
@@ -119,37 +119,54 @@ internal enum SchemaToModel {
         )
     }
 
-    internal static func convert(_ schemaWaitTimesByDay: [Schema.WaitTimesByDay]?) -> [Day: WaitTimes] {
-        guard let schemaWaitTimesByDay = schemaWaitTimesByDay else {
+// MARK: - Conversion for WaitTimesByDay (uncomment and modify once implemented)
+//    internal static func convert(_ schemaWaitTimesByDay: [Schema.WaitTimesByDay]?) -> [Day: WaitTimes] {
+//        guard let schemaWaitTimesByDay = schemaWaitTimesByDay else {
+//            return [:]
+//        }
+//
+//        if schemaWaitTimesByDay.isEmpty {
+//            return [:]
+//        }
+//
+//        var waitTimesByDay: [Day: WaitTimes] = [:]
+//        for schemaWaitTimesByDay in schemaWaitTimesByDay {
+//            guard let dayString = schemaWaitTimesByDay.canonicalDate,
+//                  let day = Day(string: dayString),
+//                  let waitTimes = schemaWaitTimesByDay.data,
+//                  !waitTimes.isEmpty
+//            else {
+//                continue
+//            }
+//
+//            waitTimesByDay[day] = WaitTimes(samples: waitTimes.map(convert), samplingMethod: .nearestNeighbor)
+//        }
+//
+//        return waitTimesByDay
+//    }
+
+    internal static func convert(_ schemaWaitTimes: [Schema.WaitTime]?) -> [Day: WaitTimes] {
+        guard let schemaWaitTimes = schemaWaitTimes else {
             return [:]
         }
 
-        if schemaWaitTimesByDay.isEmpty {
+        if schemaWaitTimes.isEmpty {
             return [:]
         }
 
+        let day = Day(date: Date.now)
         var waitTimesByDay: [Day: WaitTimes] = [:]
-        for schemaWaitTimesByDay in schemaWaitTimesByDay {
-            guard let dayString = schemaWaitTimesByDay.canonicalDate,
-                  let day = Day(string: dayString),
-                  let waitTimes = schemaWaitTimesByDay.data,
-                  !waitTimes.isEmpty
-            else {
-                continue
-            }
-
-            waitTimesByDay[day] = WaitTimes(samples: waitTimes.map(convert), samplingMethod: .nearestNeighbor)
-        }
+        waitTimesByDay[day] = WaitTimes(samples: schemaWaitTimes.map(convert), samplingMethod: .nearestNeighbor)
 
         return waitTimesByDay
     }
 
-    internal static func convert(_ schemaWaitTimes: Schema.WaitTimes) -> WaitTimeSample {
+    internal static func convert(_ schemaWaitTime: Schema.WaitTime) -> WaitTimeSample {
         WaitTimeSample(
-            timestamp: TimeInterval(schemaWaitTimes.timestamp),
-            low: TimeInterval(schemaWaitTimes.waitTimeLow),
-            expected: TimeInterval(schemaWaitTimes.waitTimeExpected),
-            high: TimeInterval(schemaWaitTimes.waitTimeHigh)
+            timestamp: TimeInterval(Double(schemaWaitTime.hour) * 360.0),
+            low: TimeInterval(schemaWaitTime.waitTimeLow),
+            expected: TimeInterval(schemaWaitTime.waitTimeExpected),
+            high: TimeInterval(schemaWaitTime.waitTimeHigh)
         )
     }
 

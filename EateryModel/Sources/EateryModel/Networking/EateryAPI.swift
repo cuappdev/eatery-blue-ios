@@ -28,10 +28,7 @@ public struct EateryAPI {
             schemaApiResponse = try decoder.decode([Schema.Eatery].self, from: data)
         }
         catch {
-            if let error = error as! String? { // Error is returned as a String from backend
-                throw EateryAPIError.apiResponseError(error)
-            }
-            print(error.localizedDescription)
+            throw EateryAPIError.apiResponseError(error.localizedDescription)
         }
 
         return schemaApiResponse.map(SchemaToModel.convert)

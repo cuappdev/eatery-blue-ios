@@ -223,7 +223,7 @@ class EateryFormatter {
             if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
                 return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min"
             } else {
-                return "\(minutesLow)-\(minutesHigh) min"
+                return minutesLow < minutesHigh ? "\(minutesLow)-\(minutesHigh) min" : "\(minutesLow) min"
             }
 
         } else if let walkTime = walkTime {
@@ -262,10 +262,8 @@ class EateryFormatter {
 
             if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
                 return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min wait"
-            } else if minutesLow == minutesHigh {
-                return "\(minutesLow) min wait"
             } else {
-                return "\(minutesLow)-\(minutesHigh) min wait"
+                return minutesLow < minutesHigh ? "\(minutesLow)-\(minutesHigh) min" : "\(minutesLow) min"
             }
 
         } else {
