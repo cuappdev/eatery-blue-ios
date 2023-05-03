@@ -154,10 +154,7 @@ internal enum SchemaToModel {
             return [:]
         }
 
-        guard let day = Day(string: schemaWaitTimes[0].day) else {
-            return [:]
-        }
-
+        let day = Day(date: Date.now)
         var waitTimesByDay: [Day: WaitTimes] = [:]
         waitTimesByDay[day] = WaitTimes(samples: schemaWaitTimes.map(convert), samplingMethod: .nearestNeighbor)
 
