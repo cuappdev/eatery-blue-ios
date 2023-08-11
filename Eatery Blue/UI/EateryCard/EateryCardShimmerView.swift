@@ -24,13 +24,14 @@ class EateryCardShimmerView: UIView {
     
     private func createGradientLayer() -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
-        let height = UIScreen.main.bounds.height
         gradientLayer.frame = {
             switch cardType {
             case .Medium:
-                return CGRect(x: 0, y: 0, width: height*(295.0 / 186.0), height: height/4.0)
+                let height = UIScreen.main.bounds.height/4.0
+                return CGRect(x: 0, y: 0, width: height*(295.0 / 186.0), height: height)
             case .Large:
-                return CGRect(x: 0, y: 0, width: height*(343.0 / 216.0), height: height/2.0)
+                let height = UIScreen.main.bounds.height/2.0
+                return CGRect(x: 0, y: 0, width: height*(343.0 / 216.0), height: height)
             case .none:
                 return .zero
             }
