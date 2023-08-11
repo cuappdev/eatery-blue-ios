@@ -12,7 +12,7 @@ import CoreLocation
 
 class HomeModelController: HomeViewController {
     
-    private var isTesting = false
+    private var isTesting = true
     private var isLoading = true
 
     private var filter = EateryFilter()
@@ -90,7 +90,7 @@ class HomeModelController: HomeViewController {
     ) -> CarouselView {
         
         let carouselView = CarouselView()
-        carouselView.isUserInteractionEnabled = false
+        carouselView.isUserInteractionEnabled = true
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
         carouselView.titleLabel.textColor = UIColor.Eatery.gray02
