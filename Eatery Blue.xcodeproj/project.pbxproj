@@ -152,6 +152,7 @@
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
 		99BA26F429F8A8AF007BE992 /* EateryLargeLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */; };
 		99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */; };
+		BC463AB62A862067002FA81A /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC463AB52A862067002FA81A /* UIImageView.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC939CE229F89A9100810787 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC939CE129F89A9000810787 /* GoogleService-Info.plist */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
@@ -304,6 +305,7 @@
 		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
 		99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryLargeLoadingCardView.swift; sourceTree = "<group>"; };
 		99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumLoadingCardView.swift; sourceTree = "<group>"; };
+		BC463AB52A862067002FA81A /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC939CE129F89A9000810787 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -593,6 +595,7 @@
 				5DF5F7D5277404C8001ADCDC /* UIFont.swift */,
 				5DA434BD278B6EC7001337FD /* UITableViewCell.swift */,
 				BFD955942900A8150049D77C /* UIColor.swift */,
+				BC463AB52A862067002FA81A /* UIImageView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -936,6 +939,7 @@
 				5DA434B6278B5A17001337FD /* AccountTransactionTableViewCell.swift in Sources */,
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
+				BC463AB62A862067002FA81A /* UIImageView.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
 				5DA434B4278B5A10001337FD /* AccountBalanceTableViewCell.swift in Sources */,
 				5D377CE527A19B0200F8DC37 /* UserDefaultsKeys.swift in Sources */,
