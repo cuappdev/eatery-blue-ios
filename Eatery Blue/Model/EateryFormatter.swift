@@ -142,15 +142,11 @@ class EateryFormatter {
         case .medium:
             let text = NSMutableAttributedString()
             text.append(NSAttributedString(attachment: NSTextAttachment(
-                image: UIImage(named: "Watch"),
+                image: UIImage(named: "Walk"),
                 scaledToMatch: font
             )))
             text.append(NSAttributedString(string: " "))
-            text.append(NSAttributedString(string: formatEateryTimeTotal(
-                eatery,
-                userLocation: userLocation,
-                departureDate: date
-            )))
+            text.append(NSAttributedString(string: formatEateryWalkTime(eatery, userLocation: userLocation, isLong: false)))
 
             if let secondComponent = firstLineSecondComponent(eatery, date: date) {
                 text.append(NSAttributedString(string: " · "))
@@ -239,17 +235,18 @@ class EateryFormatter {
         }
     }
 
-    func formatEateryWalkTime(_ eatery: Eatery, userLocation: CLLocation?) -> String {
+    func formatEateryWalkTime(_ eatery: Eatery, userLocation: CLLocation?, isLong: Bool = true) -> String {
+        let detail = isLong ? " walk" : ""
         if let walkTime = eatery.walkTime(userLocation: userLocation) {
             let minutes = Int(round(walkTime / 60))
             if minutes > walkTimeMinutesCap {
-                return ">\(walkTimeMinutesCap) min walk"
+                return ">\(walkTimeMinutesCap) min\(detail)"
             } else {
-                return "\(minutes) min walk"
+                return "\(minutes) min\(detail)"
             }
 
         } else {
-            return "-- min walk"
+            return "-- min\(detail)"
         }
     }
 
@@ -259,11 +256,12 @@ class EateryFormatter {
         if let waitTime = waitTime {
             let minutesLow = Int(round(waitTime.low / 60))
             let minutesHigh = Int(round(waitTime.high / 60))
+            let avgMinutes = Int((minutesLow+minutesHigh) / 2)
 
             if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
                 return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min wait"
             } else {
-                return minutesLow < minutesHigh ? "\(minutesLow)-\(minutesHigh) min" : "\(minutesLow) min"
+                return "\(avgMinutes) min wait"
             }
 
         } else {
