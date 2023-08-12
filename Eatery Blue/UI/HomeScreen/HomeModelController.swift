@@ -21,8 +21,6 @@ class HomeModelController: HomeViewController {
     private let filterController = EateryFilterViewController()
 
     private var cancellables: Set<AnyCancellable> = []
-    
-    private lazy var loadCells: () = updateCellsFromState()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +40,7 @@ class HomeModelController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let _ = loadCells
+        updateCellsFromState()
 
         LocationManager.shared.requestAuthorization()
         LocationManager.shared.requestLocation()
