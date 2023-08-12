@@ -21,6 +21,8 @@ class HomeModelController: HomeViewController {
     private let filterController = EateryFilterViewController()
 
     private var cancellables: Set<AnyCancellable> = []
+    
+    private lazy var loadCells: () = updateCellsFromState()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +42,7 @@ class HomeModelController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateCellsFromState()
+        let _ = loadCells
 
         LocationManager.shared.requestAuthorization()
         LocationManager.shared.requestLocation()
@@ -90,7 +92,7 @@ class HomeModelController: HomeViewController {
     ) -> CarouselView {
         
         let carouselView = CarouselView()
-        carouselView.isUserInteractionEnabled = true
+        carouselView.isUserInteractionEnabled = false
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.text = title
         carouselView.titleLabel.textColor = UIColor.Eatery.gray02
