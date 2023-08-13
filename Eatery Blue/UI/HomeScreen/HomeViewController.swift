@@ -23,6 +23,14 @@ class HomeViewController: UIViewController {
         case eateryCard(eatery: Eatery)
         case loadingCard
     }
+    
+    private struct Constants {
+        static let searchBarLayoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let carouselViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+        static let labelLayoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+        static let cardViewLayoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+        static let customViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+    }
 
     let navigationView = HomeNavigationView()
     private let tableView = UITableView()
@@ -151,7 +159,7 @@ extension HomeViewController: UITableViewDataSource {
             let searchBar = UISearchBar()
             searchBar.delegate = self
             searchBar.placeholder = "Search for grub..."
-            searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            searchBar.layoutMargins = Constants.searchBarLayoutMargins
             searchBar.backgroundImage = UIImage()
             searchBar.hero.id = "searchBar"
 
@@ -160,7 +168,7 @@ extension HomeViewController: UITableViewDataSource {
             return cell
         case .customView(let view):
             let container = ContainerView(content: view)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            container.layoutMargins = Constants.customViewLayoutMargins
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
@@ -171,7 +179,7 @@ extension HomeViewController: UITableViewDataSource {
             label.font = .preferredFont(for: .title2, weight: .semibold)
 
             let container = ContainerView(content: label)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            container.layoutMargins = Constants.labelLayoutMargins
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
@@ -183,21 +191,21 @@ extension HomeViewController: UITableViewDataSource {
             label.font = .preferredFont(for: .title2, weight: .semibold)
 
             let container = ContainerView(content: label)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            container.layoutMargins = Constants.labelLayoutMargins
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
         case .loadingView(let carouselView):
             let container = ContainerView(content: carouselView)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            container.layoutMargins = Constants.carouselViewLayoutMargins
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
         case .carouselView(let carouselView):
             let container = ContainerView(content: carouselView)
-            container.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            container.layoutMargins = Constants.carouselViewLayoutMargins
 
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
@@ -206,7 +214,7 @@ extension HomeViewController: UITableViewDataSource {
             let contentView = EateryLargeLoadingCardView()
 
             let cardView = EateryCardVisualEffectView(content: contentView)
-            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            cardView.layoutMargins = Constants.cardViewLayoutMargins
 
             let cell = ClearTableViewCell(content: cardView)
             cell.selectionStyle = .none
@@ -264,7 +272,7 @@ extension HomeViewController: UITableViewDataSource {
             }
 
             let cardView = EateryCardVisualEffectView(content: contentView)
-            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+            cardView.layoutMargins = Constants.cardViewLayoutMargins
 
             let cell = ClearTableViewCell(content: cardView)
             cell.selectionStyle = .none

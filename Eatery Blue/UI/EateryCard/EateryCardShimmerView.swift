@@ -14,11 +14,6 @@ class EateryCardShimmerView: UIView {
         case Large
     }
 
-    private struct Constants {
-        static let mediumCardFrame = CGRect(x: 0, y: 0, width: 307, height: 186)
-        static let largeCardFrame = CGRect(x: 0, y: 0, width: 361, height: 228)
-    }
-
     private(set) var cardType : EateryCardType?
     private var gradientColorOne : CGColor = UIColor.Eatery.gray00.cgColor
     private var gradientColorTwo : CGColor = UIColor.Eatery.gray01.cgColor
@@ -32,9 +27,11 @@ class EateryCardShimmerView: UIView {
         gradientLayer.frame = {
             switch cardType {
             case .Medium:
-                return Constants.mediumCardFrame
+                let height = UIScreen.main.bounds.height/4.0
+                return CGRect(x: 0, y: 0, width: height*(295.0 / 186.0), height: height)
             case .Large:
-                return Constants.largeCardFrame
+                let height = UIScreen.main.bounds.height/2.0
+                return CGRect(x: 0, y: 0, width: height*(343.0 / 216.0), height: height)
             case .none:
                 return .zero
             }
