@@ -22,6 +22,8 @@ class HomeModelController: HomeViewController {
 
     private var cancellables: Set<AnyCancellable> = []
 
+    private lazy var loadCells: () = updateCellsFromState()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.isUserInteractionEnabled = false
@@ -40,7 +42,7 @@ class HomeModelController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateCellsFromState()
+        let _ = loadCells
 
         LocationManager.shared.requestAuthorization()
         LocationManager.shared.requestLocation()
