@@ -45,8 +45,9 @@ class MainViewController: UIViewController {
         profileNavigationController.setNavigationBarHidden(true, animated: false)
 
         theTabBarController.setViewControllers([
-            homeNavigationController,
-            profileNavigationController
+            homeNavigationController
+            //MARK: - Temporarily removed profile tab.
+//            profileNavigationController
         ], animated: false)
 
         let tabBarAppearance = UITabBarAppearance()

@@ -12,7 +12,7 @@ import CoreLocation
 
 class HomeModelController: HomeViewController {
     
-    private var isTesting = false
+    private var isTesting = true
     private var isLoading = true
 
     private var filter = EateryFilter()
