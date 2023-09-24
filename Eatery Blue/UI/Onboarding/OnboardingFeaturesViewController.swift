@@ -28,17 +28,14 @@ class OnboardingFeaturesViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
-
+        
+        // Mark : - Deleted the Wait Times page in onboarding
+        
         setUpPages([
             OnboardingPage(
                 title: "Upcoming Menus",
                 subtitle: "See menus by date and plan ahead",
                 image: UIImage(named: "OnboardingUpcomingMenus")
-            ),
-            OnboardingPage(
-                title: "Wait Times",
-                subtitle: "Check for crowds in real time to avoid lines",
-                image: UIImage(named: "OnboardingWaitTimes")
             ),
             OnboardingPage(
                 title: "Favorites",
@@ -158,10 +155,18 @@ class OnboardingFeaturesViewController: UIViewController {
         let clampedIndex = max(0, min(pages.count - 1, currentIndex))
         let nextIndex = clampedIndex + 1
 
+        // Mark : Changed nextButton text to "Lets go!" to transition onboarding to HomeModel view
+        
+        if nextIndex == pages.count - 1 {
+            nextButton.content.text = "Lets go!"
+        }
+
         if nextIndex == pages.count {
             // We've reached the last page
-
-            let viewController = OnboardingLoginModelController()
+            
+            // Mark : Deleted login page directly after onboarding
+            
+            let viewController = HomeModelController()
             navigationController?.pushViewController(viewController, animated: true)
 
         } else {
