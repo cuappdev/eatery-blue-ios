@@ -28,17 +28,12 @@ class OnboardingFeaturesViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
-
+        
         setUpPages([
             OnboardingPage(
                 title: "Upcoming Menus",
                 subtitle: "See menus by date and plan ahead",
                 image: UIImage(named: "OnboardingUpcomingMenus")
-            ),
-            OnboardingPage(
-                title: "Wait Times",
-                subtitle: "Check for crowds in real time to avoid lines",
-                image: UIImage(named: "OnboardingWaitTimes")
             ),
             OnboardingPage(
                 title: "Favorites",
@@ -157,12 +152,15 @@ class OnboardingFeaturesViewController: UIViewController {
         let currentIndex = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
         let clampedIndex = max(0, min(pages.count - 1, currentIndex))
         let nextIndex = clampedIndex + 1
+        
+        if nextIndex == pages.count - 1 {
+            nextButton.content.text = "Lets go!"
+        }
 
         if nextIndex == pages.count {
             // We've reached the last page
-
-            let viewController = OnboardingLoginModelController()
-            navigationController?.pushViewController(viewController, animated: true)
+            
+            navigationController?.pushViewController(HomeModelController(), animated: true)
 
         } else {
             // Move to the next page
