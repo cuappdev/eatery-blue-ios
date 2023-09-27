@@ -17,6 +17,7 @@ class EateryExpandableCardContentView: UIView {
     private let eateryNameLabel = UILabel()
     private let eateryStackView = UIStackView()
     private let eateryStatusLabel = UILabel()
+    private let eateryDetailsButton = UIButton()
     
     // MARK: - init
     
@@ -27,6 +28,7 @@ class EateryExpandableCardContentView: UIView {
         setupEateryNameLabel()
         setupEateryStatusLabel()
         setupChevronArrow()
+        setupEateryDetailsButton()
     }
     
     required init?(coder: NSCoder) {
@@ -43,14 +45,20 @@ class EateryExpandableCardContentView: UIView {
         case .closed:
             eateryStatusLabel.text = "Closed"
             eateryStatusLabel.textColor = UIColor.Eatery.red
+            eateryDetailsButton.isHidden.toggle()
         case .closingSoon(_):
             eateryStatusLabel.text = "Closing Soon"
+            eateryStatusLabel.textColor = UIColor.Eatery.orange
+            chevronArrow.isHidden.toggle()
         case .open(_):
-            eateryStatusLabel.text = "Open to"
+            eateryStatusLabel.text = "Open"
             eateryStatusLabel.textColor = UIColor.Eatery.green
-
+            chevronArrow.isHidden.toggle()
         case .openingSoon(_):
             eateryStatusLabel.text = "Opening Soon"
+            eateryStatusLabel.textColor = UIColor.Eatery.green
+            chevronArrow.isHidden.toggle()
+
         }
     }
     
@@ -73,8 +81,11 @@ class EateryExpandableCardContentView: UIView {
     private func setupChevronArrow() {
         chevronArrow.image = UIImage(named: "ExpandDown")
         chevronArrow.contentMode = .scaleAspectFit
+        chevronArrow.isHidden = true
         
-        addSubview(chevronArrow)
+        if !chevronArrow.isHidden {
+            addSubview(chevronArrow)
+        }
         
         chevronArrow.snp.makeConstraints { make in
             make.trailing.centerY.equalToSuperview()
@@ -96,4 +107,19 @@ class EateryExpandableCardContentView: UIView {
         eateryStackView.addArrangedSubview(eateryStatusLabel)
     }
     
+    private func setupEateryDetailsButton() {
+        eateryDetailsButton.setTitle("Eatery Details", for: .normal)
+        eateryDetailsButton.titleLabel?.textColor = UIColor.Eatery.gray06
+        eateryDetailsButton.setImage(UIImage(named: "EateryDetails"), for: .normal)
+        eateryDetailsButton.isHidden = true
+        
+        if !eateryDetailsButton.isHidden {
+            eateryStackView.addArrangedSubview(eateryDetailsButton)
+        }
+        
+        eateryDetailsButton.snp.makeConstraints { make in
+            make.width.equalTo(140)
+            make.top.bottom.trailing.centerY.equalToSuperview()
+        }
+    }
 }
