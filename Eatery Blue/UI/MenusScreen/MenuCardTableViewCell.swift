@@ -59,8 +59,9 @@ class MenuCardTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(expandableCardDetailView)
         
         stackView.axis = .vertical
-        stackView.distribution = .fill
+        stackView.distribution = .equalSpacing
         stackView.alignment = .fill
+        stackView.spacing = 8
         
         contentView.addSubview(stackView)
         

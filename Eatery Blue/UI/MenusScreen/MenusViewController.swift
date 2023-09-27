@@ -207,11 +207,8 @@ extension MenusViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
         case .expandableCard(expandedEatery: let expandedEatery):
-            UIView.animate(withDuration: 0.3) {
-                self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
-                tableView.reloadData()
-//                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
+            self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         default:
             break
         }
