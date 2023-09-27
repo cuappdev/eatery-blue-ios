@@ -62,8 +62,8 @@ class MenusViewController: UIViewController {
         view.backgroundColor = .white
         
         tableView.register(MenuDayPickerTableViewCell.self, forCellReuseIdentifier: "MenuDayPickerCell")
-        
         tableView.register(MenuCardTableViewCell.self, forCellReuseIdentifier: "MenuCardCell")
+        tableView.register(EmptyTableFooterView.self, forHeaderFooterViewReuseIdentifier: EmptyTableFooterView.reuse)
 
         setUpView()
         setUpConstraints()
@@ -139,12 +139,20 @@ class MenusViewController: UIViewController {
 
 extension MenusViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return tableView.dequeueReusableHeaderFooterView(withIdentifier: EmptyTableFooterView.reuse)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return cells.count
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellType = cells[indexPath.row]
+        let cellType = cells[indexPath.section]
 
         switch cellType {
         case .dayPicker:
@@ -200,18 +208,33 @@ extension MenusViewController: UITableViewDataSource {
     
 extension MenusViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section > 2 {
+            return 12
+        }
+        return 0
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch cells[indexPath.row] {
+        switch cells[indexPath.section] {
         case .expandableCard(expandedEatery: let expandedEatery):
-            self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+            self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
             tableView.reloadRows(at: [indexPath], with: .automatic)
         default:
             break
         }
+    }
+    
+}
+
+extension MenusViewController {
+    
+    class EmptyTableFooterView: UITableViewHeaderFooterView {
+        static let reuse = "EmptyTableFooterViewReuse"
     }
     
 }
