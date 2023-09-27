@@ -12,7 +12,7 @@ import CoreLocation
 
 class MenusModelController: MenusViewController {
     
-    private var isTesting = false
+    private var isTesting = true
     private var isLoading = true
     
     private var filter = EateryFilter()
@@ -109,21 +109,21 @@ class MenusModelController: MenusViewController {
             cells.append(.titleLabel(title: "North"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "North" {
-                    cells.append(.expandableCard(eatery: eatery))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
                 }
             }
             
             cells.append(.titleLabel(title: "West"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "West" {
-                    cells.append(.expandableCard(eatery: eatery))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
                 }
             }
 
             cells.append(.titleLabel(title: "Central"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "Central" {
-                    cells.append(.expandableCard(eatery: eatery))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
                 }
             }
         }

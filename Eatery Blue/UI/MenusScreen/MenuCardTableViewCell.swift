@@ -4,70 +4,82 @@
 //
 //  Created by Antoinette Marie Torres on 9/26/23.
 //
+
+import EateryModel
 import SnapKit
 import UIKit
 
 class MenuCardTableViewCell: UITableViewCell {
     
-    private let containerView = UIStackView()
-    let cellView = EateryExpandableCardContentView(frame: .zero)
-    let detailView = ExpandableCardDetailView()
+    // MARK: - Properties (view)
+    
+    private let expandableCardDetailView = EateryExpandableCardDetailView()
+    private let expandableCardContentView = EateryExpandableCardContentView()
+    private let stackView = UIStackView()
+    
+    // MARK: - Constants
+    
+    private struct Constants {
+        static let cellPadding: CGFloat = 12
+    }
+    
+    // MARK: - init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-      super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setUpSelf()
-        setUpConstraints()
-    }
-    
-    private func setUpSelf() {
+        contentView.backgroundColor = UIColor.white
+        contentView.layer.cornerRadius = 8
+        contentView.layer.shadowRadius = 4
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentView.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        contentView.layer.shadowOpacity = 0.25
         selectionStyle = .none
-        detailView.backgroundColor = .systemBlue
-        detailView.isHidden = true
         
-        containerView.axis = .vertical
-        
-        contentView.addSubview(containerView)
-        containerView.addArrangedSubview(cellView)
-        containerView.addArrangedSubview(detailView)
-        
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        cellView.translatesAutoresizingMaskIntoConstraints = false
-        detailView.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private func setUpConstraints() {
-        containerView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-        containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
+        setupStackView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-extension MenuCardTableViewCell {
-    var isDetailViewHidden: Bool {
-        return detailView.isHidden
+    
+    // MARK: - configure
+    
+    func configure(expandedEatery: ExpandedEatery) {
+        expandableCardContentView.configure(eatery: expandedEatery.eatery)
+        expandableCardDetailView.configure(eatery: expandedEatery.eatery)
+        
+        expandableCardDetailView.isHidden = !expandedEatery.isExpanded
     }
     
-    func showDetailView() {
-        detailView.isHidden = false
-    }
+    // MARK: - Set Up Views
     
-    func hideDetailView() {
-        detailView.isHidden = true
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        if isDetailViewHidden, selected {
-            showDetailView()
-        } else {
-            hideDetailView()
+    private func setupStackView() {
+        stackView.addArrangedSubview(expandableCardContentView)
+        stackView.addArrangedSubview(expandableCardDetailView)
+        
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        
+        contentView.addSubview(stackView)
+        
+        stackView.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().offset(Constants.cellPadding)
+            make.trailing.bottom.equalToSuperview().inset(Constants.cellPadding)
         }
     }
+    
+    // MARK: - Helpers
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: Constants.cellPadding, bottom: 0, right: Constants.cellPadding))
+    }
+    
+    override func prepareForReuse() {
+        expandableCardDetailView.reset()
+    }
+    
 }

@@ -40,11 +40,17 @@ enum DummyData {
     static let macs = Eatery(
         campusArea: "Central",
         events: (0..<5).map { offset in
+//            Event(
+//                canonicalDay: Day().advanced(by: offset),
+//                endTimestamp: Day().advanced(by: offset).date(hour: 17, minute: 30).timeIntervalSince1970,
+//                menu: macsMenu,
+//                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970
+//            )
             Event(
                 canonicalDay: Day().advanced(by: offset),
-                endTimestamp: Day().advanced(by: offset).date(hour: 17, minute: 30).timeIntervalSince1970,
+                endTimestamp: Day().advanced(by: offset).date(hour: 8, minute: 30).timeIntervalSince1970,
                 menu: macsMenu,
-                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970
+                startTimestamp: Day().advanced(by: offset).date(hour: 0, minute: 0).timeIntervalSince1970
             )
         },
         id: 1001,

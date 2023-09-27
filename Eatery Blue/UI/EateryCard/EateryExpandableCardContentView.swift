@@ -5,149 +5,91 @@
 //  Created by Antoinette Marie Torres on 9/23/23.
 //
 
+import EateryModel
 import SnapKit
 import UIKit
 
 class EateryExpandableCardContentView: UIView {
     
-    let expandImage = UIImage(named: "ExpandDown")
-    let collapseImage = UIImage(named: "CollapseUp")
+    // MARK: - Properties (view)
     
-    let alertsStackView = UIStackView()
+    private let chevronArrow = UIImageView()
+    private let eateryNameLabel = UILabel()
+    private let eateryStackView = UIStackView()
+    private let eateryStatusLabel = UILabel()
     
-    let labelStackView = UIStackView()
-    let titleLabel = UILabel()
-    let subtitleLabels = [UILabel(), UILabel()]
-    
-    var isExpanded = false {
-        didSet {
-            updateUIForExpansion()
-        }
-    }
-    
-    let expandButton = UIButton()
+    // MARK: - init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUpSelf()
-        setUpConstraints()
-        setUpExpandButton()
+        setupEateryStackView()
+        setupEateryNameLabel()
+        setupEateryStatusLabel()
+        setupChevronArrow()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUpSelf() {
-        insetsLayoutMarginsFromSafeArea = false
-        layoutMargins = .zero
-        backgroundColor = .systemRed
-//        backgroundColor = UIColor.Eatery.offWhite
-        
-        addSubview(labelStackView)
-        setUpLabelStackView()
-        
-        addSubview(expandButton)
-        setUpExpandButton()
-    }
+    // MARK: - configure
     
-    private func setUpAlertsStackView() {
-        alertsStackView.spacing = 8
-        alertsStackView.axis = .vertical
-        alertsStackView.alignment = .trailing
-        alertsStackView.distribution = .equalSpacing
-    }
-    
-    private func setUpLabelStackView() {
-        labelStackView.axis = .vertical
-        labelStackView.spacing = 4
-        labelStackView.distribution = .fill
-        labelStackView.alignment = .fill
+    func configure(eatery: Eatery) {
+        eateryNameLabel.text = eatery.name
         
-        labelStackView.addArrangedSubview(titleLabel)
-        setUpTitleLabel()
-        
-        for subtitleLabel in subtitleLabels {
-            labelStackView.addArrangedSubview(subtitleLabel)
-            setUpSubtitleLabel(subtitleLabel)
+        // TODO: Configure below
+        switch eatery.status {
+        case .closed:
+            eateryStatusLabel.text = "Closed"
+        case .closingSoon(_):
+            eateryStatusLabel.text = "Closing Soon"
+        case .open(_):
+            eateryStatusLabel.text = "Open"
+        case .openingSoon(_):
+            eateryStatusLabel.text = "Opening Soon"
         }
     }
     
-    private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
-    }
+    // MARK: - Set Up Views
     
-    private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
-        subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
-    }
-    
-    private func setUpExpandButton() {
-        expandButton.setImage(expandImage, for: .normal)
-        expandButton.contentMode = .scaleAspectFill
+    private func setupEateryStackView() {
+        eateryStackView.axis = .vertical
+        eateryStackView.distribution = .fill
+        eateryStackView.alignment = .fill
         
-        if isExpanded {
-            print("Expanded")
-        }
-    }
-    
-    private func setUpConstraints() {
-        snp.makeConstraints { make in
-            make.width.equalTo(343)
-            make.height.equalTo(66)
-        }
+        addSubview(eateryStackView)
         
-        labelStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
-            make.leading.bottom.equalToSuperview().inset(12)
-        }
-        
-        expandButton.snp.makeConstraints { make in
-            make.width.equalTo(18)
-            make.height.equalTo(16)
-            make.trailing.equalToSuperview().inset(10)
-            make.centerY.equalToSuperview()
+        eateryStackView.snp.makeConstraints { make in
+            make.top.bottom.leading.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width - 84)
         }
     }
-    
-    func addAlertView(_ view: UIView) {
-        alertsStackView.addArrangedSubview(view)
-    }
-    
-    private func updateUIForExpansion() {
-        print("Will update")
-        expandButton.setImage(isExpanded ? collapseImage : expandImage, for: .normal)
-    }
-}
 
-class ExpandableCardDetailView: UIView {
-    
-    let titleLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private func setupChevronArrow() {
+        chevronArrow.image = UIImage(named: "ExpandDown")
+        chevronArrow.contentMode = .scaleAspectFit
         
-        setUpSelf()
-        setUpConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setUpSelf() {
-        backgroundColor = .systemBlue
-        titleLabel.text = "Testing"
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(titleLabel)
-    }
-    
-    func setUpConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.top.equalToSuperview().offset(10)
+        addSubview(chevronArrow)
+        
+        chevronArrow.snp.makeConstraints { make in
+            make.trailing.centerY.equalToSuperview()
+            make.width.height.equalTo(16)
         }
     }
+    
+    private func setupEateryNameLabel() {
+        eateryNameLabel.textColor = UIColor.Eatery.black
+        eateryNameLabel.font = UIFont.preferredFont(for: .title3, weight: .semibold)
+
+        eateryStackView.addArrangedSubview(eateryNameLabel)
+    }
+    
+    private func setupEateryStatusLabel() {
+        eateryStatusLabel.textColor = UIColor.Eatery.black
+        eateryStatusLabel.font = UIFont.preferredFont(for: .footnote, weight: .medium)
+
+        eateryStackView.addArrangedSubview(eateryStatusLabel)
+    }
+    
 }

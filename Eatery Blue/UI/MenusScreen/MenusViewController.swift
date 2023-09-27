@@ -11,6 +11,12 @@ import EateryModel
 import UIKit
 import Kingfisher
 
+/// Used for Expanding Cell
+struct ExpandedEatery {
+    let eatery: Eatery
+    var isExpanded: Bool = false
+}
+
 class MenusViewController: UIViewController {
     
     enum Cell {
@@ -18,7 +24,7 @@ class MenusViewController: UIViewController {
         case customView(view: UIView)
         case titleLabel(title: String)
         case loadingLabel(title: String)
-        case expandableCard(eatery: Eatery)
+        case expandableCard(expandedEatery: ExpandedEatery)
 //        case eateryCard(eatery: Eatery)
         case loadingCard
     }
@@ -139,14 +145,11 @@ extension MenusViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellType = cells[indexPath.row]
-//        print(cells)
-        
+
         switch cellType {
         case .dayPicker:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MenuDayPickerCell", for: indexPath) as! MenuDayPickerTableViewCell
-            
             return cell
-            
         case .customView(let view):
             let container = ContainerView(content: view)
             container.layoutMargins = Constants.customViewLayoutMargins
@@ -186,172 +189,32 @@ extension MenusViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: cardView)
             cell.selectionStyle = .none
             return cell
-        case .expandableCard(eatery: let eatery):
+        case .expandableCard(expandedEatery: let expandedEatery):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCardCell", for: indexPath) as? MenuCardTableViewCell else { return UITableViewCell() }
-            
-            cell.cellView.titleLabel.text = eatery.name
-            
-//            let cardView = EateryCardVisualEffectView(content: cell)
-//            cardView.layoutMargins = Constants.cardViewLayoutMargins
-//            contentView.titleLabel.text = eatery.name
-    
-//            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            
-            LocationManager.shared.$userLocation
-                .sink { userLocation in
-                let lines = EateryFormatter.default.formatEatery(
-                    eatery,
-                    style: .long,
-                    font: .preferredFont(for: .footnote, weight: .medium),
-                    userLocation: userLocation,
-                        date: Date()
-                    )
-
-                    for (i, subtitleLabel) in cell.cellView.subtitleLabels.enumerated() {
-                    if i < lines.count {
-                        subtitleLabel.attributedText = lines[i]
-                    } else {
-                        subtitleLabel.isHidden = true
-                    }
-                }
-            }
-            .store(in: &cancellables)
-
-            let now = Date()
-            switch eatery.status {
-            case .closingSoon(let event):
-                let alert = EateryCardAlertView()
-                let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-                alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-                cell.cellView.addAlertView(alert)
-
-            case .openingSoon(let event):
-                let alert = EateryCardAlertView()
-                let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-                alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-                cell.cellView.addAlertView(alert)
-
-            default:
-                break
-            }
-            
-            cell.hideDetailView()
-
-//            contentView.addArrangedSubview(contentView1)
-
-//            let cardView = EateryCardVisualEffectView(content: contentView)
-//            cardView.layoutMargins = Constants.cardViewLayoutMargins
-
-//            let cell = ClearTableViewCell(content: cardView)
-//            cell.selectionStyle = .none
+            cell.configure(expandedEatery: expandedEatery)
             return cell
-            //        case .eateryCard(eatery: let eatery):
-            //            let contentView = EateryExpandableCardContentView()
-            //            contentView.titleLabel.text = eatery.name
-            //
-            //            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            //
-            //            LocationManager.shared.$userLocation
-            //                .sink { userLocation in
-            //                    let lines = EateryFormatter.default.formatEatery(
-            //                        eatery,
-            //                        style: .long,
-            //                        font: .preferredFont(for: .footnote, weight: .medium),
-            //                        userLocation: userLocation,
-            //                        date: Date()
-            //                    )
-            //
-            //                    for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
-            //                        if i < lines.count {
-            //                            subtitleLabel.attributedText = lines[i]
-            //                        } else {
-            //                            subtitleLabel.isHidden = true
-            //                        }
-            //                    }
-            //                }
-            //                .store(in: &cancellables)
-            //
-            //            let now = Date()
-            //            switch eatery.status {
-            //            case .closingSoon(let event):
-            //                let alert = EateryCardAlertView()
-            //                let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-            //                alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-            //                contentView.addAlertView(alert)
-            //
-            //            case .openingSoon(let event):
-            //                let alert = EateryCardAlertView()
-            //                let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-            //                alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-            //                contentView.addAlertView(alert)
-            //
-            //            default:
-            //                break
-            //            }
-            //
-            //            let cardView = EateryCardVisualEffectView(content: contentView)
-            //            cardView.layoutMargins = Constants.cardViewLayoutMargins
-            //
-            //            let cell = ClearTableViewCell(content: cardView)
-            //            cell.selectionStyle = .none
-            //            return cell
-            //        }
-            
         }
     }
+    
 }
     
-    extension MenusViewController: UITableViewDelegate {
-        
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            UITableView.automaticDimension
-        }
-        
-        func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-            switch cells[indexPath.row] {
-                //        case .eateryCard:
-                //            let cell = tableView.cellForRow(at: indexPath)
-                //            UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
-                //                cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-                //            }
-                
-            default:
-                break
+extension MenusViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch cells[indexPath.row] {
+        case .expandableCard(expandedEatery: let expandedEatery):
+            UIView.animate(withDuration: 0.3) {
+                self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+                tableView.reloadData()
+//                tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-        }
-        
-        func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-            switch cells[indexPath.row] {
-                //        case .eateryCard:
-                //            let cell = tableView.cellForRow(at: indexPath)
-                //            UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
-                //                cell?.transform = .identity
-                //            }
-                
-            default:
-                break
-            }
-        }
-        
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            switch cells[indexPath.row] {
-            case .expandableCard:
-                UIView.animate(withDuration: 0.3) {
-                    self.tableView.performBatchUpdates(nil)
-                }
-                
-            default:
-                break
-            }
-        }
-        
-        func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-            switch cells[indexPath.row] {
-            case .expandableCard:
-                MenuCardTableViewCell().hideDetailView()
-                
-            default:
-                break
-            }
+        default:
+            break
         }
     }
+    
+}
