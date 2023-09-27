@@ -58,8 +58,9 @@ class EateryExpandableCardContentView: UIView {
     
     private func setupEateryStackView() {
         eateryStackView.axis = .vertical
-        eateryStackView.distribution = .fill
+        eateryStackView.distribution = .equalSpacing
         eateryStackView.alignment = .fill
+        eateryStackView.spacing = 4
         
         addSubview(eateryStackView)
         

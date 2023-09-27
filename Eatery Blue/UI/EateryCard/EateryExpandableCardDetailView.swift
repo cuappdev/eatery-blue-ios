@@ -50,14 +50,13 @@ class EateryExpandableCardDetailView: UIView {
     private func setupMenuCategoryStackView() {
         menuCategoryStackView.axis = .vertical
         menuCategoryStackView.alignment = .fill
-        menuCategoryStackView.distribution = .fill
+        menuCategoryStackView.distribution = .equalSpacing
         menuCategoryStackView.spacing = 8
                 
         addSubview(menuCategoryStackView)
         
         menuCategoryStackView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(8)
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
     
