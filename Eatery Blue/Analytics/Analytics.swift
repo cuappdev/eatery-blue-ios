@@ -31,7 +31,7 @@ class AppDevAnalytics {
 
     func logFirebase(_ payload: Payload) {
         #if DEBUG
-        print("[Debug]: Logged event: \(payload.eventName), parameters: \(payload.parameters?.description ?? "nil")")
+//        print("[Debug]: Logged event: \(payload.eventName), parameters: \(payload.parameters?.description ?? "nil")")
         #else
         Analytics.logEvent(payload.eventName, parameters: payload.parameters)
         #endif

@@ -154,6 +154,9 @@ class MenuPickerSheetViewController: SheetViewController {
                 }
 
                 let menuChoiceView = MenuChoiceView()
+                //MARK: begin Testing
+                menuChoiceView.backgroundColor = .systemYellow
+                //MARK: - end Testing
                 menuChoiceView.layoutMargins = .zero
                 stackView.addArrangedSubview(menuChoiceView)
                 menuChoiceView.tap { [self] _ in

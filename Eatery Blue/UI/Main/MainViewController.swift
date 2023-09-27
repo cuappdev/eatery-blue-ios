@@ -11,6 +11,7 @@ class MainViewController: UIViewController {
 
     private let theTabBarController = UITabBarController()
     private let home = HomeModelController()
+    private let menus = MenusModelController()
     private let profile = ProfileViewController()
 
     override func viewDidLoad() {
@@ -35,6 +36,14 @@ class MainViewController: UIViewController {
             selectedImage: UIImage(named: "HomeSelected")
         )
         homeNavigationController.setNavigationBarHidden(true, animated: false)
+        
+        let menusNavigationController = UINavigationController(rootViewController: menus)
+        menusNavigationController.tabBarItem = UITabBarItem(
+            title: "",
+            image: UIImage(named: "Calendar"),
+            selectedImage: UIImage(named: "CalendarSelected")
+        )
+        menusNavigationController.setNavigationBarHidden(true, animated: false)
 
         let profileNavigationController = UINavigationController(rootViewController: profile)
         profileNavigationController.tabBarItem = UITabBarItem(
@@ -45,7 +54,8 @@ class MainViewController: UIViewController {
         profileNavigationController.setNavigationBarHidden(true, animated: false)
 
         theTabBarController.setViewControllers([
-            homeNavigationController
+            homeNavigationController,
+            menusNavigationController
             //MARK: - Temporarily removed profile tab.
 //            profileNavigationController
         ], animated: false)

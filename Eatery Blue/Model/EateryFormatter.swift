@@ -192,13 +192,14 @@ class EateryFormatter {
                 scaledToMatch: font
             )))
             secondLine.append(NSAttributedString(string: " "))
-            secondLine.append(NSAttributedString(string: formatEateryWaitTime(
-                eatery,
-                font: font,
-                userLocation: userLocation,
-                departureDate: date
-            )))
-            lines.append(secondLine)
+            //MARK: - Temporarily removed wait times.
+//            secondLine.append(NSAttributedString(string: formatEateryWaitTime(
+//                eatery,
+//                font: font,
+//                userLocation: userLocation,
+//                departureDate: date
+//            )))
+//            lines.append(secondLine)
 
             return lines
 

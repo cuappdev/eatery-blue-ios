@@ -78,7 +78,7 @@ class AccountTransactionsHeaderView: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "ButtonChevronDown")
+        buttonImageView.image = UIImage(named: "FullMenu")
         buttonImageView.isUserInteractionEnabled = true
     }
 
