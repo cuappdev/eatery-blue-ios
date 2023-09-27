@@ -30,8 +30,8 @@ class MenuCardTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = UIColor.white
         contentView.layer.cornerRadius = 8
-        contentView.layer.shadowRadius = 4
-        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentView.layer.shadowRadius = 8
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         contentView.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         contentView.layer.shadowOpacity = 0.25
         selectionStyle = .none
