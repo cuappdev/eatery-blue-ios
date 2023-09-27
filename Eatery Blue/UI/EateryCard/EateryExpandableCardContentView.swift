@@ -42,10 +42,13 @@ class EateryExpandableCardContentView: UIView {
         switch eatery.status {
         case .closed:
             eateryStatusLabel.text = "Closed"
+            eateryStatusLabel.textColor = UIColor.Eatery.red
         case .closingSoon(_):
             eateryStatusLabel.text = "Closing Soon"
         case .open(_):
-            eateryStatusLabel.text = "Open"
+            eateryStatusLabel.text = "Open to"
+            eateryStatusLabel.textColor = UIColor.Eatery.green
+
         case .openingSoon(_):
             eateryStatusLabel.text = "Opening Soon"
         }

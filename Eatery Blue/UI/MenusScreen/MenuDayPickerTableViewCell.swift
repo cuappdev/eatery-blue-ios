@@ -5,8 +5,9 @@
 //  Created by Antoinette Marie Torres on 9/21/23.
 //
 
-import UIKit
 import EateryModel
+import SnapKit
+import UIKit
 
 class MenuDayPickerTableViewCell: UITableViewCell {
     
@@ -19,13 +20,11 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     addDayPickerView()
     contentView.addSubview(dayPickerView)
     dayPickerView.translatesAutoresizingMaskIntoConstraints = false
-     
-    NSLayoutConstraint.activate([
-      dayPickerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      dayPickerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      dayPickerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-      dayPickerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-    ])
+      
+      dayPickerView.snp.makeConstraints { make in
+          make.leading.trailing.bottom.equalToSuperview()
+          make.top.equalToSuperview().offset(16)
+      }
   }
     
   required init?(coder aDecoder: NSCoder) {
