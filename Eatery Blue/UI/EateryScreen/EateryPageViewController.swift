@@ -9,10 +9,10 @@ import EateryModel
 import UIKit
 
 class EateryPageViewController: UIPageViewController {
-    
-    private var pages = [UIViewController]()
+
     private var eateries = [Eatery]()
     private var index: Int
+    private var pages = [UIViewController]()
     
     init(eateries: [Eatery], index: Int) {
         self.eateries = eateries
@@ -47,17 +47,25 @@ class EateryPageViewController: UIPageViewController {
     }
     
     private func setUpPages() {
-       eateries.forEach { eatery in
+        pages = []
+        eateries.forEach { eatery in
             let eateryVC = EateryModelController()
             eateryVC.setUp(eatery: eatery)
             pages.append(eateryVC)
         }
-        setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
+        setViewControllers([pages[index]], direction: .forward, animated: false, completion: nil)
+    }
+    
+    func updateEateries(eateries: [Eatery]) {
+        self.eateries = eateries
+        print("updating")
+        setUpPages()
     }
     
 }
 
 extension EateryPageViewController: UIPageViewControllerDataSource {
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = pages.firstIndex(of: viewController) else { return nil }
         let previousIndex = index - 1

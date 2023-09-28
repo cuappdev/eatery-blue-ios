@@ -33,6 +33,7 @@ class HomeViewController: UIViewController {
     }
 
     let navigationView = HomeNavigationView()
+    private var pageVC: EateryPageViewController?
     private let tableView = UITableView()
     private let tableHeaderView = UIView()
 
@@ -106,9 +107,11 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
-        navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(pageVC, animated: true)
+        pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
+        if let pageVC = pageVC {
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(pageVC, animated: true)
+        }
     }
 
     private func updateScrollViewContentInset() {
@@ -285,6 +288,8 @@ extension HomeViewController: UITableViewDataSource {
         self.eateries = allEateries
         self.extraIndex = eateryStartIndex
         tableView.reloadData()
+        
+        pageVC?.updateEateries(eateries: allEateries)
     }
 
 }
