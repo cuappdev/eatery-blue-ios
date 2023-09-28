@@ -56,7 +56,7 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    func setMode(_ mode: Mode, animated: Bool) {
+    func setMode(_ mode: Mode, animated: Bool, sessionId: String = "") {
         currentMode = mode
 
         let viewController: UIViewController
@@ -67,7 +67,7 @@ class ProfileViewController: UIViewController {
             viewController = login
 
         case .account:
-            viewController = AccountModelController()
+            viewController = AccountModelController(sessionId: sessionId)
         }
 
         var viewControllers = profileNavigationController.viewControllers
@@ -93,7 +93,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileLoginModelControllerDelegate {
 
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
-        setMode(.account, animated: true)
+        setMode(.account, animated: true, sessionId: sessionId)
     }
 
 }

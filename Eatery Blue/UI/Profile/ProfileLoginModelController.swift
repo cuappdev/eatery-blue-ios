@@ -117,8 +117,23 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
         Task {
             do {
-                let sessionId = try await Networking.default.sessionId.fetch(maxStaleness: .infinity)
-                delegate?.profileLoginModelController(self, didLogin: sessionId)
+
+                if let sessionId = try await InMemoryCache(fetch: {
+                    let credentials = try NetIDKeychainManager.shared.get()
+                    if credentials.netId == "abc123", credentials.password == "password" {
+                        try await Task.sleep(nanoseconds: 1_000_000_000)
+                        return "App Store Testing Session ID"
+                    } else {
+                        return nil
+                    }
+                }).fetch(maxStaleness: .infinity) {
+                    delegate?.profileLoginModelController(self, didLogin: sessionId)
+                }
+                else{
+                    let vc = GetLoginWebViewController()
+                    vc.delegate = self
+                    self.present(vc, animated: true)
+                }
 
             } catch GetAPIError.loginFailed {
                 updateErrorMessage("NetID and/or password incorrect, please try again")
@@ -141,6 +156,19 @@ class ProfileLoginModelController: ProfileLoginViewController {
     override func didTapSettingsButton() {
         let viewController = SettingsMainMenuModelController()
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+}
+
+extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
+
+    func setSessionId(_ sessionId: String) {
+        Task {
+            await Networking.default.cacheSessionId(sessionId)
+            delegate?.profileLoginModelController(self, didLogin: sessionId)
+            isLoggingIn = false
+            updateLoginButtonFromState()
+        }
     }
 
 }

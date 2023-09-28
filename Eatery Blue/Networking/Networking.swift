@@ -16,7 +16,7 @@ class Networking {
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
     let eateries: InMemoryCache<[Eatery]>
-    let sessionId: InMemoryCache<String>
+    var sessionId: InMemoryCache<String>
     let accounts: FetchAccounts
 
     init(fetchUrl: URL) {
@@ -30,11 +30,15 @@ class Networking {
                 try await Task.sleep(nanoseconds: 1_000_000_000)
                 return "App Store Testing Session ID"
             } else {
-                return try await getApi.sessionId(netId: credentials.netId, password: credentials.password)
+                return ""
             }
         })
 
-        self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
+        self.accounts = FetchAccounts(getApi: getApi, sessionId: sessionId)
+    }
+    
+    func cacheSessionId(_ sessionId: String) async {
+        self.sessionId = InMemoryCache(fetch: { return sessionId })
     }
 
     func logOut() async {
@@ -47,27 +51,26 @@ class Networking {
 
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
-
 }
 
 struct FetchAccounts {
 
     private let getApi: GetAPI
-    private let sessionId: InMemoryCache<String>
+//    private let sessionId: InMemoryCache<String>
 
     fileprivate init(getApi: GetAPI, sessionId: InMemoryCache<String>) {
         self.getApi = getApi
-        self.sessionId = sessionId
+//        self.sessionId = sessionId
     }
 
-    func fetch(start: Day, end: Day) async throws -> [Account] {
-        return try await fetch(start: start, end: end, retryAttempts: 1)
+    func fetch(start: Day, end: Day, sessionId: String) async throws -> [Account] {
+        return try await fetch(start: start, end: end, sessionId: sessionId, retryAttempts: 1)
     }
 
-    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
+    func fetch(start: Day, end: Day, sessionId: String, retryAttempts: Int) async throws -> [Account] {
         logger.info("Attempting to fetch accounts start=\(start), end=\(end), retryAttempts=\(retryAttempts)")
         do {
-            let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
+//            let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
 
             if sessionId == "App Store Testing Session ID" {
                 try await Task.sleep(nanoseconds: 1_000_000_000)
@@ -84,8 +87,8 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
-                await sessionId.invalidate()
-                return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
+//                await sessionId.invalidate()
+                return try await fetch(start: start, end: end, sessionId: sessionId, retryAttempts: retryAttempts - 1)
                 
             } else {
                 throw error
