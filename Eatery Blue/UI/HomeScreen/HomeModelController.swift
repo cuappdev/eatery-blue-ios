@@ -77,11 +77,11 @@ class HomeModelController: HomeViewController {
             let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
             allEateries = eateries.filter { eatery in
                 return !eatery.name.isEmpty
-            }.sorted(by: { lhs, rhs in
-                if (lhs.isOpen == rhs.isOpen){
-                    lhs.name < rhs.name
+            }.sorted(by: {
+                if $0.isOpen == $1.isOpen{
+                    $0.name < $1.name
                 } else {
-                    lhs.isOpen
+                    $0.isOpen
                 }
             })
 
