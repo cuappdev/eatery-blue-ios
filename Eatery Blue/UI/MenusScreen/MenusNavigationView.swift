@@ -9,8 +9,9 @@ import UIKit
 
 class MenusNavigationView: NavigationView {
     
+    let logoRefreshControl = LogoRefreshControl()
     let scrollView = UIScrollView()
-    
+        
     private(set) var fadeInProgress: Double = 0
     
     override init(frame: CGRect) {
@@ -30,17 +31,21 @@ class MenusNavigationView: NavigationView {
 
         titleLabel.text = "Upcoming Menus"
         titleLabel.textColor = .white
-
+        
         largeTitleLabel.text = "Upcoming Menus"
         largeTitleLabel.textColor = .white
+        
+        addSubview(logoRefreshControl)
+        logoRefreshControl.isHidden = true
         
         addSubview(scrollView)
         setUpScrollView()
     }
     
     private func setUpConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
+        logoRefreshControl.snp.makeConstraints { make in
+            make.width.height.equalTo(36)
+            make.bottom.equalTo(largeTitleLabel.snp.top).offset(4)
             make.leading.equalTo(layoutMarginsGuide)
         }
         

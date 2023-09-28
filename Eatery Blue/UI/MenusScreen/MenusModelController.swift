@@ -19,10 +19,20 @@ class MenusModelController: MenusViewController {
     private var allEateries: [Eatery] = []
     
     private let filterController = MenusFilterViewController()
-    
-    private var cancellables: Set<AnyCancellable> = []
-    
+        
     private lazy var loadCells: () = updateCellsFromState()
+    
+    class MenuChoice {
+
+        let description: String
+        let event: Event
+
+        init(description: String, event: Event) {
+            self.description = description
+            self.event = event
+        }
+
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,23 +51,6 @@ class MenusModelController: MenusViewController {
         super.viewWillAppear(animated)
 
         let _ = loadCells
-    }
-    
-    private func presentMenuPicker() {
-        let viewController = MenuPickerSheetViewController()
-        viewController.setUpSheetPresentation()
-
-//        var menuChoices: [MenuPickerSheetViewController.MenuChoice] = []
-//        for event in eatery.events {
-//            menuChoices.append(MenuPickerSheetViewController.MenuChoice(
-//                description: event.description ?? "Event",
-//                event: event
-//            ))
-//        }
-
-//        viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
-
-        present(viewController, animated: true)
     }
     
     private func setUpFilterController() {
@@ -108,21 +101,21 @@ class MenusModelController: MenusViewController {
             
             cells.append(.titleLabel(title: "North"))
             currentEateries.forEach { eatery in
-                if eatery.campusArea == "North" {
+                if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
                     cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
                 }
             }
             
             cells.append(.titleLabel(title: "West"))
             currentEateries.forEach { eatery in
-                if eatery.campusArea == "West" {
+                if eatery.campusArea == "West" && eatery.paymentMethods.contains(.mealSwipes) {
                     cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
                 }
             }
 
             cells.append(.titleLabel(title: "Central"))
             currentEateries.forEach { eatery in
-                if eatery.campusArea == "Central" {
+                if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
                     cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
                 }
             }

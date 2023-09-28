@@ -17,7 +17,8 @@ class EateryExpandableCardContentView: UIView {
     private let eateryNameLabel = UILabel()
     private let eateryStackView = UIStackView()
     private let eateryStatusLabel = UILabel()
-    private let eateryDetailsButton = UIButton()
+    private let eateryDetailsButton = PillButtonView()
+    private var eatery: Eatery?
     
     // MARK: - init
     
@@ -27,8 +28,6 @@ class EateryExpandableCardContentView: UIView {
         setupEateryStackView()
         setupEateryNameLabel()
         setupEateryStatusLabel()
-        setupChevronArrow()
-        setupEateryDetailsButton()
     }
     
     required init?(coder: NSCoder) {
@@ -38,6 +37,7 @@ class EateryExpandableCardContentView: UIView {
     // MARK: - configure
     
     func configure(eatery: Eatery) {
+        self.eatery = eatery
         eateryNameLabel.text = eatery.name
         
         // TODO: Configure below
@@ -45,20 +45,19 @@ class EateryExpandableCardContentView: UIView {
         case .closed:
             eateryStatusLabel.text = "Closed"
             eateryStatusLabel.textColor = UIColor.Eatery.red
-            eateryDetailsButton.isHidden.toggle()
+            setupEateryDetailsButton()
         case .closingSoon(_):
             eateryStatusLabel.text = "Closing Soon"
             eateryStatusLabel.textColor = UIColor.Eatery.orange
-            chevronArrow.isHidden.toggle()
+            setupChevronArrow()
         case .open(_):
             eateryStatusLabel.text = "Open"
             eateryStatusLabel.textColor = UIColor.Eatery.green
-            chevronArrow.isHidden.toggle()
+            setupChevronArrow()
         case .openingSoon(_):
             eateryStatusLabel.text = "Opening Soon"
             eateryStatusLabel.textColor = UIColor.Eatery.green
-            chevronArrow.isHidden.toggle()
-
+            setupChevronArrow()
         }
     }
     
@@ -81,11 +80,8 @@ class EateryExpandableCardContentView: UIView {
     private func setupChevronArrow() {
         chevronArrow.image = UIImage(named: "ExpandDown")
         chevronArrow.contentMode = .scaleAspectFit
-        chevronArrow.isHidden = true
         
-        if !chevronArrow.isHidden {
-            addSubview(chevronArrow)
-        }
+        addSubview(chevronArrow)
         
         chevronArrow.snp.makeConstraints { make in
             make.trailing.centerY.equalToSuperview()
@@ -108,18 +104,46 @@ class EateryExpandableCardContentView: UIView {
     }
     
     private func setupEateryDetailsButton() {
-        eateryDetailsButton.setTitle("Eatery Details", for: .normal)
-        eateryDetailsButton.titleLabel?.textColor = UIColor.Eatery.gray06
-        eateryDetailsButton.setImage(UIImage(named: "EateryDetails"), for: .normal)
-        eateryDetailsButton.isHidden = true
+        eateryDetailsButton.backgroundColor = UIColor.Eatery.gray00
+        eateryDetailsButton.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
+        eateryDetailsButton.imageView.tintColor = UIColor.Eatery.gray05
+        eateryDetailsButton.titleLabel.textColor = UIColor.Eatery.black
+        eateryDetailsButton.titleLabel.text = "Eatery Details"
+        eateryDetailsButton.isUserInteractionEnabled = true
+        eateryDetailsButton.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapEateryDetails(_:))
+        ))
         
-        if !eateryDetailsButton.isHidden {
-            eateryStackView.addArrangedSubview(eateryDetailsButton)
-        }
+        addSubview(eateryDetailsButton)
         
         eateryDetailsButton.snp.makeConstraints { make in
             make.width.equalTo(140)
-            make.top.bottom.trailing.centerY.equalToSuperview()
+            make.height.equalTo(42)
+            make.trailing.centerY.equalToSuperview()
         }
+    }
+    
+    //MARK: - Tap recognizer
+    
+    @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
+        if let navigationController = findNavigationController() {
+            let eateryVC = EateryModelController()
+            if let eatery {
+                eateryVC.setUp(eatery: eatery)
+            }
+            navigationController.pushViewController(eateryVC, animated: true)
+        }
+    }
+    
+    private func findNavigationController() -> UINavigationController? {
+        var responder: UIResponder? = self
+        while let currentResponder = responder {
+            if let navigationController = currentResponder as? UINavigationController {
+                return navigationController
+            }
+            responder = currentResponder.next
+        }
+        return nil
     }
 }

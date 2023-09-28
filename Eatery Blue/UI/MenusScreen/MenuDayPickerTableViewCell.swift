@@ -22,8 +22,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     dayPickerView.translatesAutoresizingMaskIntoConstraints = false
       
       dayPickerView.snp.makeConstraints { make in
-          make.leading.trailing.bottom.equalToSuperview()
-          make.top.equalToSuperview().offset(16)
+          make.top.leading.trailing.bottom.equalToSuperview()
       }
   }
     
@@ -47,6 +46,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     
   private func addDayPickerView() {
     dayPickerView.layoutMargins = .zero
+      
     for (i, day) in days.enumerated() {
       let cell = MenuDayPickerCell()
       cell.weekdayLabel.text = weekdayFormatter.string(from: day.date()).uppercased()

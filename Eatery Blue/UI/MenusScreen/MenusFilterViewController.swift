@@ -60,18 +60,14 @@ class MenusFilterViewController: UIViewController {
     private func setUpMealType() {
         mealType.label.text = "Breakfast"
         mealType.imageView.isHidden = false
-        //        mealType.tap { [self] _ in
-        //            let viewController = PaymentMethodsFilterSheetViewController()
-        //            viewController.setUpSheetPresentation()
-        //            viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
-        //            viewController.delegate = self
-        //            present(viewController, animated: true)
-        //        }
     }
     
     private func setUpAll() {
         all.label.text = "All Campus"
         all.tap { [self] _ in
+            filter.north.toggle()
+            filter.central.toggle()
+            filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.menusFilterViewController(self, filterDidChange: filter)
         }
@@ -131,9 +127,12 @@ class MenusFilterViewController: UIViewController {
             return
         }
         
-        north.setHighlighted(filter.north)
-        west.setHighlighted(filter.west)
-        central.setHighlighted(filter.central)
+        let allCampusSelected = filter.north && filter.west && filter.central
+
+      all.setHighlighted(allCampusSelected)
+      north.setHighlighted(filter.north)
+      west.setHighlighted(filter.west)
+      central.setHighlighted(filter.central)
         
         //        if filter.mealType.isEmpty {
         //            mealType.setHighlighted(false)
@@ -148,29 +147,5 @@ class MenusFilterViewController: UIViewController {
             self.filter = filter
             updateFilterButtonsFromState(animated: animated)
         }
-        
     }
-    
-    //extension MenusFilterViewController: PaymentMethodsFilterSheetViewControllerDelegate {
-    //
-    //    func paymentMethodsFilterSheetViewController(
-    //        _ viewController: PaymentMethodsFilterSheetViewController,
-    //        didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
-    //    ) {
-    //        filter.paymentMethods = paymentMethods
-    //        filter.paymentMethods.forEach { paymentMethod in
-    //            switch paymentMethod {
-    //            case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
-    //            case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
-    //            default: break
-    //            }
-    //        }
-    //
-    //        updateFilterButtonsFromState(animated: true)
-    //        delegate?.eateryFilterViewController(self, filterDidChange: filter)
-    //        viewController.dismiss(animated: true)
-    //    }
-    //
-    //}
-    
 }

@@ -25,7 +25,6 @@ class MenusViewController: UIViewController {
         case titleLabel(title: String)
         case loadingLabel(title: String)
         case expandableCard(expandedEatery: ExpandedEatery)
-//        case eateryCard(eatery: Eatery)
         case loadingCard
     }
     
@@ -49,13 +48,6 @@ class MenusViewController: UIViewController {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    private let weekdayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.calendar = .eatery
-        formatter.dateFormat = "EEE"
-        return formatter
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -73,6 +65,14 @@ class MenusViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        RootViewController.setStatusBarStyle(.lightContent)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateScrollViewContentInset()
+        _ = setLoadingInset
     }
     
     private func setUpView() {
@@ -99,6 +99,7 @@ class MenusViewController: UIViewController {
     }
     
     private func setUpNavigationView() {
+        navigationView.logoRefreshControl.delegate = self
         navigationView.setFadeInProgress(0)
     }
     
@@ -140,7 +141,7 @@ class MenusViewController: UIViewController {
 extension MenusViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
+        cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -206,8 +207,12 @@ extension MenusViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
+        case .dayPicker:
+            print("selected")
         case .expandableCard(expandedEatery: let expandedEatery):
-            self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+            if expandedEatery.eatery.isOpen {
+                self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+            }
             tableView.reloadRows(at: [indexPath], with: .automatic)
         default:
             break
@@ -215,3 +220,105 @@ extension MenusViewController: UITableViewDelegate {
     }
     
 }
+
+extension MenusViewController: UIScrollViewDelegate {
+
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        handlePullToRefresh(scrollView)
+        handleSnapping(scrollView, velocity: velocity, targetContentOffset: targetContentOffset)
+    }
+
+    private func handleSnapping(_ scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let superview = scrollView.superview else {
+            return
+        }
+
+        let currentPosition = scrollView.contentOffset.y
+        let decelerationRate = scrollView.decelerationRate.rawValue
+        var finalPosition = currentPosition + velocity.y * decelerationRate / (1 - decelerationRate)
+        let navigationBarNormalPosition = -superview.convert(
+            CGPoint(x: 0, y: navigationView.computeNormalHeight()),
+            from: navigationView
+        ).y
+        let navigationBarExpandedPosition = -superview.convert(
+            CGPoint(x: 0, y: navigationView.computeExpandedHeight()),
+            from: navigationView
+        ).y
+
+        if navigationBarExpandedPosition <= finalPosition && finalPosition <= navigationBarNormalPosition {
+            let distanceToExpandedPosition = abs(finalPosition - navigationBarExpandedPosition)
+            let distanceToNormalPosition = abs(finalPosition - navigationBarNormalPosition)
+
+            if distanceToExpandedPosition < distanceToNormalPosition {
+                finalPosition = navigationBarExpandedPosition
+            } else {
+                finalPosition = navigationBarNormalPosition
+            }
+        }
+
+        targetContentOffset.pointee = CGPoint(x: 0, y: finalPosition)
+    }
+
+    private func handlePullToRefresh(_ scrollView: UIScrollView) {
+        let deltaFromTop = tableView.contentOffset.y + tableView.contentInset.top
+        let pullProgress = (-deltaFromTop - 22) / 66
+
+        if pullProgress > 1.1 {
+            navigationView.logoRefreshControl.beginRefreshing()
+            updateScrollViewContentInset()
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        handleNavigationView()
+    }
+
+    private func handleNavigationView() {
+        guard let superview = tableView.superview else {
+            return
+        }
+
+        let currentPosition = tableView.contentOffset.y
+        let navigationBarNormalPosition = -superview.convert(
+            CGPoint(x: 0, y: navigationView.computeNormalHeight()),
+            from: navigationView
+        ).y
+
+        if currentPosition > navigationBarNormalPosition - 16 {
+            navigationView.setFadeInProgress(1, animated: true)
+        } else {
+            navigationView.setFadeInProgress(0, animated: true)
+        }
+
+        let deltaFromTop = tableView.contentOffset.y + tableView.contentInset.top
+
+        if !navigationView.logoRefreshControl.isRefreshing {
+            let pullProgress = (-deltaFromTop - 22) / 66
+            navigationView.logoRefreshControl.setPullProgress(pullProgress)
+        }
+
+        let fadeDistance = navigationView.logoRefreshControl.bounds.height
+        let progress = max(0, min(1, 1 - deltaFromTop / fadeDistance))
+        navigationView.logoRefreshControl.alpha = progress
+        navigationView.largeTitleLabel.alpha = progress
+    }
+
+}
+
+extension MenusViewController: LogoRefreshControlDelegate {
+
+    func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl) {
+    }
+
+    func logoRefreshControlDidEndRefreshing(_ sender: LogoRefreshControl) {
+        UIView.animate(withDuration: 0.15) { [self] in
+            updateScrollViewContentInset()
+        }
+    }
+
+}
+

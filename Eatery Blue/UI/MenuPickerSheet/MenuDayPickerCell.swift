@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Creates the picker cell that enables selection of a date.
+
 class MenuDayPickerCell: UIView {
 
     let weekdayLabel = UILabel()
