@@ -139,18 +139,13 @@ class MenusViewController: UIViewController {
 }
 
 extension MenusViewController: UITableViewDataSource {
-    
-<<<<<<< HEAD
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        cells.count
-=======
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: EmptyTableFooterView.reuse)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return cells.count
->>>>>>> a57d67b0648bf828126e93912f66d8943e52748c
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -226,19 +221,11 @@ extension MenusViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-<<<<<<< HEAD
-        switch cells[indexPath.row] {
-        case .dayPicker:
-            print("selected")
-        case .expandableCard(expandedEatery: let expandedEatery):
-            if expandedEatery.eatery.isOpen {
-                self.cells[indexPath.row] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
-            }
-=======
         switch cells[indexPath.section] {
         case .expandableCard(expandedEatery: let expandedEatery):
-            self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
->>>>>>> a57d67b0648bf828126e93912f66d8943e52748c
+            if expandedEatery.eatery.isOpen {
+                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+            }
             tableView.reloadRows(at: [indexPath], with: .automatic)
         default:
             break
@@ -247,7 +234,6 @@ extension MenusViewController: UITableViewDelegate {
     
 }
 
-<<<<<<< HEAD
 extension MenusViewController: UIScrollViewDelegate {
 
     func scrollViewWillEndDragging(
@@ -349,7 +335,7 @@ extension MenusViewController: LogoRefreshControlDelegate {
 
 }
 
-=======
+
 extension MenusViewController {
     
     class EmptyTableFooterView: UITableViewHeaderFooterView {
@@ -357,4 +343,4 @@ extension MenusViewController {
     }
     
 }
->>>>>>> a57d67b0648bf828126e93912f66d8943e52748c
+
