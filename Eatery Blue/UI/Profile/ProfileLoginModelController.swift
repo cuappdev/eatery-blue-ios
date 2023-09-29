@@ -16,26 +16,13 @@ protocol ProfileLoginModelControllerDelegate: AnyObject {
 
 class ProfileLoginModelController: ProfileLoginViewController {
 
-    private var netId: String {
-        netIdTextField.text ?? ""
-    }
-    private var password: String {
-        passwordTextField.text ?? ""
-    }
     private var isLoggingIn: Bool = false
-
-    private var isLoginEnabled: Bool {
-        return !isLoggingIn && !netId.isEmpty && !password.isEmpty
-    }
 
     weak var delegate: ProfileLoginModelControllerDelegate?
 
     init() {
         super.init(nibName: nil, bundle: nil)
-
-        if let credentials = try? NetIDKeychainManager.shared.get() {
-            netIdTextField.text = credentials.netId
-            passwordTextField.text = "        "
+        if !Networking.didLogOut {
             attemptLogin()
         }
     }
@@ -44,59 +31,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setUpNetIdTextField()
-        setUpPasswordTextField()
-    }
-
-    private func setUpNetIdTextField() {
-        netIdTextField.autocapitalizationType = .none
-        netIdTextField.autocorrectionType = .no
-        netIdTextField.addTarget(self, action: #selector(netIdTextFieldEditingChanged), for: .editingChanged)
-        netIdTextField.delegate = self
-    }
-
-    private func setUpPasswordTextField() {
-        passwordTextField.addTarget(self, action: #selector(passwordTextFieldEditingChanged), for: .editingChanged)
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.delegate = self
-    }
-
-    @objc private func netIdTextFieldEditingChanged() {
-        updateLoginButtonFromState()
-    }
-
-    @objc private func passwordTextFieldEditingChanged() {
-        updateLoginButtonFromState()
-    }
-
     override func didTapLoginButton() {
         super.didTapLoginButton()
-
-        do {
-            let credentials = NetIDKeychainManager.Credentials(netId: netId, password: password)
-            try NetIDKeychainManager.shared.save(credentials)
-
-            Task {
-                await Networking.default.sessionId.invalidate()
-                attemptLogin()
-            }
-
-        } catch NetIDKeychainManager.KeychainError.unhandledError(status: let status) {
-            logger.error("\(#function): \(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
-            updateErrorMessage("Internal error, please try again later")
-
-        } catch {
-            logger.error("\(#function): \(error)")
-            updateErrorMessage("Internal error, please try again later")
-        }
+        attemptLogin()
     }
 
     private func updateLoginButtonFromState() {
-        setLoginButtonEnabled(isLoginEnabled)
-
         if isLoggingIn {
             setLoginButtonTitle("Logging in...")
         } else {
@@ -105,51 +45,24 @@ class ProfileLoginModelController: ProfileLoginViewController {
     }
 
     private func attemptLogin() {
-        guard isLoginEnabled else {
-            return
-        }
-
         isLoggingIn = true
         view.endEditing(true)
-        updateErrorMessage(nil)
         updateLoginButtonFromState()
         AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
         Task {
-            do {
-
-                if let sessionId = try await InMemoryCache(fetch: {
-                    let credentials = try NetIDKeychainManager.shared.get()
-                    if credentials.netId == "abc123", credentials.password == "password" {
-                        try await Task.sleep(nanoseconds: 1_000_000_000)
-                        return "App Store Testing Session ID"
-                    } else {
-                        return nil
-                    }
-                }).fetch(maxStaleness: .infinity) {
-                    delegate?.profileLoginModelController(self, didLogin: sessionId)
-                }
-                else{
-                    let vc = GetLoginWebViewController()
-                    vc.delegate = self
-                    self.present(vc, animated: true)
-                }
-
-            } catch GetAPIError.loginFailed {
-                updateErrorMessage("NetID and/or password incorrect, please try again")
-
-            } catch GetAPIError.emptyNetId {
-                updateErrorMessage("Please enter a NetID")
-
-            } catch GetAPIError.emptyPassword {
-                updateErrorMessage("Please enter a password")
-
-            } catch {
-                updateErrorMessage("Internal error, please try again later")
+            if let sessionId = KeychainAccess().retrieveToken(), !Networking.didLogOut {
+                delegate?.profileLoginModelController(self, didLogin: sessionId)
+            }
+            else{
+                let vc = GetLoginWebViewController()
+                vc.delegate = self
+                self.present(vc, animated: true)
             }
 
             isLoggingIn = false
             updateLoginButtonFromState()
+            Networking.didLogOut = false
         }
     }
 
@@ -163,26 +76,10 @@ class ProfileLoginModelController: ProfileLoginViewController {
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
 
     func setSessionId(_ sessionId: String) {
-        Task {
-            await Networking.default.cacheSessionId(sessionId)
-            delegate?.profileLoginModelController(self, didLogin: sessionId)
-            isLoggingIn = false
-            updateLoginButtonFromState()
-        }
-    }
-
-}
-
-extension ProfileLoginModelController: UITextFieldDelegate {
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == netIdTextField {
-            passwordTextField.becomeFirstResponder()
-        } else if textField == passwordTextField {
-            didTapLoginButton()
-        }
-
-        return false
+        KeychainAccess().saveToken(sessionId: sessionId)
+        delegate?.profileLoginModelController(self, didLogin: sessionId)
+        isLoggingIn = false
+        updateLoginButtonFromState()
     }
 
 }

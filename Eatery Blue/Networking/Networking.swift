@@ -15,8 +15,12 @@ class Networking {
 
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
+    static var didLogOut = false
+
     let eateries: InMemoryCache<[Eatery]>
-    var sessionId: InMemoryCache<String>
+    let sessionId: String = {
+        return KeychainAccess().retrieveToken() ?? ""
+    }()
     let accounts: FetchAccounts
 
     init(fetchUrl: URL) {
@@ -24,31 +28,13 @@ class Networking {
         self.eateries = InMemoryCache(fetch: eateryApi.eateries)
 
         let getApi = GetAPI()
-        self.sessionId = InMemoryCache(fetch: {
-            let credentials = try NetIDKeychainManager.shared.get()
-            if credentials.netId == "abc123", credentials.password == "password" {
-                try await Task.sleep(nanoseconds: 1_000_000_000)
-                return "App Store Testing Session ID"
-            } else {
-                return ""
-            }
-        })
-
-        self.accounts = FetchAccounts(getApi: getApi, sessionId: sessionId)
-    }
-    
-    func cacheSessionId(_ sessionId: String) async {
-        self.sessionId = InMemoryCache(fetch: { return sessionId })
+        
+        self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
     }
 
-    func logOut() async {
-        do {
-            try NetIDKeychainManager.shared.delete()
-        } catch {
-            logger.error("Unable to delete credentials while logging out: \(error)")
-        }
-        await sessionId.invalidate()
-
+    func logOut() {
+        Networking.didLogOut = true
+        KeychainAccess().invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 }
@@ -56,29 +42,26 @@ class Networking {
 struct FetchAccounts {
 
     private let getApi: GetAPI
-//    private let sessionId: InMemoryCache<String>
+    private let sessionId: String
 
-    fileprivate init(getApi: GetAPI, sessionId: InMemoryCache<String>) {
+    fileprivate init(getApi: GetAPI, sessionId: String) {
         self.getApi = getApi
-//        self.sessionId = sessionId
+        self.sessionId = sessionId
     }
 
-    func fetch(start: Day, end: Day, sessionId: String) async throws -> [Account] {
-        return try await fetch(start: start, end: end, sessionId: sessionId, retryAttempts: 1)
+    func fetch(start: Day, end: Day) async throws -> [Account] {
+        return try await fetch(start: start, end: end, retryAttempts: 1)
     }
 
-    func fetch(start: Day, end: Day, sessionId: String, retryAttempts: Int) async throws -> [Account] {
+    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
         logger.info("Attempting to fetch accounts start=\(start), end=\(end), retryAttempts=\(retryAttempts)")
         do {
-//            let sessionId = try await sessionId.fetch(maxStaleness: .infinity)
-
             if sessionId == "App Store Testing Session ID" {
                 try await Task.sleep(nanoseconds: 1_000_000_000)
                 return AccountDummyData.accounts
             } else {
                 return try await getApi.accounts(sessionId: sessionId, start: start.rawValue, end: end.rawValue)
             }
-
         } catch {
             if retryAttempts > 0 {
                 logger.warning(
@@ -87,8 +70,7 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
-//                await sessionId.invalidate()
-                return try await fetch(start: start, end: end, sessionId: sessionId, retryAttempts: retryAttempts - 1)
+                return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
                 
             } else {
                 throw error

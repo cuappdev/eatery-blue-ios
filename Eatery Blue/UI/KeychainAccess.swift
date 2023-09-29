@@ -7,7 +7,6 @@
 
 import Security
 import Foundation
-
 // https://developer.apple.com/documentation/security/keychain_services/keychain_items/adding_a_password_to_the_keychain
 
 class KeychainAccess {
@@ -27,7 +26,20 @@ class KeychainAccess {
         let _ = SecItemAdd(keychainQuery as CFDictionary, nil)
     }
     
-    func retrieveToken() -> String {
+    func invalidateToken() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "GETLogin"
+        ]
+        
+        Task {
+            let status = SecItemDelete(query as CFDictionary)
+            guard status == errSecSuccess || status == errSecItemNotFound else { return }
+            logger.info("Successfully logged out")
+        }
+    }
+    
+    func retrieveToken() -> String? {
         // Retrieve session token back from Keychain
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -44,7 +56,7 @@ class KeychainAccess {
                 return retrievedToken
             }
         }
-        return "No session token stored"
+        return nil
     }
     
 }

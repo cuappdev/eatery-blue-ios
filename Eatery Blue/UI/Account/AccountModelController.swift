@@ -133,17 +133,6 @@ class AccountModelController: AccountViewController {
         }
     }
     
-    var sessionId: String
-    
-    init(sessionId: String) {
-        self.sessionId = sessionId
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private func updateAccountsFromNetworking() async {
         do {
             let end = Day()
@@ -155,7 +144,7 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let accounts = try await Networking.default.accounts.fetch(start: start, end: end, sessionId: sessionId)
+            let accounts = try await Networking.default.accounts.fetch(start: start, end: end)
             let eateryAccounts = EateryAccounts(accounts)
             self.accounts = eateryAccounts
 
