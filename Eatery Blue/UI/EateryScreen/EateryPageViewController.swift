@@ -58,7 +58,6 @@ class EateryPageViewController: UIPageViewController {
     
     func updateEateries(eateries: [Eatery]) {
         self.eateries = eateries
-        print("updating")
         setUpPages()
     }
     

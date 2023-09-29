@@ -37,17 +37,13 @@ class HomeModelController: HomeViewController {
                 guard let self = self else { return }
                 
                 group.addTask {
-                    print("1 start")
                     await self.updateSimpleEateriesFromNetworking()
                     await self.updateCellsFromState()
-                    print("1 done")
                 }
                 
                 group.addTask {
-                    print("2 start")
                     await self.updateAllEateriesFromNetworking()
                     await self.updateCellsFromState()
-                    print("2 done")
                 }
             }
         }
