@@ -14,6 +14,9 @@ class KeychainAccess {
     static let shared: KeychainAccess = KeychainAccess()
     
     func saveToken(sessionId: String) {
+        // Invalidate old token if exists
+        invalidateToken()
+        
         // Save session token to Keychain
         let token = sessionId
         

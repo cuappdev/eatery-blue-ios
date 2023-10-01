@@ -78,8 +78,6 @@ extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
     func setSessionId(_ sessionId: String) {
         KeychainAccess().saveToken(sessionId: sessionId)
         delegate?.profileLoginModelController(self, didLogin: sessionId)
-        isLoggingIn = false
-        updateLoginButtonFromState()
     }
 
 }

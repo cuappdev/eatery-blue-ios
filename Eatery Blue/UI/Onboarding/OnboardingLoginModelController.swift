@@ -47,8 +47,6 @@ extension OnboardingLoginModelController: GetLoginWebViewControllerDelegate {
 
     func setSessionId(_ sessionId: String) {
         KeychainAccess().saveToken(sessionId: sessionId)
-        isLoggingIn = false
-        updateLoginButtonFromState()
     }
 
 }

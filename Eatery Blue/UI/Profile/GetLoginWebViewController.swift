@@ -37,7 +37,10 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
      }
      
      func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-          if let url = webView.url, let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false), let sessionId = urlComponents.queryItems?.filter({ $0.name == "sessionId" }).first?.value {
+          // As of 10/1/2023, the authenticated login url contains the sessionId (used to retrieve GET account info)
+          if let url = webView.url,
+             let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
+             let sessionId = urlComponents.queryItems?.filter({ $0.name == "sessionId" }).first?.value {
                delegate?.setSessionId(sessionId)
                self.dismiss(animated: true)
           }

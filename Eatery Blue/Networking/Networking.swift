@@ -18,18 +18,17 @@ class Networking {
     static var didLogOut = false
 
     let eateries: InMemoryCache<[Eatery]>
-    let sessionId: String = {
-        return KeychainAccess().retrieveToken() ?? ""
-    }()
-    let accounts: FetchAccounts
+    var sessionId: String {
+        KeychainAccess().retrieveToken() ?? ""
+    }
+    var accounts: FetchAccounts {
+        let getApi = GetAPI()
+        return FetchAccounts(getApi: getApi, sessionId: self.sessionId)
+    }
 
     init(fetchUrl: URL) {
         let eateryApi = EateryAPI(url: fetchUrl)
         self.eateries = InMemoryCache(fetch: eateryApi.eateries)
-
-        let getApi = GetAPI()
-        
-        self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
     }
 
     func logOut() {

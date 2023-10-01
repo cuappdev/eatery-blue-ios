@@ -32,11 +32,6 @@ class RootModelController: RootViewController {
                 didFinishOnboarding(notification)
             }
             .store(in: &cancellables)
-
-        // Attempt to log in the user
-        Task {
-            Networking.default.sessionId
-        }
     }
 
     @objc private func didFinishOnboarding(_ notification: Notification) {
