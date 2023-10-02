@@ -17,18 +17,16 @@ class Networking {
 
     static var didLogOut = false
 
+    let accounts: FetchAccounts
     let eateries: InMemoryCache<[Eatery]>
     var sessionId: String {
         KeychainAccess().retrieveToken() ?? ""
-    }
-    var accounts: FetchAccounts {
-        let getApi = GetAPI()
-        return FetchAccounts(getApi: getApi, sessionId: self.sessionId)
     }
 
     init(fetchUrl: URL) {
         let eateryApi = EateryAPI(url: fetchUrl)
         self.eateries = InMemoryCache(fetch: eateryApi.eateries)
+        self.accounts = FetchAccounts()
     }
 
     func logOut() {
@@ -40,13 +38,7 @@ class Networking {
 
 struct FetchAccounts {
 
-    private let getApi: GetAPI
-    private let sessionId: String
-
-    fileprivate init(getApi: GetAPI, sessionId: String) {
-        self.getApi = getApi
-        self.sessionId = sessionId
-    }
+    private let getApi = GetAPI()
 
     func fetch(start: Day, end: Day) async throws -> [Account] {
         return try await fetch(start: start, end: end, retryAttempts: 1)
@@ -55,6 +47,7 @@ struct FetchAccounts {
     func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
         logger.info("Attempting to fetch accounts start=\(start), end=\(end), retryAttempts=\(retryAttempts)")
         do {
+            let sessionId = Networking.default.sessionId
             if sessionId == "App Store Testing Session ID" {
                 try await Task.sleep(nanoseconds: 1_000_000_000)
                 return AccountDummyData.accounts

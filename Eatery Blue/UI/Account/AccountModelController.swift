@@ -132,7 +132,7 @@ class AccountModelController: AccountViewController {
             present(viewController, animated: true)
         }
     }
-    
+
     private func updateAccountsFromNetworking() async {
         do {
             let end = Day()
