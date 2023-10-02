@@ -54,7 +54,6 @@ class EateryPageViewController: UIPageViewController {
         }
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
     }
-    
 }
 
 extension EateryPageViewController: UIPageViewControllerDataSource {
@@ -85,4 +84,8 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
         return index
     }
     
+}
+
+protocol IndividualEateryDelegate {
+    func updateEateries(eateries: [Eatery])
 }

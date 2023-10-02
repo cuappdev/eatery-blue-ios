@@ -18,8 +18,11 @@ class Networking {
     let eateries: InMemoryCache<[Eatery]>
     let sessionId: InMemoryCache<String>
     let accounts: FetchAccounts
+    let baseUrl: URL
 
     init(fetchUrl: URL) {
+        self.baseUrl = fetchUrl
+        // TODO: factor out get all eateries into a different function
         let eateryApi = EateryAPI(url: fetchUrl)
         self.eateries = InMemoryCache(fetch: eateryApi.eateries)
 
@@ -35,6 +38,18 @@ class Networking {
         })
 
         self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
+    }
+
+    func loadEatery(by id: Int) async -> Eatery {
+        let url = URL(string: "\(self.baseUrl)\(id)/")!
+        let eateryApi = EateryAPI(url: url)
+        var eatery: Eatery!
+        do {
+            eatery = try await eateryApi.eatery()
+        } catch {
+            logger.error("Failed to load eatery \(id)")
+        }
+        return eatery
     }
 
     func logOut() async {

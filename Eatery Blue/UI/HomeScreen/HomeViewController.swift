@@ -42,6 +42,7 @@ class HomeViewController: UIViewController {
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
+    private var hasLoadedMenuData: Bool = false
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -106,9 +107,20 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
-        navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(pageVC, animated: true)
+        if !hasLoadedMenuData{
+            Task{
+                let currEatery: Eatery = await Networking.default.loadEatery(by: Int(eateries[eateryIndex].id))
+                self.eateries[eateryIndex] = currEatery
+                let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
+                navigationController?.hero.isEnabled = false
+                navigationController?.pushViewController(pageVC, animated: true)
+            }
+            hasLoadedMenuData = true
+        } else {
+            let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(pageVC, animated: true)
+        }
     }
 
     private func updateScrollViewContentInset() {

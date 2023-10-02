@@ -10,7 +10,11 @@ import EateryModel
 import UIKit
 import CoreLocation
 
-class HomeModelController: HomeViewController {
+class HomeModelController: HomeViewController, IndividualEateryDelegate {
+    
+    func updateEateries(eateries: [EateryModel.Eatery]) {
+        
+    }
     
     private var isTesting = false
     private var isLoading = true
@@ -33,7 +37,7 @@ class HomeModelController: HomeViewController {
         setUpUserLocationSubscription()
 
         Task {
-            await updateAllEateriesFromNetworking()
+            await updateSimpleEateriesFromNetworking()
             updateCellsFromState()
             view.isUserInteractionEnabled = !isLoading
         }
@@ -71,6 +75,27 @@ class HomeModelController: HomeViewController {
             updateCellsFromState()
         }.store(in: &cancellables)
     }
+    
+    private func updateSimpleEateriesFromNetworking() async {
+            do {
+                let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
+                if isLoading{
+                    allEateries = eateries.filter { eatery in
+                        return !eatery.name.isEmpty
+                    }.sorted(by: {
+                        if $0.isOpen == $1.isOpen {
+                            return $0.name < $1.name
+                        }
+                        return $0.isOpen
+                    })
+                }
+            } catch {
+                logger.error("\(error)")
+            }
+
+            isLoading = false
+            view.isUserInteractionEnabled = true
+        }
 
     private func updateAllEateriesFromNetworking() async {
         do {
@@ -79,16 +104,16 @@ class HomeModelController: HomeViewController {
                 return !eatery.name.isEmpty
             }.sorted(by: {
                 if $0.isOpen == $1.isOpen {
-                    $0.name < $1.name
-                } else {
-                    $0.isOpen
+                    return $0.name < $1.name
                 }
+                return $0.isOpen
             })
 
         } catch {
             logger.error("\(error)")
         }
         isLoading = false
+        view.isUserInteractionEnabled = true
     }
     
     private func createLoadingCarouselView(

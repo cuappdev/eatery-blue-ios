@@ -30,12 +30,17 @@ class EateryModelController: EateryViewController {
     }
 
     func setUp(eatery: Eatery) {
-        self.eatery = eatery
-        resetSelectedEventIndex()
-
-        setUpNavigationView(eatery)
-        setUpStackView(eatery)
-        setUpAnalytics(eatery)
+        Task {
+            self.eatery = await Networking.default.loadEatery(by: Int(eatery.id))
+            resetSelectedEventIndex()
+            setUpNavigationView(eatery)
+            setUpStackView(eatery)
+            setUpAnalytics(eatery)
+        }
+    }
+    
+    func getEateryId() -> Int{
+        Int(eatery!.id)
     }
 
     private func resetSelectedEventIndex() {
