@@ -73,7 +73,7 @@ class EateryExpandableCardContentView: UIView {
         
         eateryStackView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview()
-            make.width.equalTo(UIScreen.main.bounds.width - 84)
+            make.width.equalTo(UIScreen.main.bounds.width - 200)
         }
     }
 
@@ -108,6 +108,7 @@ class EateryExpandableCardContentView: UIView {
         eateryDetailsButton.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
         eateryDetailsButton.imageView.tintColor = UIColor.Eatery.gray05
         eateryDetailsButton.titleLabel.textColor = UIColor.Eatery.black
+        eateryDetailsButton.titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
         eateryDetailsButton.titleLabel.text = "Eatery Details"
         eateryDetailsButton.isUserInteractionEnabled = true
         eateryDetailsButton.addGestureRecognizer(UITapGestureRecognizer(
@@ -117,8 +118,12 @@ class EateryExpandableCardContentView: UIView {
         
         addSubview(eateryDetailsButton)
         
+        eateryDetailsButton.imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(16)
+        }
+        
         eateryDetailsButton.snp.makeConstraints { make in
-            make.width.equalTo(140)
+            make.width.equalTo(UIScreen.main.bounds.width - 284)
             make.height.equalTo(42)
             make.trailing.centerY.equalToSuperview()
         }

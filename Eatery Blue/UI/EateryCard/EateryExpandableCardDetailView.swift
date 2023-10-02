@@ -84,9 +84,8 @@ class EateryExpandableCardDetailView: UIView {
         
         viewEateryDetails.snp.makeConstraints { make in
             make.height.equalTo(36)
-            make.width.equalTo(324)
+            make.width.equalToSuperview().inset(12)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(10)
             make.top.equalTo(menuCategoryStackView.snp.bottom).offset(8)
             make.bottom.equalToSuperview().inset(8)
         }
