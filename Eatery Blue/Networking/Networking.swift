@@ -69,6 +69,7 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
+                KeychainAccess().invalidateToken()
                 return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
                 
             } else {
