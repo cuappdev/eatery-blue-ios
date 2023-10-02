@@ -19,12 +19,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
     private var isLoggingIn: Bool = false
 
     weak var delegate: ProfileLoginModelControllerDelegate?
+    
+    private lazy var loginOnLaunch: () = attemptLogin()
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        if !Networking.didLogOut {
-            attemptLogin()
-        }
+        let _ = loginOnLaunch
     }
 
     required init?(coder: NSCoder) {
@@ -51,7 +51,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
         Task {
-            if let sessionId = KeychainAccess().retrieveToken(), !Networking.didLogOut {
+            if let sessionId = KeychainAccess().retrieveToken() {
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
             }
             else{
@@ -62,7 +62,6 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
             isLoggingIn = false
             updateLoginButtonFromState()
-            Networking.didLogOut = false
         }
     }
 

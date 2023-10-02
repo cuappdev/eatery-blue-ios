@@ -15,8 +15,6 @@ class Networking {
 
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
-    static var didLogOut = false
-
     let accounts: FetchAccounts
     let eateries: InMemoryCache<[Eatery]>
     var sessionId: String {
@@ -30,7 +28,6 @@ class Networking {
     }
 
     func logOut() {
-        Networking.didLogOut = true
         KeychainAccess().invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
