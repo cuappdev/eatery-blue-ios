@@ -60,6 +60,11 @@ class MenusFilterViewController: UIViewController {
     private func setUpMealType() {
         mealType.label.text = "Breakfast"
         mealType.imageView.isHidden = false
+        mealType.tap { [self] _ in
+            let viewController = UpcomingMenuPickerSheetViewController()
+            viewController.setUp()
+            present(viewController, animated: true)
+        }
     }
     
     private func setUpAll() {

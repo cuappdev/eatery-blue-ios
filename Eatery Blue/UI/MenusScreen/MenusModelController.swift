@@ -12,7 +12,7 @@ import CoreLocation
 
 class MenusModelController: MenusViewController {
     
-    private var isTesting = false
+    private var isTesting = true
     private var isLoading = true
     
     private var filter = EateryFilter()
@@ -140,4 +140,5 @@ extension MenusModelController: MenusFilterViewControllerDelegate {
         self.filter = filter
         updateCellsFromState()
     }
+    
 }

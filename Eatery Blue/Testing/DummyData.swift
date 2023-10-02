@@ -163,7 +163,7 @@ enum DummyData {
         events: (0..<5).map { offset in
             Event(
                 canonicalDay: Day().advanced(by: offset),
-                endTimestamp: Day().advanced(by: offset).date(hour: 20, minute: 0).timeIntervalSince1970,
+                endTimestamp: Day().advanced(by: offset).date(hour: 24, minute: 0).timeIntervalSince1970,
                 menu: roseMenu,
                 startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970
             )
