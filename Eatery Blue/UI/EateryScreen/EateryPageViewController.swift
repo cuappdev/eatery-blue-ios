@@ -85,7 +85,3 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
     }
     
 }
-
-protocol IndividualEateryDelegate {
-    func updateEateries(eateries: [Eatery])
-}

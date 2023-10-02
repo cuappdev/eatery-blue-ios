@@ -38,10 +38,6 @@ class EateryModelController: EateryViewController {
             setUpAnalytics(eatery)
         }
     }
-    
-    func getEateryId() -> Int{
-        Int(eatery!.id)
-    }
 
     private func resetSelectedEventIndex() {
         guard let eatery = eatery else {

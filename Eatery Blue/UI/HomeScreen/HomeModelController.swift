@@ -10,11 +10,7 @@ import EateryModel
 import UIKit
 import CoreLocation
 
-class HomeModelController: HomeViewController, IndividualEateryDelegate {
-    
-    func updateEateries(eateries: [EateryModel.Eatery]) {
-        
-    }
+class HomeModelController: HomeViewController {
     
     private var isTesting = false
     private var isLoading = true
@@ -96,25 +92,6 @@ class HomeModelController: HomeViewController, IndividualEateryDelegate {
             isLoading = false
             view.isUserInteractionEnabled = true
         }
-
-    private func updateAllEateriesFromNetworking() async {
-        do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
-            allEateries = eateries.filter { eatery in
-                return !eatery.name.isEmpty
-            }.sorted(by: {
-                if $0.isOpen == $1.isOpen {
-                    return $0.name < $1.name
-                }
-                return $0.isOpen
-            })
-
-        } catch {
-            logger.error("\(error)")
-        }
-        isLoading = false
-        view.isUserInteractionEnabled = true
-    }
     
     private func createLoadingCarouselView(
         title: String
@@ -328,7 +305,7 @@ class HomeModelController: HomeViewController, IndividualEateryDelegate {
             await withTaskGroup(of: Void.self) { [weak self] group in
                 guard let strongSelf = self else { return }
                 group.addTask {
-                    await strongSelf.updateAllEateriesFromNetworking()
+                    await strongSelf.updateSimpleEateriesFromNetworking()
                 }
                 // Create a task to let the logo view do one complete animation cycle
                 group.addTask {

@@ -107,20 +107,9 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        if !hasLoadedMenuData{
-            Task{
-                let currEatery: Eatery = await Networking.default.loadEatery(by: Int(eateries[eateryIndex].id))
-                self.eateries[eateryIndex] = currEatery
-                let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
-                navigationController?.hero.isEnabled = false
-                navigationController?.pushViewController(pageVC, animated: true)
-            }
-            hasLoadedMenuData = true
-        } else {
-            let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
-            navigationController?.hero.isEnabled = false
-            navigationController?.pushViewController(pageVC, animated: true)
-        }
+        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
+        navigationController?.hero.isEnabled = false
+        navigationController?.pushViewController(pageVC, animated: true)
     }
 
     private func updateScrollViewContentInset() {
