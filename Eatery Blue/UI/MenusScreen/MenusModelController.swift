@@ -22,6 +22,8 @@ class MenusModelController: MenusViewController {
         
     private lazy var loadCells: () = updateCellsFromState()
     
+    private var currentMealType = "Breakfast"
+    
     class MenuChoice {
 
         let description: String
@@ -97,6 +99,8 @@ class MenusModelController: MenusViewController {
             
             currentEateries = filteredEateries
             
+            // TODO: Do filtering for eateries's menus here instead. Reference EateryExpandableCardDetailView's configure function for how to do it.
+            
             eateryStartIndex = cells.count
             
             cells.append(.titleLabel(title: "North"))
@@ -138,6 +142,11 @@ extension MenusModelController: MenusFilterViewControllerDelegate {
 
     func menusFilterViewController(_ viewController: MenusFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
+        updateCellsFromState()
+    }
+    
+    func filterMenusByMealType(mealType: String) {
+        self.currentMealType = mealType
         updateCellsFromState()
     }
     

@@ -11,6 +11,8 @@ import UIKit
 protocol MenusFilterViewControllerDelegate: AnyObject {
 
     func menusFilterViewController(_ viewController: MenusFilterViewController, filterDidChange filter: EateryFilter)
+    
+    func filterMenusByMealType(mealType: String)
 
 }
 
@@ -61,8 +63,10 @@ class MenusFilterViewController: UIViewController {
         mealType.label.text = "Breakfast"
         mealType.imageView.isHidden = false
         mealType.tap { [self] _ in
+            // Set the delegate of the UpcomingMenuPickerSheetViewController to be this VC, and in this VC when you implement the delegate, have it call its delegate function to update the menu filter on the main screen
             let viewController = UpcomingMenuPickerSheetViewController()
             viewController.setUp()
+            viewController.delegate = self
             present(viewController, animated: true)
         }
     }
@@ -153,4 +157,13 @@ class MenusFilterViewController: UIViewController {
             updateFilterButtonsFromState(animated: animated)
         }
     }
+}
+
+extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelegate {
+    
+    func menuPickerSheetViewController(menuChoice: String) {
+        // Updates the MenusModelController with the correct chosen meal type
+        delegate?.filterMenusByMealType(mealType: menuChoice)
+    }
+    
 }
