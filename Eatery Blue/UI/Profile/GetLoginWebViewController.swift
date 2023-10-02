@@ -41,14 +41,15 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
           if let url = webView.url,
              let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
              let sessionId = urlComponents.queryItems?.filter({ $0.name == "sessionId" }).first?.value {
-               delegate?.setSessionId(sessionId)
-               self.dismiss(animated: true)
+               delegate?.setSessionId(sessionId, with: {
+                    self.dismiss(animated: true)
+               })
           }
      }
 }
 
 protocol GetLoginWebViewControllerDelegate: AnyObject {
 
-    func setSessionId(_ sessionId: String)
+     func setSessionId(_ sessionId: String, with completion: (() -> Void))
 
 }

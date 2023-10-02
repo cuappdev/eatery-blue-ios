@@ -75,9 +75,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
 
-    func setSessionId(_ sessionId: String) {
+    func setSessionId(_ sessionId: String, with completion: (() -> Void)) {
         KeychainAccess().saveToken(sessionId: sessionId)
-        delegate?.profileLoginModelController(self, didLogin: sessionId)
+        if !Networking.default.sessionId.isEmpty {
+            delegate?.profileLoginModelController(self, didLogin: sessionId)
+            completion()
+        }
     }
 
 }

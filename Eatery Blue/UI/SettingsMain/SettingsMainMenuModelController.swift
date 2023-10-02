@@ -57,9 +57,7 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
 
         addLoginStatusView(logOut: {
             if !didAttemptLogOut {
-                Task {
-                    Networking.default.logOut()
-                }
+                Networking.default.logOut()
                 didAttemptLogOut = true
             }
         })

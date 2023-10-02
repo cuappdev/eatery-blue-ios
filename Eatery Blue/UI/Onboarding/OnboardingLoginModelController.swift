@@ -45,8 +45,11 @@ class OnboardingLoginModelController: OnboardingLoginViewController {
 
 extension OnboardingLoginModelController: GetLoginWebViewControllerDelegate {
 
-    func setSessionId(_ sessionId: String) {
+    func setSessionId(_ sessionId: String, with completion: (() -> Void)) {
         KeychainAccess().saveToken(sessionId: sessionId)
+        if !Networking.default.sessionId.isEmpty {
+            completion()
+        }
     }
 
 }
