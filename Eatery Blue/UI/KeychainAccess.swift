@@ -38,7 +38,6 @@ class KeychainAccess {
         Task {
             let status = SecItemDelete(query as CFDictionary)
             guard status == errSecSuccess || status == errSecItemNotFound else { return }
-            logger.info("Successfully logged out")
         }
     }
     
