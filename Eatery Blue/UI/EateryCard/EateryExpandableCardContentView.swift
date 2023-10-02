@@ -73,7 +73,7 @@ class EateryExpandableCardContentView: UIView {
         
         eateryStackView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.47)
+            make.width.equalTo(snp.width).multipliedBy(0.50)
         }
     }
 
@@ -123,7 +123,7 @@ class EateryExpandableCardContentView: UIView {
         }
         
         eateryDetailsButton.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.37)
+            make.width.equalTo(snp.width).multipliedBy(0.43)
             make.height.equalTo(42)
             make.trailing.centerY.equalToSuperview()
         }
