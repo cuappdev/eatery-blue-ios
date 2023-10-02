@@ -222,6 +222,8 @@ extension MenusViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.section] {
+        case .dayPicker:
+            print("Day selected")
         case .expandableCard(expandedEatery: let expandedEatery):
             if expandedEatery.eatery.isOpen {
                 self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
