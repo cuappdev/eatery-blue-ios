@@ -18,7 +18,7 @@ class Networking {
     let accounts: FetchAccounts
     let eateries: InMemoryCache<[Eatery]>
     var sessionId: String {
-        KeychainAccess().retrieveToken() ?? ""
+        KeychainAcces.shared.retrieveToken() ?? ""
     }
 
     init(fetchUrl: URL) {
@@ -28,7 +28,7 @@ class Networking {
     }
 
     func logOut() {
-        KeychainAccess().invalidateToken()
+        KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 }
@@ -59,7 +59,7 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
-                KeychainAccess().invalidateToken()
+                KeychainAccess.shared.invalidateToken()
                 return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
                 
             } else {

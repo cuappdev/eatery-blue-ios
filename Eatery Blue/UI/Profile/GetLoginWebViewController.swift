@@ -8,7 +8,6 @@
 import UIKit
 import WebKit
 
-
 class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
      
      weak var delegate: GetLoginWebViewControllerDelegate?
@@ -22,7 +21,6 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
           webView.navigationDelegate = self
           view = webView
      }
-     
      
      override func viewDidLoad() {
           super.viewDidLoad()
@@ -41,15 +39,16 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
           if let url = webView.url,
              let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
              let sessionId = urlComponents.queryItems?.filter({ $0.name == "sessionId" }).first?.value {
-               delegate?.setSessionId(sessionId, with: {
+               delegate?.setSessionId(sessionId) { [weak self] in
+                    guard let self = self else { return }
                     self.dismiss(animated: true)
-               })
+               }
           }
      }
 }
 
 protocol GetLoginWebViewControllerDelegate: AnyObject {
 
-     func setSessionId(_ sessionId: String, with completion: (() -> Void))
+     func setSessionId(_ sessionId: String, _ completion: (() -> Void))
 
 }

@@ -26,7 +26,7 @@ class SettingsMainMenuLoginStatusView: UIView {
         addSubview(label)
         setUpLabel()
         
-        if let _ = KeychainAccess().retrieveToken() {
+        if let _ = KeychainAccess.shared.retrieveToken() {
             addSubview(logoutButton)
             setUpLogoutButton()
         }
@@ -35,7 +35,6 @@ class SettingsMainMenuLoginStatusView: UIView {
     private func setUpLabel() {
         label.textColor = UIColor.Eatery.gray05
         label.font = .preferredFont(for: .body, weight: .semibold)
-        
         label.snp.makeConstraints { make in
             make.centerY.leading.equalTo(layoutMarginsGuide)
         }

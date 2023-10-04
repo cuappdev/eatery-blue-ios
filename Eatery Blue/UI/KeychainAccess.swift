@@ -5,14 +5,15 @@
 //  Created by Tiffany Pan on 9/28/23.
 //
 
-import Security
 import Foundation
+import Security
 // https://developer.apple.com/documentation/security/keychain_services/keychain_items/adding_a_password_to_the_keychain
 
 class KeychainAccess {
     
     static let shared: KeychainAccess = KeychainAccess()
-    
+
+    /// Saves session token to Keychain under "GETLogin", access with KeychainAccess.shared.retrieveToken
     func saveToken(sessionId: String) {
         // Invalidate old token if exists
         invalidateToken()
@@ -29,6 +30,7 @@ class KeychainAccess {
         let _ = SecItemAdd(keychainQuery as CFDictionary, nil)
     }
     
+    /// Deletes token under "GETLogin" if it exists
     func invalidateToken() {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -41,6 +43,7 @@ class KeychainAccess {
         }
     }
     
+    /// Returns token under "GETLogin" if it exists, nil otherwise
     func retrieveToken() -> String? {
         // Retrieve session token back from Keychain
         let query: [String: Any] = [
@@ -60,5 +63,4 @@ class KeychainAccess {
         }
         return nil
     }
-    
 }

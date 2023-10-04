@@ -51,10 +51,10 @@ class ProfileLoginModelController: ProfileLoginViewController {
         AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
         Task {
-            if let sessionId = KeychainAccess().retrieveToken() {
+            if let sessionId = KeychainAccess.shared.retrieveToken() {
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
             }
-            else{
+            else {
                 let vc = GetLoginWebViewController()
                 vc.delegate = self
                 self.present(vc, animated: true)
@@ -74,8 +74,8 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
 
-    func setSessionId(_ sessionId: String, with completion: (() -> Void)) {
-        KeychainAccess().saveToken(sessionId: sessionId)
+    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
+        KeychainAccess.shared.saveToken(sessionId: sessionId)
         if !Networking.default.sessionId.isEmpty {
             delegate?.profileLoginModelController(self, didLogin: sessionId)
             completion()
