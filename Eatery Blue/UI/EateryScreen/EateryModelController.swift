@@ -31,6 +31,7 @@ class EateryModelController: EateryViewController {
     }
 
     func setUp(eatery: Eatery) {
+        self.eatery = eatery
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
         setUpStackView(eatery)
