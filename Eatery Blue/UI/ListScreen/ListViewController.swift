@@ -130,6 +130,7 @@ class ListViewController: UIViewController {
         let viewController = EateryModelController()
         viewController.setUp(eatery: eatery)
         navigationController?.pushViewController(viewController, animated: true)
+        viewController.setUpMenu(eatery: eatery)
     }
 
     func setUp(title: String?, description: String?) {

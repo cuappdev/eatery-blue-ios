@@ -190,6 +190,7 @@ extension SettingsFavoritesViewController: UITableViewDelegate {
             let viewController = EateryModelController()
             viewController.setUp(eatery: eatery)
             navigationController?.pushViewController(viewController, animated: true)
+            viewController.setUpMenu(eatery: eatery)
         }
     }
 

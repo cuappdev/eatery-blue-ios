@@ -19,6 +19,7 @@ class EateryModelController: EateryViewController {
         return formatter
     }()
 
+    var menuHasLoaded = false
     private var eatery: Eatery?
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
@@ -30,12 +31,24 @@ class EateryModelController: EateryViewController {
     }
 
     func setUp(eatery: Eatery) {
+        resetSelectedEventIndex()
+        setUpNavigationView(eatery)
+        setUpStackView(eatery)
+        setUpAnalytics(eatery)
+        addSpinner()
+    }
+    
+    func setUpMenu(eatery: Eatery) {
         Task {
             self.eatery = await Networking.default.loadEatery(by: Int(eatery.id))
-            resetSelectedEventIndex()
-            setUpNavigationView(eatery)
-            setUpStackView(eatery)
-            setUpAnalytics(eatery)
+            if let eatery = self.eatery {
+                delateSpinner()
+                resetSelectedEventIndex()
+                setUpNavigationView(eatery)
+                setUpAnalytics(eatery)
+                addMenuFromState()
+                menuHasLoaded = true
+            }
         }
     }
 
@@ -77,8 +90,6 @@ class EateryModelController: EateryViewController {
         addAlertsIfNeeded(eatery)
         addTimingView(eatery)
         addSpacer(height: 16)
-
-        addMenuFromState()
     }
 
     private func setUpAnalytics(_ eatery: Eatery) {
