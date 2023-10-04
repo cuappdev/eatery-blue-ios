@@ -38,7 +38,7 @@ class EateryExpandableCardDetailView: UIView {
         // Drop first to get rid of the first one bc that is 'announcements'
         let event = eatery.events.dropFirst().first { e in
             if let description = e.description {
-                if description == "Breakfast" {
+                if description == "Dinner" {
                     return true
                 }
             }
