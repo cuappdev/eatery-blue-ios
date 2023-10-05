@@ -72,7 +72,8 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             cardView.tap { [self] _ in
                 let viewController = EateryModelController()
                 viewController.setUp(eatery: favorite)
-                navigationController?.hero.isEnabled = false
+                navigationController?.hero.isEnabled = true
+                navigationController?.heroNavigationAnimationType = .fade
                 navigationController?.pushViewController(viewController, animated: true)
             }
             favoritesView.addCardView(cardView)

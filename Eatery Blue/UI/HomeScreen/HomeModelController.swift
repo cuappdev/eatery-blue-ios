@@ -168,9 +168,10 @@ class HomeModelController: HomeViewController {
             }
 
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
-                navigationController?.hero.isEnabled = false
                 let pageVC = EateryPageViewController(eateries: carouselEateries, index: i)
                 pageVC.modalPresentationStyle = .overCurrentContext
+                navigationController?.hero.isEnabled = true
+                navigationController?.heroNavigationAnimationType = .fade
                 navigationController?.pushViewController(pageVC, animated: true)
             })
         }

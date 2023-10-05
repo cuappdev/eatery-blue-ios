@@ -35,6 +35,7 @@ class EateryViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
+        self.hero.isEnabled = true
     
     }
 
@@ -70,6 +71,8 @@ class EateryViewController: UIViewController {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 12
+        stackView.hero.isEnabled = true
+        stackView.hero.modifiers = [.translate(y:100)]
     }
 
     private func setUpNavigationView() {
@@ -113,7 +116,9 @@ class EateryViewController: UIViewController {
         imageView.snp.makeConstraints { make in
             make.width.equalTo(imageView.snp.height).multipliedBy(375.0 / 240.0)
         }
-
+        
+        imageView.hero.id = imageUrl?.absoluteString
+        imageView.heroModifiers = [.translate(y:100)]
         stackView.addArrangedSubview(imageView)
 
         headerView = imageView
@@ -139,6 +144,7 @@ class EateryViewController: UIViewController {
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
+            imageView.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
             stack.addArrangedSubview(imageView)
         }
@@ -152,6 +158,7 @@ class EateryViewController: UIViewController {
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
+            imageView.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
             stack.addArrangedSubview(imageView)
         }
@@ -165,6 +172,7 @@ class EateryViewController: UIViewController {
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
+            imageView.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
             stack.addArrangedSubview(imageView)
         }
@@ -186,6 +194,7 @@ class EateryViewController: UIViewController {
             make.trailing.equalToSuperview().inset(16)
             make.bottom.equalTo(headerView).offset(-16)
         }
+        container.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
         container.tap { [self] _ in
             let viewController = PaymentMethodsSheetViewController()
@@ -222,6 +231,7 @@ class EateryViewController: UIViewController {
         label.text = name
         label.font = .preferredFont(for: .largeTitle, weight: .semibold)
         label.textColor = UIColor.Eatery.black
+        label.hero.id = name
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
