@@ -9,6 +9,7 @@ import UIKit
 
 class ProfileLoginViewController: UIViewController {
 
+    private let eateryLogo = UIImageView()
     private let scrollView = UIScrollView()
     private let loginView = LoginView()
     private let loginButton = ButtonView(pillContent: UILabel())
@@ -66,6 +67,16 @@ class ProfileLoginViewController: UIViewController {
 
         view.addSubview(loginButton)
         setUpLoginButton()
+        
+        view.addSubview(eateryLogo)
+        setUpLogo()
+    }
+    
+    private func setUpLogo() {
+        eateryLogo.image = UIImage(named: "Eatery")
+        eateryLogo.alpha = 0.4
+        
+        view.addSubview(eateryLogo)
     }
 
     private func setUpScrollView() {
@@ -121,6 +132,11 @@ class ProfileLoginViewController: UIViewController {
             make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-12)
         }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
+        
+        eateryLogo.snp.makeConstraints({make in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(view.frame.width - 124)
+        })
     }
 
     func didTapLoginButton() {
