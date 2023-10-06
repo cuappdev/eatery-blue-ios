@@ -29,7 +29,7 @@ class EateryViewController: UIViewController {
     var headerView: UIView?
     var navigationTriggerView: UIView?
     
-    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
+    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.20)), .useGlobalCoordinateSpace]
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -230,7 +230,6 @@ class EateryViewController: UIViewController {
         label.text = name
         label.font = .preferredFont(for: .largeTitle, weight: .semibold)
         label.textColor = UIColor.Eatery.black
-        label.hero.id = name
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

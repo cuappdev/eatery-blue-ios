@@ -227,7 +227,6 @@ extension HomeViewController: UITableViewDataSource {
             contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
             contentView.imageView.hero.id = eatery.imageUrl?.absoluteString
-            contentView.titleLabel.hero.id = eatery.name
 
             let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
             if metadata.isFavorite {
