@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
 		5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */; };
 		5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */; };
 		5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */; };
@@ -154,6 +155,8 @@
 		99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */; };
 		BC463AB62A862067002FA81A /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC463AB52A862067002FA81A /* UIImageView.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
+		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
+		BC5A18A72AC61FCA0096FAC1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC5A18A62AC61FCA0096FAC1 /* GoogleService-Info.plist */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
 		FD1B1EFC2AC9F65D000EC405 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD1B1EFB2AC9F65D000EC405 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -173,6 +176,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesViewController.swift; sourceTree = "<group>"; };
 		5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesModelController.swift; sourceTree = "<group>"; };
 		5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
@@ -307,6 +311,8 @@
 		99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumLoadingCardView.swift; sourceTree = "<group>"; };
 		BC463AB52A862067002FA81A /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
+		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
+		BC5A18A62AC61FCA0096FAC1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		FD1B1EFB2AC9F65D000EC405 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -435,6 +441,7 @@
 			isa = PBXGroup;
 			children = (
 				5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */,
+				BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */,
 				5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */,
 				5D698F8927889DE30054E1AB /* ProfileViewController.swift */,
 			);
@@ -635,6 +642,7 @@
 				5DBA89A02784D2ED002DCA6B /* Splash */,
 				5DF304B527797CB600E2C9A4 /* Util */,
 				5DF304C027797E4500E2C9A4 /* WaitTimesSheet */,
+				413780502AC5DFD600EE43FE /* KeychainAccess.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -990,6 +998,7 @@
 				BFD955952900A8150049D77C /* UIColor.swift in Sources */,
 				5D3A149B27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift in Sources */,
 				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,
+				BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */,
 				5DF304AD2779209E00E2C9A4 /* MenuDayPickerCell.swift in Sources */,
 				5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */,
 				5D377CF727A20FE300F8DC37 /* SettingsAboutViewController.swift in Sources */,
@@ -1031,6 +1040,7 @@
 				5DA434BE278B6EC7001337FD /* UITableViewCell.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,
+				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
 				5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */,
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
 				5DBA899F2784CC03002DCA6B /* MainViewController.swift in Sources */,
