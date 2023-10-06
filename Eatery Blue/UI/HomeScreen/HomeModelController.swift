@@ -73,25 +73,22 @@ class HomeModelController: HomeViewController {
     }
     
     private func updateSimpleEateriesFromNetworking() async {
-            do {
-                let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
-                if isLoading{
-                    allEateries = eateries.filter { eatery in
-                        return !eatery.name.isEmpty
-                    }.sorted(by: {
-                        if $0.isOpen == $1.isOpen {
-                            return $0.name < $1.name
-                        }
-                        return $0.isOpen
-                    })
-                }
-            } catch {
-                logger.error("\(error)")
+        do {
+            let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
+            if isLoading {
+                allEateries = eateries.filter { eatery in
+                    return !eatery.name.isEmpty
+                }.sorted(by: {
+                    return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
+                })
             }
-
-            isLoading = false
-            view.isUserInteractionEnabled = true
+        } catch {
+            logger.error("\(error)")
         }
+        
+        isLoading = false
+        view.isUserInteractionEnabled = true
+    }
     
     private func createLoadingCarouselView(
         title: String

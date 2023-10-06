@@ -20,11 +20,11 @@ class EateryViewController: UIViewController {
         return formatter
     }()
 
+    var categoryViews: [MenuCategoryView] = []
     let navigationView = EateryNavigationView()
     let scrollView = UIScrollView()
-    let stackView = UIStackView()
     let spinner = UIActivityIndicatorView(style: .large)
-    var categoryViews: [MenuCategoryView] = []
+    let stackView = UIStackView()
 
     var headerView: UIView?
     var navigationTriggerView: UIView?
@@ -106,18 +106,20 @@ class EateryViewController: UIViewController {
     }
     
     func addSpinner() {
+        spinner.hidesWhenStopped = true
+        spinner.startAnimating()
+                
         spinner.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinner)
+        
         spinner.snp.makeConstraints { make in
             make.top.equalTo(stackView.snp.bottom).offset(10)
             make.width.height.equalTo(stackView.snp.width).multipliedBy(0.25)
             make.centerX.equalTo(stackView.snp.centerX)
         }
-        spinner.hidesWhenStopped = true
-        spinner.startAnimating()
     }
     
-    func delateSpinner() {
+    func deleteSpinner() {
         spinner.stopAnimating()
         spinner.removeFromSuperview()
     }

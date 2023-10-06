@@ -40,8 +40,7 @@ public struct EateryAPI {
 
         do {
             schemaApiResponse = try decoder.decode(Schema.Eatery.self, from: data)
-        }
-        catch {
+        } catch {
             throw EateryAPIError.apiResponseError(error.localizedDescription)
         }
         

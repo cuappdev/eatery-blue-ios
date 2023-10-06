@@ -54,10 +54,11 @@ class EateryPageViewController: UIPageViewController {
             pages.append(eateryVC)
         }
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
-        if let page = pages[index] as? EateryModelController{
+        if let page = pages[index] as? EateryModelController {
             page.setUpMenu(eatery: eateries[index])
         }
     }
+    
 }
 
 extension EateryPageViewController: UIPageViewControllerDataSource {
@@ -90,15 +91,18 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
     
 }
 
+
 extension EateryPageViewController: UIPageViewControllerDelegate {
+    
     func pageViewController(
         _ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
             if let selectedController = pendingViewControllers.first,
-            let index = pages.firstIndex(of: selectedController),
-            let viewController = selectedController as? EateryModelController {
+               let index = pages.firstIndex(of: selectedController),
+               let viewController = selectedController as? EateryModelController {
                 if !viewController.menuHasLoaded {
                     viewController.setUpMenu(eatery: eateries[index])
                 }
             }
         }
+    
 }

@@ -19,7 +19,7 @@ class EateryModelController: EateryViewController {
         return formatter
     }()
 
-    var menuHasLoaded = false
+    var menuHasLoaded: Bool = false
     private var eatery: Eatery?
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
@@ -43,7 +43,7 @@ class EateryModelController: EateryViewController {
         Task {
             self.eatery = await Networking.default.loadEatery(by: Int(eatery.id))
             if let eatery = self.eatery {
-                delateSpinner()
+                deleteSpinner()
                 resetSelectedEventIndex()
                 setUpNavigationView(eatery)
                 setUpAnalytics(eatery)

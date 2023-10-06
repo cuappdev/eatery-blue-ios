@@ -15,10 +15,10 @@ class Networking {
 
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
-    let eateries: InMemoryCache<[Eatery]>
-    let sessionId: InMemoryCache<String>
     let accounts: FetchAccounts
     let baseUrl: URL
+    let eateries: InMemoryCache<[Eatery]>
+    let sessionId: InMemoryCache<String>
 
     init(fetchUrl: URL) {
         self.baseUrl = fetchUrl
@@ -40,14 +40,16 @@ class Networking {
         self.accounts = FetchAccounts(getApi: getApi, sessionId: self.sessionId)
     }
 
-    func loadEatery(by id: Int) async -> Eatery {
-        let url = URL(string: "\(self.baseUrl)\(id)/")!
-        let eateryApi = EateryAPI(url: url)
-        var eatery: Eatery!
-        do {
-            eatery = try await eateryApi.eatery()
-        } catch {
-            logger.error("Failed to load eatery \(id)")
+    func loadEatery(by id: Int) async -> Eatery? {
+        var eatery: Eatery?
+        if let url = URL(string: "\(self.baseUrl)\(id)/") {
+            let eateryApi = EateryAPI(url: url)
+            do {
+                eatery = try await eateryApi.eatery()
+            } catch {
+                logger.error("Failed to load eatery \(id)")
+                return nil
+            }
         }
         return eatery
     }
