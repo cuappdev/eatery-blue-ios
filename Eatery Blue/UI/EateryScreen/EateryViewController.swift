@@ -10,6 +10,7 @@ import EateryModel
 import UIKit
 import CoreLocation
 import MapKit
+import Hero
 
 class EateryViewController: UIViewController {
 
@@ -27,6 +28,8 @@ class EateryViewController: UIViewController {
 
     var headerView: UIView?
     var navigationTriggerView: UIView?
+    
+    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -72,7 +75,7 @@ class EateryViewController: UIViewController {
         stackView.distribution = .fill
         stackView.spacing = 12
         stackView.hero.isEnabled = true
-        stackView.hero.modifiers = [.translate(y:100)]
+        stackView.hero.modifiers = fadeModifiers
     }
 
     private func setUpNavigationView() {
@@ -118,7 +121,7 @@ class EateryViewController: UIViewController {
         }
         
         imageView.hero.id = imageUrl?.absoluteString
-        imageView.heroModifiers = [.translate(y:100)]
+        imageView.heroModifiers = [.translate(y:100), .useGlobalCoordinateSpace]
         stackView.addArrangedSubview(imageView)
 
         headerView = imageView
@@ -144,7 +147,6 @@ class EateryViewController: UIViewController {
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
-            imageView.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
             stack.addArrangedSubview(imageView)
         }
@@ -158,7 +160,6 @@ class EateryViewController: UIViewController {
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
-            imageView.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
             stack.addArrangedSubview(imageView)
         }
@@ -172,7 +173,6 @@ class EateryViewController: UIViewController {
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
-            imageView.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
             stack.addArrangedSubview(imageView)
         }
@@ -194,7 +194,6 @@ class EateryViewController: UIViewController {
             make.trailing.equalToSuperview().inset(16)
             make.bottom.equalTo(headerView).offset(-16)
         }
-        container.hero.modifiers = [.fade, .whenPresenting(.delay(0.35)), .useGlobalCoordinateSpace]
 
         container.tap { [self] _ in
             let viewController = PaymentMethodsSheetViewController()
