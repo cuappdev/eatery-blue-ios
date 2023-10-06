@@ -16,7 +16,6 @@ class SettingsMainMenuLoginStatusView: UIView {
         super.init(frame: frame)
 
         setUpSelf()
-        setUpConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -26,20 +25,22 @@ class SettingsMainMenuLoginStatusView: UIView {
     private func setUpSelf() {
         addSubview(label)
         setUpLabel()
-
-        addSubview(logoutButton)
+        
+        if let _ = KeychainAccess.shared.retrieveToken() {
+            addSubview(logoutButton)
+            setUpLogoutButton()
+        }
     }
 
     private func setUpLabel() {
         label.textColor = UIColor.Eatery.gray05
         label.font = .preferredFont(for: .body, weight: .semibold)
-    }
-
-    private func setUpConstraints() {
         label.snp.makeConstraints { make in
             make.centerY.leading.equalTo(layoutMarginsGuide)
         }
+    }
 
+    private func setUpLogoutButton() {
         logoutButton.snp.makeConstraints { make in
             make.leading.equalTo(label.snp.trailing)
             make.top.trailing.bottom.equalTo(layoutMarginsGuide)

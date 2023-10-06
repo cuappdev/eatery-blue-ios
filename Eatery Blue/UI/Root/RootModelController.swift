@@ -32,18 +32,6 @@ class RootModelController: RootViewController {
                 didFinishOnboarding(notification)
             }
             .store(in: &cancellables)
-
-        // Attempt to log in the user
-        Task {
-            do {
-                _ = try await Networking.default.sessionId.fetch(maxStaleness: 0)
-            } catch {
-                logger.info("""
-                Received the following error while attemping to pre-fetch a sessionId: "\(error)".
-                This may be for benign reasons such as the user is not logged in.
-                """)
-            }
-        }
     }
 
     @objc private func didFinishOnboarding(_ notification: Notification) {

@@ -10,8 +10,6 @@ import UIKit
 class LoginView: UIView {
 
     private let stackView = UIStackView()
-    let netIdTextField = UITextField()
-    let passwordTextField = UITextField()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

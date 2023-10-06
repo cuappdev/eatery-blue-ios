@@ -79,9 +79,9 @@ class HomeModelController: HomeViewController {
                 return !eatery.name.isEmpty
             }.sorted(by: {
                 if $0.isOpen == $1.isOpen {
-                    $0.name < $1.name
+                    return $0.name < $1.name
                 } else {
-                    $0.isOpen
+                    return $0.isOpen
                 }
             })
 
