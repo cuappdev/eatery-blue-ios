@@ -189,6 +189,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(viewController, animated: true)
+        viewController.setUpMenu(eatery: eatery)
     }
 
     override func didSelectItem(_ item: MenuItem, at indexPath: IndexPath, eatery: Eatery?) {
@@ -201,6 +202,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             viewController.setUp(eatery: eatery)
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(viewController, animated: true)
+            viewController.setUpMenu(eatery: eatery)
         }
     }
 

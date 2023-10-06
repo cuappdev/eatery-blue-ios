@@ -75,6 +75,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
                 navigationController?.hero.isEnabled = true
                 navigationController?.heroNavigationAnimationType = .fade
                 navigationController?.pushViewController(viewController, animated: true)
+                viewController.setUpMenu(eatery: favorite)
             }
             favoritesView.addCardView(cardView)
         }

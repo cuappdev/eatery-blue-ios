@@ -33,7 +33,7 @@ class HomeModelController: HomeViewController {
         setUpUserLocationSubscription()
 
         Task {
-            await updateAllEateriesFromNetworking()
+            await updateSimpleEateriesFromNetworking()
             updateCellsFromState()
             view.isUserInteractionEnabled = !isLoading
         }
@@ -71,24 +71,23 @@ class HomeModelController: HomeViewController {
             updateCellsFromState()
         }.store(in: &cancellables)
     }
-
-    private func updateAllEateriesFromNetworking() async {
+    
+    private func updateSimpleEateriesFromNetworking() async {
         do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
-            allEateries = eateries.filter { eatery in
-                return !eatery.name.isEmpty
-            }.sorted(by: {
-                if $0.isOpen == $1.isOpen {
-                    $0.name < $1.name
-                } else {
-                    $0.isOpen
-                }
-            })
-
+            let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
+            if isLoading {
+                allEateries = eateries.filter { eatery in
+                    return !eatery.name.isEmpty
+                }.sorted(by: {
+                    return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
+                })
+            }
         } catch {
             logger.error("\(error)")
         }
+        
         isLoading = false
+        view.isUserInteractionEnabled = true
     }
     
     private func createLoadingCarouselView(
@@ -304,7 +303,7 @@ class HomeModelController: HomeViewController {
             await withTaskGroup(of: Void.self) { [weak self] group in
                 guard let strongSelf = self else { return }
                 group.addTask {
-                    await strongSelf.updateAllEateriesFromNetworking()
+                    await strongSelf.updateSimpleEateriesFromNetworking()
                 }
                 // Create a task to let the logo view do one complete animation cycle
                 group.addTask {

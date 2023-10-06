@@ -74,6 +74,8 @@ extension Networking {
 
     static var `default` = Networking(fetchUrl: URL(string: "https://eatery-dev.cornellappdev.com/eatery/")!)
 
+    static var `simple` = Networking(fetchUrl: URL(string: "https://eatery-dev.cornellappdev.com/eatery/simple/")!)
+
 }
 
 extension LocationManager {

@@ -193,6 +193,7 @@ extension SettingsFavoritesViewController: UITableViewDelegate {
             navigationController?.hero.isEnabled = true
             navigationController?.heroNavigationAnimationType = .fade
             navigationController?.pushViewController(viewController, animated: true)
+            viewController.setUpMenu(eatery: eatery)
         }
     }
 
