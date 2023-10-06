@@ -19,7 +19,7 @@ class Networking {
     let baseUrl: URL
     let eateries: InMemoryCache<[Eatery]>
     var sessionId: String {
-        KeychainAcces.shared.retrieveToken() ?? ""
+        KeychainAccess.shared.retrieveToken() ?? ""
     }
 
     init(fetchUrl: URL) {
@@ -45,10 +45,10 @@ class Networking {
     }
 
     func logOut() {
-        func logOut() {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
+    
 }
 
 struct FetchAccounts {
