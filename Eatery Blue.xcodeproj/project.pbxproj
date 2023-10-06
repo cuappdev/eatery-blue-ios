@@ -156,9 +156,8 @@
 		BC463AB62A862067002FA81A /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC463AB52A862067002FA81A /* UIImageView.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
-		BC5A18A72AC61FCA0096FAC1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC5A18A62AC61FCA0096FAC1 /* GoogleService-Info.plist */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
-		FD1B1EFC2AC9F65D000EC405 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD1B1EFB2AC9F65D000EC405 /* GoogleService-Info.plist */; };
+		FD1113092AD0C4F600C9B5B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -312,9 +311,8 @@
 		BC463AB52A862067002FA81A /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
-		BC5A18A62AC61FCA0096FAC1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		FD1B1EFB2AC9F65D000EC405 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -479,7 +477,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
-				FD0658E32ACE71810077DF2B /* GoogleService-Info.plist */,
+				FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
@@ -910,8 +908,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
-				FD0658E42ACE71810077DF2B /* GoogleService-Info.plist in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
+				FD1113092AD0C4F600C9B5B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
