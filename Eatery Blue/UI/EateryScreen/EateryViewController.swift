@@ -109,7 +109,6 @@ class EateryViewController: UIViewController {
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
                 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinner)
         
         spinner.snp.makeConstraints { make in

@@ -91,7 +91,6 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
     
 }
 
-
 extension EateryPageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(
