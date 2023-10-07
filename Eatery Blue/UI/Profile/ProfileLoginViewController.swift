@@ -133,10 +133,10 @@ class ProfileLoginViewController: UIViewController {
         }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
         
-        eateryLogo.snp.makeConstraints({make in
+        eateryLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(view.frame.width - 124)
-        })
+        }
     }
 
     func didTapLoginButton() {

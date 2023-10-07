@@ -6,11 +6,11 @@
 //
 
 import Combine
-import EateryModel
-import UIKit
 import CoreLocation
-import MapKit
+import EateryModel
 import Hero
+import MapKit
+import UIKit
 
 class EateryViewController: UIViewController {
 
@@ -21,25 +21,22 @@ class EateryViewController: UIViewController {
         return formatter
     }()
 
+    private var cancellables: Set<AnyCancellable> = []
     var categoryViews: [MenuCategoryView] = []
+    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.20)), .useGlobalCoordinateSpace]
+    var headerView: UIView?
+    var navigationTriggerView: UIView?
     let navigationView = EateryNavigationView()
     let scrollView = UIScrollView()
     let spinner = UIActivityIndicatorView(style: .large)
     let stackView = UIStackView()
-
-    var headerView: UIView?
-    var navigationTriggerView: UIView?
-    
-    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.20)), .useGlobalCoordinateSpace]
-
-    private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpView()
         setUpConstraints()
-        self.hero.isEnabled = true
+        hero.isEnabled = true
     
     }
 
