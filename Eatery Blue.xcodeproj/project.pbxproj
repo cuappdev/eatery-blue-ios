@@ -49,7 +49,6 @@
 		5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F982788AE7E0054E1AB /* InMemoryCache.swift */; };
 		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
 		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
-		5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */; };
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
@@ -97,7 +96,6 @@
 		5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A32784D606002DCA6B /* RootModelController.swift */; };
 		5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */; };
 		5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */; };
-		5DBA89AB278528F5002DCA6B /* OnboardingLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */; };
 		5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */; };
 		5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DE278FA3200028FE59 /* EateryFilter.swift */; };
 		5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5DBB59E1278FA3AB0028FE59 /* EateryModel */; };
@@ -215,7 +213,6 @@
 		5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginModelController.swift; sourceTree = "<group>"; };
 		5D698F912788A7FE0054E1AB /* AccountModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModelController.swift; sourceTree = "<group>"; };
 		5D698F982788AE7E0054E1AB /* InMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCache.swift; sourceTree = "<group>"; };
-		5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginModelController.swift; sourceTree = "<group>"; };
 		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
 		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
 		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
@@ -260,7 +257,6 @@
 		5DBA89A32784D606002DCA6B /* RootModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootModelController.swift; sourceTree = "<group>"; };
 		5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeaturesViewController.swift; sourceTree = "<group>"; };
 		5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureView.swift; sourceTree = "<group>"; };
-		5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginViewController.swift; sourceTree = "<group>"; };
 		5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFormatter.swift; sourceTree = "<group>"; };
 		5DBB59DE278FA3200028FE59 /* EateryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilter.swift; sourceTree = "<group>"; };
 		5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPredicate.swift; sourceTree = "<group>"; };
@@ -522,8 +518,6 @@
 			children = (
 				5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */,
 				5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */,
-				5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */,
-				5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */,
 				5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */,
 				5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */,
 			);
@@ -937,7 +931,6 @@
 				5DA434C0278B9566001337FD /* AccountPickerSheetViewController.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* EateryViewController.swift in Sources */,
 				5DF304A527791D2C00E2C9A4 /* EateryModelController.swift in Sources */,
-				5DBA89AB278528F5002DCA6B /* OnboardingLoginViewController.swift in Sources */,
 				5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
@@ -1031,7 +1024,6 @@
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */,
-				5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
