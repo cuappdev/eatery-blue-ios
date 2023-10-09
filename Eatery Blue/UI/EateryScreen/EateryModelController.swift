@@ -253,7 +253,7 @@ class EateryModelController: EateryViewController {
 
         viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
 
-        present(viewController, animated: true)
+        tabBarController?.present(viewController, animated: true)
     }
 
     private func didPressOrderOnlineButton() {

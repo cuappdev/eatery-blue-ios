@@ -187,10 +187,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2E08E1942AD469BB0036E0E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardDetailView.swift; sourceTree = "<group>"; };
 		2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardMenuCategoryView.swift; sourceTree = "<group>"; };
-		2EDED76B2AD4693A009ECFA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
 		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuPickerSheetViewController.swift; sourceTree = "<group>"; };
@@ -364,12 +364,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2E08E1912AD4695E0036E0E1 /* Recovered References */ = {
+		2E2DF2DF2AD3D3A0007A1724 /* ci_scripts */ = {
 			isa = PBXGroup;
 			children = (
-				2EDED76B2AD4693A009ECFA7 /* GoogleService-Info.plist */,
+				2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */,
 			);
-			name = "Recovered References";
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 		5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */ = {
@@ -511,7 +511,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
-				2E08E1942AD469BB0036E0E1 /* GoogleService-Info.plist */,
+				2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
@@ -969,7 +969,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
-				2E08E1952AD469BB0036E0E1 /* GoogleService-Info.plist in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
 				2EDED7682AD3E23D009ECFA7 /* GoogleService-Info.plist in Resources */,
 			);

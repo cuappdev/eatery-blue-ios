@@ -23,6 +23,8 @@ class MenusFilterViewController: UIViewController {
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
     
+    var selectedMenuIndex: Int?
+    
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()
     
@@ -33,6 +35,31 @@ class MenusFilterViewController: UIViewController {
         
         setUpView()
         setUpConstraints()
+        
+        filter.north = true
+        filter.west = true
+        filter.central = true
+        updateFilterButtonsFromState(animated: false)
+    }
+    
+    init(currentMealType: String) {
+        // TODO: This should be an enum
+        
+        if currentMealType == "Breakfast" {
+            selectedMenuIndex = 0
+        } else if currentMealType == "Lunch" {
+            selectedMenuIndex = 1
+        } else if currentMealType == "Dinner" {
+            selectedMenuIndex = 2
+        } else if currentMealType == "Late Dinner" {
+            selectedMenuIndex = 3
+        }
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setUpView() {
@@ -64,6 +91,7 @@ class MenusFilterViewController: UIViewController {
         mealType.tap { [self] _ in
             let viewController = UpcomingMenuPickerSheetViewController()
             viewController.setUpSheetPresentation()
+            viewController.selectedMenuIndex = selectedMenuIndex
             viewController.setUp()
             viewController.delegate = self
             present(viewController, animated: true)
