@@ -37,6 +37,7 @@ class EateryExpandableCardDetailView: UIView {
         self.selectedMealType = selectedMealType
         
         guard let event = (eatery.events.first { $0.description == selectedMealType }) else { return }
+        print(event)
         
         switch eatery.status {
         case .closed:
