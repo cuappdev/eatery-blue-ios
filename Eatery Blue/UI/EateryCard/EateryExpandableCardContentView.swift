@@ -41,21 +41,11 @@ class EateryExpandableCardContentView: UIView {
         eateryNameLabel.text = eatery.name
         
         switch eatery.status {
-        case .closed:
-            eateryStatusLabel.text = "Closed"
-            eateryStatusLabel.textColor = UIColor.Eatery.red
+        case .closed, .openingSoon(_):
+            eateryStatusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
             setupEateryDetailsButton()
-        case .openingSoon(_):
-            eateryStatusLabel.text = "Opening soon"
-            eateryStatusLabel.textColor = UIColor.Eatery.orange
-            setupEateryDetailsButton()
-        case .closingSoon(_):
-            eateryStatusLabel.text = "Closing soon"
-            eateryStatusLabel.textColor = UIColor.Eatery.orange
-            setupChevronArrow()
-        case .open(_):
-            eateryStatusLabel.text = "Open"
-            eateryStatusLabel.textColor = UIColor.Eatery.green
+        case .closingSoon(_), .open(_):
+            eateryStatusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
             setupChevronArrow()
         }
     }
