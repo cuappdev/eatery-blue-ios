@@ -24,8 +24,8 @@ class MenusModelController: MenusViewController {
     private var allEateries: [Eatery] = []
     private var fetchedEateries: [Eatery] = []
     
-    private let filterController = MenusFilterViewController()
-        
+    private lazy var filterController = MenusFilterViewController(currentMealType: currentMealType)
+    
     private lazy var loadCells: () = updateCellsFromState()
     
     private var selectedDay: Day = Day()
@@ -66,6 +66,10 @@ class MenusModelController: MenusViewController {
     
     private func setUpFilterController() {
         addChild(filterController)
+        
+        filter.north = true
+        filter.west = true
+        filter.central = true
         
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         filterController.delegate = self
@@ -116,24 +120,36 @@ class MenusModelController: MenusViewController {
             currentEateries = filteredEateries
             eateryStartIndex = cells.count
             
-            cells.append(.titleLabel(title: "North"))
-            currentEateries.forEach { eatery in
-                if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+            if filter.north {
+                var didAppendNorthLabel: Bool = false
+                currentEateries.forEach { eatery in
+                    if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
+                        !didAppendNorthLabel ? cells.append(.titleLabel(title: "North")) : nil
+                        didAppendNorthLabel = true
+                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+                    }
                 }
             }
             
-            cells.append(.titleLabel(title: "West"))
-            currentEateries.forEach { eatery in
-                if eatery.campusArea == "West" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+            if filter.west {
+                var didAppendWestLabel: Bool = false
+                currentEateries.forEach { eatery in
+                    !didAppendWestLabel ? cells.append(.titleLabel(title: "West")) : nil
+                    didAppendWestLabel = true
+                    if eatery.campusArea == "West" && eatery.paymentMethods.contains(.mealSwipes) {
+                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+                    }
                 }
             }
 
-            cells.append(.titleLabel(title: "Central"))
-            currentEateries.forEach { eatery in
-                if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+            if filter.central {
+                var didAppendCentralLabel: Bool = false
+                currentEateries.forEach { eatery in
+                    if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
+                        !didAppendCentralLabel ? cells.append(.titleLabel(title: "Central")) : nil
+                        didAppendCentralLabel = true
+                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+                    }
                 }
             }
         }
@@ -156,6 +172,16 @@ extension MenusModelController: MenusFilterViewControllerDelegate {
     func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeMenuType string: String) {
         currentMealType = string
         updateCellsFromState()
+        
+        if currentMealType == "Breakfast" {
+            filterController.selectedMenuIndex = 0
+        } else if currentMealType == "Lunch" {
+            filterController.selectedMenuIndex = 1
+        } else if currentMealType == "Dinner" {
+            filterController.selectedMenuIndex = 2
+        } else if currentMealType == "Late Dinner" {
+            filterController.selectedMenuIndex = 3
+        }
     }
 
     func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeLocation filter: EateryFilter) {
