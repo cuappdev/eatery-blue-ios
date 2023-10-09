@@ -16,6 +16,7 @@ struct ExpandedEatery {
     let eatery: Eatery
     var isExpanded: Bool = false
     var selectedMealType: String?
+    var selectedDate: Day?
 }
 
 class MenusViewController: UIViewController {
@@ -233,7 +234,7 @@ extension MenusViewController: UITableViewDelegate {
         switch cells[indexPath.section] {
         case .expandableCard(expandedEatery: let expandedEatery):
             if expandedEatery.eatery.isOpen {
-                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType))
+                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
             }
             tableView.reloadRows(at: [indexPath], with: .automatic)
         default:

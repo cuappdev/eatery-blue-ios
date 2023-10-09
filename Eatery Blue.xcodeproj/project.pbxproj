@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E08E1952AD469BB0036E0E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E08E1942AD469BB0036E0E1 /* GoogleService-Info.plist */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
+		2EDED7682AD3E23D009ECFA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */; };
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
 		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
 		41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */; };
@@ -152,7 +154,6 @@
 		95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BC2819B68600285440 /* FirebaseAnalytics */; };
 		95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */; };
 		95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */; };
-		991466972AD3CF41005F2C6F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 991466962AD3CF41005F2C6F /* GoogleService-Info.plist */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
 		998F6D022ABCC2B1006B7F18 /* MenusModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D012ABCC2B1006B7F18 /* MenusModelController.swift */; };
 		998F6D082ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */; };
@@ -186,8 +187,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardDetailView.swift; sourceTree = "<group>"; };
 		2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardMenuCategoryView.swift; sourceTree = "<group>"; };
+		2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
 		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuPickerSheetViewController.swift; sourceTree = "<group>"; };
@@ -318,7 +321,6 @@
 		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
 		957397B22821C50200FFB687 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
-		991466962AD3CF41005F2C6F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
 		998F6D012ABCC2B1006B7F18 /* MenusModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusModelController.swift; sourceTree = "<group>"; };
 		998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDayPickerTableViewCell.swift; sourceTree = "<group>"; };
@@ -362,6 +364,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2E2DF2DF2AD3D3A0007A1724 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,9 +492,11 @@
 		5D8651722773CBFB000338D4 = {
 			isa = PBXGroup;
 			children = (
+				2E2DF2DF2AD3D3A0007A1724 /* ci_scripts */,
 				5D86517D2773CBFB000338D4 /* Eatery Blue */,
 				5D86517C2773CBFB000338D4 /* Products */,
 				5DBB59E0278FA3AB0028FE59 /* Frameworks */,
+				2E08E1912AD4695E0036E0E1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -499,8 +511,8 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
-				991466962AD3CF41005F2C6F /* GoogleService-Info.plist */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
 				5D377CE427A19B0200F8DC37 /* UserDefaultsKeys.swift */,
@@ -957,8 +969,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
-				991466972AD3CF41005F2C6F /* GoogleService-Info.plist in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
+				2EDED7682AD3E23D009ECFA7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1241,7 +1253,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1253,14 +1265,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1270,13 +1284,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue;
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1287,14 +1303,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1304,13 +1322,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.eateryblue;
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

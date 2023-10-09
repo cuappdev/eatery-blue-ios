@@ -33,9 +33,19 @@ class HomeModelController: HomeViewController {
         setUpUserLocationSubscription()
 
         Task {
-            await updateSimpleEateriesFromNetworking()
-            updateCellsFromState()
-            view.isUserInteractionEnabled = !isLoading
+            await withThrowingTaskGroup(of: Void.self) { [weak self] group in
+                guard let self = self else { return }
+                
+                group.addTask {
+                    await self.updateSimpleEateriesFromNetworking()
+                    await self.updateCellsFromState()
+                }
+                
+                group.addTask {
+                    // Don't update cells. Used for caching purposes.
+                    await self.updateAllEateriesFromNetworking()
+                }
+            }
         }
     }
 
@@ -82,6 +92,17 @@ class HomeModelController: HomeViewController {
                     return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
                 })
             }
+        } catch {
+            logger.error("\(error)")
+        }
+        
+        isLoading = false
+        view.isUserInteractionEnabled = true
+    }
+    
+    private func updateAllEateriesFromNetworking() async {
+        do {
+            let _ = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
         } catch {
             logger.error("\(error)")
         }
