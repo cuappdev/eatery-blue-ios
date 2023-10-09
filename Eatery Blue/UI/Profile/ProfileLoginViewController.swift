@@ -10,7 +10,6 @@ import UIKit
 class ProfileLoginViewController: UIViewController {
 
     private let eateryLogo = UIImageView()
-    private let scrollView = UIScrollView()
     private let loginView = LoginView()
     private let loginButton = ButtonView(pillContent: UILabel())
 
@@ -39,7 +38,7 @@ class ProfileLoginViewController: UIViewController {
             .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
 
-        navigationItem.title = "Log in with Eatery"
+        navigationItem.title = ""
 
         let standardAppearance = appearance.copy()
         standardAppearance.configureWithDefaultBackground()
@@ -62,8 +61,8 @@ class ProfileLoginViewController: UIViewController {
     private func setUpView() {
         view.backgroundColor = .white
 
-        view.addSubview(scrollView)
-        setUpScrollView()
+        view.addSubview(loginView)
+        setUpLoginView()
 
         view.addSubview(loginButton)
         setUpLoginButton()
@@ -79,21 +78,9 @@ class ProfileLoginViewController: UIViewController {
         view.addSubview(eateryLogo)
     }
 
-    private func setUpScrollView() {
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.isPagingEnabled = true
-
-        scrollView.tap { [self] _ in
-            view.endEditing(true)
-        }
-
-        scrollView.addSubview(loginView)
-        setUpLoginView()
-    }
-
     private func setUpLoginView() {
         loginView.setCustomSpacing(8)
+        loginView.addTitleLabel("Log in with Eatery")
         loginView.addSubtitleLabel("See your meal swipes, BRBs, and more")
         loginView.setCustomSpacing(24)
     }
@@ -112,24 +99,16 @@ class ProfileLoginViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-        scrollView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-        }
-
         loginView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
-            make.width.equalTo(scrollView.frameLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(96)
         }
 
         loginButton.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.snp.bottom)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
 
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12).priority(.high)
             make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).inset(12)
-
-            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-12).priority(.high)
-            make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-12)
         }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
         
