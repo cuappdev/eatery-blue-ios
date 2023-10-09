@@ -17,7 +17,7 @@ protocol UpdateDateDelegate: AnyObject {
 
 class MenusModelController: MenusViewController {
     
-    private var isTesting = true
+    private var isTesting = false
     private var isLoading = true
     
     private var filter = EateryFilter()
