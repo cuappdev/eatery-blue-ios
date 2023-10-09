@@ -51,7 +51,6 @@ class MainViewController: UIViewController {
             image: UIImage(named: "User"),
             selectedImage: UIImage(named: "UserSelected")
         )
-        profileNavigationController.navigationBar.prefersLargeTitles = true
         profileNavigationController.setNavigationBarHidden(true, animated: false)
 
         theTabBarController.setViewControllers([
