@@ -124,6 +124,7 @@ extension SettingsFavoritesViewController: UITableViewDataSource {
             )
             contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
+            contentView.imageView.hero.id = eatery.imageUrl?.absoluteString
 
             let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
             if metadata.isFavorite {
@@ -189,7 +190,10 @@ extension SettingsFavoritesViewController: UITableViewDelegate {
             let eatery = favoriteEateries[indexPath.row - 1]
             let viewController = EateryModelController()
             viewController.setUp(eatery: eatery)
+            navigationController?.hero.isEnabled = true
+            navigationController?.heroNavigationAnimationType = .fade
             navigationController?.pushViewController(viewController, animated: true)
+            viewController.setUpMenu(eatery: eatery)
         }
     }
 

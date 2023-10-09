@@ -6,10 +6,11 @@
 //
 
 import Combine
-import EateryModel
-import UIKit
 import CoreLocation
+import EateryModel
+import Hero
 import MapKit
+import UIKit
 
 class EateryViewController: UIViewController {
 
@@ -20,21 +21,22 @@ class EateryViewController: UIViewController {
         return formatter
     }()
 
-    let navigationView = EateryNavigationView()
-    let scrollView = UIScrollView()
-    let stackView = UIStackView()
+    private var cancellables: Set<AnyCancellable> = []
     var categoryViews: [MenuCategoryView] = []
-
+    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.20)), .useGlobalCoordinateSpace]
     var headerView: UIView?
     var navigationTriggerView: UIView?
-
-    private var cancellables: Set<AnyCancellable> = []
+    let navigationView = EateryNavigationView()
+    let scrollView = UIScrollView()
+    let spinner = UIActivityIndicatorView(style: .large)
+    let stackView = UIStackView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpView()
         setUpConstraints()
+        hero.isEnabled = true
     
     }
 
@@ -70,6 +72,8 @@ class EateryViewController: UIViewController {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 12
+        stackView.hero.isEnabled = true
+        stackView.hero.modifiers = fadeModifiers
     }
 
     private func setUpNavigationView() {
@@ -103,6 +107,24 @@ class EateryViewController: UIViewController {
         }
         stackView.setCustomSpacing(spacing, after: last)
     }
+    
+    func addSpinner() {
+        spinner.hidesWhenStopped = true
+        spinner.startAnimating()
+                
+        view.addSubview(spinner)
+        
+        spinner.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).offset(10)
+            make.width.height.equalTo(stackView.snp.width).multipliedBy(0.25)
+            make.centerX.equalTo(stackView.snp.centerX)
+        }
+    }
+    
+    func deleteSpinner() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
 
     func addHeaderImageView(imageUrl: URL?) {
         let imageView = UIImageView()
@@ -113,7 +135,9 @@ class EateryViewController: UIViewController {
         imageView.snp.makeConstraints { make in
             make.width.equalTo(imageView.snp.height).multipliedBy(375.0 / 240.0)
         }
-
+        
+        imageView.hero.id = imageUrl?.absoluteString
+        imageView.heroModifiers = [.translate(y:100), .useGlobalCoordinateSpace]
         stackView.addArrangedSubview(imageView)
 
         headerView = imageView

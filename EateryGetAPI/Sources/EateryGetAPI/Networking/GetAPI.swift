@@ -11,11 +11,6 @@ public struct GetAPI {
     }
 
     @MainActor
-    public func sessionId(netId: String, password: String) async throws -> String {
-        try await GetAccountLogin(netId: netId, password: password).sessionId()
-    }
-
-    @MainActor
     public func accounts(sessionId: String, start: String, end: String) async throws -> [Account] {
         let sessionManager = GetSessionManager(sessionId: sessionId)
 

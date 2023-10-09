@@ -16,87 +16,34 @@ protocol ProfileLoginModelControllerDelegate: AnyObject {
 
 class ProfileLoginModelController: ProfileLoginViewController {
 
-    private var netId: String {
-        netIdTextField.text ?? ""
-    }
-    private var password: String {
-        passwordTextField.text ?? ""
-    }
     private var isLoggingIn: Bool = false
 
-    private var isLoginEnabled: Bool {
-        return !isLoggingIn && !netId.isEmpty && !password.isEmpty
-    }
-
     weak var delegate: ProfileLoginModelControllerDelegate?
+    
+    private lazy var loginOnLaunch: () = attemptLogin()
 
     init() {
         super.init(nibName: nil, bundle: nil)
-
-        if let credentials = try? NetIDKeychainManager.shared.get() {
-            netIdTextField.text = credentials.netId
-            passwordTextField.text = "        "
-            attemptLogin()
-        }
+        let _ = loginOnLaunch
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setUpNetIdTextField()
-        setUpPasswordTextField()
-    }
-
-    private func setUpNetIdTextField() {
-        netIdTextField.autocapitalizationType = .none
-        netIdTextField.autocorrectionType = .no
-        netIdTextField.addTarget(self, action: #selector(netIdTextFieldEditingChanged), for: .editingChanged)
-        netIdTextField.delegate = self
-    }
-
-    private func setUpPasswordTextField() {
-        passwordTextField.addTarget(self, action: #selector(passwordTextFieldEditingChanged), for: .editingChanged)
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.delegate = self
-    }
-
-    @objc private func netIdTextFieldEditingChanged() {
-        updateLoginButtonFromState()
-    }
-
-    @objc private func passwordTextFieldEditingChanged() {
-        updateLoginButtonFromState()
-    }
-
     override func didTapLoginButton() {
         super.didTapLoginButton()
-
-        do {
-            let credentials = NetIDKeychainManager.Credentials(netId: netId, password: password)
-            try NetIDKeychainManager.shared.save(credentials)
-
-            Task {
-                await Networking.default.sessionId.invalidate()
-                attemptLogin()
-            }
-
-        } catch NetIDKeychainManager.KeychainError.unhandledError(status: let status) {
-            logger.error("\(#function): \(SecCopyErrorMessageString(status, nil) ?? "nil" as CFString)")
-            updateErrorMessage("Internal error, please try again later")
-
-        } catch {
-            logger.error("\(#function): \(error)")
-            updateErrorMessage("Internal error, please try again later")
+        attemptLogin()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let _ = KeychainAccess.shared.retrieveToken() {
+            attemptLogin()
         }
     }
 
     private func updateLoginButtonFromState() {
-        setLoginButtonEnabled(isLoginEnabled)
-
         if isLoggingIn {
             setLoginButtonTitle("Logging in...")
         } else {
@@ -105,32 +52,19 @@ class ProfileLoginModelController: ProfileLoginViewController {
     }
 
     private func attemptLogin() {
-        guard isLoginEnabled else {
-            return
-        }
-
         isLoggingIn = true
         view.endEditing(true)
-        updateErrorMessage(nil)
         updateLoginButtonFromState()
         AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
         Task {
-            do {
-                let sessionId = try await Networking.default.sessionId.fetch(maxStaleness: .infinity)
+            if let sessionId = KeychainAccess.shared.retrieveToken() {
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
-
-            } catch GetAPIError.loginFailed {
-                updateErrorMessage("NetID and/or password incorrect, please try again")
-
-            } catch GetAPIError.emptyNetId {
-                updateErrorMessage("Please enter a NetID")
-
-            } catch GetAPIError.emptyPassword {
-                updateErrorMessage("Please enter a password")
-
-            } catch {
-                updateErrorMessage("Internal error, please try again later")
+            }
+            else {
+                let vc = GetLoginWebViewController()
+                vc.delegate = self
+                self.present(vc, animated: true)
             }
 
             isLoggingIn = false
@@ -145,16 +79,14 @@ class ProfileLoginModelController: ProfileLoginViewController {
 
 }
 
-extension ProfileLoginModelController: UITextFieldDelegate {
+extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == netIdTextField {
-            passwordTextField.becomeFirstResponder()
-        } else if textField == passwordTextField {
-            didTapLoginButton()
+    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
+        KeychainAccess.shared.saveToken(sessionId: sessionId)
+        if !Networking.default.sessionId.isEmpty {
+            delegate?.profileLoginModelController(self, didLogin: sessionId)
+            completion()
         }
-
-        return false
     }
 
 }

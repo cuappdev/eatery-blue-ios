@@ -16,9 +16,10 @@ class OnboardingFeaturesViewController: UIViewController {
     }
 
     private let backButton = ContainerView(content: UIImageView())
-    private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
     private let nextButton = ButtonView(pillContent: UILabel())
+    private let scrollView = UIScrollView()
+    private let skipButton = ContainerView(content: UILabel())
+    private let stackView = UIStackView()
 
     private var pages: [OnboardingPage] = []
     private var pageViews: [OnboardingFeatureView] = []
@@ -28,22 +29,42 @@ class OnboardingFeaturesViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
-
+        
         setUpPages([
+            OnboardingPage(
+                title: "Home",
+                subtitle: "View the eateries Cornell offers",
+                image: UIImage(named: "OnboardingHomeTab")
+            ),
+            OnboardingPage(
+                title: "Home",
+                subtitle: "View the eateries Cornell offers",
+                image: UIImage(named: "OnboardingHomeScreen")
+            ),
             OnboardingPage(
                 title: "Upcoming Menus",
                 subtitle: "See menus by date and plan ahead",
-                image: UIImage(named: "OnboardingUpcomingMenus")
+                image: UIImage(named: "OnboardingUpcomingTab")
             ),
             OnboardingPage(
-                title: "Wait Times",
-                subtitle: "Check for crowds in real time to avoid lines",
-                image: UIImage(named: "OnboardingWaitTimes")
+                title: "Upcoming Menus",
+                subtitle: "See menus by date and plan ahead",
+                image: UIImage(named: "OnboardingUpcomingScreen")
             ),
             OnboardingPage(
                 title: "Favorites",
-                subtitle: "Save and quickly find eateries and items",
-                image: UIImage(named: "OnboardingFavorites")
+                subtitle: "Save and quickly find eateries",
+                image: UIImage(named: "OnboardingFavoritesTab")
+            ),
+            OnboardingPage(
+                title: "Favorites",
+                subtitle: "Save and quickly find eateries",
+                image: UIImage(named: "OnboardingFavoritesScreen")
+            ),
+            OnboardingPage(
+                title: "Log in with Eatery",
+                subtitle: "See your meal swipes, BRBs, and more",
+                image: UIImage(named: "OnboardingLogIn")
             )
         ])
 
@@ -62,6 +83,9 @@ class OnboardingFeaturesViewController: UIViewController {
 
         view.addSubview(nextButton)
         setUpNextButton()
+        
+        view.addSubview(skipButton)
+        setUpSkipButton()
     }
 
     private func setUpBackButton() {
@@ -75,6 +99,16 @@ class OnboardingFeaturesViewController: UIViewController {
         }
     }
 
+    private func setUpSkipButton() {
+        skipButton.content.font = .preferredFont(for: .body, weight: .semibold)
+        skipButton.content.text = "Skip"
+        skipButton.isHidden = true
+
+        skipButton.tap { [self] _ in
+            didTapSkipButton()
+        }
+    }
+    
     private func setUpScrollView() {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
@@ -125,6 +159,12 @@ class OnboardingFeaturesViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12)
         }
         nextButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
+        
+        skipButton.snp.makeConstraints { make in
+            make.top.equalTo(backButton.snp.top)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(backButton.snp.height)
+        }
     }
 
     func setUpPages(_ pages: [OnboardingPage]) {
@@ -157,12 +197,30 @@ class OnboardingFeaturesViewController: UIViewController {
         let currentIndex = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
         let clampedIndex = max(0, min(pages.count - 1, currentIndex))
         let nextIndex = clampedIndex + 1
+        
+        if nextIndex == pages.count - 1 {
+            skipButton.isHidden = false
+            nextButton.content.text = "Log in"
+            nextButton.content.font = .preferredFont(for: .body, weight: .semibold)
+            nextButton.content.textAlignment = .center
+            nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
+            nextButton.content.textColor = .white
+            nextButton.backgroundColor = UIColor.Eatery.blue
+            nextButton.buttonPress({ [self] _ in
+                AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
+                Task {
+                    let vc = GetLoginWebViewController()
+                    vc.delegate = self
+                    self.present(vc, animated: true)
+                    finishOnboarding()
+                }
+            })
+        }
 
         if nextIndex == pages.count {
             // We've reached the last page
-
-            let viewController = OnboardingLoginModelController()
-            navigationController?.pushViewController(viewController, animated: true)
+            
+            navigationController?.pushViewController(HomeModelController(), animated: true)
 
         } else {
             // Move to the next page
@@ -172,6 +230,15 @@ class OnboardingFeaturesViewController: UIViewController {
         }
     }
 
+    private func finishOnboarding() {
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didOnboard)
+        NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
+    }
+    
+    private func didTapSkipButton() {
+        NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
+    }
+    
     private func updatePageTransforms() {
         let contentOffset = scrollView.contentOffset.x
         let pageWidth = scrollView.bounds.width
@@ -225,6 +292,17 @@ extension OnboardingFeaturesViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updatePageTransforms()
+    }
+
+}
+
+extension OnboardingFeaturesViewController: GetLoginWebViewControllerDelegate {
+
+    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
+        KeychainAccess.shared.saveToken(sessionId: sessionId)
+        if !Networking.default.sessionId.isEmpty {
+            completion()
+        }
     }
 
 }

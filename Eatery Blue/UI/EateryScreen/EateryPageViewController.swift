@@ -28,6 +28,7 @@ class EateryPageViewController: UIPageViewController {
         super.viewDidLoad()
         view.backgroundColor = .clear
         dataSource = self
+        delegate = self
         
         let appearance = UIPageControl.appearance()
         appearance.pageIndicatorTintColor = .systemGray5
@@ -53,6 +54,9 @@ class EateryPageViewController: UIPageViewController {
             pages.append(eateryVC)
         }
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
+        if let page = pages[index] as? EateryModelController {
+            page.setUpMenu(eatery: eateries[index])
+        }
     }
     
 }
@@ -84,5 +88,20 @@ extension EateryPageViewController: UIPageViewControllerDataSource {
         guard let currentController = viewControllers?.first, let index = pages.firstIndex(of: currentController) else { return 0 }
         return index
     }
+    
+}
+
+extension EateryPageViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(
+        _ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+            if let selectedController = pendingViewControllers.first,
+               let index = pages.firstIndex(of: selectedController),
+               let viewController = selectedController as? EateryModelController {
+                if !viewController.menuHasLoaded {
+                    viewController.setUpMenu(eatery: eateries[index])
+                }
+            }
+        }
     
 }

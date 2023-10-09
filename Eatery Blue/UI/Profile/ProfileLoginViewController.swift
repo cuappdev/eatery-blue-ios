@@ -9,11 +9,9 @@ import UIKit
 
 class ProfileLoginViewController: UIViewController {
 
+    private let eateryLogo = UIImageView()
     private let scrollView = UIScrollView()
     private let loginView = LoginView()
-    let netIdTextField = UITextField()
-    let passwordTextField = UITextField()
-    private let errorMessageView = AlertMessageView()
     private let loginButton = ButtonView(pillContent: UILabel())
 
     override func viewDidLoad() {
@@ -22,9 +20,6 @@ class ProfileLoginViewController: UIViewController {
         setUpNavigationItem()
         setUpView()
         setUpConstraints()
-
-        setLoginButtonEnabled(false)
-        updateErrorMessage(nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +67,16 @@ class ProfileLoginViewController: UIViewController {
 
         view.addSubview(loginButton)
         setUpLoginButton()
+        
+        view.addSubview(eateryLogo)
+        setUpLogo()
+    }
+    
+    private func setUpLogo() {
+        eateryLogo.image = UIImage(named: "Eatery")
+        eateryLogo.alpha = 0.4
+        
+        view.addSubview(eateryLogo)
     }
 
     private func setUpScrollView() {
@@ -91,32 +96,6 @@ class ProfileLoginViewController: UIViewController {
         loginView.setCustomSpacing(8)
         loginView.addSubtitleLabel("See your meal swipes, BRBs, and more")
         loginView.setCustomSpacing(24)
-        loginView.addFieldTitleLabel("NetID")
-        loginView.setCustomSpacing(12)
-        loginView.addTextField(netIdTextField)
-        setUpNetIdTextField()
-        loginView.setCustomSpacing(24)
-        loginView.addFieldTitleLabel("Password")
-        loginView.setCustomSpacing(12)
-        loginView.addTextField(passwordTextField)
-        setUpPasswordTextField()
-        loginView.setCustomSpacing(24)
-        loginView.addCustomView(errorMessageView)
-        setUpErrorMessageView()
-    }
-
-    private func setUpNetIdTextField() {
-        netIdTextField.font = .preferredFont(for: .footnote, weight: .medium)
-        netIdTextField.placeholder = "Type your NetID (i.e. abc123)"
-    }
-
-    private func setUpPasswordTextField() {
-        passwordTextField.font = .preferredFont(for: .footnote, weight: .medium)
-        passwordTextField.placeholder = "Type your password..."
-    }
-
-    private func setUpErrorMessageView() {
-        errorMessageView.setStyleError()
     }
 
     private func setUpLoginButton() {
@@ -124,6 +103,8 @@ class ProfileLoginViewController: UIViewController {
         loginButton.content.font = .preferredFont(for: .body, weight: .semibold)
         loginButton.content.textAlignment = .center
         loginButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
+        loginButton.content.textColor = .white
+        loginButton.backgroundColor = UIColor.Eatery.blue
 
         loginButton.buttonPress { [self] _ in
             didTapLoginButton()
@@ -151,6 +132,11 @@ class ProfileLoginViewController: UIViewController {
             make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-12)
         }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
+        
+        eateryLogo.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(view.frame.width - 124)
+        }
     }
 
     func didTapLoginButton() {
@@ -161,27 +147,8 @@ class ProfileLoginViewController: UIViewController {
         // Override point for a sublcass
     }
 
-    func setLoginButtonEnabled(_ isEnabled: Bool) {
-        if isEnabled {
-            loginButton.content.textColor = .white
-            loginButton.backgroundColor = UIColor.Eatery.blue
-        } else {
-            loginButton.content.textColor = UIColor.Eatery.black
-            loginButton.backgroundColor = UIColor.Eatery.gray00
-        }
-    }
-
     func setLoginButtonTitle(_ title: String) {
         loginButton.content.text = title
-    }
-
-    func updateErrorMessage(_ message: String?) {
-        if let message = message {
-            errorMessageView.isHidden = false
-            errorMessageView.messageLabel.text = message
-        } else {
-            errorMessageView.isHidden = true
-        }
     }
 
 }

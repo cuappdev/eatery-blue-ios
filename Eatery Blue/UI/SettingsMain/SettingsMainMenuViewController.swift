@@ -112,10 +112,9 @@ class SettingsMainMenuViewController: UIViewController {
         setCustomSpacing(0)
     }
 
-    func addLoginStatusView(_ netId: String, logOut: @escaping () -> Void) {
+    func addLoginStatusView(logOut: @escaping () -> Void) {
         let loginView = SettingsMainMenuLoginStatusView()
         loginView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        loginView.label.text = "Logged in as \(netId)"
         loginView.logoutButton.tap { _ in
             logOut()
         }

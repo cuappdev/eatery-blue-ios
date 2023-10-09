@@ -12,6 +12,7 @@
 		2EDFD43E2AD3B09F00A7D44B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EDFD43D2AD3B09F00A7D44B /* GoogleService-Info.plist */; };
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
 		41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */; };
+		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
 		5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */; };
 		5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */; };
 		5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */; };
@@ -53,7 +54,6 @@
 		5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F982788AE7E0054E1AB /* InMemoryCache.swift */; };
 		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
 		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
-		5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */; };
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
@@ -101,7 +101,6 @@
 		5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A32784D606002DCA6B /* RootModelController.swift */; };
 		5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */; };
 		5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */; };
-		5DBA89AB278528F5002DCA6B /* OnboardingLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */; };
 		5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */; };
 		5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB59DE278FA3200028FE59 /* EateryFilter.swift */; };
 		5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5DBB59E1278FA3AB0028FE59 /* EateryModel */; };
@@ -168,7 +167,9 @@
 		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
 		BC463AB62A862067002FA81A /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC463AB52A862067002FA81A /* UIImageView.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
+		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
+		FD1113092AD0C4F600C9B5B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -191,6 +192,7 @@
 		2EDFD43D2AD3B09F00A7D44B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
 		41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuPickerSheetViewController.swift; sourceTree = "<group>"; };
+		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesViewController.swift; sourceTree = "<group>"; };
 		5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesModelController.swift; sourceTree = "<group>"; };
 		5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
@@ -230,7 +232,6 @@
 		5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginModelController.swift; sourceTree = "<group>"; };
 		5D698F912788A7FE0054E1AB /* AccountModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModelController.swift; sourceTree = "<group>"; };
 		5D698F982788AE7E0054E1AB /* InMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCache.swift; sourceTree = "<group>"; };
-		5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginModelController.swift; sourceTree = "<group>"; };
 		5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyViewController.swift; sourceTree = "<group>"; };
 		5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchContentViewController.swift; sourceTree = "<group>"; };
 		5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchEmptyModelController.swift; sourceTree = "<group>"; };
@@ -275,7 +276,6 @@
 		5DBA89A32784D606002DCA6B /* RootModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootModelController.swift; sourceTree = "<group>"; };
 		5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeaturesViewController.swift; sourceTree = "<group>"; };
 		5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureView.swift; sourceTree = "<group>"; };
-		5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLoginViewController.swift; sourceTree = "<group>"; };
 		5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFormatter.swift; sourceTree = "<group>"; };
 		5DBB59DE278FA3200028FE59 /* EateryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryFilter.swift; sourceTree = "<group>"; };
 		5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPredicate.swift; sourceTree = "<group>"; };
@@ -334,7 +334,9 @@
 		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
 		BC463AB52A862067002FA81A /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
+		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -461,6 +463,7 @@
 			isa = PBXGroup;
 			children = (
 				5D698F8F2788A4FE0054E1AB /* ProfileLoginModelController.swift */,
+				BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */,
 				5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */,
 				5D698F8927889DE30054E1AB /* ProfileViewController.swift */,
 			);
@@ -498,6 +501,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
 				2EDFD43D2AD3B09F00A7D44B /* GoogleService-Info.plist */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
@@ -543,8 +547,6 @@
 			children = (
 				5DBA89A62784D938002DCA6B /* OnboardingFeaturesViewController.swift */,
 				5DBA89A82784E243002DCA6B /* OnboardingFeatureView.swift */,
-				5D6C3D722787AF0C000C518D /* OnboardingLoginModelController.swift */,
-				5DBA89AA278528F5002DCA6B /* OnboardingLoginViewController.swift */,
 				5DBA899B2783EE07002DCA6B /* OnboardingStartViewController.swift */,
 				5DBA89992783ED23002DCA6B /* OnboardingViewController.swift */,
 			);
@@ -663,6 +665,7 @@
 				5DBA89A02784D2ED002DCA6B /* Splash */,
 				5DF304B527797CB600E2C9A4 /* Util */,
 				5DF304C027797E4500E2C9A4 /* WaitTimesSheet */,
+				413780502AC5DFD600EE43FE /* KeychainAccess.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -958,7 +961,7 @@
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
-				2EDFD43E2AD3B09F00A7D44B /* GoogleService-Info.plist in Resources */,
+				FD1113092AD0C4F600C9B5B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -990,7 +993,6 @@
 				5DA434C0278B9566001337FD /* AccountPickerSheetViewController.swift in Sources */,
 				5DF5F7EB2774D8FE001ADCDC /* EateryViewController.swift in Sources */,
 				5DF304A527791D2C00E2C9A4 /* EateryModelController.swift in Sources */,
-				5DBA89AB278528F5002DCA6B /* OnboardingLoginViewController.swift in Sources */,
 				5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
@@ -1052,6 +1054,7 @@
 				BFD955952900A8150049D77C /* UIColor.swift in Sources */,
 				5D3A149B27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift in Sources */,
 				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,
+				BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */,
 				5DF304AD2779209E00E2C9A4 /* MenuDayPickerCell.swift in Sources */,
 				5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */,
 				5D377CF727A20FE300F8DC37 /* SettingsAboutViewController.swift in Sources */,
@@ -1090,7 +1093,6 @@
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */,
-				5D6C3D732787AF0C000C518D /* OnboardingLoginModelController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
@@ -1098,6 +1100,7 @@
 				5DA434BE278B6EC7001337FD /* UITableViewCell.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,
+				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
 				5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */,
 				998F6D112AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift in Sources */,
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
@@ -1257,6 +1260,7 @@
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1290,6 +1294,7 @@
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

@@ -33,6 +33,19 @@ public struct EateryAPI {
 
         return schemaApiResponse.map(SchemaToModel.convert)
     }
+    
+    public func eatery() async throws -> Eatery {
+        let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
+        var schemaApiResponse: Schema.Eatery
+
+        do {
+            schemaApiResponse = try decoder.decode(Schema.Eatery.self, from: data)
+        } catch {
+            throw EateryAPIError.apiResponseError(error.localizedDescription)
+        }
+        
+        return SchemaToModel.convert(schemaApiResponse)
+    }
 
     public func reportError(eatery: Int64? = nil, content: String) async {
         struct ReportData: Codable {
