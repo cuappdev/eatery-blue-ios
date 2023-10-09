@@ -90,10 +90,10 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
         let recentSearches: [RecentSearch]
         do {
             recentSearches = try context.fetch(fetchRequest)
-//            logger.debug("Fetched \(recentSearches.count) recent searches")
+            logger.debug("Fetched \(recentSearches.count) recent searches")
         } catch {
             recentSearches = []
-//            logger.debug("\(#function): \(error)")
+            logger.debug("\(#function): \(error)")
         }
 
         updateRecentSearches(recentSearches)

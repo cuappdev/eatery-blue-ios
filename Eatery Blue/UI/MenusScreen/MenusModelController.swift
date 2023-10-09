@@ -44,6 +44,7 @@ class MenusModelController: MenusViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.isUserInteractionEnabled = false
         updateDateDelegate = self
         
@@ -64,6 +65,7 @@ class MenusModelController: MenusViewController {
     
     private func setUpFilterController() {
         addChild(filterController)
+        
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         filterController.delegate = self
         filterController.didMove(toParent: self)
@@ -73,12 +75,16 @@ class MenusModelController: MenusViewController {
         do {
             let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
             fetchedEateries = eateries
+            
             allEateries = eateries.filter { eatery in
+                eatery.events.contains { $0.canonicalDay == Day() }
+            }
+            
+            allEateries = allEateries.filter { eatery in
                 return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
-
         } catch {
             logger.error("\(error)")
         }
@@ -107,7 +113,7 @@ class MenusModelController: MenusViewController {
             
             currentEateries = filteredEateries
             eateryStartIndex = cells.count
-                        
+            
             cells.append(.titleLabel(title: "North"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
@@ -140,6 +146,7 @@ class MenusModelController: MenusViewController {
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
     }
+    
 }
 
 extension MenusModelController: MenusFilterViewControllerDelegate {

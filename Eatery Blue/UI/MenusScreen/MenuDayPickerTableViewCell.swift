@@ -33,7 +33,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     private let dayPickerView = MenuDayPickerView()
     
     private var days: [Day] = []
-    private var selectedDayIndex: Int?
+    private var selectedDayIndex: Int? = 0
     
     private var menuChoices: [MenuChoice] = []
     private var selectedMenuIndex: Int?
@@ -113,13 +113,12 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     }
     
     private func didTapDayPickerCellAt(at index: Int) {
-        if selectedDayIndex == index {
-            return
-        }
+        if selectedDayIndex == index { return }
 
         selectedDayIndex = index
 
         updateDateDelegate?.updateMenuDay(date: days[index])
         updateDayPickerCellsFromState()
     }
+    
 }

@@ -62,7 +62,7 @@ internal class GetAccountLogin: NSObject, WKNavigationDelegate {
         for _ in 1...100 {
             let stage = try await stage()
 
-//            logger.debug("\(#function): \(stage)")
+            logger.debug("\(#function): \(stage)")
 
             switch stage {
             case .loginScreen:
@@ -185,7 +185,7 @@ internal class GetAccountLogin: NSObject, WKNavigationDelegate {
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
     ) async -> WKNavigationActionPolicy {
-//        logger.debug("\(#function): \(navigationAction.request)")
+        logger.debug("\(#function): \(navigationAction.request)")
         return .allow
     }
 

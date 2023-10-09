@@ -10,8 +10,8 @@ import UIKit
 class UpcomingMenuChoiceView: UIView {
 
     let descriptionLabel = UILabel()
-    let timeLabel = UILabel()
     let imageView = UIImageView()
+    let timeLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -66,5 +66,6 @@ class UpcomingMenuChoiceView: UIView {
             make.width.height.equalTo(24)
         }
     }
+    
 }
 

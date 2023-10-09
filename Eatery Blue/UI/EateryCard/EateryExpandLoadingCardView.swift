@@ -11,8 +11,10 @@ class EateryExpandLoadingCardView: EateryCardShimmerView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         insetsLayoutMarginsFromSafeArea = false
         layoutMargins = .zero
+        
         setUpShimmerView(for: .Large)
         startLoadingAnimation()
         setUpConstraints()

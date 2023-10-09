@@ -5,12 +5,11 @@
 //  Created by Tiffany Pan on 9/29/23.
 //
 
-
 import EateryModel
 import UIKit
 
 protocol UpcomingMenuPickerSheetViewControllerDelegate: AnyObject {
- 
+    
     func upcomingMenuPickerSheetViewController(_ vc: UpcomingMenuPickerSheetViewController, didSelectMenuChoiceAt index: Int)
     func upcomingMenuPickerSheetViewController(_ vc: UpcomingMenuPickerSheetViewController, didChangeMenuChoice string: String)
     
@@ -63,7 +62,6 @@ class UpcomingMenuPickerSheetViewController: SheetViewController {
     }
     
     private func updateMenuChoiceViewsFromState() {
-        
         for (i, view) in menuChoiceViews.enumerated() {
             if i < menuChoices.count {
                 let menuChoice = menuChoices[i]
@@ -84,9 +82,8 @@ class UpcomingMenuPickerSheetViewController: SheetViewController {
     }
     
     private func didTapMenuChoiceView(at index: Int) {
-        
         selectedMenuIndex = index
         updateMenuChoiceViewsFromState()
-            
-        }
     }
+    
+}

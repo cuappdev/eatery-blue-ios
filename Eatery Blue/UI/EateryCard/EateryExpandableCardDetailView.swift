@@ -35,6 +35,7 @@ class EateryExpandableCardDetailView: UIView {
     func configure(eatery: Eatery, selectedMealType: String) {
         self.eatery = eatery
         self.selectedMealType = selectedMealType
+        
         guard let event = (eatery.events.first { $0.description == selectedMealType }) else { return }
         
         switch eatery.status {
@@ -91,7 +92,6 @@ class EateryExpandableCardDetailView: UIView {
         }
     }
     
-    
     // MARK: - Helpers
     
     private func addMenuCategories(event: Event) {
@@ -106,6 +106,7 @@ class EateryExpandableCardDetailView: UIView {
         menuCategoryStackView.arrangedSubviews.forEach { subview in
             menuCategoryStackView.removeArrangedSubview(subview)
             guard let categorySubView = subview as? EateryExpandableCardMenuCategoryView else { return }
+            
             categorySubView.reset()
         }
     }
@@ -132,4 +133,5 @@ class EateryExpandableCardDetailView: UIView {
         }
         return nil
     }
+    
 }

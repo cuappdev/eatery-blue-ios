@@ -158,8 +158,6 @@ extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelega
         }
     }
     
-    
-    func upcomingMenuPickerSheetViewController(_ viewController: UpcomingMenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) {
-    }
+    func upcomingMenuPickerSheetViewController(_ viewController: UpcomingMenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) { }
     
 }

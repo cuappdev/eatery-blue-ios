@@ -29,7 +29,6 @@ class MenuDayPickerView: UIView {
     }
 
     private func setUpStackView() {
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
@@ -47,4 +46,3 @@ class MenuDayPickerView: UIView {
     }
 
 }
-

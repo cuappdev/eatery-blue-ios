@@ -46,7 +46,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations.last
         userLocationDidChange.send(userLocation)
-//        logger.debug("\(#function): Fetched location")
+        logger.debug("\(#function): Fetched location")
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

@@ -56,7 +56,8 @@ class MainViewController: UIViewController {
         theTabBarController.setViewControllers([
             homeNavigationController,
             menusNavigationController
-            //MARK: - Temporarily removed profile tab.
+            
+            // TODO: Temporarily removed profile tab.
 //            profileNavigationController
         ], animated: false)
 

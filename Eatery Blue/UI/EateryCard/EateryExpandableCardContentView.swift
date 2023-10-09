@@ -40,18 +40,17 @@ class EateryExpandableCardContentView: UIView {
         self.eatery = eatery
         eateryNameLabel.text = eatery.name
         
-        // TODO: Configure below
         switch eatery.status {
         case .closed:
             eateryStatusLabel.text = "Closed"
             eateryStatusLabel.textColor = UIColor.Eatery.red
             setupEateryDetailsButton()
         case .openingSoon(_):
-            eateryStatusLabel.text = "Opening in -- min"
+            eateryStatusLabel.text = "Opening soon"
             eateryStatusLabel.textColor = UIColor.Eatery.orange
             setupEateryDetailsButton()
         case .closingSoon(_):
-            eateryStatusLabel.text = "Closing in -- min"
+            eateryStatusLabel.text = "Closing soon"
             eateryStatusLabel.textColor = UIColor.Eatery.orange
             setupChevronArrow()
         case .open(_):
@@ -151,4 +150,5 @@ class EateryExpandableCardContentView: UIView {
     func reset() {
         eateryDetailsButton.removeFromSuperview()
     }
+    
 }

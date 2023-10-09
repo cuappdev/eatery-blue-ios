@@ -8,8 +8,8 @@
 import Combine
 import CoreLocation
 import EateryModel
-import UIKit
 import Kingfisher
+import UIKit
 
 /// Used for Expanding Cell
 struct ExpandedEatery {
@@ -296,9 +296,7 @@ extension MenusViewController: UIScrollViewDelegate {
     }
 
     private func handleNavigationView() {
-        guard let superview = tableView.superview else {
-            return
-        }
+        guard let superview = tableView.superview else { return }
 
         let currentPosition = tableView.contentOffset.y
         let navigationBarNormalPosition = -superview.convert(
@@ -329,8 +327,7 @@ extension MenusViewController: UIScrollViewDelegate {
 
 extension MenusViewController: LogoRefreshControlDelegate {
 
-    func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl) {
-    }
+    func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl) { }
 
     func logoRefreshControlDidEndRefreshing(_ sender: LogoRefreshControl) {
         UIView.animate(withDuration: 0.15) { [self] in
@@ -339,7 +336,6 @@ extension MenusViewController: LogoRefreshControlDelegate {
     }
 
 }
-
 
 extension MenusViewController {
     
