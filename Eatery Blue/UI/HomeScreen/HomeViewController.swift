@@ -42,6 +42,7 @@ class HomeViewController: UIViewController {
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
+    private var hasLoadedMenuData: Bool = false
 
     private var cancellables: Set<AnyCancellable> = []
 

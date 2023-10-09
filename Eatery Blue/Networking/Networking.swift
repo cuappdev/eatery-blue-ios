@@ -16,21 +16,39 @@ class Networking {
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
     let accounts: FetchAccounts
+    let baseUrl: URL
     let eateries: InMemoryCache<[Eatery]>
     var sessionId: String {
-        KeychainAcces.shared.retrieveToken() ?? ""
+        KeychainAccess.shared.retrieveToken() ?? ""
     }
 
     init(fetchUrl: URL) {
+        self.baseUrl = fetchUrl
+        // TODO: factor out get all eateries into a different function
         let eateryApi = EateryAPI(url: fetchUrl)
         self.eateries = InMemoryCache(fetch: eateryApi.eateries)
         self.accounts = FetchAccounts()
+    }
+
+    func loadEatery(by id: Int) async -> Eatery? {
+        var eatery: Eatery?
+        if let url = URL(string: "\(self.baseUrl)\(id)/") {
+            let eateryApi = EateryAPI(url: url)
+            do {
+                eatery = try await eateryApi.eatery()
+            } catch {
+                logger.error("Failed to load eatery \(id)")
+                return nil
+            }
+        }
+        return eatery
     }
 
     func logOut() {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
+    
 }
 
 struct FetchAccounts {
