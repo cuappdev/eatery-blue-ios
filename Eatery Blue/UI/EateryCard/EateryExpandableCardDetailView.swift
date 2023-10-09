@@ -15,6 +15,7 @@ class EateryExpandableCardDetailView: UIView {
     
     private let menuCategoryStackView = UIStackView()
     private let viewEateryDetails = PillButtonView()
+    private var selectedMealType: String?
     private var eatery: Eatery?
     
     // MARK: - init
@@ -31,40 +32,24 @@ class EateryExpandableCardDetailView: UIView {
     
     // MARK: - configure
     
-    func configure(eatery: Eatery) {
+    func configure(eatery: Eatery, selectedMealType: String) {
         self.eatery = eatery
+        self.selectedMealType = selectedMealType
+        guard let event = (eatery.events.first { $0.description == selectedMealType }) else { return }
         
-        // TODO: Configure the event based on the selected description
-        // Drop first to get rid of the first one bc that is 'announcements'
-        let event = eatery.events.dropFirst().first { e in
-            if let description = e.description {
-                if description == "Dinner" {
-                    return true
-                }
-            }
-            return false
-        }
-        
-        guard let event = event else {
-            return
-        }
-
         switch eatery.status {
         case .closed:
             break
-        case .closingSoon:
-            menuCategoryStackView.addArrangedSubview(HDivider())
-            addMenuCategories(event: event)
-            setupViewEateryDetailsButton()
-        case .open:
-            menuCategoryStackView.addArrangedSubview(HDivider())
-            addMenuCategories(event: event)
-            setupViewEateryDetailsButton()
         case .openingSoon:
+            break
+        case .closingSoon(_):
             menuCategoryStackView.addArrangedSubview(HDivider())
             addMenuCategories(event: event)
             setupViewEateryDetailsButton()
-            
+        case .open(_):
+            menuCategoryStackView.addArrangedSubview(HDivider())
+            addMenuCategories(event: event)
+            setupViewEateryDetailsButton()
         }
     }
     
@@ -110,7 +95,6 @@ class EateryExpandableCardDetailView: UIView {
     // MARK: - Helpers
     
     private func addMenuCategories(event: Event) {
-        // TODO: ONLY ADD THE ONES CORRESPONDING TO THE FILTERED EVENT STAMP
         event.menu?.categories.forEach { category in
             let menuCategoryView = EateryExpandableCardMenuCategoryView()
             menuCategoryView.configure(menuCategory: category)
@@ -131,7 +115,7 @@ class EateryExpandableCardDetailView: UIView {
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
             let eateryVC = EateryModelController()
-            if let eatery {
+            if let eatery = eatery {
                 eateryVC.setUp(eatery: eatery)
             }
             navigationController.pushViewController(eateryVC, animated: true)
@@ -149,4 +133,3 @@ class EateryExpandableCardDetailView: UIView {
         return nil
     }
 }
-

@@ -51,7 +51,7 @@ class MenuDayPickerCell: UIView {
 
         dayLabel.snp.makeConstraints { make in
             make.top.equalTo(weekdayLabel.snp.bottom).offset(16)
-            make.bottom.equalTo(layoutMarginsGuide)
+            make.bottom.equalTo(layoutMarginsGuide).offset(-16)
             make.centerX.equalTo(layoutMarginsGuide)
             make.width.height.equalTo(34)
         }

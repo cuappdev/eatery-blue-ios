@@ -46,16 +46,16 @@ class EateryExpandableCardContentView: UIView {
             eateryStatusLabel.text = "Closed"
             eateryStatusLabel.textColor = UIColor.Eatery.red
             setupEateryDetailsButton()
+        case .openingSoon(_):
+            eateryStatusLabel.text = "Opening in -- min"
+            eateryStatusLabel.textColor = UIColor.Eatery.orange
+            setupEateryDetailsButton()
         case .closingSoon(_):
-            eateryStatusLabel.text = "Closing Soon"
+            eateryStatusLabel.text = "Closing in -- min"
             eateryStatusLabel.textColor = UIColor.Eatery.orange
             setupChevronArrow()
         case .open(_):
             eateryStatusLabel.text = "Open"
-            eateryStatusLabel.textColor = UIColor.Eatery.green
-            setupChevronArrow()
-        case .openingSoon(_):
-            eateryStatusLabel.text = "Opening Soon"
             eateryStatusLabel.textColor = UIColor.Eatery.green
             setupChevronArrow()
         }
@@ -118,10 +118,6 @@ class EateryExpandableCardContentView: UIView {
         
         addSubview(eateryDetailsButton)
         
-        eateryDetailsButton.imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-        }
-        
         eateryDetailsButton.snp.makeConstraints { make in
             make.width.equalTo(snp.width).multipliedBy(0.43)
             make.height.equalTo(42)
@@ -129,7 +125,7 @@ class EateryExpandableCardContentView: UIView {
         }
     }
     
-    //MARK: - Tap recognizer
+    // MARK: - Tap recognizer
     
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
@@ -150,5 +146,9 @@ class EateryExpandableCardContentView: UIView {
             responder = currentResponder.next
         }
         return nil
+    }
+    
+    func reset() {
+        eateryDetailsButton.removeFromSuperview()
     }
 }

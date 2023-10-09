@@ -8,7 +8,12 @@
 import Combine
 import EateryModel
 import UIKit
-import CoreLocation
+
+protocol UpdateDateDelegate: AnyObject {
+    
+    func updateMenuDay(date: Day)
+    
+}
 
 class MenusModelController: MenusViewController {
     
@@ -17,12 +22,13 @@ class MenusModelController: MenusViewController {
     
     private var filter = EateryFilter()
     private var allEateries: [Eatery] = []
+    private var fetchedEateries: [Eatery] = []
     
     private let filterController = MenusFilterViewController()
         
     private lazy var loadCells: () = updateCellsFromState()
     
-    private var currentMealType = "Breakfast"
+    private var currentMealType: String = "Breakfast"
     
     class MenuChoice {
 
@@ -39,6 +45,7 @@ class MenusModelController: MenusViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.isUserInteractionEnabled = false
+        updateDateDelegate = self
         
         setUpFilterController()
         
@@ -65,6 +72,7 @@ class MenusModelController: MenusViewController {
     private func updateAllEateriesFromNetworking() async {
         do {
             let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
+            fetchedEateries = eateries
             allEateries = eateries.filter { eatery in
                 return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
@@ -98,35 +106,31 @@ class MenusModelController: MenusViewController {
             }
             
             currentEateries = filteredEateries
-            
-            // TODO: Do filtering for eateries's menus here instead. Reference EateryExpandableCardDetailView's configure function for how to do it.
-            
             eateryStartIndex = cells.count
-            
+                        
             cells.append(.titleLabel(title: "North"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType)))
                 }
             }
             
             cells.append(.titleLabel(title: "West"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "West" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType)))
                 }
             }
 
             cells.append(.titleLabel(title: "Central"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery)))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType)))
                 }
             }
         }
         
         updateCells(cells: cells, allEateries: currentEateries, eateryStartIndex: eateryStartIndex)
-            
     }
     
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
@@ -139,14 +143,25 @@ class MenusModelController: MenusViewController {
 }
 
 extension MenusModelController: MenusFilterViewControllerDelegate {
+    
+    func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeMenuType string: String) {
+        currentMealType = string
+        updateCellsFromState()
+    }
 
-    func menusFilterViewController(_ viewController: MenusFilterViewController, filterDidChange filter: EateryFilter) {
+    func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeLocation filter: EateryFilter) {
         self.filter = filter
         updateCellsFromState()
     }
     
-    func filterMenusByMealType(mealType: String) {
-        self.currentMealType = mealType
+}
+
+extension MenusModelController: UpdateDateDelegate {
+    
+    func updateMenuDay(date: Day) {
+        allEateries = fetchedEateries.filter { eatery in
+            eatery.events.contains { $0.canonicalDay == date }
+        }
         updateCellsFromState()
     }
     

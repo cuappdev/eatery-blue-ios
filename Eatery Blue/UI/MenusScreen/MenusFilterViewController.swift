@@ -10,9 +10,8 @@ import UIKit
 
 protocol MenusFilterViewControllerDelegate: AnyObject {
 
-    func menusFilterViewController(_ viewController: MenusFilterViewController, filterDidChange filter: EateryFilter)
-    
-    func filterMenusByMealType(mealType: String)
+    func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeLocation filter: EateryFilter)
+    func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeMenuType string: String)
 
 }
 
@@ -63,8 +62,8 @@ class MenusFilterViewController: UIViewController {
         mealType.label.text = "Breakfast"
         mealType.imageView.isHidden = false
         mealType.tap { [self] _ in
-            // Set the delegate of the UpcomingMenuPickerSheetViewController to be this VC, and in this VC when you implement the delegate, have it call its delegate function to update the menu filter on the main screen
             let viewController = UpcomingMenuPickerSheetViewController()
+            viewController.setUpSheetPresentation()
             viewController.setUp()
             viewController.delegate = self
             present(viewController, animated: true)
@@ -74,11 +73,13 @@ class MenusFilterViewController: UIViewController {
     private func setUpAll() {
         all.label.text = "All Campus"
         all.tap { [self] _ in
-            filter.north.toggle()
-            filter.central.toggle()
-            filter.west.toggle()
+            let allCampusSelected = !filter.north || !filter.central || !filter.west
+            filter.north = allCampusSelected
+            filter.central = allCampusSelected
+            filter.west = allCampusSelected
+            
+            delegate?.menusFilterViewController(self, didChangeLocation: filter)
             updateFilterButtonsFromState(animated: true)
-            delegate?.menusFilterViewController(self, filterDidChange: filter)
         }
     }
     
@@ -87,7 +88,7 @@ class MenusFilterViewController: UIViewController {
         north.tap { [self] _ in
             filter.north.toggle()
             updateFilterButtonsFromState(animated: true)
-            delegate?.menusFilterViewController(self, filterDidChange: filter)
+            delegate?.menusFilterViewController(self, didChangeLocation: filter)
             if filter.north {
                 AppDevAnalytics.shared.logFirebase(NorthFilterPressPayload())
             }
@@ -99,7 +100,7 @@ class MenusFilterViewController: UIViewController {
         west.tap { [self] _ in
             filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
-            delegate?.menusFilterViewController(self, filterDidChange: filter)
+            delegate?.menusFilterViewController(self, didChangeLocation: filter)
             if filter.west {
                 AppDevAnalytics.shared.logFirebase(WestFilterPressPayload())
             }
@@ -111,7 +112,7 @@ class MenusFilterViewController: UIViewController {
         central.tap { [self] _ in
             filter.central.toggle()
             updateFilterButtonsFromState(animated: true)
-            delegate?.menusFilterViewController(self, filterDidChange: filter)
+            delegate?.menusFilterViewController(self, didChangeLocation: filter)
             if filter.central {
                 AppDevAnalytics.shared.logFirebase(CentralFilterPressPayload())
             }
@@ -136,21 +137,10 @@ class MenusFilterViewController: UIViewController {
             return
         }
         
-        let allCampusSelected = filter.north && filter.west && filter.central
-
-      all.setHighlighted(allCampusSelected)
-      north.setHighlighted(filter.north)
-      west.setHighlighted(filter.west)
-      central.setHighlighted(filter.central)
-        
-        //        if filter.mealType.isEmpty {
-        //            mealType.setHighlighted(false)
-        //            mealType.label.text = "Breakfast"
-        //        } else {
-        //            mealType.setHighlighted(true)
-        //            mealType.label.text = EateryFormatter.default.formatPaymentMethods(filter.paymentMethods)
-        //        }
-        //    }
+        all.setHighlighted(filter.north && filter.west && filter.central)
+        north.setHighlighted(filter.north)
+        west.setHighlighted(filter.west)
+        central.setHighlighted(filter.central)
         
         func setFilter(_ filter: EateryFilter, animated: Bool) {
             self.filter = filter
@@ -161,9 +151,15 @@ class MenusFilterViewController: UIViewController {
 
 extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelegate {
     
-    func menuPickerSheetViewController(menuChoice: String) {
-        // Updates the MenusModelController with the correct chosen meal type
-        delegate?.filterMenusByMealType(mealType: menuChoice)
+    func upcomingMenuPickerSheetViewController(_ vc: UpcomingMenuPickerSheetViewController, didChangeMenuChoice string: String) {
+        mealType.label.text = string
+        if let mealType = mealType.label.text {
+            delegate?.menusFilterViewController(self, didChangeMenuType: mealType)
+        }
+    }
+    
+    
+    func upcomingMenuPickerSheetViewController(_ viewController: UpcomingMenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) {
     }
     
 }

@@ -35,9 +35,8 @@ class UpcomingMenuChoiceView: UIView {
 
         addSubview(timeLabel)
         setUpTimeLabel()
-
+        
         addSubview(imageView)
-        setUpImageView()
     }
 
     private func setUpDescriptionLabel() {
@@ -50,9 +49,6 @@ class UpcomingMenuChoiceView: UIView {
         timeLabel.textColor = UIColor.Eatery.gray05
     }
 
-    private func setUpImageView() {
-    }
-
     private func setUpConstraints() {
         descriptionLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(layoutMarginsGuide)
@@ -62,7 +58,7 @@ class UpcomingMenuChoiceView: UIView {
             make.top.equalTo(descriptionLabel.snp.bottom).offset(4)
             make.leading.bottom.equalTo(layoutMarginsGuide)
         }
-
+        
         imageView.snp.makeConstraints { make in
             make.leading.equalTo(descriptionLabel.snp.trailing)
             make.leading.equalTo(timeLabel.snp.trailing)
@@ -70,6 +66,5 @@ class UpcomingMenuChoiceView: UIView {
             make.width.height.equalTo(24)
         }
     }
-
 }
 

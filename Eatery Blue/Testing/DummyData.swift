@@ -12,7 +12,32 @@ enum DummyData {
     
     static let eateries = [macs, terrace, rose]
 
-    static let macsMenu = Menu(categories: [
+    static let macsBreakfastMenu = Menu(categories: [
+        MenuCategory(category: "Meat", items: [
+            MenuItem(
+                description: "A bacon strip.",
+                healthy: false,
+                name: "Bacon",
+                price: 625
+            ),
+            MenuItem(
+                description: "Pork sausage link.",
+                healthy: false,
+                name: "Pork",
+                price: 525
+            ),
+        ]),
+        MenuCategory(category: "Egg", items: [
+            MenuItem(
+                description: "Scrambled egg.",
+                healthy: true,
+                name: "Egg",
+                price: 1100
+            )
+        ])
+    ])
+    
+    static let macsLunchMenu = Menu(categories: [
         MenuCategory(category: "Enchiladas", items: [
             MenuItem(
                 description: "A tortilla-wrapped chicken enchilada with your choice of toppings.",
@@ -36,23 +61,57 @@ enum DummyData {
             )
         ])
     ])
+    
+    static let macsDinnerMenu = Menu(categories: [
+        MenuCategory(category: "Grill", items: [
+            MenuItem(
+                description: "Carolina BBQ Pulled Pork with Coleslaw.",
+                healthy: false,
+                name: "BBQ",
+                price: 625
+            ),
+            MenuItem(
+                description: "French fries.",
+                healthy: false,
+                name: "Potatoes",
+                price: 525
+            ),
+        ]),
+        MenuCategory(category: "Chef's Table", items: [
+            MenuItem(
+                description: "Vegan tofu chili.",
+                healthy: true,
+                name: "Chili",
+                price: 1100
+            )
+        ])
+    ])
 
     static let macs = Eatery(
         campusArea: "Central",
-        events: (0..<5).map { offset in
-//            Event(
-//                canonicalDay: Day().advanced(by: offset),
-//                endTimestamp: Day().advanced(by: offset).date(hour: 17, minute: 30).timeIntervalSince1970,
-//                menu: macsMenu,
-//                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970
-//            )
+        events: [
             Event(
-                canonicalDay: Day().advanced(by: offset),
-                endTimestamp: Day().advanced(by: offset).date(hour: 8, minute: 30).timeIntervalSince1970,
-                menu: macsMenu,
-                startTimestamp: Day().advanced(by: offset).date(hour: 0, minute: 0).timeIntervalSince1970
+                canonicalDay: Day().advanced(by: 0),
+                description: "Breakfast",
+                endTimestamp: Day().advanced(by: 0).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: macsBreakfastMenu,
+                startTimestamp: Day().advanced(by: 0).date(hour: 7, minute: 0).timeIntervalSince1970
+            ),
+            Event(
+                canonicalDay: Day().advanced(by: 1),
+                description: "Lunch",
+                endTimestamp: Day().advanced(by: 1).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: macsLunchMenu,
+                startTimestamp: Day().advanced(by: 1).date(hour: 7, minute: 0).timeIntervalSince1970
+            ),
+            Event(
+                canonicalDay: Day().advanced(by: 2),
+                description: "Dinner",
+                endTimestamp: Day().advanced(by: 2).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: macsDinnerMenu,
+                startTimestamp: Day().advanced(by: 2).date(hour: 7, minute: 0).timeIntervalSince1970
             )
-        },
+        ],
         id: 1001,
         imageUrl: nil,
         latitude: nil,
@@ -61,7 +120,7 @@ enum DummyData {
         menuSummary: "Flatbreads, salads, pasta",
         name: "Mac's Café",
         onlineOrderUrl: nil,
-        paymentMethods: [.brbs, .cash, .credit],
+        paymentMethods: [.brbs, .cash, .credit, .mealSwipes],
         waitTimesByDay:  [
             Day(): WaitTimes(
                 samples: (0..<15).map({ (index: Int) -> WaitTimeSample in
@@ -77,7 +136,26 @@ enum DummyData {
         ]
     )
     
-    static let terraceMenu = Menu(categories: [
+    static let terraceBreakfastMenu = Menu(categories: [
+        MenuCategory(category: "Potato", items: [
+            MenuItem(
+                description: "Fried potato puffs.",
+                healthy: false,
+                name: "Potato",
+                price: 1025
+            )
+        ]),
+        MenuCategory(category: "Bread", items: [
+            MenuItem(
+                description: "Chocolate bread pudding.",
+                healthy: true,
+                name: "Chocolate Bread",
+                price: 1100
+            )
+        ])
+    ])
+    
+    static let terraceLunchMenu = Menu(categories: [
         MenuCategory(category: "Pho Bar", items: [
             MenuItem(
                 description: "A pho bowl with your choice of toppings.",
@@ -101,17 +179,57 @@ enum DummyData {
             )
         ])
     ])
+    
+    static let terraceDinnerMenu = Menu(categories: [
+        MenuCategory(category: "Chef's Table - Sides", items: [
+            MenuItem(
+                description: "Papas Bravas - spicy potatoes.",
+                healthy: false,
+                name: "Potato",
+                price: 1025
+            ),
+            MenuItem(
+                description: "Steamed fresh broccoli.",
+                healthy: false,
+                name: "Broccoli",
+                price: 1025
+            ),
+        ]),
+        MenuCategory(category: "Salads", items: [
+            MenuItem(
+                description: "Traditional hummus.",
+                healthy: true,
+                name: "Hummus",
+                price: 1100
+            )
+        ])
+    ])
 
     static let terrace = Eatery(
         campusArea: "Central",
-        events: (0..<5).map { offset in
+        events: [
             Event(
-                canonicalDay: Day().advanced(by: offset),
-                endTimestamp: Day().advanced(by: offset).date(hour: 15, minute: 0).timeIntervalSince1970,
-                menu: terraceMenu,
-                startTimestamp: Day().advanced(by: offset).date(hour: 8, minute: 0).timeIntervalSince1970
+                canonicalDay: Day().advanced(by: 0),
+                description: "Breakfast",
+                endTimestamp: Day().advanced(by: 0).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: terraceBreakfastMenu,
+                startTimestamp: Day().advanced(by: 0).date(hour: 7, minute: 0).timeIntervalSince1970
+            ),
+            Event(
+                canonicalDay: Day().advanced(by: 1),
+                description: "Lunch",
+                endTimestamp: Day().advanced(by: 1).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: terraceLunchMenu,
+                startTimestamp: Day().advanced(by: 1).date(hour: 7, minute: 0).timeIntervalSince1970
+            ),
+            Event(
+                canonicalDay: Day().advanced(by: 2),
+                description: "Dinner",
+                endTimestamp: Day().advanced(by: 2).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: terraceDinnerMenu,
+                startTimestamp: Day().advanced(by: 2).date(hour: 7, minute: 0).timeIntervalSince1970
             )
-        },
+        ],
         id: 1002,
         imageUrl: nil,
         latitude: nil,
@@ -120,7 +238,7 @@ enum DummyData {
         menuSummary: "Burrito bowls, pho and ramen, salads",
         name: "The Terrace Restaurant",
         onlineOrderUrl: nil,
-        paymentMethods: [.brbs, .cash, .credit],
+        paymentMethods: [.brbs, .cash, .credit, .mealSwipes],
         waitTimesByDay:  [
             Day(): WaitTimes(
                 samples: (0..<15).map({ (index: Int) -> WaitTimeSample in
@@ -136,8 +254,8 @@ enum DummyData {
         ]
     )
     
-    static let roseMenu = Menu(categories: [
-        MenuCategory(category: "Taco Bar", items: [
+    static let roseBreakfastMenu = Menu(categories: [
+        MenuCategory(category: "Taco Breakfast", items: [
             MenuItem(
                 description: "Filling for your taco.",
                 healthy: false,
@@ -149,7 +267,51 @@ enum DummyData {
                 name: "Corn & Beans"
             ),
         ]),
-        MenuCategory(category: "Desserts", items: [
+        MenuCategory(category: "Desserts Breakfast", items: [
+            MenuItem(
+                description: "A chocolate chip cookie.",
+                healthy: false,
+                name: "Cookie"
+            )
+        ])
+    ])
+    
+    static let roseLunchMenu = Menu(categories: [
+        MenuCategory(category: "Taco Lunch", items: [
+            MenuItem(
+                description: "Filling for your taco.",
+                healthy: false,
+                name: "Southwest chicken"
+            ),
+            MenuItem(
+                description: "Filling for your taco.",
+                healthy: false,
+                name: "Corn & Beans"
+            ),
+        ]),
+        MenuCategory(category: "Dessert Lunch", items: [
+            MenuItem(
+                description: "A chocolate chip cookie.",
+                healthy: false,
+                name: "Cookie"
+            )
+        ])
+    ])
+    
+    static let roseDinnerMenu = Menu(categories: [
+        MenuCategory(category: "Taco Dinner", items: [
+            MenuItem(
+                description: "Filling for your taco.",
+                healthy: false,
+                name: "Southwest chicken"
+            ),
+            MenuItem(
+                description: "Filling for your taco.",
+                healthy: false,
+                name: "Corn & Beans"
+            ),
+        ]),
+        MenuCategory(category: "Desserts Dinner", items: [
             MenuItem(
                 description: "A chocolate chip cookie.",
                 healthy: false,
@@ -160,14 +322,29 @@ enum DummyData {
 
     static let rose = Eatery(
         campusArea: "West",
-        events: (0..<5).map { offset in
+        events: [
             Event(
-                canonicalDay: Day().advanced(by: offset),
-                endTimestamp: Day().advanced(by: offset).date(hour: 24, minute: 0).timeIntervalSince1970,
-                menu: roseMenu,
-                startTimestamp: Day().advanced(by: offset).date(hour: 7, minute: 0).timeIntervalSince1970
+                canonicalDay: Day().advanced(by: 0),
+                description: "Breakfast",
+                endTimestamp: Day().advanced(by: 0).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: roseBreakfastMenu,
+                startTimestamp: Day().advanced(by: 0).date(hour: 7, minute: 0).timeIntervalSince1970
+            ),
+            Event(
+                canonicalDay: Day().advanced(by: 1),
+                description: "Lunch",
+                endTimestamp: Day().advanced(by: 1).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: roseLunchMenu,
+                startTimestamp: Day().advanced(by: 1).date(hour: 7, minute: 0).timeIntervalSince1970
+            ),
+            Event(
+                canonicalDay: Day().advanced(by: 2),
+                description: "Dinner",
+                endTimestamp: Day().advanced(by: 2).date(hour: 24, minute: 0).timeIntervalSince1970,
+                menu: roseDinnerMenu,
+                startTimestamp: Day().advanced(by: 2).date(hour: 7, minute: 0).timeIntervalSince1970
             )
-        },
+        ],
         id: 1003,
         imageUrl: nil,
         latitude: nil,

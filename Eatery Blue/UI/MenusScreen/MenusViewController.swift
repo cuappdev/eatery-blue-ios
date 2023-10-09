@@ -15,6 +15,7 @@ import Kingfisher
 struct ExpandedEatery {
     let eatery: Eatery
     var isExpanded: Bool = false
+    var selectedMealType: String?
 }
 
 class MenusViewController: UIViewController {
@@ -45,6 +46,8 @@ class MenusViewController: UIViewController {
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
+    
+    weak var updateDateDelegate: UpdateDateDelegate?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -136,6 +139,7 @@ class MenusViewController: UIViewController {
         self.cells = cells
         tableView.reloadData()
     }
+    
 }
 
 extension MenusViewController: UITableViewDataSource {
@@ -158,6 +162,7 @@ extension MenusViewController: UITableViewDataSource {
         switch cellType {
         case .dayPicker:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MenuDayPickerCell", for: indexPath) as! MenuDayPickerTableViewCell
+            cell.updateDateDelegate = updateDateDelegate
             return cell
         case .customView(let view):
             let container = ContainerView(content: view)
@@ -222,11 +227,9 @@ extension MenusViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.section] {
-        case .dayPicker:
-            print("Day selected")
         case .expandableCard(expandedEatery: let expandedEatery):
             if expandedEatery.eatery.isOpen {
-                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded))
+                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType))
             }
             tableView.reloadRows(at: [indexPath], with: .automatic)
         default:
@@ -343,6 +346,5 @@ extension MenusViewController {
     class EmptyTableFooterView: UITableViewHeaderFooterView {
         static let reuse = "EmptyTableFooterViewReuse"
     }
-    
-}
 
+}

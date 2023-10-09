@@ -53,7 +53,7 @@ class PillButtonView: UIView {
         }
 
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(16)
             make.leading.centerY.equalToSuperview()
             make.top.greaterThanOrEqualToSuperview()
         }
