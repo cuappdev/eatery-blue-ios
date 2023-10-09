@@ -131,6 +131,7 @@ class EateryExpandableCardContentView: UIView {
             let eateryVC = EateryModelController()
             if let eatery {
                 eateryVC.setUp(eatery: eatery)
+                eateryVC.setUpMenu(eatery: eatery)
             }
             navigationController.pushViewController(eateryVC, animated: true)
         }

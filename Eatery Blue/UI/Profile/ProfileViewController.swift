@@ -48,6 +48,7 @@ class ProfileViewController: UIViewController {
 
         profileNavigationController.delegate = self
         profileNavigationController.navigationBar.prefersLargeTitles = true
+        profileNavigationController.setNavigationBarHidden(true, animated: false)
     }
 
     private func setUpConstraints() {
