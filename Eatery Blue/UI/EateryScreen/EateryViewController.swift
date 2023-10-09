@@ -328,7 +328,9 @@ class EateryViewController: UIViewController {
         timingView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
         timingView.addCellView(createHoursCell(eatery))
-        timingView.addCellView(createWaitTimeCell(eatery))
+        
+        // TODO: Temporarily removed wait times.
+//        timingView.addCellView(createWaitTimeCell(eatery))
 
         stackView.addArrangedSubview(timingView)
     }

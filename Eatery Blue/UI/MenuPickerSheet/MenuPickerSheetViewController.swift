@@ -15,6 +15,7 @@ protocol MenuPickerSheetViewControllerDelegate: AnyObject {
 
 }
 
+/// Displays half-sheet for menu selection.
 class MenuPickerSheetViewController: SheetViewController {
 
     private let weekdayFormatter: DateFormatter = {
@@ -66,6 +67,7 @@ class MenuPickerSheetViewController: SheetViewController {
         updateDayPickerCellsFromState()
     }
 
+    /// Adds calendar with selectable dates.
     private func addDayPickerView() {
         dayPickerView.layoutMargins = .zero
 
@@ -194,6 +196,7 @@ class MenuPickerSheetViewController: SheetViewController {
         }
     }
 
+    /// Controls selection of dates.
     private func didTapDayPickerCellAt(at index: Int) {
         let menuChoicesOnDay = filterMenuChoices(on: days[index])
 

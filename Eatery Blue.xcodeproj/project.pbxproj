@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
+		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
+		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
 		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
+		41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */; };
 		5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */; };
 		5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */; };
 		5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */; };
@@ -148,14 +152,23 @@
 		95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BC2819B68600285440 /* FirebaseAnalytics */; };
 		95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */; };
 		95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		991466972AD3CF41005F2C6F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 991466962AD3CF41005F2C6F /* GoogleService-Info.plist */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
+		998F6D022ABCC2B1006B7F18 /* MenusModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D012ABCC2B1006B7F18 /* MenusModelController.swift */; };
+		998F6D082ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */; };
+		998F6D0A2ABF2C19006B7F18 /* EateryExpandableCardContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D092ABF2C19006B7F18 /* EateryExpandableCardContentView.swift */; };
+		998F6D0C2ABF6E0D006B7F18 /* MenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D0B2ABF6E0D006B7F18 /* MenusFilterViewController.swift */; };
+		998F6D112AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D102AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift */; };
+		998F6D1D2AC31B57006B7F18 /* MenuCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */; };
+		998F6D252AC3568C006B7F18 /* MealType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D242AC3568C006B7F18 /* MealType.swift */; };
 		99BA26F429F8A8AF007BE992 /* EateryLargeLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */; };
 		99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */; };
+		99F320F32AB2456500A39597 /* MenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F22AB2456500A39597 /* MenusViewController.swift */; };
+		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
 		BC463AB62A862067002FA81A /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC463AB52A862067002FA81A /* UIImageView.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
-		FD1113092AD0C4F600C9B5B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -173,7 +186,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardDetailView.swift; sourceTree = "<group>"; };
+		2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardMenuCategoryView.swift; sourceTree = "<group>"; };
+		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
 		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuPickerSheetViewController.swift; sourceTree = "<group>"; };
 		5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesViewController.swift; sourceTree = "<group>"; };
 		5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesModelController.swift; sourceTree = "<group>"; };
 		5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
@@ -301,14 +318,23 @@
 		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
 		957397B22821C50200FFB687 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		991466962AD3CF41005F2C6F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
+		998F6D012ABCC2B1006B7F18 /* MenusModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusModelController.swift; sourceTree = "<group>"; };
+		998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDayPickerTableViewCell.swift; sourceTree = "<group>"; };
+		998F6D092ABF2C19006B7F18 /* EateryExpandableCardContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardContentView.swift; sourceTree = "<group>"; };
+		998F6D0B2ABF6E0D006B7F18 /* MenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusFilterViewController.swift; sourceTree = "<group>"; };
+		998F6D102AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandLoadingCardView.swift; sourceTree = "<group>"; };
+		998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCardTableViewCell.swift; sourceTree = "<group>"; };
+		998F6D242AC3568C006B7F18 /* MealType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealType.swift; sourceTree = "<group>"; };
 		99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryLargeLoadingCardView.swift; sourceTree = "<group>"; };
 		99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumLoadingCardView.swift; sourceTree = "<group>"; };
+		99F320F22AB2456500A39597 /* MenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusViewController.swift; sourceTree = "<group>"; };
+		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
 		BC463AB52A862067002FA81A /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -473,8 +499,8 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
-				FD1113082AD0C4F600C9B5B6 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
+				991466962AD3CF41005F2C6F /* GoogleService-Info.plist */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
 				5D377CE427A19B0200F8DC37 /* UserDefaultsKeys.swift */,
@@ -615,6 +641,8 @@
 				5D698F8427888EB90054E1AB /* Login */,
 				5D157CD82783818C0014B63A /* LogoRefreshControl */,
 				5DBA899D2784CBD6002DCA6B /* Main */,
+				998F6D0D2ABFEC15006B7F18 /* MealTypeSheet */,
+				998F6CFE2ABCC044006B7F18 /* MenusScreen */,
 				5DF304BE27797DA100E2C9A4 /* MenuPickerSheet */,
 				5DA434B2278A158F001337FD /* NavigationView */,
 				5DBA89982783ECEB002DCA6B /* Onboarding */,
@@ -734,10 +762,12 @@
 		5DF304BE27797DA100E2C9A4 /* MenuPickerSheet */ = {
 			isa = PBXGroup;
 			children = (
+				5DF304B027793BF800E2C9A4 /* MenuChoiceView.swift */,
 				5DF304AE277921BA00E2C9A4 /* MenuDayPickerView.swift */,
 				5DF304AC2779209E00E2C9A4 /* MenuDayPickerCell.swift */,
-				5DF304B027793BF800E2C9A4 /* MenuChoiceView.swift */,
 				5DF304A627791E6300E2C9A4 /* MenuPickerSheetViewController.swift */,
+				41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */,
+				41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */,
 			);
 			path = MenuPickerSheet;
 			sourceTree = "<group>";
@@ -802,6 +832,10 @@
 				99BA26F329F8A8AF007BE992 /* EateryLargeLoadingCardView.swift */,
 				99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */,
 				BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */,
+				998F6D092ABF2C19006B7F18 /* EateryExpandableCardContentView.swift */,
+				998F6D102AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift */,
+				2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */,
+				2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */,
 			);
 			path = EateryCard;
 			sourceTree = "<group>";
@@ -812,6 +846,27 @@
 				957397B22821C50200FFB687 /* Analytics.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		998F6CFE2ABCC044006B7F18 /* MenusScreen */ = {
+			isa = PBXGroup;
+			children = (
+				998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */,
+				998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */,
+				998F6D0B2ABF6E0D006B7F18 /* MenusFilterViewController.swift */,
+				99F320F82AB24F3000A39597 /* MenusNavigationView.swift */,
+				998F6D012ABCC2B1006B7F18 /* MenusModelController.swift */,
+				99F320F22AB2456500A39597 /* MenusViewController.swift */,
+			);
+			path = MenusScreen;
+			sourceTree = "<group>";
+		};
+		998F6D0D2ABFEC15006B7F18 /* MealTypeSheet */ = {
+			isa = PBXGroup;
+			children = (
+				998F6D242AC3568C006B7F18 /* MealType.swift */,
+			);
+			path = MealTypeSheet;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -902,8 +957,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
+				991466972AD3CF41005F2C6F /* GoogleService-Info.plist in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
-				FD1113092AD0C4F600C9B5B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -916,6 +971,9 @@
 			files = (
 				5D157CDC2783B7140014B63A /* LogoView.swift in Sources */,
 				5DF304B127793BF800E2C9A4 /* MenuChoiceView.swift in Sources */,
+				998F6D082ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift in Sources */,
+				998F6D022ABCC2B1006B7F18 /* MenusModelController.swift in Sources */,
+				998F6D1D2AC31B57006B7F18 /* MenuCardTableViewCell.swift in Sources */,
 				5DA434AD2789FEB1001337FD /* NavigationView.swift in Sources */,
 				5D377CEA27A1ABA100F8DC37 /* SettingsSupportViewController.swift in Sources */,
 				5D73C39127812C4F0020507C /* SearchResultsCountView.swift in Sources */,
@@ -924,6 +982,7 @@
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
+				998F6D252AC3568C006B7F18 /* MealType.swift in Sources */,
 				5D3A149D27A3047D00768E13 /* SettingsAboutMembersCarouselView.swift in Sources */,
 				5D0CDC512775040800AD0E27 /* HDivider.swift in Sources */,
 				5D75D6D5278E0C1300832359 /* SettingsMainMenuLoginStatusView.swift in Sources */,
@@ -938,6 +997,7 @@
 				5DA434B6278B5A17001337FD /* AccountTransactionTableViewCell.swift in Sources */,
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
+				99F320F32AB2456500A39597 /* MenusViewController.swift in Sources */,
 				BC463AB62A862067002FA81A /* UIImageView.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
 				5DA434B4278B5A10001337FD /* AccountBalanceTableViewCell.swift in Sources */,
@@ -979,6 +1039,7 @@
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
 				957397B32821C50200FFB687 /* Analytics.swift in Sources */,
+				99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */,
 				5DA434B1278A04A1001337FD /* NavigationImageButton.swift in Sources */,
 				5DA434BC278B69E1001337FD /* AccountTransactionsHeaderView.swift in Sources */,
 				5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */,
@@ -986,6 +1047,7 @@
 				5DBA899C2783EE07002DCA6B /* OnboardingStartViewController.swift in Sources */,
 				5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
+				998F6D0C2ABF6E0D006B7F18 /* MenusFilterViewController.swift in Sources */,
 				BFD955952900A8150049D77C /* UIColor.swift in Sources */,
 				5D3A149B27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift in Sources */,
 				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,
@@ -1007,7 +1069,10 @@
 				5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */,
 				5DCB86A22783544C00134066 /* LocationManager.swift in Sources */,
 				5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */,
+				41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */,
 				5D73C3852780F0060020507C /* SearchItemView.swift in Sources */,
+				2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */,
+				41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */,
 				5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
 				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
@@ -1021,17 +1086,20 @@
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */,
+				2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */,
 				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
+				998F6D0A2ABF2C19006B7F18 /* EateryExpandableCardContentView.swift in Sources */,
 				5DA434BE278B6EC7001337FD /* UITableViewCell.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,
 				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
 				5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */,
+				998F6D112AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift in Sources */,
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
 				5DBA899F2784CC03002DCA6B /* MainViewController.swift in Sources */,
 				5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */,
