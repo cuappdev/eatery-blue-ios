@@ -48,23 +48,9 @@ class MenuCardTableViewCell: UITableViewCell {
     func configure(expandedEatery: ExpandedEatery) {
         expandableCardContentView.configure(eatery: expandedEatery.eatery)
         
-        if let selectedMealType = expandedEatery.selectedMealType {
-            expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedMealType: selectedMealType)
-        } else {
-            var selectedMealType = ""
-            
-            switch expandedEatery.eatery.status {
-            case .closed:
-                break
-            case .closingSoon(let event):
-                selectedMealType = event.description ?? "Breakfast"
-            case .open(let event):
-                selectedMealType = event.description ?? "Breakfast"
-            case .openingSoon:
-                break
-            }
-            
-            expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedMealType: selectedMealType)
+        if let selectedMealType = expandedEatery.selectedMealType,
+           let selectedDay = expandedEatery.selectedDate  {
+            expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedDay: selectedDay, selectedMealType: selectedMealType)
         }
         
         expandableCardDetailView.isHidden = !expandedEatery.isExpanded
