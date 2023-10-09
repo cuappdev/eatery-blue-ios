@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E08E1952AD469BB0036E0E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E08E1942AD469BB0036E0E1 /* GoogleService-Info.plist */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
 		2EDED7682AD3E23D009ECFA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */; };
@@ -495,6 +496,7 @@
 				5D86517D2773CBFB000338D4 /* Eatery Blue */,
 				5D86517C2773CBFB000338D4 /* Products */,
 				5DBB59E0278FA3AB0028FE59 /* Frameworks */,
+				2E08E1912AD4695E0036E0E1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};

@@ -15,7 +15,7 @@ class EateryExpandableCardDetailView: UIView {
     
     private let menuCategoryStackView = UIStackView()
     private let viewEateryDetails = PillButtonView()
-    private var selectedMealType: String?
+    
     private var eatery: Eatery?
     
     // MARK: - init
@@ -32,25 +32,40 @@ class EateryExpandableCardDetailView: UIView {
     
     // MARK: - configure
     
-    func configure(eatery: Eatery, selectedMealType: String) {
+    func configure(eatery: Eatery, selectedDay: Day, selectedMealType: String) {
         self.eatery = eatery
-        self.selectedMealType = selectedMealType
         
-        guard let event = (eatery.events.first { $0.description == selectedMealType }) else { return }
+        let selectedEvents = eatery.events.filter { $0.canonicalDay == selectedDay }
         
-        switch eatery.status {
-        case .closed:
-            break
-        case .openingSoon:
-            break
-        case .closingSoon(_):
-            menuCategoryStackView.addArrangedSubview(HDivider())
-            addMenuCategories(event: event)
-            setupViewEateryDetailsButton()
-        case .open(_):
-            menuCategoryStackView.addArrangedSubview(HDivider())
-            addMenuCategories(event: event)
-            setupViewEateryDetailsButton()
+        // TODO: Ideally this should be an enum but good for now
+        
+        var event: Event?
+        if selectedMealType == "Breakfast" {
+            event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Breakfast" }
+        } else if selectedMealType == "Lunch" {
+            // Ignoring Late Lunch
+            event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Lunch" }
+        } else if selectedMealType == "Dinner" {
+            event = selectedEvents.first { $0.description == "Dinner" }
+        } else if selectedMealType == "Late Dinner" {
+            event = selectedEvents.first { $0.description == "Late Night" }
+        }
+        
+        if let event {
+            switch eatery.status {
+            case .closed:
+                break
+            case .openingSoon:
+                break
+            case .closingSoon(_):
+                menuCategoryStackView.addArrangedSubview(HDivider())
+                addMenuCategories(event: event)
+                setupViewEateryDetailsButton()
+            case .open(_):
+                menuCategoryStackView.addArrangedSubview(HDivider())
+                addMenuCategories(event: event)
+                setupViewEateryDetailsButton()
+            }
         }
     }
     

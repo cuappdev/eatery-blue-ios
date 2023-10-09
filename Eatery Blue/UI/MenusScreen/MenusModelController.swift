@@ -28,6 +28,7 @@ class MenusModelController: MenusViewController {
         
     private lazy var loadCells: () = updateCellsFromState()
     
+    private var selectedDay: Day = Day()
     private var currentMealType: String = "Breakfast"
     
     class MenuChoice {
@@ -73,7 +74,8 @@ class MenusModelController: MenusViewController {
     
     private func updateAllEateriesFromNetworking() async {
         do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
+            // Fetch from cache within the last 100000 ms
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 100000)
             fetchedEateries = eateries
             
             allEateries = eateries.filter { eatery in
@@ -117,21 +119,21 @@ class MenusModelController: MenusViewController {
             cells.append(.titleLabel(title: "North"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType)))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
                 }
             }
             
             cells.append(.titleLabel(title: "West"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "West" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType)))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
                 }
             }
 
             cells.append(.titleLabel(title: "Central"))
             currentEateries.forEach { eatery in
                 if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
-                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType)))
+                    cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
                 }
             }
         }
@@ -169,6 +171,8 @@ extension MenusModelController: UpdateDateDelegate {
         allEateries = fetchedEateries.filter { eatery in
             eatery.events.contains { $0.canonicalDay == date }
         }
+        
+        selectedDay = date
         updateCellsFromState()
     }
     
