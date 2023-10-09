@@ -35,6 +35,13 @@ class ProfileLoginModelController: ProfileLoginViewController {
         super.didTapLoginButton()
         attemptLogin()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let _ = KeychainAccess.shared.retrieveToken() {
+            attemptLogin()
+        }
+    }
 
     private func updateLoginButtonFromState() {
         if isLoggingIn {

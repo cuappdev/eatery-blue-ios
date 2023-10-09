@@ -6,10 +6,11 @@
 //
 
 import Combine
-import EateryModel
-import UIKit
 import CoreLocation
+import EateryModel
+import Hero
 import MapKit
+import UIKit
 
 class EateryViewController: UIViewController {
 
@@ -20,22 +21,22 @@ class EateryViewController: UIViewController {
         return formatter
     }()
 
+    private var cancellables: Set<AnyCancellable> = []
     var categoryViews: [MenuCategoryView] = []
+    let fadeModifiers: [HeroModifier] = [.fade, .whenPresenting(.delay(0.20)), .useGlobalCoordinateSpace]
+    var headerView: UIView?
+    var navigationTriggerView: UIView?
     let navigationView = EateryNavigationView()
     let scrollView = UIScrollView()
     let spinner = UIActivityIndicatorView(style: .large)
     let stackView = UIStackView()
-
-    var headerView: UIView?
-    var navigationTriggerView: UIView?
-
-    private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpView()
         setUpConstraints()
+        hero.isEnabled = true
     
     }
 
@@ -71,6 +72,8 @@ class EateryViewController: UIViewController {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 12
+        stackView.hero.isEnabled = true
+        stackView.hero.modifiers = fadeModifiers
     }
 
     private func setUpNavigationView() {
@@ -132,7 +135,9 @@ class EateryViewController: UIViewController {
         imageView.snp.makeConstraints { make in
             make.width.equalTo(imageView.snp.height).multipliedBy(375.0 / 240.0)
         }
-
+        
+        imageView.hero.id = imageUrl?.absoluteString
+        imageView.heroModifiers = [.translate(y:100), .useGlobalCoordinateSpace]
         stackView.addArrangedSubview(imageView)
 
         headerView = imageView

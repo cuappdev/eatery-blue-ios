@@ -108,7 +108,8 @@ class HomeViewController: UIViewController {
 
     func pushViewController(eateryIndex: Int) {
         let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
-        navigationController?.hero.isEnabled = false
+        navigationController?.hero.isEnabled = true
+        navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)
     }
 
@@ -226,6 +227,7 @@ extension HomeViewController: UITableViewDataSource {
             contentView.imageView.downloadImage(with: eatery.imageUrl)
             contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
+            contentView.imageView.hero.id = eatery.imageUrl?.absoluteString
 
             let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
             if metadata.isFavorite {
