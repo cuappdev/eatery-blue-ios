@@ -94,7 +94,7 @@ class MenusFilterViewController: UIViewController {
             viewController.selectedMenuIndex = selectedMenuIndex
             viewController.setUp()
             viewController.delegate = self
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
     }
     

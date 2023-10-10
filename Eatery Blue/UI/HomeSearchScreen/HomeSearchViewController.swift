@@ -9,9 +9,10 @@ import UIKit
 
 class HomeSearchViewController: UIViewController {
 
-    let searchBar = UISearchBar()
-    let emptyController = HomeSearchEmptyModelController()
     let contentController = HomeSearchContentModelController()
+    let emptyController = HomeSearchEmptyModelController()
+    let searchBar = UISearchBar()
+    let spinner = UIActivityIndicatorView(style: .large)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,9 @@ class HomeSearchViewController: UIViewController {
 
         view.addSubview(searchBar)
         setUpSearchBar()
+        
+        view.addSubview(spinner)
+        spinner.hidesWhenStopped = true
     }
 
     private func setUpEmptyController() {
@@ -81,6 +85,10 @@ class HomeSearchViewController: UIViewController {
 
         contentController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        spinner.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
         }
     }
 

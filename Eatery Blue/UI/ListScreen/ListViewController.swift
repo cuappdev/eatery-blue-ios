@@ -270,23 +270,8 @@ extension ListViewController: UITableViewDataSource {
                 contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
             }
 
-            LocationManager.shared.$userLocation.sink { userLocation in
-                let lines = EateryFormatter.default.formatEatery(
-                    eatery,
-                    style: .long,
-                    font: .preferredFont(for: .footnote, weight: .medium),
-                    userLocation: userLocation,
-                    date: Date()
-                )
-
-                for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
-                    if i < lines.count {
-                        subtitleLabel.attributedText = lines[i]
-                    } else {
-                        subtitleLabel.isHidden = true
-                    }
-                }
-            }.store(in: &cancellables)
+            contentView.subtitleLabels[0].text = eatery.locationDescription
+            contentView.subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
 
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

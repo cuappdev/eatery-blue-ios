@@ -117,6 +117,7 @@ class AccountModelController: AccountViewController {
         updateTransactionsHeaderViewFromState()
 
         Task {
+            spinner.startAnimating()
             await updateAccountsFromNetworking()
             updateCellsFromState()
         }
@@ -129,7 +130,7 @@ class AccountModelController: AccountViewController {
             viewController.setUp(EateryAccountType.allCases.map(\.description))
             viewController.setSelectedAccountIndex(selectedAccount.rawValue)
             viewController.delegate = self
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
     }
 
@@ -147,7 +148,8 @@ class AccountModelController: AccountViewController {
             let accounts = try await Networking.default.accounts.fetch(start: start, end: end)
             let eateryAccounts = EateryAccounts(accounts)
             self.accounts = eateryAccounts
-
+            
+            spinner.stopAnimating()
         } catch {
             logger.error("\(#function): \(error)")
         }

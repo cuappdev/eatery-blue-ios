@@ -90,7 +90,7 @@ extension SettingsSupportViewController: SettingsSupportViewDelegate {
         if let issueType = preselectedIssueType {
             viewController.setSelectedIssueType(issueType)
         }
-        present(viewController, animated: true)
+        tabBarController?.present(viewController, animated: true)
     }
 
 }
