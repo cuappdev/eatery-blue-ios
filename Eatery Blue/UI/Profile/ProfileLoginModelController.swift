@@ -64,7 +64,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
             else {
                 let vc = GetLoginWebViewController()
                 vc.delegate = self
-                self.present(vc, animated: true)
+                self.tabBarController?.present(vc, animated: true)
             }
 
             isLoggingIn = false

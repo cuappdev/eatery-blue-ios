@@ -75,7 +75,7 @@ class WaitTimesSheetViewController: SheetViewController {
         addTextButton(title: "Report an issue") { [self] in
             let viewController = ReportIssueViewController(eateryId: eateryId)
             viewController.setSelectedIssueType(.inaccurateWaitTime)
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
     }
 

@@ -84,6 +84,8 @@ class EateryLargeCardContentView: UIView {
     }
 
     private func setUpTitleLabel() {
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.textColor = UIColor.Eatery.black
     }
@@ -91,6 +93,8 @@ class EateryLargeCardContentView: UIView {
     private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.numberOfLines = 0
+        subtitleLabel.lineBreakMode = .byWordWrapping
     }
 
     private func setUpFavoriteImageView() {

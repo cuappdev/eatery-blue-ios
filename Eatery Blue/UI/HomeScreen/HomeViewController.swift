@@ -133,6 +133,30 @@ class HomeViewController: UIViewController {
     func scrollToTop(animated: Bool) {
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: animated)
     }
+    
+    func animateCellLoading() {
+        let tableViewHeight = tableView.bounds.size.height
+        let tableViewCells = tableView.visibleCells
+        var delayCounter = 0
+        
+        tableViewCells.forEach { cell in
+            cell.transform = CGAffineTransform(translationX: 0, y: 82)
+            cell.alpha = 0
+        }
+        
+        for index in 0..<tableViewCells.count {
+            if case .eateryCard = cells[index] {
+                UIView.animate(withDuration: 1.2, delay: 0.2 * Double(delayCounter),usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+                    tableViewCells[index].transform = CGAffineTransform.identity
+                    tableViewCells[index].alpha = 1
+                }, completion: nil)
+                delayCounter += 1
+            } else {
+                tableViewCells[index].transform = CGAffineTransform.identity
+                tableViewCells[index].alpha = 1
+            }
+        }
+    }
 
 }
 

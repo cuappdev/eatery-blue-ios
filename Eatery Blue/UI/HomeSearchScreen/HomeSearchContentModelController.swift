@@ -182,7 +182,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     override func didSelectEatery(_ eatery: Eatery, at indexPath: IndexPath) {
         super.didSelectEatery(eatery, at: indexPath)
 
-        addRecentSearch(type: "place", title: eatery.name, subtitle: nil)
+        addRecentSearch(eateryID: eatery.id, type: "place", title: eatery.name, subtitle: nil)
 
         let viewController = EateryModelController()
         viewController.setUp(eatery: eatery)
@@ -195,7 +195,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     override func didSelectItem(_ item: MenuItem, at indexPath: IndexPath, eatery: Eatery?) {
         super.didSelectItem(item, at: indexPath, eatery: eatery)
 
-        addRecentSearch(type: "item", title: item.name, subtitle: eatery?.name)
+        addRecentSearch(eateryID: eatery?.id, type: "item", title: item.name, subtitle: eatery?.name)
 
         if let eatery = eatery {
             let viewController = EateryModelController()
@@ -206,7 +206,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         }
     }
 
-    private func addRecentSearch(type: String, title: String, subtitle: String?) {
+    private func addRecentSearch(eateryID: Int64?, type: String, title: String, subtitle: String?) {
         let coreDataStack = AppDelegate.shared.coreDataStack
         let context = coreDataStack.context
 
@@ -229,6 +229,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
         let recentSearch = RecentSearch(context: context)
         recentSearch.dateAdded = Date()
+        recentSearch.eateryID = eateryID ?? 0
         recentSearch.type = type
         recentSearch.title = title
         recentSearch.subtitle = subtitle

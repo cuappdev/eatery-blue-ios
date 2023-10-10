@@ -68,8 +68,17 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
         _ viewController: HomeSearchEmptyModelController,
         didSelectRecentSearch recentSearch: RecentSearch
     ) {
-        searchBar.text = recentSearch.title
-        searchBar(searchBar, textDidChange: searchBar.text ?? "")
+        Task {
+            spinner.startAnimating()
+            if let eatery = await Networking.default.loadEatery(by: Int(recentSearch.eateryID)) {
+                spinner.stopAnimating()
+                let viewController = EateryModelController()
+                viewController.setUp(eatery: eatery)
+                navigationController?.hero.isEnabled = false
+                navigationController?.pushViewController(viewController, animated: true)
+                viewController.setUpMenu(eatery: eatery)
+            }
+        }
     }
 
 }

@@ -81,7 +81,7 @@ class EateryFilterViewController: UIViewController {
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
             viewController.delegate = self
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
     }
 

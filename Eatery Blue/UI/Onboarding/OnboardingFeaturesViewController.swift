@@ -211,7 +211,7 @@ class OnboardingFeaturesViewController: UIViewController {
                 Task {
                     let vc = GetLoginWebViewController()
                     vc.delegate = self
-                    self.present(vc, animated: true)
+                    self.tabBarController?.present(vc, animated: true)
                     finishOnboarding()
                 }
             })
