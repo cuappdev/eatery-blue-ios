@@ -26,7 +26,7 @@ class EateryPageViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor.Eatery.gray00
         dataSource = self
         delegate = self
         

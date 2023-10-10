@@ -21,10 +21,11 @@ class AccountViewController: UIViewController {
         let subtitle: NSAttributedString
     }
 
-    let transactionsHeaderView = AccountTransactionsHeaderView()
+    private let refreshControl = UIRefreshControl()
     private let tableView = UITableView()
 
-    private let refreshControl = UIRefreshControl()
+    let spinner = UIActivityIndicatorView(style: .large)
+    let transactionsHeaderView = AccountTransactionsHeaderView()
 
     private(set) var balanceItems: [BalanceItem] = []
     private(set) var transactionItems: [TransactionItem] = []
@@ -73,6 +74,9 @@ class AccountViewController: UIViewController {
 
         view.addSubview(tableView)
         setUpTableView()
+        
+        view.addSubview(spinner)
+        setUpSpinnerView()
     }
 
     private func setUpTableView() {
@@ -90,10 +94,18 @@ class AccountViewController: UIViewController {
         tableView.register(AccountBalanceTableViewCell.self, forCellReuseIdentifier: "balance")
         tableView.register(AccountTransactionTableViewCell.self, forCellReuseIdentifier: "transaction")
     }
+    
+    private func setUpSpinnerView() {
+        spinner.hidesWhenStopped = true
+    }
 
     private func setUpConstraints() {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        spinner.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
         }
     }
 

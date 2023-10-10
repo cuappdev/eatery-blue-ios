@@ -71,6 +71,7 @@ class OnboardingStartViewController: UIViewController {
     private func setUpAppDevLogoView() {
         appDevLogoView.image = UIImage(named: "AppDev")?.withRenderingMode(.alwaysTemplate)
         appDevLogoView.tintColor = UIColor.Eatery.gray03
+        appDevLogoView.contentMode = .scaleAspectFit
     }
 
     private func setUpConstraints() {

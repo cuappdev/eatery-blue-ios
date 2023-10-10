@@ -215,7 +215,7 @@ class EateryViewController: UIViewController {
             let viewController = PaymentMethodsSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setPaymentMethods(paymentMethods)
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
     }
 
@@ -243,6 +243,8 @@ class EateryViewController: UIViewController {
 
     func addNameLabel(_ name: String) {
         let label = UILabel()
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
         label.text = name
         label.font = .preferredFont(for: .largeTitle, weight: .semibold)
         label.textColor = UIColor.Eatery.black
@@ -254,6 +256,8 @@ class EateryViewController: UIViewController {
 
     func addShortDescriptionLabel(_ eatery: Eatery) {
         let label = UILabel()
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
         label.text = "\(eatery.locationDescription ?? "--") · \(eatery.menuSummary ?? "--")"
         label.textColor = UIColor.Eatery.gray05
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
@@ -353,7 +357,7 @@ class EateryViewController: UIViewController {
             let viewController = HoursSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setUp(eatery.id, eatery.events)
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
 
         return cell
@@ -382,7 +386,7 @@ class EateryViewController: UIViewController {
                 let viewController = WaitTimesSheetViewController()
                 viewController.setUpSheetPresentation()
                 viewController.setUp(eatery.id, waitTimes, events: events)
-                present(viewController, animated: true)
+                tabBarController?.present(viewController, animated: true)
             }
 
         } else {
@@ -475,7 +479,7 @@ class EateryViewController: UIViewController {
         view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         view.button.tap { [self] _ in
             let viewController = ReportIssueViewController(eateryId: eateryId)
-            present(viewController, animated: true)
+            tabBarController?.present(viewController, animated: true)
         }
         stackView.addArrangedSubview(view)
     }

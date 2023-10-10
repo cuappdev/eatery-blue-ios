@@ -127,7 +127,7 @@ class ReportIssueViewController: UIViewController {
                 })
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            present(alertController, animated: true)
+            tabBarController?.present(alertController, animated: true)
         }
 
         updateIssueTypeButtonFromState()

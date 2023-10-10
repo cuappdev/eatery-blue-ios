@@ -39,6 +39,7 @@ class HomeModelController: HomeViewController {
                 group.addTask {
                     await self.updateSimpleEateriesFromNetworking()
                     await self.updateCellsFromState()
+                    await self.animateCellLoading()
                 }
                 
                 group.addTask {
@@ -106,9 +107,6 @@ class HomeModelController: HomeViewController {
         } catch {
             logger.error("\(error)")
         }
-        
-        isLoading = false
-        view.isUserInteractionEnabled = true
     }
     
     private func createLoadingCarouselView(
@@ -221,7 +219,6 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if isLoading {
-            cells.append(.loadingView(createLoadingCarouselView(title: "Finding flavorful food...")))
             cells.append(.loadingLabel(title: "Checking for chow..."))
             for _ in 0...4 {
                 cells.append(.loadingCard)
