@@ -147,20 +147,8 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             )
             contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
-            let lines = EateryFormatter.default.formatEatery(
-                eatery,
-                style: .long,
-                font: .preferredFont(for: .footnote, weight: .medium),
-                userLocation: LocationManager.shared.userLocation,
-                date: Date()
-            )
-            for (i, subtitleLabel) in contentView.subtitleLabels.enumerated() {
-                if i < lines.count {
-                    subtitleLabel.attributedText = lines[i]
-                } else {
-                    subtitleLabel.isHidden = true
-                }
-            }
+            contentView.subtitleLabels[0].text = eatery.locationDescription
+            contentView.subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
 
             let cardView = EateryCardVisualEffectView(content: contentView)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

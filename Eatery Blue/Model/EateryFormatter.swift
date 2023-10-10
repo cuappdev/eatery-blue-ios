@@ -79,27 +79,27 @@ class EateryFormatter {
             return events.map(formatEventTime(_:)).joined(separator: ", ")
         }
     }
-
-    private func firstLineSecondComponent(_ eatery: Eatery, date: Date) -> NSAttributedString? {
+    
+    func eateryCardFormatter(_ eatery: Eatery, date: Date) -> NSAttributedString? {
+        let day = Day(date: date)
         if eatery.isOpen {
-            if eatery.paymentMethods.contains(.mealSwipes) {
+            if let nextEventOfDay = EateryStatus.nextEvent(eatery.events, date: date, on: day) {
                 return NSAttributedString(
-                    string: "Meal swipes allowed",
-                    attributes: [.foregroundColor: UIColor.Eatery.blue as Any]
-                )
-            } else if eatery.paymentMethods == [.cash, .credit] {
-                return NSAttributedString(
-                    string: "Cash or credit only",
+                    string: "Open until \(timeFormatter.string(from: nextEventOfDay.startDate))",
                     attributes: [.foregroundColor: UIColor.Eatery.green as Any]
                 )
-            } else if let menuSummary = eatery.menuSummary {
-                return NSAttributedString(string: menuSummary)
+            } else if case .open(let event) = eatery.status {
+                return NSAttributedString(
+                    string: "Open until \(timeFormatter.string(from: event.endDate))",
+                    attributes: [.foregroundColor: UIColor.Eatery.green as Any]
+                )
             } else {
-                return nil
+                return NSAttributedString(
+                    string: "Open",
+                    attributes: [.foregroundColor: UIColor.Eatery.green as Any]
+                )
             }
-
         } else {
-            let day = Day(date: date)
             if let nextEventOfDay = EateryStatus.nextEvent(eatery.events, date: date, on: day) {
                 if let _ = EateryStatus.previousEvent(eatery.events, date: date, on: day) {
                     return NSAttributedString(
@@ -131,6 +131,42 @@ class EateryFormatter {
         }
     }
 
+    private func firstLineSecondComponent(_ eatery: Eatery, date: Date) -> NSAttributedString? {
+        let day = Day(date: date)
+        if eatery.isOpen {
+            if eatery.paymentMethods.contains(.mealSwipes) {
+                return NSAttributedString(
+                    string: "Meal swipes allowed",
+                    attributes: [.foregroundColor: UIColor.Eatery.blue as Any]
+                )
+            } else if eatery.paymentMethods == [.cash, .credit] {
+                return NSAttributedString(
+                    string: "Cash or credit only",
+                    attributes: [.foregroundColor: UIColor.Eatery.green as Any]
+                )
+            } else if let menuSummary = eatery.menuSummary {
+                return NSAttributedString(string: menuSummary)
+            } else {
+                return nil
+            }
+        } else if let nextEventOfNextDay = EateryStatus.nextEvent(eatery.events, date: date, on: day.advanced(by: 1)) {
+            return NSAttributedString(
+                string: "Closed until \(timeFormatter.string(from: nextEventOfNextDay.startDate))",
+                attributes: [.foregroundColor: UIColor.Eatery.red as Any]
+            )
+        } else if let nextEvent = EateryStatus.nextEvent(eatery.events, date: date) {
+            return NSAttributedString(
+                string: "Closed until \(mediumDayMonthFormatter.string(from: nextEvent.startDate))",
+                attributes: [.foregroundColor: UIColor.Eatery.red as Any]
+            )
+        } else {
+            return NSAttributedString(
+                string: "Closed today",
+                attributes: [.foregroundColor: UIColor.Eatery.red as Any]
+            )
+        }
+    }
+
     func formatEatery(
         _ eatery: Eatery,
         style: Style,
@@ -148,7 +184,7 @@ class EateryFormatter {
             text.append(NSAttributedString(string: " "))
             text.append(NSAttributedString(string: formatEateryWalkTime(eatery, userLocation: userLocation, isLong: false)))
 
-            if let secondComponent = firstLineSecondComponent(eatery, date: date) {
+            if let secondComponent = eateryCardFormatter(eatery, date: date) {
                 text.append(NSAttributedString(string: " · "))
                 text.append(secondComponent)
             }

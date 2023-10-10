@@ -110,6 +110,7 @@ class EateryLargeCardContentView: UIView {
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
+        
         imageView.setContentCompressionResistancePriority(
             titleLabel.contentCompressionResistancePriority(for: .vertical) - 1,
             for: .vertical
