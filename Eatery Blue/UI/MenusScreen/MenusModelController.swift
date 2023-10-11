@@ -29,7 +29,23 @@ class MenusModelController: MenusViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var selectedDay: Day = Day()
-    private var currentMealType: String = "Breakfast"
+    private var currentMealType: String = {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let hour : Int = Int(dateFormatter.string(from: date))!
+        dateFormatter.dateFormat = "mm"
+        let minute : Int = Int(dateFormatter.string(from: date))!
+        if hour < 10 || hour == 10 && minute < 30{
+            return "Breakfast"
+        } else if hour == 10 && minute >= 30 || hour > 10 && hour < 14 || hour == 14 && minute < 30{
+            return "Lunch"
+        } else if hour == 14 && minute >= 30 || hour > 14 && hour < 20 || hour == 20 && minute < 30 {
+            return "Dinner"
+        } else {
+            return "Late Dinner"
+        }
+    }()
     
     class MenuChoice {
 
