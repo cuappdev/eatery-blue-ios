@@ -38,7 +38,7 @@ class EateryFormatter {
             let timeString = timeFormatter.string(from: event.endDate)
             return NSAttributedString(
                 string: "Open until \(timeString)",
-                attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
+                attributes: [.foregroundColor: UIColor.Eatery.green as Any]
             )
 
         case .closed:
