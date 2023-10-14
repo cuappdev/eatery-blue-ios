@@ -29,9 +29,6 @@ class PaymentMethodsSheetViewController: SheetViewController {
         addHeader(title: "Payment Methods")
         addImageViews()
         addDescriptionLabel()
-        addPillButton(title: "Close", style: .regular) { [self] in
-            dismiss(animated: true)
-        }
     }
 
     private func addImageViews() {
