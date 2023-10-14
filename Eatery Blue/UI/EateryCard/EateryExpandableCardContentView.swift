@@ -67,14 +67,15 @@ class EateryExpandableCardContentView: UIView {
     }
 
     private func setupChevronArrow() {
-        chevronArrow.image = UIImage(named: "ExpandDown")
+        chevronArrow.image = UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate)
+        chevronArrow.tintColor = .black
         chevronArrow.contentMode = .scaleAspectFit
         
         addSubview(chevronArrow)
         
         chevronArrow.snp.makeConstraints { make in
             make.trailing.centerY.equalToSuperview()
-            make.width.height.equalTo(16)
+            make.width.height.equalTo(20)
         }
     }
     
@@ -142,4 +143,13 @@ class EateryExpandableCardContentView: UIView {
         eateryDetailsButton.removeFromSuperview()
     }
     
+    func toggleChevron(bool: Bool) {
+        if bool {
+            chevronArrow.image = UIImage(systemName: "chevron.up")?.withRenderingMode(.alwaysTemplate)
+        }
+        else {
+            chevronArrow.image = UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate)
+        }
+    }
+
 }
