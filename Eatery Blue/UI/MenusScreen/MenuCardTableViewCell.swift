@@ -53,6 +53,12 @@ class MenuCardTableViewCell: UITableViewCell {
             expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedDay: selectedDay, selectedMealType: selectedMealType)
         }
         
+        if expandedEatery.isExpanded {
+            expandableCardContentView.toggleChevron(bool: true)
+        } else {
+            expandableCardContentView.toggleChevron(bool: false)
+        }
+        
         expandableCardDetailView.isHidden = !expandedEatery.isExpanded
     }
     
