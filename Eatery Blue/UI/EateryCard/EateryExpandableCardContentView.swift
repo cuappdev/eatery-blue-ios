@@ -118,12 +118,11 @@ class EateryExpandableCardContentView: UIView {
     
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
+            guard let eatery = eatery else { return }
             let eateryVC = EateryModelController()
-            if let eatery {
-                eateryVC.setUp(eatery: eatery)
-                eateryVC.setUpMenu(eatery: eatery)
-            }
+            eateryVC.setUp(eatery: eatery)
             navigationController.pushViewController(eateryVC, animated: true)
+            eateryVC.setUpMenu(eatery: eatery)
         }
     }
     
