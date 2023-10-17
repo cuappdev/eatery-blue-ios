@@ -248,7 +248,7 @@ extension HomeViewController: UITableViewDataSource {
         case .eateryCard(eatery: let eatery):
             let contentView = EateryLargeCardContentView()
             contentView.imageView.image = UIImage()
-            contentView.imageView.downloadImage(with: eatery.imageUrl)
+            contentView.imageView.kf.setImage(with: eatery.imageUrl)
             contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
             contentView.imageView.hero.id = eatery.imageUrl?.absoluteString

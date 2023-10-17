@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2E08E1952AD469BB0036E0E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E08E1942AD469BB0036E0E1 /* GoogleService-Info.plist */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
 		2EDED7682AD3E23D009ECFA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */; };
@@ -166,7 +165,6 @@
 		99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */; };
 		99F320F32AB2456500A39597 /* MenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F22AB2456500A39597 /* MenusViewController.swift */; };
 		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
-		BC463AB62A862067002FA81A /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC463AB52A862067002FA81A /* UIImageView.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
@@ -333,7 +331,6 @@
 		99BA26F529F8A8CE007BE992 /* EateryMediumLoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumLoadingCardView.swift; sourceTree = "<group>"; };
 		99F320F22AB2456500A39597 /* MenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusViewController.swift; sourceTree = "<group>"; };
 		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
-		BC463AB52A862067002FA81A /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -496,7 +493,6 @@
 				5D86517D2773CBFB000338D4 /* Eatery Blue */,
 				5D86517C2773CBFB000338D4 /* Products */,
 				5DBB59E0278FA3AB0028FE59 /* Frameworks */,
-				2E08E1912AD4695E0036E0E1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -632,7 +628,6 @@
 				5DF5F7D5277404C8001ADCDC /* UIFont.swift */,
 				5DA434BD278B6EC7001337FD /* UITableViewCell.swift */,
 				BFD955942900A8150049D77C /* UIColor.swift */,
-				BC463AB52A862067002FA81A /* UIImageView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1010,7 +1005,6 @@
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
 				99F320F32AB2456500A39597 /* MenusViewController.swift in Sources */,
-				BC463AB62A862067002FA81A /* UIImageView.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
 				5DA434B4278B5A10001337FD /* AccountBalanceTableViewCell.swift in Sources */,
 				5D377CE527A19B0200F8DC37 /* UserDefaultsKeys.swift in Sources */,
