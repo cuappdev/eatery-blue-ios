@@ -83,15 +83,15 @@ class EateryFormatter {
     func eateryCardFormatter(_ eatery: Eatery, date: Date) -> NSAttributedString? {
         let day = Day(date: date)
         if eatery.isOpen {
-            if let nextEventOfDay = EateryStatus.nextEvent(eatery.events, date: date, on: day) {
-                return NSAttributedString(
-                    string: "Open until \(timeFormatter.string(from: nextEventOfDay.startDate))",
-                    attributes: [.foregroundColor: UIColor.Eatery.green as Any]
-                )
-            } else if case .open(let event) = eatery.status {
+            if case .open(let event) = eatery.status {
                 return NSAttributedString(
                     string: "Open until \(timeFormatter.string(from: event.endDate))",
                     attributes: [.foregroundColor: UIColor.Eatery.green as Any]
+                )
+            } else if case .closingSoon(let event) = eatery.status {
+                return NSAttributedString(
+                    string: "Open until \(timeFormatter.string(from: event.endDate))",
+                    attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
                 )
             } else {
                 return NSAttributedString(

@@ -235,8 +235,8 @@ extension MenusViewController: UITableViewDelegate {
         case .expandableCard(expandedEatery: let expandedEatery):
             if expandedEatery.eatery.isOpen {
                 self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
+                tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
         default:
             break
         }

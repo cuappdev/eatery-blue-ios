@@ -31,6 +31,7 @@ class HomeModelController: HomeViewController {
         setUpFilterController()
         setUpNavigationView()
         setUpUserLocationSubscription()
+        setUpFavNotification()
 
         Task {
             await withThrowingTaskGroup(of: Void.self) { [weak self] group in
@@ -74,6 +75,15 @@ class HomeModelController: HomeViewController {
         }
 
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+    }
+    
+    private func setUpFavNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshFavorites(_:)),
+            name: NSNotification.Name("favoriteEatery"),
+            object: nil
+        )
     }
 
     private func setUpUserLocationSubscription() {
@@ -341,7 +351,10 @@ class HomeModelController: HomeViewController {
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
     }
-    
+
+    @objc func refreshFavorites(_ notification: Notification) {
+        updateCellsFromState()
+    }
 
 }
 

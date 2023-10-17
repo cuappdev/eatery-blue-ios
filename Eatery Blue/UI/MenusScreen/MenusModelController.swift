@@ -113,10 +113,30 @@ class MenusModelController: MenusViewController {
             }
         } else {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-            let filteredEateries = allEateries.filter {
+            var filteredEateries = allEateries.filter {
                 predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
             }
-            
+
+            // Only display eateries based on selected meal type
+
+            // TODO: This should be an enum but good for now
+            filteredEateries = filteredEateries.filter { eatery in
+                var events = eatery.events.filter { $0.canonicalDay == Day() }
+
+                if currentMealType == "Breakfast" {
+                    return events.contains { $0.description == "Brunch" || $0.description == "Breakfast" }
+                } else if currentMealType == "Lunch" {
+                    // Ignoring Late Lunch
+                    return events.contains { $0.description == "Brunch" || $0.description == "Lunch" }
+                } else if currentMealType == "Dinner" {
+                    return events.contains { $0.description == "Dinner" }
+                } else if currentMealType == "Late Dinner" {
+                    return events.contains { $0.description == "Late Night" }
+                }
+
+                return false
+            }
+
             currentEateries = filteredEateries
             eateryStartIndex = cells.count
             

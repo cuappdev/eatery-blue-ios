@@ -73,6 +73,10 @@ class EateryModelController: EateryViewController {
             coreDataStack.save()
 
             updateNavigationViewFavoriteButtonFromCoreData()
+            NotificationCenter.default.post(
+                name: NSNotification.Name("favoriteEatery"),
+                object: nil
+            )
         }
 
         updateNavigationViewFavoriteButtonFromCoreData()
