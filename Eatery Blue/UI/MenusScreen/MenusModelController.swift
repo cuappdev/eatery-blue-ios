@@ -29,8 +29,8 @@ class MenusModelController: MenusViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var selectedDay: Day = Day()
-    private var currentMealType: String = String.mealFromTime()
-    
+    private var currentMealType: String = String.Eatery.mealFromTime()
+
     class MenuChoice {
 
         let description: String
@@ -121,10 +121,6 @@ class MenusModelController: MenusViewController {
             // TODO: This should be an enum but good for now
             filteredEateries = filteredEateries.filter { eatery in
                 let events = eatery.events.filter { $0.canonicalDay == selectedDay }
-
-                if selectedDay == Day() && !eatery.isOpen {
-                    return false
-                }
 
                 // Ignore Late Lunch
                 if currentMealType == "Breakfast" {

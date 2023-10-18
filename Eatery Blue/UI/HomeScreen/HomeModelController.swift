@@ -229,6 +229,9 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if isLoading {
+            let carouselView = createLoadingCarouselView(title: "Loading nearby eateries...")
+            cells.append(.carouselView(carouselView))
+
             cells.append(.loadingLabel(title: "Checking for chow..."))
             for _ in 0...4 {
                 cells.append(.loadingCard)

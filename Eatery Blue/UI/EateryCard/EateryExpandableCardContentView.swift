@@ -55,12 +55,12 @@ class EateryExpandableCardContentView: UIView {
         }
 
         if let event {
-            eateryStatusLabel.text = EateryFormatter.default.formatEventTime(event)
             if event.canonicalDay == Day() {
-                if expandedEatery.eatery.status.isOpen && !(event.menu?.categories.isEmpty ?? false) {
-                    setupChevronArrow()
-                }
+                eateryStatusLabel.attributedText = EateryFormatter.default.formatStatusSimple(expandedEatery.eatery.status, followedBy: EateryFormatter.default.formatEventTime(event))
             } else {
+                eateryStatusLabel.text = EateryFormatter.default.formatEventTime(event)
+            }
+            if event.endDate > Date() {
                 setupChevronArrow()
             }
         }
@@ -113,14 +113,12 @@ class EateryExpandableCardContentView: UIView {
     
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
-            guard let eatery = eatery else { return }
-            
-            let eateryVC = EateryModelController()
             if let eatery = expandedEatery?.eatery {
+                let eateryVC = EateryModelController()
                 eateryVC.setUp(eatery: eatery)
                 eateryVC.setUpMenu(eatery: eatery)
+                navigationController.pushViewController(eateryVC, animated: true)
             }
-            navigationController.pushViewController(eateryVC, animated: true)
         }
     }
     

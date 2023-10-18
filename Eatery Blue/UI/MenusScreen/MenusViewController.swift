@@ -248,16 +248,9 @@ extension MenusViewController: UITableViewDelegate {
                 event = selectedEvents.first { $0.description == "Late Night" }
             }
 
-            if let event {
-                if event.canonicalDay == Day() {
-                    if expandedEatery.eatery.status.isOpen && !(event.menu?.categories.isEmpty ?? true) {
-                        self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                    }
-                } else {
-                    self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
-                    tableView.reloadRows(at: [indexPath], with: .automatic)
-                }
+            if let event, event.endDate > Date() {
+                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
+                tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         default:
             break

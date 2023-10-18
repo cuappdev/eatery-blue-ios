@@ -32,6 +32,32 @@ class EateryFormatter {
         mediumDayMonthFormatter.calendar = .eatery
     }
 
+    func formatStatusSimple(_ status: EateryStatus, followedBy: String) -> NSMutableAttributedString {
+        var statusText: String = ""
+        var statusColor: UIColor = UIColor.Eatery.gray03
+
+        switch status {
+        case .open:
+            statusText = "Open"
+            statusColor = UIColor.Eatery.green
+        case .closed:
+            statusText = "Closed"
+            statusColor = UIColor.Eatery.red
+        case .openingSoon:
+            statusText = "Opening Soon"
+            statusColor = UIColor.Eatery.orange
+        case .closingSoon:
+            statusText = "Closing Soon"
+            statusColor = UIColor.Eatery.orange
+        }
+
+        let mainString = "\(statusText) · \(followedBy)"
+        let range = (mainString as NSString).range(of: statusText)
+        let mutableAttributedString = NSMutableAttributedString.init(string: mainString)
+        mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: statusColor, range: range)
+        return mutableAttributedString
+    }
+
     func formatStatus(_ status: EateryStatus) -> NSAttributedString {
         switch status {
         case .open(let event):

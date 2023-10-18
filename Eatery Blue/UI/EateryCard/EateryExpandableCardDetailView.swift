@@ -51,18 +51,10 @@ class EateryExpandableCardDetailView: UIView {
             event = selectedEvents.first { $0.description == "Late Night" }
         }
         
-        if let event {
-            if event.canonicalDay == Day() {
-                if eatery.status.isOpen && !(event.menu?.categories.isEmpty ?? true) {
-                    menuCategoryStackView.addArrangedSubview(HDivider())
-                    addMenuCategories(event: event)
-                    setupViewEateryDetailsButton()
-                }
-            } else {
-                menuCategoryStackView.addArrangedSubview(HDivider())
-                addMenuCategories(event: event)
-                setupViewEateryDetailsButton()
-            }
+        if let event, event.endDate > Date() {
+            menuCategoryStackView.addArrangedSubview(HDivider())
+            addMenuCategories(event: event)
+            setupViewEateryDetailsButton()
         }
     }
     
@@ -127,14 +119,12 @@ class EateryExpandableCardDetailView: UIView {
     
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
-            guard let eatery = eatery else { return }
-            
-            let eateryVC = EateryModelController()
             if let eatery = eatery {
+                let eateryVC = EateryModelController()
                 eateryVC.setUp(eatery: eatery)
                 eateryVC.setUpMenu(eatery: eatery)
+                navigationController.pushViewController(eateryVC, animated: true)
             }
-            navigationController.pushViewController(eateryVC, animated: true)
         }
     }
     
