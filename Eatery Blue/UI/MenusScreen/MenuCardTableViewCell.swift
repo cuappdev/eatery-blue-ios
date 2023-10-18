@@ -46,8 +46,8 @@ class MenuCardTableViewCell: UITableViewCell {
     // MARK: - configure
     
     func configure(expandedEatery: ExpandedEatery) {
-        expandableCardContentView.configure(eatery: expandedEatery.eatery)
-        
+        expandableCardContentView.configure(expandedEatery: expandedEatery)
+
         if let selectedMealType = expandedEatery.selectedMealType,
            let selectedDay = expandedEatery.selectedDate  {
             expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedDay: selectedDay, selectedMealType: selectedMealType)

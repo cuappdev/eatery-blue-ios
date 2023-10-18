@@ -81,7 +81,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             ? UIColor.Eatery.red
             : UIColor.Eatery.gray05
 
-        cashOrCardImageView.tintColor = paymentMethods.contains(.cash) && paymentMethods.contains(.credit)
+        cashOrCardImageView.tintColor = paymentMethods.contains(.cash) || paymentMethods.contains(.credit)
             ? UIColor.Eatery.green
             : UIColor.Eatery.gray05
 
@@ -155,7 +155,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             result.append(attributedString)
         }
 
-        if paymentMethods.contains(.cash), paymentMethods.contains(.credit) {
+        if paymentMethods.contains(.cash) || paymentMethods.contains(.credit) {
             let attributedString = NSMutableAttributedString()
             let attachment = NSTextAttachment(
                 image: UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate),

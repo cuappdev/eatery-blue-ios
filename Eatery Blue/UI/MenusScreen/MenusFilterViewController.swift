@@ -18,7 +18,6 @@ protocol MenusFilterViewControllerDelegate: AnyObject {
 class MenusFilterViewController: UIViewController {
     
     let mealType = PillFilterButtonView()
-    let all = PillFilterButtonView()
     let north = PillFilterButtonView()
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
@@ -38,9 +37,9 @@ class MenusFilterViewController: UIViewController {
         setUpView()
         setUpConstraints()
         
-        filter.north = true
-        filter.west = true
-        filter.central = true
+        filter.north = false
+        filter.west = false
+        filter.central = false
         updateFilterButtonsFromState(animated: false)
     }
     
@@ -74,9 +73,6 @@ class MenusFilterViewController: UIViewController {
         filtersView.addButton(mealType)
         setUpMealType()
         
-        filtersView.addButton(all)
-        setUpAll()
-        
         filtersView.addButton(north)
         setUpNorth()
         
@@ -101,19 +97,6 @@ class MenusFilterViewController: UIViewController {
             viewController.setUp()
             viewController.delegate = self
             tabBarController?.present(viewController, animated: true)
-        }
-    }
-    
-    private func setUpAll() {
-        all.label.text = "All Campus"
-        all.tap { [self] _ in
-            let allCampusSelected = !filter.north || !filter.central || !filter.west
-            filter.north = allCampusSelected
-            filter.central = allCampusSelected
-            filter.west = allCampusSelected
-            
-            delegate?.menusFilterViewController(self, didChangeLocation: filter)
-            updateFilterButtonsFromState(animated: true)
         }
     }
     
@@ -171,7 +154,6 @@ class MenusFilterViewController: UIViewController {
             return
         }
         
-        all.setHighlighted(filter.north && filter.west && filter.central)
         north.setHighlighted(filter.north)
         west.setHighlighted(filter.west)
         central.setHighlighted(filter.central)

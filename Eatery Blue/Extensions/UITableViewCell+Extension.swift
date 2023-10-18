@@ -1,5 +1,5 @@
 //
-//  UITableViewCell.swift
+//  UITableViewCell+Extension.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/9/22.

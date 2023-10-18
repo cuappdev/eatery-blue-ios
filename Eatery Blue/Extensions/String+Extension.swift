@@ -8,7 +8,9 @@
 import Foundation
 
 extension String {
-    
+
+    static let Eatery = String()
+
     /**
      Determines the correct meal based on the time of day.
 
@@ -32,5 +34,5 @@ extension String {
             return "Late Dinner"
         }
     }
-    
+
 }

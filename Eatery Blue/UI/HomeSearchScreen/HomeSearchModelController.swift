@@ -70,8 +70,10 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
     ) {
         Task {
             spinner.startAnimating()
+            view.isUserInteractionEnabled = false
             if let eatery = await Networking.default.loadEatery(by: Int(recentSearch.eateryID)) {
                 spinner.stopAnimating()
+                view.isUserInteractionEnabled = true
                 let viewController = EateryModelController()
                 viewController.setUp(eatery: eatery)
                 navigationController?.hero.isEnabled = false

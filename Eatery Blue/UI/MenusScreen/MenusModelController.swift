@@ -29,8 +29,8 @@ class MenusModelController: MenusViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var selectedDay: Day = Day()
-    private var currentMealType: String = String.mealFromTime()
-    
+    private var currentMealType: String = String.Eatery.mealFromTime()
+
     class MenuChoice {
 
         let description: String
@@ -67,10 +67,10 @@ class MenusModelController: MenusViewController {
     private func setUpFilterController() {
         addChild(filterController)
         
-        filter.north = true
-        filter.west = true
-        filter.central = true
-        
+        filter.north = false
+        filter.west = false
+        filter.central = false
+
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         filterController.delegate = self
         filterController.didMove(toParent: self)
@@ -78,12 +78,11 @@ class MenusModelController: MenusViewController {
     
     private func updateAllEateriesFromNetworking() async {
         do {
-            // Fetch from cache within the last 100000 ms
-            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 100000)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: .infinity)
             fetchedEateries = eateries
             
             allEateries = eateries.filter { eatery in
-                eatery.events.contains { $0.canonicalDay == Day() }
+                eatery.events.contains { $0.canonicalDay == selectedDay }
             }
             
             allEateries = allEateries.filter { eatery in
@@ -113,14 +112,34 @@ class MenusModelController: MenusViewController {
             }
         } else {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-            let filteredEateries = allEateries.filter {
+            var filteredEateries = allEateries.filter {
                 predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
             }
-            
+
+            // Only display eateries based on selected meal type
+
+            // TODO: This should be an enum but good for now
+            filteredEateries = filteredEateries.filter { eatery in
+                let events = eatery.events.filter { $0.canonicalDay == selectedDay }
+
+                // Ignore Late Lunch
+                if currentMealType == "Breakfast" {
+                    return events.contains { $0.description == "Brunch" || $0.description == "Breakfast" }
+                } else if currentMealType == "Lunch" {
+                    return events.contains { $0.description == "Brunch" || $0.description == "Lunch" }
+                } else if currentMealType == "Dinner" {
+                    return events.contains { $0.description == "Dinner" }
+                } else if currentMealType == "Late Dinner" {
+                    return events.contains { $0.description == "Late Night" }
+                }
+
+                return false
+            }
+
             currentEateries = filteredEateries
             eateryStartIndex = cells.count
             
-            if filter.north {
+            if filter.north || !filter.central && !filter.west && !filter.north {
                 var didAppendNorthLabel: Bool = false
                 currentEateries.forEach { eatery in
                     if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
@@ -131,7 +150,7 @@ class MenusModelController: MenusViewController {
                 }
             }
             
-            if filter.west {
+            if filter.west || !filter.central && !filter.west && !filter.north {
                 var didAppendWestLabel: Bool = false
                 currentEateries.forEach { eatery in
                     !didAppendWestLabel ? cells.append(.titleLabel(title: "West")) : nil
@@ -142,7 +161,7 @@ class MenusModelController: MenusViewController {
                 }
             }
 
-            if filter.central {
+            if filter.central || !filter.central && !filter.west && !filter.north {
                 var didAppendCentralLabel: Bool = false
                 currentEateries.forEach { eatery in
                     if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {

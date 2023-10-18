@@ -1,5 +1,5 @@
 //
-//  Locale.swift
+//  Locale+Extension.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/9/22.

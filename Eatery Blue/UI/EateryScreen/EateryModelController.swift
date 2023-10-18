@@ -73,6 +73,10 @@ class EateryModelController: EateryViewController {
             coreDataStack.save()
 
             updateNavigationViewFavoriteButtonFromCoreData()
+            NotificationCenter.default.post(
+                name: NSNotification.Name("favoriteEatery"),
+                object: nil
+            )
         }
 
         updateNavigationViewFavoriteButtonFromCoreData()
@@ -220,10 +224,9 @@ class EateryModelController: EateryViewController {
     }
 
     private func sortMenuCategories(categories: [MenuCategory]) -> [MenuCategory] {
-        let categoryCount = categories.count
-        var sortedCategories: [MenuCategory] = categories
-        for i in 0..<categoryCount {
-            let menuCategory = categories[i]
+        var sortedCategories: [MenuCategory] = categories.reversed()
+        for i in 0..<sortedCategories.count {
+            let menuCategory = sortedCategories[i]
             if menuCategory.category == "Chef's Table" {
                 sortedCategories.swapAt(0, i)
             }
