@@ -97,12 +97,25 @@ class EateryExpandableCardDetailView: UIView {
     }
     
     // MARK: - Helpers
-    
+
     private func addMenuCategories(event: Event) {
-        event.menu?.categories.forEach { category in
-            let menuCategoryView = EateryExpandableCardMenuCategoryView()
-            menuCategoryView.configure(menuCategory: category)
-            menuCategoryStackView.addArrangedSubview(menuCategoryView)
+        if let categories = event.menu?.categories {
+            var sortedCategories: [MenuCategory] = categories.reversed()
+            for i in 0..<sortedCategories.count {
+                let menuCategory = sortedCategories[i]
+                if menuCategory.category == "Chef's Table" {
+                    sortedCategories.swapAt(0, i)
+                }
+                if menuCategory.category == "Chef's Table - Sides" {
+                    sortedCategories.swapAt(1, i)
+                }
+            }
+
+            sortedCategories.forEach { category in
+                let menuCategoryView = EateryExpandableCardMenuCategoryView()
+                menuCategoryView.configure(menuCategory: category)
+                menuCategoryStackView.addArrangedSubview(menuCategoryView)
+            }
         }
     }
     
