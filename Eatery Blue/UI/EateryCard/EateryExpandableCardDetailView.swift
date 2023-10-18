@@ -72,7 +72,7 @@ class EateryExpandableCardDetailView: UIView {
         menuCategoryStackView.axis = .vertical
         menuCategoryStackView.alignment = .fill
         menuCategoryStackView.distribution = .equalSpacing
-        menuCategoryStackView.spacing = 8
+        menuCategoryStackView.spacing = 12
         
         addSubview(menuCategoryStackView)
         
@@ -99,7 +99,7 @@ class EateryExpandableCardDetailView: UIView {
             make.height.equalTo(36)
             make.width.equalToSuperview().inset(12)
             make.centerX.equalToSuperview()
-            make.top.equalTo(menuCategoryStackView.snp.bottom).offset(8)
+            make.top.equalTo(menuCategoryStackView.snp.bottom).offset(16)
             make.bottom.equalToSuperview().inset(8)
         }
     }
@@ -130,6 +130,7 @@ class EateryExpandableCardDetailView: UIView {
             let eateryVC = EateryModelController()
             if let eatery = eatery {
                 eateryVC.setUp(eatery: eatery)
+                eateryVC.setUpMenu(eatery: eatery)
             }
             navigationController.pushViewController(eateryVC, animated: true)
         }

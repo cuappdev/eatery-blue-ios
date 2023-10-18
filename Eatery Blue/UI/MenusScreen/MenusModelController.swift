@@ -70,7 +70,7 @@ class MenusModelController: MenusViewController {
         filter.north = false
         filter.west = false
         filter.central = false
-        
+
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         filterController.delegate = self
         filterController.didMove(toParent: self)
@@ -122,6 +122,10 @@ class MenusModelController: MenusViewController {
             // TODO: This should be an enum but good for now
             filteredEateries = filteredEateries.filter { eatery in
                 let events = eatery.events.filter { $0.canonicalDay == selectedDay }
+
+                if selectedDay == Day() && !eatery.isOpen {
+                    return false
+                }
 
                 // Ignore Late Lunch
                 if currentMealType == "Breakfast" {

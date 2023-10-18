@@ -17,7 +17,6 @@ class EateryExpandableCardContentView: UIView {
     private let eateryNameLabel = UILabel()
     private let eateryStackView = UIStackView()
     private let eateryStatusLabel = UILabel()
-    private let eateryDetailsButton = PillButtonView()
     private var expandedEatery: ExpandedEatery?
 
     // MARK: - init
@@ -79,7 +78,7 @@ class EateryExpandableCardContentView: UIView {
         
         eateryStackView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview()
-            make.width.equalTo(snp.width).multipliedBy(0.50)
+            make.trailing.equalToSuperview().inset(16)
         }
     }
 
@@ -110,28 +109,6 @@ class EateryExpandableCardContentView: UIView {
         eateryStackView.addArrangedSubview(eateryStatusLabel)
     }
     
-    private func setupEateryDetailsButton() {
-        eateryDetailsButton.backgroundColor = UIColor.Eatery.gray00
-        eateryDetailsButton.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
-        eateryDetailsButton.imageView.tintColor = UIColor.Eatery.gray05
-        eateryDetailsButton.titleLabel.textColor = UIColor.Eatery.black
-        eateryDetailsButton.titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        eateryDetailsButton.titleLabel.text = "Eatery Details"
-        eateryDetailsButton.isUserInteractionEnabled = true
-        eateryDetailsButton.addGestureRecognizer(UITapGestureRecognizer(
-            target: self,
-            action: #selector(didTapEateryDetails(_:))
-        ))
-        
-        addSubview(eateryDetailsButton)
-        
-        eateryDetailsButton.snp.makeConstraints { make in
-            make.width.equalTo(snp.width).multipliedBy(0.43)
-            make.height.equalTo(42)
-            make.trailing.centerY.equalToSuperview()
-        }
-    }
-    
     // MARK: - Tap recognizer
     
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
@@ -157,7 +134,6 @@ class EateryExpandableCardContentView: UIView {
     }
     
     func reset() {
-        eateryDetailsButton.removeFromSuperview()
         chevronArrow.removeFromSuperview()
     }
     
