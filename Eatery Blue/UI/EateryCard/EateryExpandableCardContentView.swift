@@ -60,6 +60,7 @@ class EateryExpandableCardContentView: UIView {
             } else {
                 eateryStatusLabel.text = EateryFormatter.default.formatEventTime(event)
             }
+
             if event.endDate > Date() {
                 setupChevronArrow()
             }
