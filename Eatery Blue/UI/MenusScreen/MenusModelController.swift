@@ -78,8 +78,7 @@ class MenusModelController: MenusViewController {
     
     private func updateAllEateriesFromNetworking() async {
         do {
-            // Fetch from cache within the last 100000 ms
-            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 100000)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: .infinity)
             fetchedEateries = eateries
             
             allEateries = eateries.filter { eatery in

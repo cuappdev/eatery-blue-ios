@@ -60,8 +60,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         Task {
             if let sessionId = KeychainAccess.shared.retrieveToken() {
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
-            }
-            else {
+            } else {
                 let vc = GetLoginWebViewController()
                 vc.delegate = self
                 self.tabBarController?.present(vc, animated: true)

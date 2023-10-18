@@ -29,7 +29,13 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
           let loginRequest = URLRequest(url: loginURL!)
           webView.load(loginRequest)
      }
-     
+
+     override func viewWillAppear(_ animated: Bool) {
+          super.viewWillAppear(true)
+          webView.cleanAllCookies()
+          webView.refreshCookies()
+     }
+
      func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
           print(error.localizedDescription)
      }

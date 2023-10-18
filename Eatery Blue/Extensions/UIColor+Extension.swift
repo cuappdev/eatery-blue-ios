@@ -1,5 +1,5 @@
 //
-//  UIColor.swift
+//  UIColor+Extension.swift
 //  Eatery Blue
 //
 //  Created by alden lamp on 10/19/22.
