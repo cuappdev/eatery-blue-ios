@@ -83,7 +83,7 @@ class MenusModelController: MenusViewController {
             fetchedEateries = eateries
             
             allEateries = eateries.filter { eatery in
-                eatery.events.contains { $0.canonicalDay == Day() }
+                eatery.events.contains { $0.canonicalDay == selectedDay }
             }
             
             allEateries = allEateries.filter { eatery in
@@ -121,12 +121,12 @@ class MenusModelController: MenusViewController {
 
             // TODO: This should be an enum but good for now
             filteredEateries = filteredEateries.filter { eatery in
-                var events = eatery.events.filter { $0.canonicalDay == Day() }
+                let events = eatery.events.filter { $0.canonicalDay == selectedDay }
 
+                // Ignore Late Lunch
                 if currentMealType == "Breakfast" {
                     return events.contains { $0.description == "Brunch" || $0.description == "Breakfast" }
                 } else if currentMealType == "Lunch" {
-                    // Ignoring Late Lunch
                     return events.contains { $0.description == "Brunch" || $0.description == "Lunch" }
                 } else if currentMealType == "Dinner" {
                     return events.contains { $0.description == "Dinner" }

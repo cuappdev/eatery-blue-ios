@@ -18,8 +18,8 @@ class EateryExpandableCardContentView: UIView {
     private let eateryStackView = UIStackView()
     private let eateryStatusLabel = UILabel()
     private let eateryDetailsButton = PillButtonView()
-    private var eatery: Eatery?
-    
+    private var expandedEatery: ExpandedEatery?
+
     // MARK: - init
     
     override init(frame: CGRect) {
@@ -36,17 +36,34 @@ class EateryExpandableCardContentView: UIView {
     
     // MARK: - configure
     
-    func configure(eatery: Eatery) {
-        self.eatery = eatery
-        eateryNameLabel.text = eatery.name
-        
-        switch eatery.status {
-        case .closed, .openingSoon(_):
-            eateryStatusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
-            setupEateryDetailsButton()
-        case .closingSoon(_), .open(_):
-            eateryStatusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
-            setupChevronArrow()
+    func configure(expandedEatery: ExpandedEatery) {
+        self.expandedEatery = expandedEatery
+        eateryNameLabel.text = expandedEatery.eatery.name
+
+        let selectedEvents = expandedEatery.eatery.events.filter { $0.canonicalDay == expandedEatery.selectedDate }
+        let selectedMealType = expandedEatery.selectedMealType
+        var event: Event?
+
+        // Ignoring Late Lunch
+        if selectedMealType == "Breakfast" {
+            event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Breakfast" }
+        } else if selectedMealType == "Lunch" {
+            event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Lunch"}
+        } else if selectedMealType == "Dinner" {
+            event = selectedEvents.first { $0.description == "Dinner" }
+        } else if selectedMealType == "Late Dinner" {
+            event = selectedEvents.first { $0.description == "Late Night" }
+        }
+
+        if let event {
+            eateryStatusLabel.text = EateryFormatter.default.formatEventTime(event)
+            if event.canonicalDay == Day() {
+                if expandedEatery.eatery.status.isOpen && !(event.menu?.categories.isEmpty ?? false) {
+                    setupChevronArrow()
+                }
+            } else {
+                setupChevronArrow()
+            }
         }
     }
     
@@ -87,7 +104,7 @@ class EateryExpandableCardContentView: UIView {
     }
     
     private func setupEateryStatusLabel() {
-        eateryStatusLabel.textColor = UIColor.Eatery.black
+        eateryStatusLabel.textColor = UIColor.Eatery.gray03
         eateryStatusLabel.font = UIFont.preferredFont(for: .footnote, weight: .medium)
 
         eateryStackView.addArrangedSubview(eateryStatusLabel)
@@ -120,7 +137,7 @@ class EateryExpandableCardContentView: UIView {
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
             let eateryVC = EateryModelController()
-            if let eatery {
+            if let eatery = expandedEatery?.eatery {
                 eateryVC.setUp(eatery: eatery)
                 eateryVC.setUpMenu(eatery: eatery)
             }
@@ -141,6 +158,7 @@ class EateryExpandableCardContentView: UIView {
     
     func reset() {
         eateryDetailsButton.removeFromSuperview()
+        chevronArrow.removeFromSuperview()
     }
     
     func toggleChevron(bool: Bool) {

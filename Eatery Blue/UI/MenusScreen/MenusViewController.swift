@@ -233,9 +233,31 @@ extension MenusViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.section] {
         case .expandableCard(expandedEatery: let expandedEatery):
-            if expandedEatery.eatery.isOpen {
-                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
-                tableView.reloadRows(at: [indexPath], with: .automatic)
+            let selectedEvents = expandedEatery.eatery.events.filter { $0.canonicalDay == expandedEatery.selectedDate }
+            let selectedMealType = expandedEatery.selectedMealType
+            var event: Event?
+
+            // Ignoring Late Lunch
+            if selectedMealType == "Breakfast" {
+                event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Breakfast" }
+            } else if selectedMealType == "Lunch" {
+                event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Lunch"}
+            } else if selectedMealType == "Dinner" {
+                event = selectedEvents.first { $0.description == "Dinner" }
+            } else if selectedMealType == "Late Dinner" {
+                event = selectedEvents.first { $0.description == "Late Night" }
+            }
+
+            if let event {
+                if event.canonicalDay == Day() {
+                    if expandedEatery.eatery.status.isOpen && !(event.menu?.categories.isEmpty ?? true) {
+                        self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
+                        tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
+                } else {
+                    self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
             }
         default:
             break

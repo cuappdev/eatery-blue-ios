@@ -39,11 +39,11 @@ class EateryExpandableCardDetailView: UIView {
         
         // TODO: Ideally this should be an enum but good for now
         
+        // Ignore late lunch
         var event: Event?
         if selectedMealType == "Breakfast" {
             event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Breakfast" }
         } else if selectedMealType == "Lunch" {
-            // Ignoring Late Lunch
             event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Lunch" }
         } else if selectedMealType == "Dinner" {
             event = selectedEvents.first { $0.description == "Dinner" }
@@ -52,16 +52,13 @@ class EateryExpandableCardDetailView: UIView {
         }
         
         if let event {
-            switch eatery.status {
-            case .closed:
-                break
-            case .openingSoon:
-                break
-            case .closingSoon(_):
-                menuCategoryStackView.addArrangedSubview(HDivider())
-                addMenuCategories(event: event)
-                setupViewEateryDetailsButton()
-            case .open(_):
+            if event.canonicalDay == Day() {
+                if eatery.status.isOpen && !(event.menu?.categories.isEmpty ?? true) {
+                    menuCategoryStackView.addArrangedSubview(HDivider())
+                    addMenuCategories(event: event)
+                    setupViewEateryDetailsButton()
+                }
+            } else {
                 menuCategoryStackView.addArrangedSubview(HDivider())
                 addMenuCategories(event: event)
                 setupViewEateryDetailsButton()
