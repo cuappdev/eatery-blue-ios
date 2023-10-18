@@ -67,9 +67,9 @@ class MenusModelController: MenusViewController {
     private func setUpFilterController() {
         addChild(filterController)
         
-        filter.north = true
-        filter.west = true
-        filter.central = true
+        filter.north = false
+        filter.west = false
+        filter.central = false
         
         filterController.view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         filterController.delegate = self
@@ -140,7 +140,7 @@ class MenusModelController: MenusViewController {
             currentEateries = filteredEateries
             eateryStartIndex = cells.count
             
-            if filter.north {
+            if filter.north || !filter.central && !filter.west && !filter.north {
                 var didAppendNorthLabel: Bool = false
                 currentEateries.forEach { eatery in
                     if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
@@ -151,7 +151,7 @@ class MenusModelController: MenusViewController {
                 }
             }
             
-            if filter.west {
+            if filter.west || !filter.central && !filter.west && !filter.north {
                 var didAppendWestLabel: Bool = false
                 currentEateries.forEach { eatery in
                     !didAppendWestLabel ? cells.append(.titleLabel(title: "West")) : nil
@@ -162,7 +162,7 @@ class MenusModelController: MenusViewController {
                 }
             }
 
-            if filter.central {
+            if filter.central || !filter.central && !filter.west && !filter.north {
                 var didAppendCentralLabel: Bool = false
                 currentEateries.forEach { eatery in
                     if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {

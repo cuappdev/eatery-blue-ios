@@ -18,7 +18,6 @@ protocol MenusFilterViewControllerDelegate: AnyObject {
 class MenusFilterViewController: UIViewController {
     
     let mealType = PillFilterButtonView()
-    let all = PillFilterButtonView()
     let north = PillFilterButtonView()
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
@@ -36,9 +35,9 @@ class MenusFilterViewController: UIViewController {
         setUpView()
         setUpConstraints()
         
-        filter.north = true
-        filter.west = true
-        filter.central = true
+        filter.north = false
+        filter.west = false
+        filter.central = false
         updateFilterButtonsFromState(animated: false)
     }
     
@@ -72,9 +71,6 @@ class MenusFilterViewController: UIViewController {
         filtersView.addButton(mealType)
         setUpMealType()
         
-        filtersView.addButton(all)
-        setUpAll()
-        
         filtersView.addButton(north)
         setUpNorth()
         
@@ -98,29 +94,10 @@ class MenusFilterViewController: UIViewController {
         }
     }
     
-    private func setUpAll() {
-        all.label.text = "All Campus"
-        all.tap { [self] _ in
-            let allCampusSelected = !filter.north || !filter.central || !filter.west
-            filter.north = allCampusSelected
-            filter.central = allCampusSelected
-            filter.west = allCampusSelected
-            
-            delegate?.menusFilterViewController(self, didChangeLocation: filter)
-            updateFilterButtonsFromState(animated: true)
-        }
-    }
-    
     private func setUpNorth() {
         north.label.text = "North"
         north.tap { [self] _ in
-            if filter.north && filter.west && filter.central {
-                filter.north = true
-                filter.west = false
-                filter.central = false
-            } else {
-                filter.north.toggle()
-            }
+            filter.north.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.menusFilterViewController(self, didChangeLocation: filter)
             if filter.north {
@@ -132,13 +109,7 @@ class MenusFilterViewController: UIViewController {
     private func setUpWest() {
         west.label.text = "West"
         west.tap { [self] _ in
-            if filter.north && filter.west && filter.central {
-                filter.north = false
-                filter.west = true
-                filter.central = false
-            } else {
-                filter.west.toggle()
-            }
+            filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.menusFilterViewController(self, didChangeLocation: filter)
             if filter.west {
@@ -150,13 +121,7 @@ class MenusFilterViewController: UIViewController {
     private func setUpCentral() {
         central.label.text = "Central"
         central.tap { [self] _ in
-            if filter.north && filter.west && filter.central {
-                filter.north = false
-                filter.west = false
-                filter.central = true
-            } else {
-                filter.central.toggle()
-            }
+            filter.central.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.menusFilterViewController(self, didChangeLocation: filter)
             if filter.central {
@@ -183,7 +148,6 @@ class MenusFilterViewController: UIViewController {
             return
         }
         
-        all.setHighlighted(filter.north && filter.west && filter.central)
         north.setHighlighted(filter.north)
         west.setHighlighted(filter.west)
         central.setHighlighted(filter.central)
