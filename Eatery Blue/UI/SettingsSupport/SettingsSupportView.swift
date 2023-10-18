@@ -80,10 +80,10 @@ struct SettingsSupportView: View {
                 Text("Help us improve Eatery by letting us know what’s wrong.")
                     .foregroundColor(Color("Gray05"))
 
-                Button (action: {
+                Button {
                     delegate?.openReportIssue(preselectedIssueType: nil)
 
-                }, label: {
+                } label: {
                     HStack(spacing: 6) {
                         Spacer()
                         Image("Report")
@@ -95,7 +95,7 @@ struct SettingsSupportView: View {
                             .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
                         Spacer()
                     }
-                })
+                }
                 .foregroundColor(.white)
                 .background(Color("EateryBlue"))
                 .clipShape(Capsule())
