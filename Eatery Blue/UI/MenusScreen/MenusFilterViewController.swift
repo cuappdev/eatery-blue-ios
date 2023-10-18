@@ -22,6 +22,8 @@ class MenusFilterViewController: UIViewController {
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
     
+    private let currentMealType: String?
+    
     var selectedMenuIndex: Int?
     
     private(set) var filter = EateryFilter()
@@ -43,7 +45,7 @@ class MenusFilterViewController: UIViewController {
     
     init(currentMealType: String) {
         // TODO: This should be an enum
-        
+        self.currentMealType = currentMealType
         if currentMealType == "Breakfast" {
             selectedMenuIndex = 0
         } else if currentMealType == "Lunch" {
@@ -82,7 +84,11 @@ class MenusFilterViewController: UIViewController {
     }
     
     private func setUpMealType() {
-        mealType.label.text = "Breakfast"
+        if let currentMealType = currentMealType {
+            mealType.label.text = currentMealType
+        } else {
+            return mealType.label.text = "Breakfast"
+        }
         mealType.imageView.isHidden = false
         mealType.tap { [self] _ in
             let viewController = UpcomingMenuPickerSheetViewController()
