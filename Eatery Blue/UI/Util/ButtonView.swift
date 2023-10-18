@@ -41,16 +41,16 @@ class ButtonView<Content: UIView>: ContainerView<Content>, UIGestureRecognizerDe
     }
 
     @objc private func buttonTouchUpInside(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.15, delay: 0.25, options: .beginFromCurrentState) { [weak self] in
+        UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
             self?.transform = .identity
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 self?.callback?(sender)
             }
         }
     }
 
     @objc private func buttonTouchUpOutside(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.15, delay: 0.25, options: .beginFromCurrentState) { [weak self] in
+        UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
             self?.transform = .identity
         }
     }
