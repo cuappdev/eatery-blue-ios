@@ -29,6 +29,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        userLocation = locationManager.location
     }
 
     func requestAuthorization() {

@@ -36,8 +36,14 @@ class EateryExpandableCardMenuCategoryView: UIView {
         menuCategory.items.forEach { item in
             foodItemString.append("\(item.name)\n")
         }
-        
-        foodItemLabel.text = String(foodItemString.dropLast(1))
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
+
+        let attrString = NSMutableAttributedString(string: String(foodItemString.dropLast(1)))
+        attrString.addAttribute(.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+
+        foodItemLabel.attributedText = attrString
         categoryNameLabel.text = menuCategory.category
     }
     
@@ -45,8 +51,8 @@ class EateryExpandableCardMenuCategoryView: UIView {
     
     private func setupCategoryNameLabel() {
         categoryNameLabel.textColor = UIColor.Eatery.black
-        categoryNameLabel.font = UIFont.preferredFont(for: .title3, weight: .semibold)
-        
+        categoryNameLabel.font = UIFont.preferredFont(for: .headline, weight: .semibold)
+
         addSubview(categoryNameLabel)
         
         categoryNameLabel.snp.makeConstraints { make in
@@ -58,7 +64,7 @@ class EateryExpandableCardMenuCategoryView: UIView {
         foodItemLabel.textColor = UIColor.Eatery.gray05
         foodItemLabel.font = UIFont.preferredFont(for: .footnote, weight: .regular)
         foodItemLabel.numberOfLines = 0
-        
+
         addSubview(foodItemLabel)
         
         foodItemLabel.snp.makeConstraints { make in

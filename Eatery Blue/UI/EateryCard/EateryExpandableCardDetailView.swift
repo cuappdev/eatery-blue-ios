@@ -39,11 +39,11 @@ class EateryExpandableCardDetailView: UIView {
         
         // TODO: Ideally this should be an enum but good for now
         
+        // Ignore late lunch
         var event: Event?
         if selectedMealType == "Breakfast" {
             event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Breakfast" }
         } else if selectedMealType == "Lunch" {
-            // Ignoring Late Lunch
             event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Lunch" }
         } else if selectedMealType == "Dinner" {
             event = selectedEvents.first { $0.description == "Dinner" }
@@ -51,21 +51,10 @@ class EateryExpandableCardDetailView: UIView {
             event = selectedEvents.first { $0.description == "Late Night" }
         }
         
-        if let event {
-            switch eatery.status {
-            case .closed:
-                break
-            case .openingSoon:
-                break
-            case .closingSoon(_):
-                menuCategoryStackView.addArrangedSubview(HDivider())
-                addMenuCategories(event: event)
-                setupViewEateryDetailsButton()
-            case .open(_):
-                menuCategoryStackView.addArrangedSubview(HDivider())
-                addMenuCategories(event: event)
-                setupViewEateryDetailsButton()
-            }
+        if let event, event.endDate > Date() {
+            menuCategoryStackView.addArrangedSubview(HDivider())
+            addMenuCategories(event: event)
+            setupViewEateryDetailsButton()
         }
     }
     
@@ -75,7 +64,7 @@ class EateryExpandableCardDetailView: UIView {
         menuCategoryStackView.axis = .vertical
         menuCategoryStackView.alignment = .fill
         menuCategoryStackView.distribution = .equalSpacing
-        menuCategoryStackView.spacing = 8
+        menuCategoryStackView.spacing = 12
         
         addSubview(menuCategoryStackView)
         
@@ -102,18 +91,31 @@ class EateryExpandableCardDetailView: UIView {
             make.height.equalTo(36)
             make.width.equalToSuperview().inset(12)
             make.centerX.equalToSuperview()
-            make.top.equalTo(menuCategoryStackView.snp.bottom).offset(8)
+            make.top.equalTo(menuCategoryStackView.snp.bottom).offset(16)
             make.bottom.equalToSuperview().inset(8)
         }
     }
     
     // MARK: - Helpers
-    
+
     private func addMenuCategories(event: Event) {
-        event.menu?.categories.forEach { category in
-            let menuCategoryView = EateryExpandableCardMenuCategoryView()
-            menuCategoryView.configure(menuCategory: category)
-            menuCategoryStackView.addArrangedSubview(menuCategoryView)
+        if let categories = event.menu?.categories {
+            var sortedCategories: [MenuCategory] = categories.reversed()
+            for i in 0..<sortedCategories.count {
+                let menuCategory = sortedCategories[i]
+                if menuCategory.category == "Chef's Table" {
+                    sortedCategories.swapAt(0, i)
+                }
+                if menuCategory.category == "Chef's Table - Sides" {
+                    sortedCategories.swapAt(1, i)
+                }
+            }
+
+            sortedCategories.forEach { category in
+                let menuCategoryView = EateryExpandableCardMenuCategoryView()
+                menuCategoryView.configure(menuCategory: category)
+                menuCategoryStackView.addArrangedSubview(menuCategoryView)
+            }
         }
     }
     
@@ -130,11 +132,12 @@ class EateryExpandableCardDetailView: UIView {
     
     @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
-            let eateryVC = EateryModelController()
             if let eatery = eatery {
+                let eateryVC = EateryModelController()
                 eateryVC.setUp(eatery: eatery)
+                eateryVC.setUpMenu(eatery: eatery)
+                navigationController.pushViewController(eateryVC, animated: true)
             }
-            navigationController.pushViewController(eateryVC, animated: true)
         }
     }
     

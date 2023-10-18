@@ -52,7 +52,7 @@ class MenuItemView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
+        titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         titleLabel.textColor = UIColor.Eatery.black
     }
 

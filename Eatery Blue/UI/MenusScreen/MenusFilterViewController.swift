@@ -18,10 +18,11 @@ protocol MenusFilterViewControllerDelegate: AnyObject {
 class MenusFilterViewController: UIViewController {
     
     let mealType = PillFilterButtonView()
-    let all = PillFilterButtonView()
     let north = PillFilterButtonView()
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
+    
+    private let currentMealType: String?
     
     var selectedMenuIndex: Int?
     
@@ -36,15 +37,15 @@ class MenusFilterViewController: UIViewController {
         setUpView()
         setUpConstraints()
         
-        filter.north = true
-        filter.west = true
-        filter.central = true
+        filter.north = false
+        filter.west = false
+        filter.central = false
         updateFilterButtonsFromState(animated: false)
     }
     
     init(currentMealType: String) {
         // TODO: This should be an enum
-        
+        self.currentMealType = currentMealType
         if currentMealType == "Breakfast" {
             selectedMenuIndex = 0
         } else if currentMealType == "Lunch" {
@@ -72,9 +73,6 @@ class MenusFilterViewController: UIViewController {
         filtersView.addButton(mealType)
         setUpMealType()
         
-        filtersView.addButton(all)
-        setUpAll()
-        
         filtersView.addButton(north)
         setUpNorth()
         
@@ -86,7 +84,11 @@ class MenusFilterViewController: UIViewController {
     }
     
     private func setUpMealType() {
-        mealType.label.text = "Breakfast"
+        if let currentMealType = currentMealType {
+            mealType.label.text = currentMealType
+        } else {
+            return mealType.label.text = "Breakfast"
+        }
         mealType.imageView.isHidden = false
         mealType.tap { [self] _ in
             let viewController = UpcomingMenuPickerSheetViewController()
@@ -95,19 +97,6 @@ class MenusFilterViewController: UIViewController {
             viewController.setUp()
             viewController.delegate = self
             tabBarController?.present(viewController, animated: true)
-        }
-    }
-    
-    private func setUpAll() {
-        all.label.text = "All Campus"
-        all.tap { [self] _ in
-            let allCampusSelected = !filter.north || !filter.central || !filter.west
-            filter.north = allCampusSelected
-            filter.central = allCampusSelected
-            filter.west = allCampusSelected
-            
-            delegate?.menusFilterViewController(self, didChangeLocation: filter)
-            updateFilterButtonsFromState(animated: true)
         }
     }
     
@@ -165,7 +154,6 @@ class MenusFilterViewController: UIViewController {
             return
         }
         
-        all.setHighlighted(filter.north && filter.west && filter.central)
         north.setHighlighted(filter.north)
         west.setHighlighted(filter.west)
         central.setHighlighted(filter.central)

@@ -31,6 +31,7 @@ class HomeModelController: HomeViewController {
         setUpFilterController()
         setUpNavigationView()
         setUpUserLocationSubscription()
+        setUpFavNotification()
 
         Task {
             await withThrowingTaskGroup(of: Void.self) { [weak self] group in
@@ -74,6 +75,15 @@ class HomeModelController: HomeViewController {
         }
 
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+    }
+    
+    private func setUpFavNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshFavorites(_:)),
+            name: NSNotification.Name("favoriteEatery"),
+            object: nil
+        )
     }
 
     private func setUpUserLocationSubscription() {
@@ -188,8 +198,7 @@ class HomeModelController: HomeViewController {
             carouselView.addCardView(contentView, buttonPress: { [self] _ in
                 let pageVC = EateryPageViewController(eateries: carouselEateries, index: i)
                 pageVC.modalPresentationStyle = .overCurrentContext
-                navigationController?.hero.isEnabled = true
-                navigationController?.heroNavigationAnimationType = .fade
+                navigationController?.hero.isEnabled = false
                 navigationController?.pushViewController(pageVC, animated: true)
             })
         }
@@ -219,6 +228,9 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if isLoading {
+            let carouselView = createLoadingCarouselView(title: "Loading nearby eateries...")
+            cells.append(.carouselView(carouselView))
+
             cells.append(.loadingLabel(title: "Checking for chow..."))
             for _ in 0...4 {
                 cells.append(.loadingCard)
@@ -341,7 +353,10 @@ class HomeModelController: HomeViewController {
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
     }
-    
+
+    @objc func refreshFavorites(_ notification: Notification) {
+        updateCellsFromState()
+    }
 
 }
 

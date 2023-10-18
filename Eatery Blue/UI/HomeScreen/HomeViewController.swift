@@ -135,7 +135,6 @@ class HomeViewController: UIViewController {
     }
     
     func animateCellLoading() {
-        let tableViewHeight = tableView.bounds.size.height
         let tableViewCells = tableView.visibleCells
         var delayCounter = 0
         
@@ -145,13 +144,26 @@ class HomeViewController: UIViewController {
         }
         
         for index in 0..<tableViewCells.count {
-            if case .eateryCard = cells[index] {
+            switch cells[index] {
+            case .carouselView:
                 UIView.animate(withDuration: 1.2, delay: 0.2 * Double(delayCounter),usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
                     tableViewCells[index].transform = CGAffineTransform.identity
                     tableViewCells[index].alpha = 1
                 }, completion: nil)
                 delayCounter += 1
-            } else {
+            case .titleLabel:
+                UIView.animate(withDuration: 1.2, delay: 0.2 * Double(delayCounter),usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+                    tableViewCells[index].transform = CGAffineTransform.identity
+                    tableViewCells[index].alpha = 1
+                }, completion: nil)
+                delayCounter += 1
+            case .eateryCard:
+                UIView.animate(withDuration: 1.2, delay: 0.2 * Double(delayCounter),usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+                    tableViewCells[index].transform = CGAffineTransform.identity
+                    tableViewCells[index].alpha = 1
+                }, completion: nil)
+                delayCounter += 1
+            default:
                 tableViewCells[index].transform = CGAffineTransform.identity
                 tableViewCells[index].alpha = 1
             }
@@ -248,7 +260,7 @@ extension HomeViewController: UITableViewDataSource {
         case .eateryCard(eatery: let eatery):
             let contentView = EateryLargeCardContentView()
             contentView.imageView.image = UIImage()
-            contentView.imageView.downloadImage(with: eatery.imageUrl)
+            contentView.imageView.kf.setImage(with: eatery.imageUrl)
             contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
             contentView.titleLabel.text = eatery.name
             contentView.imageView.hero.id = eatery.imageUrl?.absoluteString

@@ -182,9 +182,9 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
         filter.paymentMethods = paymentMethods
         filter.paymentMethods.forEach { paymentMethod in
             switch paymentMethod {
-            case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
-            case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
-            default: break
+                case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
+                case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+                default: break
             }
         }
 

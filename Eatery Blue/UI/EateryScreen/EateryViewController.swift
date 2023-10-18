@@ -37,7 +37,6 @@ class EateryViewController: UIViewController {
         setUpView()
         setUpConstraints()
         hero.isEnabled = true
-    
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +136,7 @@ class EateryViewController: UIViewController {
         }
         
         imageView.hero.id = imageUrl?.absoluteString
-        imageView.heroModifiers = [.translate(y:100), .useGlobalCoordinateSpace]
+        imageView.heroModifiers = [.fade, .useGlobalCoordinateSpace]
         stackView.addArrangedSubview(imageView)
 
         headerView = imageView
@@ -180,7 +179,7 @@ class EateryViewController: UIViewController {
             stack.addArrangedSubview(imageView)
         }
 
-        if paymentMethods.contains(.cash), paymentMethods.contains(.credit) {
+        if paymentMethods.contains(.cash) || paymentMethods.contains(.credit) {
             let imageView = UIImageView()
             imageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor.Eatery.green

@@ -83,9 +83,9 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func didLogOut(_ notification: Notification) {
-        setMode(.login, animated: false)
         DispatchQueue.main.async {
             self.profileNavigationController.popToRootViewController(animated: true)
+            self.setMode(.login, animated: false)
         }
     }
 

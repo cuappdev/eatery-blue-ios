@@ -32,13 +32,39 @@ class EateryFormatter {
         mediumDayMonthFormatter.calendar = .eatery
     }
 
+    func formatStatusSimple(_ status: EateryStatus, followedBy: String) -> NSMutableAttributedString {
+        var statusText: String = ""
+        var statusColor: UIColor = UIColor.Eatery.gray03
+
+        switch status {
+        case .open:
+            statusText = "Open"
+            statusColor = UIColor.Eatery.green
+        case .closed:
+            statusText = "Closed"
+            statusColor = UIColor.Eatery.red
+        case .openingSoon:
+            statusText = "Opening Soon"
+            statusColor = UIColor.Eatery.orange
+        case .closingSoon:
+            statusText = "Closing Soon"
+            statusColor = UIColor.Eatery.orange
+        }
+
+        let mainString = "\(statusText) · \(followedBy)"
+        let range = (mainString as NSString).range(of: statusText)
+        let mutableAttributedString = NSMutableAttributedString.init(string: mainString)
+        mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: statusColor, range: range)
+        return mutableAttributedString
+    }
+
     func formatStatus(_ status: EateryStatus) -> NSAttributedString {
         switch status {
         case .open(let event):
             let timeString = timeFormatter.string(from: event.endDate)
             return NSAttributedString(
                 string: "Open until \(timeString)",
-                attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
+                attributes: [.foregroundColor: UIColor.Eatery.green as Any]
             )
 
         case .closed:
@@ -83,15 +109,15 @@ class EateryFormatter {
     func eateryCardFormatter(_ eatery: Eatery, date: Date) -> NSAttributedString? {
         let day = Day(date: date)
         if eatery.isOpen {
-            if let nextEventOfDay = EateryStatus.nextEvent(eatery.events, date: date, on: day) {
-                return NSAttributedString(
-                    string: "Open until \(timeFormatter.string(from: nextEventOfDay.startDate))",
-                    attributes: [.foregroundColor: UIColor.Eatery.green as Any]
-                )
-            } else if case .open(let event) = eatery.status {
+            if case .open(let event) = eatery.status {
                 return NSAttributedString(
                     string: "Open until \(timeFormatter.string(from: event.endDate))",
                     attributes: [.foregroundColor: UIColor.Eatery.green as Any]
+                )
+            } else if case .closingSoon(let event) = eatery.status {
+                return NSAttributedString(
+                    string: "Open until \(timeFormatter.string(from: event.endDate))",
+                    attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
                 )
             } else {
                 return NSAttributedString(
