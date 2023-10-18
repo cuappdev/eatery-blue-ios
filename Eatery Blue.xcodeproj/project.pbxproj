@@ -169,6 +169,8 @@
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor.swift */; };
+		FD334F7B2AD4B1F600BFFF7E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD334F7A2AD4B1F600BFFF7E /* GoogleService-Info.plist */; };
+		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -336,6 +338,8 @@
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		FD334F7A2AD4B1F600BFFF7E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -510,6 +514,7 @@
 			isa = PBXGroup;
 			children = (
 				2EDED7672AD3E23D009ECFA7 /* GoogleService-Info.plist */,
+				FD334F7A2AD4B1F600BFFF7E /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
@@ -631,6 +636,7 @@
 				5DA434BD278B6EC7001337FD /* UITableViewCell.swift */,
 				BFD955942900A8150049D77C /* UIColor.swift */,
 				BC463AB52A862067002FA81A /* UIImageView.swift */,
+				FD78B0B22ADF6762007055B4 /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -967,6 +973,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
+				FD334F7B2AD4B1F600BFFF7E /* GoogleService-Info.plist in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
 				2EDED7682AD3E23D009ECFA7 /* GoogleService-Info.plist in Resources */,
 			);
@@ -1066,6 +1073,7 @@
 				5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */,
 				5D377CF727A20FE300F8DC37 /* SettingsAboutViewController.swift in Sources */,
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
+				FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */,
 				5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */,
 				5DF304D1277A69E000E2C9A4 /* ListViewController.swift in Sources */,
 				5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */,

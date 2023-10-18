@@ -99,7 +99,6 @@ struct SettingsSupportView: View {
                 .foregroundColor(.white)
                 .background(Color("EateryBlue"))
                 .clipShape(Capsule())
-                .buttonStyle(.plain)
 
                 Button {
                     guard let url = URL(string: "mailto:team@cornellappdev.com") else {

@@ -29,7 +29,7 @@ class MenusModelController: MenusViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var selectedDay: Day = Day()
-    private var currentMealType: String = "Breakfast"
+    private var currentMealType: String = String.mealFromTime()
     
     class MenuChoice {
 
