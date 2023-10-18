@@ -186,8 +186,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
         let viewController = EateryModelController()
         viewController.setUp(eatery: eatery)
-        navigationController?.hero.isEnabled = true
-        navigationController?.heroNavigationAnimationType = .fade
+        navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
         viewController.setUpMenu(eatery: eatery)
     }
