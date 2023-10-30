@@ -46,7 +46,7 @@ class MenuHeaderView: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "FullMenu")
+        buttonImageView.image = UIImage(named: "Calendar 1")
         buttonImageView.isUserInteractionEnabled = true
     }
 

@@ -95,7 +95,7 @@ class HomeModelController: HomeViewController {
     
     private func updateSimpleEateriesFromNetworking() async {
         do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
             if isLoading {
                 allEateries = eateries.filter { eatery in
                     return !eatery.name.isEmpty
@@ -113,7 +113,7 @@ class HomeModelController: HomeViewController {
     
     private func updateAllEateriesFromNetworking() async {
         do {
-            let _ = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
+            let _ = isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
         } catch {
             logger.error("\(error)")
         }

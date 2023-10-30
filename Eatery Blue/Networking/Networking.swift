@@ -17,31 +17,52 @@ class Networking {
 
     let accounts: FetchAccounts
     let baseUrl: URL
-    let eateries: InMemoryCache<[Eatery]>
+    let eateryCache: EateryMemoryCache
     var sessionId: String {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
+    let simpleUrl : URL
 
     init(fetchUrl: URL) {
         self.baseUrl = fetchUrl
-        // TODO: factor out get all eateries into a different function
         let eateryApi = EateryAPI(url: fetchUrl)
-        self.eateries = InMemoryCache(fetch: eateryApi.eateries)
+        self.eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         self.accounts = FetchAccounts()
+        self.simpleUrl = URL(string: "\(baseUrl)simple/") ?? baseUrl
     }
-
+    
+    func loadAllEatery() async throws-> [Eatery] {
+        var eateries: [Eatery]
+            eateries = try await eateryCache.fetchAll(maxStaleness: endOfDay())
+        return eateries
+    }
+    
     func loadEatery(by id: Int) async -> Eatery? {
         var eatery: Eatery?
         if let url = URL(string: "\(self.baseUrl)\(id)/") {
             let eateryApi = EateryAPI(url: url)
             do {
-                eatery = try await eateryApi.eatery()
+                eatery = try await eateryCache.fetchByID(maxStaleness: endOfDay(), id: id, fetchByID: eateryApi.eatery)
             } catch {
                 logger.error("Failed to load eatery \(id)")
                 return nil
             }
         }
         return eatery
+    }
+    
+    func loadSimpleEateries() async throws-> [Eatery] {
+        let eateryApi = EateryAPI(url: simpleUrl)
+            return try await eateryApi.eateries()
+    }
+    
+    private func endOfDay() -> TimeInterval{
+        let calendar = Calendar.current
+        let currentDate = Date()
+        if let endOfDay = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: calendar.date(byAdding: .day, value: 1, to: currentDate)!) {
+            return endOfDay.timeIntervalSince(currentDate)
+        } 
+        return 0
     }
 
     func logOut() {
