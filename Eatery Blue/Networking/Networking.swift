@@ -32,9 +32,7 @@ class Networking {
     }
     
     func loadAllEatery() async throws-> [Eatery] {
-        var eateries: [Eatery]
-            eateries = try await eateryCache.fetchAll(maxStaleness: endOfDay())
-        return eateries
+        return try await eateryCache.fetchAll(maxStaleness: endOfDay())
     }
     
     func loadEatery(by id: Int) async -> Eatery? {
@@ -53,7 +51,7 @@ class Networking {
     
     func loadSimpleEateries() async throws-> [Eatery] {
         let eateryApi = EateryAPI(url: simpleUrl)
-            return try await eateryApi.eateries()
+        return try await eateryApi.eateries()
     }
     
     private func endOfDay() -> TimeInterval{
