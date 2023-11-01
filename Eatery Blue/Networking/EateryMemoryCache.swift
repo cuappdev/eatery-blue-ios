@@ -64,8 +64,10 @@ actor EateryMemoryCache {
                 defer { fetchByIDTaskDic.removeValue(forKey: id) }
                 let result = try await fetchByID()
                 try Task.checkCancellation()
-                if cachedValue == nil {cachedValue = []}
-                cachedValue?.append(result)
+                if !allLoaded {
+                    if cachedValue == nil {cachedValue = []}
+                    cachedValue?.append(result)
+                }
                 if cachedValueDate == nil {
                     cachedValueDate = Date()
                 }
