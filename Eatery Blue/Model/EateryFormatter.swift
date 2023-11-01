@@ -102,7 +102,7 @@ class EateryFormatter {
         if events.isEmpty {
             return "Closed"
         } else {
-            return events.map(formatEventTime(_:)).joined(separator: ", ")
+            return events.map(formatEventTime(_:)).joined(separator: "\n")
         }
     }
     
