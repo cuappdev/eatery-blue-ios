@@ -161,7 +161,7 @@ class MenusModelController: MenusViewController {
                 }
             }
 
-            /// Menus are only empty for Central - breakfast and Central - late dinner.
+            /// Empty state only triggered when Central - breakfast and Central - late dinner selected.
             if filter.central || !filter.central && !filter.west && !filter.north {
                 var didAppendCentralLabel: Bool = false
                 currentEateries.forEach { eatery in
