@@ -145,9 +145,14 @@ class SheetViewController: UIViewController {
         titleLabel.textColor = UIColor.Eatery.gray05
         titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         stack.addArrangedSubview(titleLabel)
-
+        
+        let attributedString = NSMutableAttributedString(string: description ?? "")
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
+        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+        
         let descriptionLabel = UILabel()
-        descriptionLabel.text = description
+        descriptionLabel.attributedText = attributedString
         descriptionLabel.textColor = UIColor.Eatery.black
         descriptionLabel.font = .preferredFont(for: .body, weight: .semibold)
         descriptionLabel.numberOfLines = 0

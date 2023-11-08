@@ -171,6 +171,10 @@ class MenusModelController: MenusViewController {
                     }
                 }
             }
+            
+            if filteredEateries.isEmpty {
+                cells.append(.titleLabel(title: "No eateries found..."))
+            }
         }
         
         updateCells(cells: cells, allEateries: currentEateries, eateryStartIndex: eateryStartIndex)

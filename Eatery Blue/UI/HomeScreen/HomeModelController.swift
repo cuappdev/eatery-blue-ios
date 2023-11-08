@@ -248,13 +248,16 @@ class HomeModelController: HomeViewController {
                 if !currentEateries.isEmpty {
                     cells.append(.titleLabel(title: "All Eateries"))
                 }
-
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                 let filteredEateries = allEateries.filter{
                     predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
                 }
                 currentEateries = filteredEateries
+                
+                if filteredEateries.isEmpty {
+                    cells.append(.titleLabel(title: "No eateries found..."))
+                }
             }
 
             eateryStartIndex = cells.count // track the index of the first eateryCard in cells
