@@ -19,9 +19,38 @@ class HomeViewController: UIViewController {
         case carouselView(CarouselView)
         case loadingView(CarouselView)
         case titleLabel(title: String)
+        case statusLabel(status: Status)
         case loadingLabel(title: String)
         case eateryCard(eatery: Eatery)
         case loadingCard
+        
+        func getEateryId() -> Int64?{
+            switch self {
+            case .eateryCard(let eatery):
+                return eatery.id
+            case .searchBar:
+                break
+            case .customView(view: _):
+                break
+            case .carouselView(_):
+                break
+            case .loadingView(_):
+                break
+            case .titleLabel(title: _):
+                break
+            case .statusLabel(status: _):
+                break
+            case .loadingLabel(title: _):
+                break
+            case .loadingCard:
+                break
+            }
+            return nil
+        }
+    }
+    enum Status {
+        case open
+        case closed
     }
     
     private struct Constants {
@@ -38,7 +67,6 @@ class HomeViewController: UIViewController {
 
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
-    private(set) var extraIndex: Int = 0
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
@@ -163,6 +191,12 @@ class HomeViewController: UIViewController {
                     tableViewCells[index].alpha = 1
                 }, completion: nil)
                 delayCounter += 1
+            case .statusLabel:
+                UIView.animate(withDuration: 1.2, delay: 0.2 * Double(delayCounter),usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+                    tableViewCells[index].transform = CGAffineTransform.identity
+                    tableViewCells[index].alpha = 1
+                }, completion: nil)
+                delayCounter += 1
             default:
                 tableViewCells[index].transform = CGAffineTransform.identity
                 tableViewCells[index].alpha = 1
@@ -216,6 +250,25 @@ extension HomeViewController: UITableViewDataSource {
             label.text = title
             label.font = .preferredFont(for: .title2, weight: .semibold)
 
+            let container = ContainerView(content: label)
+            container.layoutMargins = Constants.labelLayoutMargins
+
+            let cell = ClearTableViewCell(content: container)
+            cell.selectionStyle = .none
+            return cell
+        case .statusLabel(status: let status):
+            let label = UILabel()
+            switch status {
+            case .open:
+                label.text = "Open"
+                label.font = .preferredFont(for: .title2, weight: .semibold)
+                label.textColor = UIColor.Eatery.blue
+            case .closed:
+                label.text = "Closed"
+                label.font = .preferredFont(for: .title2, weight: .semibold)
+                label.textColor = UIColor.Eatery.red
+            }
+            
             let container = ContainerView(content: label)
             container.layoutMargins = Constants.labelLayoutMargins
 
@@ -302,10 +355,9 @@ extension HomeViewController: UITableViewDataSource {
         }
     }
 
-    func updateCells(cells: [Cell], allEateries: [Eatery], eateryStartIndex: Int) {
+    func updateCells(cells: [Cell], allEateries: [Eatery]) {
         self.cells = cells
         self.eateries = allEateries
-        self.extraIndex = eateryStartIndex
         tableView.reloadData()
     }
 
@@ -342,8 +394,12 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
         case .eateryCard:
-            pushViewController(eateryIndex: indexPath.row - self.extraIndex)
-
+            for (index, element) in eateries.enumerated() {
+                if cells[indexPath.row].getEateryId()! == element.id {
+                    pushViewController(eateryIndex: index)
+                    break
+                }
+            }
         default:
             break
         }

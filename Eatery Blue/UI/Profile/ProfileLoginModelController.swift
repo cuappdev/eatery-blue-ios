@@ -14,8 +14,9 @@ protocol ProfileLoginModelControllerDelegate: AnyObject {
 
 }
 
-class ProfileLoginModelController: ProfileLoginViewController {
+class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
+    private var firstView = true
     private var isLoggingIn: Bool = false
 
     weak var delegate: ProfileLoginModelControllerDelegate?
@@ -40,6 +41,12 @@ class ProfileLoginModelController: ProfileLoginViewController {
         super.viewWillAppear(animated)
         if let _ = KeychainAccess.shared.retrieveToken() {
             attemptLogin()
+        } else if firstView && UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn){
+            firstView = false
+            let stayloginSheet = StayLoggedInSheet()
+            stayloginSheet.setUpSheetPresentation()
+            stayloginSheet.setUp(delegate: self)
+            tabBarController?.present(stayloginSheet, animated: true)
         }
     }
 
@@ -51,7 +58,7 @@ class ProfileLoginModelController: ProfileLoginViewController {
         }
     }
 
-    private func attemptLogin() {
+    func attemptLogin() {
         isLoggingIn = true
         view.endEditing(true)
         updateLoginButtonFromState()

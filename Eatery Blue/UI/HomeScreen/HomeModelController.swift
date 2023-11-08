@@ -221,7 +221,6 @@ class HomeModelController: HomeViewController {
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
-        var eateryStartIndex: Int = 0
         var currentEateries: [Eatery] = []
 
         cells.append(.searchBar)
@@ -247,6 +246,20 @@ class HomeModelController: HomeViewController {
                 currentEateries = allEateries
                 if !currentEateries.isEmpty {
                     cells.append(.titleLabel(title: "All Eateries"))
+                    let openEateries = currentEateries.filter({ $0.isOpen})
+                    if (!openEateries.isEmpty) {
+                        cells.append(.statusLabel(status: .open))
+                        openEateries.forEach { eatery in
+                            cells.append(.eateryCard(eatery: eatery))
+                        }
+                    }
+                    let closedEateries = currentEateries.filter({ !$0.isOpen})
+                    if (!closedEateries.isEmpty) {
+                        cells.append(.statusLabel(status: .closed))
+                        closedEateries.forEach { eatery in
+                            cells.append(.eateryCard(eatery: eatery))
+                        }
+                    }
                 }
 
             } else {
@@ -256,13 +269,8 @@ class HomeModelController: HomeViewController {
                 }
                 currentEateries = filteredEateries
             }
-
-            eateryStartIndex = cells.count // track the index of the first eateryCard in cells
-            currentEateries.forEach { eatery in
-                cells.append(.eateryCard(eatery: eatery))
-            }
         }
-        updateCells(cells: cells, allEateries: currentEateries, eateryStartIndex: eateryStartIndex)
+        updateCells(cells: cells, allEateries: currentEateries)
     }
 
     private func createFavoriteEateriesCarouselView() -> CarouselView? {
