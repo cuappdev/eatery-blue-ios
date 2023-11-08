@@ -164,7 +164,7 @@ class MenusModelController: MenusViewController {
             if filter.central || !filter.central && !filter.west && !filter.north {
                 var didAppendCentralLabel: Bool = false
                 currentEateries.forEach { eatery in
-                    if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) && (currentMealType == "Lunch" || currentMealType == "Dinner")  {
+                    if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
                         !didAppendCentralLabel ? cells.append(.titleLabel(title: "Central")) : nil
                         didAppendCentralLabel = true
                         cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))

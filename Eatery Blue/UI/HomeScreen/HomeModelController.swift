@@ -248,9 +248,7 @@ class HomeModelController: HomeViewController {
                 if !currentEateries.isEmpty {
                     cells.append(.titleLabel(title: "All Eateries"))
                 }
-            /// Empty state only when Under 10 min or Favorites are empty. If favorites is non-empty, empty state still possible depending on selected location.
             } else {
-
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                 let filteredEateries = allEateries.filter{
                     predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
