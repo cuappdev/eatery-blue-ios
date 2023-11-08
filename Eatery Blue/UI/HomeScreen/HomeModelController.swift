@@ -250,35 +250,6 @@ class HomeModelController: HomeViewController {
                 }
             /// Empty state only when Under 10 min or Favorites are empty. If favorites is non-empty, empty state still possible depending on selected location.
             } else {
-                if filter.favoriteEnabled {
-                    let favoriteEateries = allEateries.filter {
-                        AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
-                    }
-                    let favoriteLocations = favoriteEateries.map { $0.campusArea ?? "" }
-                    let hasFavorites = !favoriteEateries.isEmpty
-                    if favoriteEateries.isEmpty {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                    
-                    else if hasFavorites && filter.north && !filter.west && !filter.central && (favoriteLocations.contains("West") || favoriteLocations.contains("Central")) && !favoriteLocations.contains("North") {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                    else if hasFavorites && !filter.north && filter.west && !filter.central && (favoriteLocations.contains("North") || favoriteLocations.contains("Central")) && !favoriteLocations.contains("West") {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                    else if hasFavorites && !filter.north && !filter.west && filter.central && (favoriteLocations.contains("North") || favoriteLocations.contains("West")) && !favoriteLocations.contains("Central") {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                    else if hasFavorites && (filter.north || filter.west) && !filter.central && favoriteLocations.contains("Central") && !favoriteLocations.contains("North") && !favoriteLocations.contains("West") {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                    else if hasFavorites && (filter.west || filter.central) && !filter.north && favoriteLocations.contains("North") && !favoriteLocations.contains("West") && !favoriteLocations.contains("Central") {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                    else if hasFavorites && (filter.north || filter.central) && !filter.west && favoriteLocations.contains("West") && !favoriteLocations.contains("North") && !favoriteLocations.contains("Central") {
-                        cells.append(.titleLabel(title: "No eateries found..."))
-                    }
-                }
 
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                 let filteredEateries = allEateries.filter{
@@ -286,7 +257,7 @@ class HomeModelController: HomeViewController {
                 }
                 currentEateries = filteredEateries
                 
-                if filter.under10MinutesEnabled && filteredEateries.isEmpty {
+                if filteredEateries.isEmpty {
                     cells.append(.titleLabel(title: "No eateries found..."))
                 }
             }

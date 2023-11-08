@@ -161,21 +161,19 @@ class MenusModelController: MenusViewController {
                 }
             }
 
-            /// Empty state only triggered when Central - breakfast and Central - late dinner selected.
             if filter.central || !filter.central && !filter.west && !filter.north {
                 var didAppendCentralLabel: Bool = false
                 currentEateries.forEach { eatery in
                     if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) && (currentMealType == "Lunch" || currentMealType == "Dinner")  {
-                        print("Testing -> wrong path")
-                        print(eatery.events)
                         !didAppendCentralLabel ? cells.append(.titleLabel(title: "Central")) : nil
                         didAppendCentralLabel = true
                         cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
                     }
                 }
-                if (filter.central && !filter.north && !filter.west) && !(currentMealType == "Lunch" || currentMealType == "Dinner") {
-                    cells.append(.titleLabel(title: "No eateries found..."))
-                }
+            }
+            
+            if filteredEateries.isEmpty {
+                cells.append(.titleLabel(title: "No eateries found..."))
             }
         }
         
