@@ -21,7 +21,7 @@ class Networking {
     var sessionId: String {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
-    let simpleUrl : URL
+    let simpleUrl: URL
 
     init(fetchUrl: URL) {
         self.baseUrl = fetchUrl
@@ -54,13 +54,15 @@ class Networking {
         return try await eateryApi.eateries()
     }
     
-    private func endOfDay() -> TimeInterval{
+    private func endOfDay() -> TimeInterval {
         let calendar = Calendar.current
         let currentDate = Date()
-        if let endOfDay = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: calendar.date(byAdding: .day, value: 1, to: currentDate)!) {
-            return endOfDay.timeIntervalSince(currentDate)
-        } 
-        return 0
+        return Calendar.current.date(
+            bySettingHour: 0,
+            minute: 0,
+            second: 0,
+            of: Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        )?.timeIntervalSince(Date()) ?? 0
     }
 
     func logOut() {

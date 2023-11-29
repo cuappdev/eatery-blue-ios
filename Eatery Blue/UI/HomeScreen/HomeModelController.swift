@@ -256,20 +256,23 @@ class HomeModelController: HomeViewController {
                 currentEateries = filteredEateries
             }
         }
-        let openEateries = currentEateries.filter({ $0.isOpen})
-        if (!openEateries.isEmpty) {
+        
+        let openEateries = currentEateries.filter(\.isOpen)
+        if !openEateries.isEmpty {
             cells.append(.statusLabel(status: .open))
             openEateries.forEach { eatery in
                 cells.append(.eateryCard(eatery: eatery))
             }
         }
-        let closedEateries = currentEateries.filter({ !$0.isOpen})
-        if (!closedEateries.isEmpty) {
+        
+        let closedEateries = currentEateries.filter { !$0.isOpen }
+        if !closedEateries.isEmpty {
             cells.append(.statusLabel(status: .closed))
             closedEateries.forEach { eatery in
                 cells.append(.eateryCard(eatery: eatery))
             }
         }
+        
         updateCells(cells: cells, allEateries: currentEateries)
     }
 

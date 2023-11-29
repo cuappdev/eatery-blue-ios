@@ -10,7 +10,6 @@ import EateryModel
 
 actor EateryMemoryCache {
     
-    
     private var allLoaded = false
     
     private var cachedValueDate: Date?
@@ -25,14 +24,12 @@ actor EateryMemoryCache {
     }
     
     func fetchAll(maxStaleness: TimeInterval) async throws -> [Eatery] {
-        if !isExpired(maxStaleness: maxStaleness), let cachedValue = cachedValue, allLoaded {
+        if !isExpired(maxStaleness: maxStaleness), let cachedValue, allLoaded {
             logger.info("\(self): Returning cached value")
             return cachedValue
-            
         } else if let alltask = fetchAllTask {
             logger.info("\(self): Awaiting existing fetchAll task")
             return try await alltask.value
-            
         } else {
             logger.info("\(self): Creating new fetchAll task")
             let alltask = Task { () -> [Eatery] in
@@ -65,7 +62,7 @@ actor EateryMemoryCache {
                 let result = try await fetchByID()
                 try Task.checkCancellation()
                 if !allLoaded {
-                    if cachedValue == nil {cachedValue = []}
+                    if cachedValue == nil { cachedValue = [] }
                     cachedValue?.append(result)
                 }
                 if cachedValueDate == nil {
@@ -84,7 +81,7 @@ actor EateryMemoryCache {
         }
         
         if let cachedValueDate = cachedValueDate {
-            if (date.timeIntervalSince(cachedValueDate) > maxStaleness) == true {
+            if (date.timeIntervalSince(cachedValueDate) > maxStaleness) {
                 invalidate()
                 return true
             } else {

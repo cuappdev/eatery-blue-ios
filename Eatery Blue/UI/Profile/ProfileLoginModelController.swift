@@ -41,7 +41,7 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
         super.viewWillAppear(animated)
         if let _ = KeychainAccess.shared.retrieveToken() {
             attemptLogin()
-        } else if firstView && UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn){
+        } else if firstView && UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn) {
             firstView = false
             let stayloginSheet = StayLoggedInSheet()
             stayloginSheet.setUpSheetPresentation()

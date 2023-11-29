@@ -24,30 +24,17 @@ class HomeViewController: UIViewController {
         case eateryCard(eatery: Eatery)
         case loadingCard
         
-        func getEateryId() -> Int64?{
+        func getEateryId() -> Int64? {
             switch self {
             case .eateryCard(let eatery):
                 return eatery.id
-            case .searchBar:
-                break
-            case .customView(view: _):
-                break
-            case .carouselView(_):
-                break
-            case .loadingView(_):
-                break
-            case .titleLabel(title: _):
-                break
-            case .statusLabel(status: _):
-                break
-            case .loadingLabel(title: _):
-                break
-            case .loadingCard:
+            default:
                 break
             }
             return nil
         }
     }
+    
     enum Status {
         case open
         case closed
@@ -256,7 +243,7 @@ extension HomeViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
-        case .statusLabel(status: let status):
+        case .statusLabel(let status):
             let label = UILabel()
             switch status {
             case .open:
