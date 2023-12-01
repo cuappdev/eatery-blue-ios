@@ -10,6 +10,7 @@ import Foundation
 enum UserDefaultsKeys {
 
     static let didOnboard = "didOnboard"
+    static let hasLoggedIn = "hasLoggedIn"
     static let isAnalyticsEnabled = "isAnalyticsEnabled"
 
 }

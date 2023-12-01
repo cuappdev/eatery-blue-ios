@@ -20,7 +20,7 @@ class SettingsFavoritesModelController: SettingsFavoritesViewController {
 
     private func updateFavoriteEateriesFromNetworking() async {
         do {
-            let allEateries = try await Networking.default.eateries.fetch(maxStaleness: .infinity)
+            let allEateries = try await Networking.default.loadAllEatery()
             let favoriteEateries = allEateries.filter { eatery in
                 AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
             }.sorted { lhs, rhs in
