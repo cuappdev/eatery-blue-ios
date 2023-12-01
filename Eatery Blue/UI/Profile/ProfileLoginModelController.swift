@@ -16,7 +16,7 @@ protocol ProfileLoginModelControllerDelegate: AnyObject {
 
 class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
-    private var firstView = true
+    private var firstView: Bool = true
     private var isLoggingIn: Bool = false
 
     weak var delegate: ProfileLoginModelControllerDelegate?

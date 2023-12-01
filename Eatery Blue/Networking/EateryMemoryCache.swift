@@ -10,7 +10,7 @@ import EateryModel
 
 actor EateryMemoryCache {
     
-    private var allLoaded = false
+    private var allLoaded: Bool = false
     
     private var cachedValueDate: Date?
     private var cachedValue: [Eatery]?

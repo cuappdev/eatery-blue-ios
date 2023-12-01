@@ -12,6 +12,11 @@ import UIKit
 import Kingfisher
 
 class HomeViewController: UIViewController {
+    
+    enum Status {
+        case open
+        case closed
+    }
 
     enum Cell {
         case searchBar
@@ -33,11 +38,6 @@ class HomeViewController: UIViewController {
             }
             return nil
         }
-    }
-    
-    enum Status {
-        case open
-        case closed
     }
     
     private struct Constants {
