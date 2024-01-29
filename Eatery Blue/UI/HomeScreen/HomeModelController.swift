@@ -244,9 +244,6 @@ class HomeModelController: HomeViewController {
                 }
 
                 currentEateries = allEateries
-                if !currentEateries.isEmpty {
-                    cells.append(.titleLabel(title: "All Eateries"))
-                }
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                 let filteredEateries = allEateries.filter{
