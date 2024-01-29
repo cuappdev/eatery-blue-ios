@@ -47,6 +47,7 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
              let sessionId = urlComponents.queryItems?.filter({ $0.name == "sessionId" }).first?.value {
                delegate?.setSessionId(sessionId) { [weak self] in
                     guard let self = self else { return }
+                    UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasLoggedIn)
                     self.dismiss(animated: true)
                }
           }

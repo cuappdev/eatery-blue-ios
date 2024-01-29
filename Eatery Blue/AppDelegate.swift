@@ -5,6 +5,7 @@
 //  Created by William Ma on 12/22/21.
 //
 
+import AppDevAnnouncements
 import Firebase
 import Hero
 import Kingfisher
@@ -21,6 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+
+        // Setup AppDevAnnouncements
+        AnnouncementNetworking.setupConfig(
+            scheme: EateryEnvironment.announcementsScheme,
+            host: EateryEnvironment.announcementsHost,
+            commonPath: EateryEnvironment.announcementsCommonPath,
+            announcementPath: EateryEnvironment.announcementsPath
+        )
+
         return true
     }
 

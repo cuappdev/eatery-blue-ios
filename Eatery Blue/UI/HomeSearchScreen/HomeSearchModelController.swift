@@ -33,7 +33,7 @@ class HomeSearchModelController: HomeSearchViewController {
 
     private func updateEateriesFromNetworking() async {
         do {
-            let eateries = try await Networking.default.eateries.fetch(maxStaleness: .infinity)
+            let eateries = try await Networking.default.loadAllEatery()
             contentController.setUp(eateries)
             emptyController.setUp(eateries)
         } catch {

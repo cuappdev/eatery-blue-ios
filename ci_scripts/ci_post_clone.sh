@@ -9,4 +9,5 @@
 echo "Downloading Secrets"
 brew install wget
 cd $CI_WORKSPACE/ci_scripts
-wget -O ../Eatery\ Blue/GoogleService-Info.plist "$GOOGLE_SERVICE_PLIST"
+wget -O ../Eatery\ Blue/Supporting/GoogleService-Info.plist "$GOOGLE_SERVICE_PLIST"
+wget -O ../Eatery\ Blue/Supporting/Keys.xcconfig "$KEYS"

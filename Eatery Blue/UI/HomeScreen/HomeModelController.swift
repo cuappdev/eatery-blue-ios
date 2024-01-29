@@ -95,7 +95,7 @@ class HomeModelController: HomeViewController {
     
     private func updateSimpleEateriesFromNetworking() async {
         do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.simple.eateries.fetch(maxStaleness: 0)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
             if isLoading {
                 allEateries = eateries.filter { eatery in
                     return !eatery.name.isEmpty
@@ -113,7 +113,7 @@ class HomeModelController: HomeViewController {
     
     private func updateAllEateriesFromNetworking() async {
         do {
-            let _ = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: 0)
+            let _ = isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
         } catch {
             logger.error("\(error)")
         }
@@ -221,7 +221,6 @@ class HomeModelController: HomeViewController {
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
-        var eateryStartIndex: Int = 0
         var currentEateries: [Eatery] = []
 
         cells.append(.searchBar)
@@ -245,9 +244,6 @@ class HomeModelController: HomeViewController {
                 }
 
                 currentEateries = allEateries
-                if !currentEateries.isEmpty {
-                    cells.append(.titleLabel(title: "All Eateries"))
-                }
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
                 let filteredEateries = allEateries.filter{
@@ -259,13 +255,25 @@ class HomeModelController: HomeViewController {
                     cells.append(.titleLabel(title: "No eateries found..."))
                 }
             }
-
-            eateryStartIndex = cells.count // track the index of the first eateryCard in cells
-            currentEateries.forEach { eatery in
+        }
+        
+        let openEateries = currentEateries.filter(\.isOpen)
+        if !openEateries.isEmpty {
+            cells.append(.statusLabel(status: .open))
+            openEateries.forEach { eatery in
                 cells.append(.eateryCard(eatery: eatery))
             }
         }
-        updateCells(cells: cells, allEateries: currentEateries, eateryStartIndex: eateryStartIndex)
+        
+        let closedEateries = currentEateries.filter { !$0.isOpen }
+        if !closedEateries.isEmpty {
+            cells.append(.statusLabel(status: .closed))
+            closedEateries.forEach { eatery in
+                cells.append(.eateryCard(eatery: eatery))
+            }
+        }
+        
+        updateCells(cells: cells, allEateries: currentEateries)
     }
 
     private func createFavoriteEateriesCarouselView() -> CarouselView? {

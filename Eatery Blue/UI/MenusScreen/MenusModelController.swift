@@ -78,7 +78,7 @@ class MenusModelController: MenusViewController {
     
     private func updateAllEateriesFromNetworking() async {
         do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.default.eateries.fetch(maxStaleness: .infinity)
+            let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
             fetchedEateries = eateries
             
             allEateries = eateries.filter { eatery in
