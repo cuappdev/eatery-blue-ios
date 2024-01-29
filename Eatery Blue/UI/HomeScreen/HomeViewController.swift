@@ -68,6 +68,9 @@ class HomeViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
+
+        // AppDev Announcements
+        presentAnnouncement(completion: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {

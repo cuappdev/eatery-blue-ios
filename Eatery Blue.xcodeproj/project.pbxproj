@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */; };
 		2E6655FB2ADFB86700264391 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */; };
+		2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */ = {isa = PBXBuildFile; productRef = 2E856F642B6714CB0043F350 /* AppDevAnnouncements */; };
+		2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E856F682B67263A0043F350 /* EateryEnvironment.swift */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
@@ -192,6 +194,8 @@
 		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Extension.swift"; sourceTree = "<group>"; };
 		2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2E856F662B6725F00043F350 /* Keys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Keys.xcconfig; sourceTree = "<group>"; };
+		2E856F682B67263A0043F350 /* EateryEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryEnvironment.swift; sourceTree = "<group>"; };
 		2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardDetailView.swift; sourceTree = "<group>"; };
 		2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryExpandableCardMenuCategoryView.swift; sourceTree = "<group>"; };
 		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
@@ -357,6 +361,7 @@
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
 				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
+				2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */,
 				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
@@ -375,6 +380,16 @@
 				2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */,
 			);
 			path = ci_scripts;
+			sourceTree = "<group>";
+		};
+		2E856F672B6726040043F350 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */,
+				2E856F662B6725F00043F350 /* Keys.xcconfig */,
+				2E856F682B67263A0043F350 /* EateryEnvironment.swift */,
+			);
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 		5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */ = {
@@ -517,7 +532,6 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
-				2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
@@ -527,6 +541,7 @@
 				5DCB86A02783543900134066 /* Location */,
 				5DF304B227797BBA00E2C9A4 /* Model */,
 				5D468A13277E3FD300986AFF /* Networking */,
+				2E856F672B6726040043F350 /* Supporting */,
 				5DCB869F27823DDB00134066 /* Testing */,
 				5DF304B427797C3100E2C9A4 /* UI */,
 				5D8651872773CBFB000338D4 /* Assets.xcassets */,
@@ -920,6 +935,7 @@
 				95A5A6BC2819B68600285440 /* FirebaseAnalytics */,
 				95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */,
 				95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				2E856F642B6714CB0043F350 /* AppDevAnnouncements */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -960,6 +976,7 @@
 				5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */,
 				5D75D6DD278E1DF400832359 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -1085,6 +1102,7 @@
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
 				5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */,
 				5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */,
+				2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */,
 				5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */,
 				5DBB59E4278FA7F80028FE59 /* EateryPredicate.swift in Sources */,
 				5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */,
@@ -1215,6 +1233,7 @@
 		};
 		5D86518E2773CBFB000338D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E856F662B6725F00043F350 /* Keys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1270,6 +1289,7 @@
 		};
 		5D8651902773CBFB000338D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E856F662B6725F00043F350 /* Keys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1368,6 +1388,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cuappdev/appdev-announcements";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
@@ -1451,6 +1479,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2E856F642B6714CB0043F350 /* AppDevAnnouncements */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */;
+			productName = AppDevAnnouncements;
+		};
 		5D6C3D5F278746B8000C518D /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */;
