@@ -12,6 +12,11 @@ enum EateryEnvironment {
 
     /// Keys from Info.plist.
     enum Keys {
+#if DEBUG
+        static let baseURL: String = "DEV_URL"
+#else
+        static let baseURL: String = "PROD_URL"
+#endif
         static let announcementsCommonPath = "ANNOUNCEMENTS_COMMON_PATH"
         static let announcementsHost = "ANNOUNCEMENTS_HOST"
         static let announcementsPath = "ANNOUNCEMENTS_PATH"
@@ -24,6 +29,23 @@ enum EateryEnvironment {
             fatalError("Info.plist not found")
         }
         return dict
+    }()
+
+    /**
+     The base URL of Eatery's backend server.
+
+     * If the scheme is set to DEBUG, the development server URL is used.
+     * If the scheme is set to RELEASE, the production server URL is used.
+     */
+    static let baseURL: String = {
+        guard let baseURLString = EateryEnvironment.infoDict[Keys.baseURL] as? String else {
+#if DEBUG
+            fatalError("DEV_URL not found in Info.plist")
+#else
+            fatalError("PROD_URL not found in Info.plist")
+#endif
+        }
+        return baseURLString
     }()
 
     /// The common path for AppDev Announcements.

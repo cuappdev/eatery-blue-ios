@@ -250,13 +250,13 @@ extension HomeViewController: UITableViewDataSource {
             let label = UILabel()
             switch status {
             case .open:
-                label.text = "Open"
+                label.text = "Open Eateries"
                 label.font = .preferredFont(for: .title2, weight: .semibold)
-                label.textColor = UIColor.Eatery.blue
+                label.textColor = UIColor.Eatery.black
             case .closed:
-                label.text = "Closed"
+                label.text = "Closed Eateries"
                 label.font = .preferredFont(for: .title2, weight: .semibold)
-                label.textColor = UIColor.Eatery.red
+                label.textColor = UIColor.Eatery.black
             }
             
             let container = ContainerView(content: label)
