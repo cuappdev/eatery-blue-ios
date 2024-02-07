@@ -81,6 +81,10 @@ class MenusModelController: MenusViewController {
         let cachedEateries = allEateries[selectedIndex] ?? []
 
         if cachedEateries.isEmpty {
+            isLoading = true
+            view.isUserInteractionEnabled = false
+            updateCellsFromState()
+
             do {
                 let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: selectedIndex)
                 allEateries[selectedIndex] = eateries
@@ -93,14 +97,15 @@ class MenusModelController: MenusViewController {
             } catch {
                 logger.error("\(error)")
             }
+
             isLoading = false
+            view.isUserInteractionEnabled = true
         } else {
             fetchedEateries = cachedEateries.filter { eatery in
                 return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
-            isLoading = false
         }
     }
     
@@ -227,8 +232,6 @@ extension MenusModelController: UpdateDateDelegate {
     func updateMenuDay(date: Day, index: Int) {
         selectedDay = date
         selectedIndex = index
-        isLoading = true
-        updateCellsFromState()
 
         Task {
             await updateEateriesFromNetworking()
