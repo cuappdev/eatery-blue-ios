@@ -117,7 +117,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
 
         selectedDayIndex = index
 
-        updateDateDelegate?.updateMenuDay(date: days[index])
+        updateDateDelegate?.updateMenuDay(date: days[index], index: index)
         updateDayPickerCellsFromState()
     }
     

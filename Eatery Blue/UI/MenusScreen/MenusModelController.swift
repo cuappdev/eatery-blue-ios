@@ -11,8 +11,8 @@ import UIKit
 
 protocol UpdateDateDelegate: AnyObject {
     
-    func updateMenuDay(date: Day)
-    
+    func updateMenuDay(date: Day, index: Int)
+
 }
 
 class MenusModelController: MenusViewController {
@@ -21,7 +21,7 @@ class MenusModelController: MenusViewController {
     private var isLoading = true
     
     private var filter = EateryFilter()
-    private var allEateries: [Eatery] = []
+    private var allEateries: [Int: [Eatery]] = [:]
     private var fetchedEateries: [Eatery] = []
     
     private lazy var filterController = MenusFilterViewController(currentMealType: currentMealType)
@@ -29,6 +29,7 @@ class MenusModelController: MenusViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var selectedDay: Day = Day()
+    private var selectedIndex: Int = 0
     private var currentMealType: String = String.Eatery.mealFromTime()
 
     class MenuChoice {
@@ -52,7 +53,7 @@ class MenusModelController: MenusViewController {
         setUpFilterController()
         
         Task {
-            await updateAllEateriesFromNetworking()
+            await updateEateriesFromNetworking()
             updateCellsFromState()
             view.isUserInteractionEnabled = !isLoading
         }
@@ -76,24 +77,31 @@ class MenusModelController: MenusViewController {
         filterController.didMove(toParent: self)
     }
     
-    private func updateAllEateriesFromNetworking() async {
-        do {
-            let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
-            fetchedEateries = eateries
-            
-            allEateries = eateries.filter { eatery in
-                eatery.events.contains { $0.canonicalDay == selectedDay }
+    private func updateEateriesFromNetworking() async {
+        let cachedEateries = allEateries[selectedIndex] ?? []
+
+        if cachedEateries.isEmpty {
+            do {
+                let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: selectedIndex)
+                allEateries[selectedIndex] = eateries
+
+                fetchedEateries = eateries.filter { eatery in
+                    return !eatery.name.isEmpty
+                }.sorted(by: { lhs, rhs in
+                    lhs.name < rhs.name
+                })
+            } catch {
+                logger.error("\(error)")
             }
-            
-            allEateries = allEateries.filter { eatery in
+            isLoading = false
+        } else {
+            fetchedEateries = cachedEateries.filter { eatery in
                 return !eatery.name.isEmpty
             }.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
-        } catch {
-            logger.error("\(error)")
+            isLoading = false
         }
-        isLoading = false
     }
     
     private func updateCellsFromState() {
@@ -112,7 +120,7 @@ class MenusModelController: MenusViewController {
             }
         } else {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-            var filteredEateries = allEateries.filter {
+            var filteredEateries = fetchedEateries.filter {
                 predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
             }
 
@@ -216,13 +224,16 @@ extension MenusModelController: MenusFilterViewControllerDelegate {
 
 extension MenusModelController: UpdateDateDelegate {
     
-    func updateMenuDay(date: Day) {
-        allEateries = fetchedEateries.filter { eatery in
-            eatery.events.contains { $0.canonicalDay == date }
-        }
-        
+    func updateMenuDay(date: Day, index: Int) {
         selectedDay = date
+        selectedIndex = index
+        isLoading = true
         updateCellsFromState()
+
+        Task {
+            await updateEateriesFromNetworking()
+            updateCellsFromState()
+        }
     }
     
 }

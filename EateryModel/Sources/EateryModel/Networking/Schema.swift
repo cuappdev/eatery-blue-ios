@@ -63,7 +63,7 @@ internal enum Schema {
 
         internal let eventDescription: String?
 
-        internal let id: Int
+        internal let id: Int?
 
         internal let start: Int?
 
@@ -77,7 +77,7 @@ internal enum Schema {
 
         internal let event: Int? // Need to communciate about purpose of this var
 
-        internal let id: Int // And this
+        internal let id: Int? // And this
 
         internal let items: [Schema.MenuItem]
 
@@ -85,11 +85,11 @@ internal enum Schema {
 
     internal struct MenuItem: Codable {
 
-        internal let category: Int
+        internal let category: Int?
 
         internal let healthy: Bool?
 
-        internal let id: Int
+        internal let id: Int?
 
         internal let name: String
 
