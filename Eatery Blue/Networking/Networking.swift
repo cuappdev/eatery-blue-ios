@@ -49,11 +49,19 @@ class Networking {
         return eatery
     }
     
-    func loadSimpleEateries() async throws-> [Eatery] {
+    func loadSimpleEateries() async throws -> [Eatery] {
         let eateryApi = EateryAPI(url: simpleUrl)
         return try await eateryApi.eateries()
     }
-    
+
+    func loadEateryByDay(day: Int) async throws -> [Eatery] {
+        if let url = URL(string: "\(self.baseUrl)day/\(day)/") {
+            let eateryApi = EateryAPI(url: url)
+            return try await eateryApi.eateries()
+        }
+        return []
+    }
+
     private func endOfDay() -> TimeInterval {
         let calendar = Calendar.current
         let currentDate = Date()
