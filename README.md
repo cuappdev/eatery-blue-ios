@@ -1,5 +1,7 @@
 # Eatery - Cornell Dining
 
+<p align="center"><img src="https://github.com/cuappdev/assets/blob/master/app-icons/Eatery-83.5x83.5%402x.png" width=210 /></p>
+
 Eatery was the first app released by AppDev. With over 8,000 students using it every month, it enables students to browse menus and discover places to eat on Cornell’s campus. It enhances the dining experience at Cornell with features such as providing the crowdedness of eateries, checking meal swipes and dining money balances, and favoriting dishes. Eatery is available on both iOS and Android platforms. Download the current release on the [App Store](https://apps.apple.com/us/app/eatery-cornell-dining/id1089672962)!
 
 <br />
