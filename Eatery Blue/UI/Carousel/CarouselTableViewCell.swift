@@ -7,9 +7,10 @@
 
 import UIKit
 
+// NOTE FROM PETER: CLASS IS UNUSED. REMOVE?
 class CarouselTableViewCell: UITableViewCell {
 
-    let carouselView = CarouselView()
+    let carouselView = CarouselView(allItems: [], carouselItems: [], navigationController: nil, shouldTruncate: false)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,7 +27,7 @@ class CarouselTableViewCell: UITableViewCell {
         contentView.addSubview(carouselView)
 
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        carouselView.scrollView.contentInset = carouselView.layoutMargins
+//        carouselView.scrollView.contentInset = carouselView.layoutMargins
     }
 
     private func setUpConstraints() {

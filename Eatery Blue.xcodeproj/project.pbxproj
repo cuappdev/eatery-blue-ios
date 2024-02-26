@@ -171,6 +171,7 @@
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor+Extension.swift */; };
+		D06364532B8834E700524757 /* EateryMediumCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDCCF9472AFB0C8E00557FED /* StayLoggedInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */; };
@@ -343,6 +344,7 @@
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayLoggedInSheet.swift; sourceTree = "<group>"; };
@@ -710,6 +712,7 @@
 				5D0CDC502775040800AD0E27 /* HDivider.swift */,
 				5D0CDC582775346600AD0E27 /* PillView.swift */,
 				5D0CDC4C2774F37100AD0E27 /* VDivider.swift */,
+				D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1120,6 +1123,7 @@
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */,
+				D06364532B8834E700524757 /* EateryMediumCardCollectionViewCell.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont+Extension.swift in Sources */,
 				5DF3049727778A7600E2C9A4 /* WaitTimesView.swift in Sources */,
 				5D8651812773CBFB000338D4 /* SceneDelegate.swift in Sources */,

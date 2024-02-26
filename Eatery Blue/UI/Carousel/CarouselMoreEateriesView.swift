@@ -7,11 +7,13 @@
 
 import UIKit
 
-class CarouselMoreEateriesView: UIView {
+class CarouselMoreEateriesView: UICollectionViewCell {
 
     let stackView = UIStackView()
     let imageView = UIImageView()
     let titleLabel = UILabel()
+    
+    static let reuse = "more_eateries_reuse"
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,15 +28,19 @@ class CarouselMoreEateriesView: UIView {
 
     private func setUpSelf() {
         backgroundColor = UIColor.Eatery.offWhite
+        
         layer.cornerRadius = 8
-
+        layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        layer.shadowOpacity = 0.25
+        
         addSubview(stackView)
         setUpStackView()
     }
 
     private func setUpStackView() {
         stackView.axis = .vertical
-        stackView.spacing = 12
         stackView.alignment = .center
         stackView.distribution = .fill
 
@@ -58,10 +64,6 @@ class CarouselMoreEateriesView: UIView {
     }
 
     private func setUpConstraints() {
-        snp.makeConstraints { make in
-            make.width.equalTo(186)
-        }
-
         stackView.snp.makeConstraints { make in
             make.leading.trailing.centerY.equalToSuperview()
             make.top.greaterThanOrEqualToSuperview()

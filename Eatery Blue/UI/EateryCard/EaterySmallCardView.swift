@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import EateryModel
 
 class EaterySmallCardView: UIView {
 
     let imageView = UIImageView()
-    let favoriteImageView = UIImageView()
+    let favoriteButton = ContainerView(pillContent: UIImageView())
     let titleLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -23,6 +24,30 @@ class EaterySmallCardView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func configure(eatery: Eatery) {
+        imageView.kf.setImage(with: eatery.imageUrl)
+        titleLabel.text = eatery.name
+        
+        favoriteButton.tap { _ in
+            let coreDataStack = AppDelegate.shared.coreDataStack
+            let metadata = coreDataStack.metadata(eateryId: eatery.id)
+            metadata.isFavorite.toggle()
+            coreDataStack.save()
+            
+            if metadata.isFavorite {
+                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+            } else {
+                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+            }
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("favoriteEatery"),
+                object: nil
+            )
+        }
+    
+    }
 
     private func setUpSelf() {
         addSubview(imageView)
@@ -31,8 +56,8 @@ class EaterySmallCardView: UIView {
         addSubview(titleLabel)
         setUpTitleLabel()
 
-        addSubview(favoriteImageView)
-        setUpFavoriteImageView()
+        addSubview(favoriteButton)
+        setUpFavoriteButton()
     }
 
     private func setUpImageView() {
@@ -48,9 +73,9 @@ class EaterySmallCardView: UIView {
         titleLabel.textAlignment = .center
     }
 
-    private func setUpFavoriteImageView() {
-        favoriteImageView.contentMode = .scaleAspectFill
-        favoriteImageView.image = UIImage(named: "FavoriteSelected")
+    private func setUpFavoriteButton() {
+        favoriteButton.content.contentMode = .scaleAspectFill
+        favoriteButton.content.image = UIImage(named: "FavoriteSelected")
     }
 
     private func setUpConstraints() {
@@ -59,7 +84,7 @@ class EaterySmallCardView: UIView {
             make.width.height.equalTo(96)
         }
 
-        favoriteImageView.snp.makeConstraints { make in
+        favoriteButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.trailing.bottom.equalTo(imageView)
         }
