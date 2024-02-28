@@ -5,28 +5,30 @@
 //  Created by William Ma on 12/22/21.
 //
 
-import UIKit
 import EateryModel
+import UIKit
 
 class CarouselView: UIView {
     
-    // MARK: - Fields
+    // MARK: - Properties (data)
     
-    var allItems: [Eatery]
-    var carouselItems: [Eatery]
-    let navigationController: UINavigationController?
-    let shouldTruncate: Bool
+    private let title: String
+    private var allItems: [Eatery]
+    private var carouselItems: [Eatery]
+    private let navigationController: UINavigationController?
+    private let shouldTruncate: Bool
 
     
-    // MARK: - Properties
+    // MARK: - Properties (view)
     
     let titleLabel = UILabel()
-    var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    let buttonImageView = UIImageView()
+    private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private let buttonImageView = UIImageView()
     
     // MARK: - Initializers
         
-    required init(allItems: [Eatery], carouselItems: [Eatery], navigationController: UINavigationController?, shouldTruncate: Bool) {
+    init(title: String, allItems: [Eatery], carouselItems: [Eatery], navigationController: UINavigationController?, shouldTruncate: Bool) {
+        self.title = title
         self.allItems = allItems
         self.carouselItems = carouselItems
         self.navigationController = navigationController
@@ -41,11 +43,10 @@ class CarouselView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Update
-    
     public func updateCarousel(carouselItems: [Eatery]) {
         
-        buttonImageView.tap { [self] _ in
+        buttonImageView.tap { [weak self] _ in
+            guard let self else { return }
             pushListViewController(title: titleLabel.text ?? "", description: "", eateries: carouselItems)
         }
         
@@ -96,13 +97,15 @@ class CarouselView: UIView {
     }
 
     private func setUpTitleLabel() {
+        titleLabel.text = title
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
     }
 
     private func setUpButtonImageView() {
         buttonImageView.isUserInteractionEnabled = true
         buttonImageView.image = UIImage(named: "ButtonArrowForward")
-        buttonImageView.tap { [self] _ in
+        buttonImageView.tap { [weak self] _ in
+            guard let self else { return }
             pushListViewController(title: titleLabel.text ?? "", description: "", eateries: carouselItems)
         }
     }
@@ -112,7 +115,7 @@ class CarouselView: UIView {
         layout.scrollDirection = .horizontal
         collectionView.setCollectionViewLayout(layout, animated: true)
         collectionView.register(EateryMediumCardCollectionViewCell.self, forCellWithReuseIdentifier: EateryMediumCardCollectionViewCell.reuse)
-        collectionView.register(CarouselMoreEateriesView.self, forCellWithReuseIdentifier: CarouselMoreEateriesView.reuse)
+        collectionView.register(CarouselMoreEateriesCollectionViewCell.self, forCellWithReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -134,9 +137,7 @@ class CarouselView: UIView {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
-            make.leading.equalTo(snp.leading)
-            make.trailing.equalTo(snp.trailing)
-            make.bottom.equalTo(snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -153,13 +154,13 @@ class CarouselView: UIView {
 
 extension CarouselView: UICollectionViewDataSource {
     
-    // what is the cell?
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if indexPath.section == min(3, carouselItems.count) && shouldTruncate {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselMoreEateriesView.reuse, for: indexPath) as? CarouselMoreEateriesView else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse, for: indexPath) as? CarouselMoreEateriesCollectionViewCell else { return UICollectionViewCell() }
             
-            cell.tap {_ in 
+            cell.tap { [weak self] _ in
+                guard let self else { return }
                 self.pushListViewController(title: self.titleLabel.text ?? "", description: nil, eateries: self.carouselItems)
             }
             
@@ -187,12 +188,10 @@ extension CarouselView: UICollectionViewDataSource {
         return cell
     }
     
-    // how many items in each section?
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return 1
+        return 1
     }
     
-    // how many sections?
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if shouldTruncate {
             return min(4, carouselItems.count)
@@ -200,11 +199,11 @@ extension CarouselView: UICollectionViewDataSource {
         
         return carouselItems.count
     }
+    
 }
 
 extension CarouselView: UICollectionViewDelegate {
     
-    // on tap
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let pageVC = EateryPageViewController(eateries: carouselItems, index: indexPath.section)
         pageVC.modalPresentationStyle = .overCurrentContext
@@ -212,7 +211,6 @@ extension CarouselView: UICollectionViewDelegate {
         navigationController?.pushViewController(pageVC, animated: true)
     }
     
-    // press down
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
@@ -220,18 +218,17 @@ extension CarouselView: UICollectionViewDelegate {
         }
     }
     
-    // lift up
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
             cell?.transform = .identity
         }
     }
+    
 }
 
 extension CarouselView: UICollectionViewDelegateFlowLayout {
     
-    // cell size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == min(3, carouselItems.count) && shouldTruncate {
             return CGSize(width: 156, height: 196)
@@ -239,7 +236,6 @@ extension CarouselView: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 312, height: 196)
     }
     
-    // insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         let inset = CGFloat(18)
@@ -254,4 +250,5 @@ extension CarouselView: UICollectionViewDelegateFlowLayout {
         
         return UIEdgeInsets(top: inset, left: inset, bottom: inset, right: 0)
     }
+    
 }

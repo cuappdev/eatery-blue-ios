@@ -44,9 +44,8 @@
 		5D3A149B27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3A149A27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift */; };
 		5D3A149D27A3047D00768E13 /* SettingsAboutMembersCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3A149C27A3047D00768E13 /* SettingsAboutMembersCarouselView.swift */; };
 		5D3A14A327A30A9200768E13 /* SettingsAboutModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3A14A227A30A9200768E13 /* SettingsAboutModelController.swift */; };
-		5D4689FA277D061900986AFF /* CarouselTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */; };
 		5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4689FF277D146500986AFF /* ClearTableViewCell.swift */; };
-		5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */; };
+		5D468A12277E369200986AFF /* CarouselMoreEateriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A11277E369200986AFF /* CarouselMoreEateriesCollectionViewCell.swift */; };
 		5D468A15277E3FDC00986AFF /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D468A14277E3FDC00986AFF /* Networking.swift */; };
 		5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */; };
 		5D698F8627888EC80054E1AB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F8527888EC80054E1AB /* LoginView.swift */; };
@@ -230,9 +229,8 @@
 		5D3A149A27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutAppDevHeaderView.swift; sourceTree = "<group>"; };
 		5D3A149C27A3047D00768E13 /* SettingsAboutMembersCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutMembersCarouselView.swift; sourceTree = "<group>"; };
 		5D3A14A227A30A9200768E13 /* SettingsAboutModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutModelController.swift; sourceTree = "<group>"; };
-		5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselTableViewCell.swift; sourceTree = "<group>"; };
 		5D4689FF277D146500986AFF /* ClearTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearTableViewCell.swift; sourceTree = "<group>"; };
-		5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselMoreEateriesView.swift; sourceTree = "<group>"; };
+		5D468A11277E369200986AFF /* CarouselMoreEateriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselMoreEateriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D468A14277E3FDC00986AFF /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		5D698F8227888E4B0054E1AB /* ProfileLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginViewController.swift; sourceTree = "<group>"; };
 		5D698F8527888EC80054E1AB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -505,8 +503,7 @@
 		5D75D6E5278E402300832359 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
-				5D468A11277E369200986AFF /* CarouselMoreEateriesView.swift */,
-				5D4689F9277D061900986AFF /* CarouselTableViewCell.swift */,
+				5D468A11277E369200986AFF /* CarouselMoreEateriesCollectionViewCell.swift */,
 				5DF5F7D327740182001ADCDC /* CarouselView.swift */,
 				5DF5F7DE27742273001ADCDC /* CarouselViewCompact.swift */,
 			);
@@ -712,7 +709,6 @@
 				5D0CDC502775040800AD0E27 /* HDivider.swift */,
 				5D0CDC582775346600AD0E27 /* PillView.swift */,
 				5D0CDC4C2774F37100AD0E27 /* VDivider.swift */,
-				D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -873,6 +869,7 @@
 				998F6D102AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift */,
 				2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */,
 				2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */,
+				D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */,
 			);
 			path = EateryCard;
 			sourceTree = "<group>";
@@ -1071,7 +1068,6 @@
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
-				5D4689FA277D061900986AFF /* CarouselTableViewCell.swift in Sources */,
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
 				5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */,
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment+Extension.swift in Sources */,
@@ -1130,7 +1126,7 @@
 				5DDAD4772773DA9800CC98DD /* RootViewController.swift in Sources */,
 				5DBA89A72784D938002DCA6B /* OnboardingFeaturesViewController.swift in Sources */,
 				2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */,
-				5D468A12277E369200986AFF /* CarouselMoreEateriesView.swift in Sources */,
+				5D468A12277E369200986AFF /* CarouselMoreEateriesCollectionViewCell.swift in Sources */,
 				FDCCF9472AFB0C8E00557FED /* StayLoggedInSheet.swift in Sources */,
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				99BA26F629F8A8CE007BE992 /* EateryMediumLoadingCardView.swift in Sources */,

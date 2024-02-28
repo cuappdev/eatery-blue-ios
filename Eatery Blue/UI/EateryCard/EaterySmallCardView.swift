@@ -5,14 +5,14 @@
 //  Created by William Ma on 12/22/21.
 //
 
-import UIKit
 import EateryModel
+import UIKit
 
 class EaterySmallCardView: UIView {
 
-    let imageView = UIImageView()
-    let favoriteButton = ContainerView(pillContent: UIImageView())
-    let titleLabel = UILabel()
+    private let imageView = UIImageView()
+    private let favoriteButton = ContainerView(pillContent: UIImageView())
+    private let titleLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,11 +25,42 @@ class EaterySmallCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(eatery: Eatery) {
+    func configure(eatery: Eatery) {
         imageView.kf.setImage(with: eatery.imageUrl)
         titleLabel.text = eatery.name
+        setUpFavoriteButton(eatery: eatery)
+    }
+
+    private func setUpSelf() {
+        addSubview(imageView)
+        setUpImageView()
+
+        addSubview(titleLabel)
+        setUpTitleLabel()
+
+        addSubview(favoriteButton)
+    }
+
+    private func setUpImageView() {
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 8
+    }
+
+    private func setUpTitleLabel() {
+        titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.numberOfLines = 2
+        titleLabel.textAlignment = .center
+    }
+
+    private func setUpFavoriteButton(eatery: Eatery) {
+        favoriteButton.content.contentMode = .scaleAspectFill
+        favoriteButton.content.image = UIImage(named: "FavoriteSelected")
         
-        favoriteButton.tap { _ in
+        favoriteButton.tap { [weak self] _ in
+            guard let self else { return }
+            
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
@@ -46,36 +77,6 @@ class EaterySmallCardView: UIView {
                 object: nil
             )
         }
-    
-    }
-
-    private func setUpSelf() {
-        addSubview(imageView)
-        setUpImageView()
-
-        addSubview(titleLabel)
-        setUpTitleLabel()
-
-        addSubview(favoriteButton)
-        setUpFavoriteButton()
-    }
-
-    private func setUpImageView() {
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
-    }
-
-    private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
-        titleLabel.numberOfLines = 2
-        titleLabel.textAlignment = .center
-    }
-
-    private func setUpFavoriteButton() {
-        favoriteButton.content.contentMode = .scaleAspectFill
-        favoriteButton.content.image = UIImage(named: "FavoriteSelected")
     }
 
     private func setUpConstraints() {

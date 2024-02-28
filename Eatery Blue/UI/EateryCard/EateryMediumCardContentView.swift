@@ -21,7 +21,7 @@ class EateryMediumCardContentView: UIView {
     
     let alertView = EateryCardAlertView()
     
-    private var cancellables: Set<AnyCancellable> = []
+    private var cancellables = Set<AnyCancellable>()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,50 +34,12 @@ class EateryMediumCardContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(eatery: Eatery) {
-        imageView.kf.setImage(
-            with: eatery.imageUrl,
-            options: [.backgroundDecode]
-        )
-        imageTintView.alpha = eatery.isOpen ? 0 : 0.5
+    func configure(eatery: Eatery) {
         titleLabel.text = eatery.name
-        
-        self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        UIView.animate(withDuration: 0.2) {
-            self.transform = CGAffineTransform(scaleX: 1, y: 1)
-        }
-
         setupFavoriteButton(eatery: eatery)
-        
-        LocationManager.shared.$userLocation
-            .sink { userLocation in
-                self.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
-                    eatery,
-                    style: .medium,
-                    font: .preferredFont(for: .footnote, weight: .medium),
-                    userLocation: userLocation,
-                    date: Date()
-                ).first
-            }
-            .store(in: &cancellables)
-
-        let now = Date()
-        switch eatery.status {
-        case .closingSoon(let event):
-            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-            alertView.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-            alertView.isHidden = false
-
-        case .openingSoon(let event):
-            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-            alertView.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-            alertView.isHidden = false
-            
-        default:
-            alertView.isHidden = true
-            break
-        }
-        
+        configureImageView(imageUrl: eatery.imageUrl, isOpen: eatery.isOpen)
+        configureSubtitleLabels(eatery: eatery)
+        configureAlerts(status: eatery.status)
     }
 
     private func setUpSelf() {
@@ -200,6 +162,76 @@ class EateryMediumCardContentView: UIView {
         }
     }
 
+    private func configureImageView(imageUrl: URL?, isOpen: Bool) {
+        imageView.kf.setImage(
+            with: imageUrl,
+            options: [.backgroundDecode]
+        )
+        imageTintView.alpha = isOpen ? 0 : 0.5
+    }
+    
+    private func configureFavoriteButton(id: Int64) {
+        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: id)
+        if metadata.isFavorite {
+            favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+        } else {
+            favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+        }
+        
+        favoriteButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+            
+            let coreDataStack = AppDelegate.shared.coreDataStack
+            let metadata = coreDataStack.metadata(eateryId: id)
+            metadata.isFavorite.toggle()
+            coreDataStack.save()
+            
+            if metadata.isFavorite {
+                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+            } else {
+                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+            }
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("favoriteEatery"),
+                object: nil
+            )
+        }
+    }
+    
+    private func configureSubtitleLabels(eatery: Eatery) {
+        LocationManager.shared.$userLocation
+            .sink { userLocation in
+                self.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
+                    eatery,
+                    style: .medium,
+                    font: .preferredFont(for: .footnote, weight: .medium),
+                    userLocation: userLocation,
+                    date: Date()
+                ).first
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func configureAlerts(status: EateryStatus) {
+        let now = Date()
+        switch status {
+        case .closingSoon(let event):
+            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
+            alertView.titleLabel.text = "Closing in \(minutesUntilClosed) min"
+            alertView.isHidden = false
+
+        case .openingSoon(let event):
+            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
+            alertView.titleLabel.text = "Opening in \(minutesUntilOpen) min"
+            alertView.isHidden = false
+            
+        default:
+            alertView.isHidden = true
+            break
+        }
+    }
+    
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
     }

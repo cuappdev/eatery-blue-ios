@@ -10,6 +10,8 @@ import EateryModel
 
 class EateryLargeCardContentView: UIView {
 
+    // MARK: - Properties (view)
+    
     let imageView = UIImageView()
     let imageTintView = UIView()
     let alertsStackView = UIStackView()
@@ -18,11 +20,11 @@ class EateryLargeCardContentView: UIView {
     let titleLabel = UILabel()
     let subtitleLabels = [UILabel(), UILabel()]
 
-    var favoriteButton = ButtonView(content: UIImageView())
+    private var favoriteButton = ButtonView(content: UIImageView())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         setUpSelf()
         setUpConstraints()
     }
@@ -31,58 +33,12 @@ class EateryLargeCardContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(eatery: Eatery) {
-        imageView.image = UIImage()
-        imageView.kf.setImage(with: eatery.imageUrl)
-        imageTintView.alpha = eatery.isOpen ? 0 : 0.5
+    func configure(eatery: Eatery) {
         titleLabel.text = eatery.name
-        imageView.hero.id = eatery.imageUrl?.absoluteString
-        
-        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-        if metadata.isFavorite {
-            favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-        } else {
-            favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
-        }
-
-        subtitleLabels[0].text = eatery.locationDescription
-        subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
-
-        let now = Date()
-        switch eatery.status {
-        case .closingSoon(let event):
-            let alert = EateryCardAlertView()
-            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-            alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-            addAlertView(alert)
-
-        case .openingSoon(let event):
-            let alert = EateryCardAlertView()
-            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-            alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-            addAlertView(alert)
-
-        default:
-            break
-        }
-        
-        favoriteButton.buttonPress { _ in
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: eatery.id)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
-            
-            if metadata.isFavorite {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-            } else {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
-            }
-
-            NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
-                object: nil
-            )
-        }
+        setUpFavoriteButton(eatery: eatery)
+        configureImageView(imageUrl: eatery.imageUrl, isOpen: eatery.isOpen)
+        configureSubtitleLabels(eatery: eatery)
+        configureAlerts(status: eatery.status)
     }
 
     private func setUpSelf() {
@@ -97,7 +53,6 @@ class EateryLargeCardContentView: UIView {
         setUpLabelStackView()
 
         addSubview(favoriteButton)
-        setUpFavoriteButton()
     }
 
     private func setUpImageView() {
@@ -152,10 +107,65 @@ class EateryLargeCardContentView: UIView {
         subtitleLabel.lineBreakMode = .byWordWrapping
     }
 
-    private func setUpFavoriteButton() {
+    private func setUpFavoriteButton(eatery: Eatery) {
         favoriteButton.content.contentMode = .scaleAspectFill
-        favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
-        favoriteButton.layer.zPosition = 10;
+
+        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
+        if metadata.isFavorite {
+            favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+        } else {
+            favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+        }
+        
+        favoriteButton.buttonPress { _ in
+            let coreDataStack = AppDelegate.shared.coreDataStack
+            let metadata = coreDataStack.metadata(eateryId: eatery.id)
+            metadata.isFavorite.toggle()
+            coreDataStack.save()
+            
+            if metadata.isFavorite {
+                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+            } else {
+                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+            }
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("favoriteEatery"),
+                object: nil
+            )
+        }
+    }
+    
+    private func configureImageView(imageUrl: URL?, isOpen: Bool) {
+        imageView.image = UIImage()
+        imageView.kf.setImage(with: imageUrl)
+        imageTintView.alpha = isOpen ? 0 : 0.5
+        imageView.hero.id = imageUrl?.absoluteString
+    }
+    
+    private func configureSubtitleLabels(eatery: Eatery) {
+        subtitleLabels[0].text = eatery.locationDescription
+        subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
+    }
+    
+    private func configureAlerts(status: EateryStatus) {
+        let now = Date()
+        switch status {
+        case .closingSoon(let event):
+            let alert = EateryCardAlertView()
+            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
+            alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
+            addAlertView(alert)
+
+        case .openingSoon(let event):
+            let alert = EateryCardAlertView()
+            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
+            alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
+            addAlertView(alert)
+
+        default:
+            break
+        }
     }
 
     private func setUpConstraints() {

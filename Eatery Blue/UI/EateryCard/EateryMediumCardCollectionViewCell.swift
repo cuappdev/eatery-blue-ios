@@ -1,18 +1,18 @@
 //
-//  ClearCollectionViewCell.swift
+//  EateryMediumCardCollectionViewCell.swift
 //  Eatery Blue
 //
 //  Created by Peter Bidoshi  on 2/22/24.
 //
 
-import UIKit
 import EateryModel
+import UIKit
 
 class EateryMediumCardCollectionViewCell: UICollectionViewCell {
         
     private let card: EateryCardVisualEffectView<EateryMediumCardContentView> = EateryCardVisualEffectView(content: EateryMediumCardContentView())
 
-    static let reuse = "clear_collectionviewcell_reuse"
+    static let reuse = "EateryMediumCardCollectionViewCellReuse"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,7 +23,7 @@ class EateryMediumCardCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCard() {
+    private func setupCard() {
         addSubview(card)
         card.snp.makeConstraints { make in
             make.edges.equalToSuperview()

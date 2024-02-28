@@ -7,13 +7,13 @@
 
 import UIKit
 
-class CarouselMoreEateriesView: UICollectionViewCell {
+class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
 
     let stackView = UIStackView()
     let imageView = UIImageView()
     let titleLabel = UILabel()
     
-    static let reuse = "more_eateries_reuse"
+    static let reuse = "CarouselMoreEateriesCollectionViewCellReuse"
 
     override init(frame: CGRect) {
         super.init(frame: frame)

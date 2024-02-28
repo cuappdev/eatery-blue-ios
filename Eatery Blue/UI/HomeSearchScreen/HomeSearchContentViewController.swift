@@ -140,7 +140,6 @@ extension HomeSearchContentViewController: UITableViewDataSource {
         case .eatery(let eatery):
             let largeCardContent = EateryLargeCardContentView()
             
-            // --- PETER --- moved view configuration to inside the EateryLargeCardContentView Class.
             largeCardContent.configure(eatery: eatery)
 
             let cardView = EateryCardVisualEffectView(content: largeCardContent)

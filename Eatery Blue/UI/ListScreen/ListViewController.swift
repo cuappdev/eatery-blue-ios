@@ -255,7 +255,6 @@ extension ListViewController: UITableViewDataSource {
             let eatery = eateries[indexPath.row - 1]
             let largeCardContent = EateryLargeCardContentView()
             
-            // --- PETER --- moved view configuration to inside the EateryLargeCardContentView Class.
             largeCardContent.configure(eatery: eatery)
 
             let cardView = EateryCardVisualEffectView(content: largeCardContent)

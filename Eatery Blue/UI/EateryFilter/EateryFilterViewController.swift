@@ -63,7 +63,8 @@ class EateryFilterViewController: UIViewController {
     
     private func setUpNorth() {
         north.label.text = "North"
-        north.tap { [self] _ in
+        north.tap { [weak self] _ in
+            guard let self else { return }
             filter.north.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -75,7 +76,8 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpWest() {
         west.label.text = "West"
-        west.tap { [self] _ in
+        west.tap { [weak self] _ in
+            guard let self else { return }
             filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -87,7 +89,8 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpCentral() {
         central.label.text = "Central"
-        central.tap { [self] _ in
+        central.tap { [weak self] _ in
+            guard let self else { return }
             filter.central.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -99,7 +102,8 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpUnder10Minutes() {
         under10Minutes.label.text = "Under 10 min"
-        under10Minutes.tap { [self] _ in
+        under10Minutes.tap { [weak self] _ in
+            guard let self else { return }
             filter.under10MinutesEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -112,7 +116,8 @@ class EateryFilterViewController: UIViewController {
     private func setUpPaymentMethods() {
         paymentMethods.label.text = "Payment Methods"
         paymentMethods.imageView.isHidden = false
-        paymentMethods.tap { [self] _ in
+        paymentMethods.tap { [weak self] _ in
+            guard let self else { return }
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
@@ -123,7 +128,8 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpFavorites() {
         favorites.label.text = "Favorites"
-        favorites.tap { [self] _ in
+        favorites.tap { [weak self] _ in
+            guard let self else { return }
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
