@@ -233,10 +233,9 @@ class EateryModelController: EateryViewController {
             if menuCategory.category == "Chef's Table - Sides" {
                 sortedCategories.swapAt(1, i)
             }
-//            if menuCategory.category == "Grill" {
-//                sortedCategories.swapAt(2, i)
-//                print("works")
-//            }
+            if menuCategory.category == "Grill" {
+                sortedCategories.swapAt(2, i)
+            }
         }
         return sortedCategories
     }
