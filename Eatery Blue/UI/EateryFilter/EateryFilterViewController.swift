@@ -16,12 +16,12 @@ protocol EateryFilterViewControllerDelegate: AnyObject {
 
 class EateryFilterViewController: UIViewController {
 
-    let north = PillFilterButtonView()
-    let west = PillFilterButtonView()
-    let central = PillFilterButtonView()
-    let under10Minutes = PillFilterButtonView()
-    let paymentMethods = PillFilterButtonView()
-    let favorites = PillFilterButtonView()
+    private let north = PillFilterButtonView()
+    private let west = PillFilterButtonView()
+    private let central = PillFilterButtonView()
+    private let under10Minutes = PillFilterButtonView()
+    private let paymentMethods = PillFilterButtonView()
+    private let favorites = PillFilterButtonView()
 
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()

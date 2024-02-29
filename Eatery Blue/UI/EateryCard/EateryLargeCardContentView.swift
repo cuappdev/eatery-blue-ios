@@ -5,23 +5,22 @@
 //  Created by William Ma on 12/23/21.
 //
 
-import UIKit
 import EateryModel
+import UIKit
 
 class EateryLargeCardContentView: UIView {
 
     // MARK: - Properties (view)
     
-    let imageView = UIImageView()
-    let imageTintView = UIView()
-    let alertsStackView = UIStackView()
+    private let imageView = UIImageView()
+    private let imageTintView = UIView()
+    private let alertsStackView = UIStackView()
 
-    let labelStackView = UIStackView() 
-    let titleLabel = UILabel()
-    let subtitleLabels = [UILabel(), UILabel()]
-
+    private let labelStackView = UIStackView()
+    private let titleLabel = UILabel()
+    private let subtitleLabels = [UILabel(), UILabel()]
     private var favoriteButton = ButtonView(content: UIImageView())
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -117,7 +116,8 @@ class EateryLargeCardContentView: UIView {
             favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
         }
         
-        favoriteButton.buttonPress { _ in
+        favoriteButton.buttonPress { [weak self] _ in
+            guard let self else { return }
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()

@@ -134,7 +134,7 @@ class CarouselView: UIView {
             make.width.height.equalTo(40)
             make.top.trailing.equalTo(layoutMarginsGuide)
         }
-        
+
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
             make.leading.trailing.bottom.equalToSuperview()
@@ -161,7 +161,7 @@ extension CarouselView: UICollectionViewDataSource {
             
             cell.tap { [weak self] _ in
                 guard let self else { return }
-                self.pushListViewController(title: self.titleLabel.text ?? "", description: nil, eateries: self.carouselItems)
+                pushListViewController(title: self.titleLabel.text ?? "", description: nil, eateries: self.carouselItems)
             }
             
             return cell
@@ -199,7 +199,7 @@ extension CarouselView: UICollectionViewDataSource {
         
         return carouselItems.count
     }
-    
+
 }
 
 extension CarouselView: UICollectionViewDelegate {
@@ -237,7 +237,6 @@ extension CarouselView: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
         let inset = CGFloat(18)
         
         if section == min(3, carouselItems.count) && shouldTruncate {

@@ -5,24 +5,24 @@
 //  Created by William Ma on 12/22/21.
 //
 
-import UIKit
-import EateryModel
 import Combine
+import EateryModel
+import UIKit
 
 class EateryMediumCardContentView: UIView {
 
-    let imageView = UIImageView()
-    let imageTintView = UIView()
-    let alertsStackView = UIStackView()
+    private let imageView = UIImageView()
+    private let imageTintView = UIView()
+    private let alertsStackView = UIStackView()
 
-    let titleLabel = UILabel()
-    let subtitleLabel = UILabel()
-    let favoriteButton = ButtonView(content: UIImageView())
-    
-    let alertView = EateryCardAlertView()
-    
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let favoriteButton = ButtonView(content: UIImageView())
+
+    private let alertView = EateryCardAlertView()
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -33,7 +33,7 @@ class EateryMediumCardContentView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configure(eatery: Eatery) {
         titleLabel.text = eatery.name
         setupFavoriteButton(eatery: eatery)
@@ -43,7 +43,6 @@ class EateryMediumCardContentView: UIView {
     }
 
     private func setUpSelf() {
-        
         backgroundColor = UIColor.Eatery.offWhite
 
         addSubview(imageView)
@@ -104,7 +103,9 @@ class EateryMediumCardContentView: UIView {
             favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
         }
         
-        favoriteButton.buttonPress { _ in
+        favoriteButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
