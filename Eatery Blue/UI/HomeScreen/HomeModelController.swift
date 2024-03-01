@@ -126,16 +126,11 @@ class HomeModelController: HomeViewController {
         title: String
     ) -> CarouselView {
         
-        let carouselView = CarouselView(title: "", allItems: [], carouselItems: [], navigationController: navigationController, shouldTruncate: false)
+        let carouselView = CarouselView(title: "Finding flavorful food...", allItems: [], carouselItems: [], navigationController: navigationController, shouldTruncate: false)
         carouselView.isUserInteractionEnabled = false
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         carouselView.titleLabel.textColor = UIColor.Eatery.gray02
-        
-        for _ in 0...2 {
-            let contentView = EateryMediumLoadingCardView()
-//            let _ = carouselView.addCardView(contentView)
-        }
-        
+
         return carouselView
     }
 
@@ -149,7 +144,6 @@ class HomeModelController: HomeViewController {
 
         let carouselView = CarouselView(title: title, allItems: allEateries, carouselItems: listEateries, navigationController: navigationController, shouldTruncate: shouldTruncate)
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
         return carouselView
     }
 

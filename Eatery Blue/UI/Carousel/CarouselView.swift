@@ -18,7 +18,6 @@ class CarouselView: UIView {
     private let navigationController: UINavigationController?
     private let shouldTruncate: Bool
 
-    
     // MARK: - Properties (view)
     
     let titleLabel = UILabel()
@@ -44,7 +43,6 @@ class CarouselView: UIView {
     }
     
     public func updateCarousel(carouselItems: [Eatery]) {
-        
         buttonImageView.tap { [weak self] _ in
             guard let self else { return }
             pushListViewController(title: titleLabel.text ?? "", description: "", eateries: carouselItems)
@@ -155,7 +153,6 @@ class CarouselView: UIView {
 extension CarouselView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         if indexPath.section == min(3, carouselItems.count) && shouldTruncate {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse, for: indexPath) as? CarouselMoreEateriesCollectionViewCell else { return UICollectionViewCell() }
             
