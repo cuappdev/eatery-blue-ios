@@ -301,42 +301,11 @@ extension HomeViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         case .eateryCard(eatery: let eatery):
-            let contentView = EateryLargeCardContentView()
-            contentView.imageView.image = UIImage()
-            contentView.imageView.kf.setImage(with: eatery.imageUrl)
-            contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
-            contentView.titleLabel.text = eatery.name
-            contentView.imageView.hero.id = eatery.imageUrl?.absoluteString
+            let largeCardContent = EateryLargeCardContentView()
+            
+            largeCardContent.configure(eatery: eatery)
 
-            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            if metadata.isFavorite {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
-            } else {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
-            }
-
-            contentView.subtitleLabels[0].text = eatery.locationDescription
-            contentView.subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
-
-            let now = Date()
-            switch eatery.status {
-            case .closingSoon(let event):
-                let alert = EateryCardAlertView()
-                let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-                alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-                contentView.addAlertView(alert)
-
-            case .openingSoon(let event):
-                let alert = EateryCardAlertView()
-                let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-                alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-                contentView.addAlertView(alert)
-
-            default:
-                break
-            }
-
-            let cardView = EateryCardVisualEffectView(content: contentView)
+            let cardView = EateryCardVisualEffectView(content: largeCardContent)
             cardView.layoutMargins = Constants.cardViewLayoutMargins
 
             let cell = ClearTableViewCell(content: cardView)
