@@ -11,10 +11,14 @@ import UIKit
 class EateryPageViewController: UIPageViewController {
     
     private var pages = [UIViewController]()
+    private var allEateries = [Eatery]()
     private var eateries = [Eatery]()
     private var index: Int
-    
-    init(eateries: [Eatery], index: Int) {
+    private let compareMenusButton = CompareMenusButton()
+    private var shouldOpenCompareMenusButton = true
+
+    init(allEateries: [Eatery], eateries: [Eatery], index: Int) {
+        self.allEateries = allEateries
         self.eateries = eateries
         self.index = index
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -36,6 +40,10 @@ class EateryPageViewController: UIPageViewController {
         appearance.backgroundColor = .clear
         
         setUpPages()
+        setUpCompareMenusButton()
+
+        view.addSubview(compareMenusButton)
+        setUpConstraints()
     }
     
     override func viewDidLayoutSubviews() {
@@ -46,7 +54,55 @@ class EateryPageViewController: UIPageViewController {
         }
         super.viewDidLayoutSubviews()
     }
-    
+
+    private func setUpCompareMenusButton() {
+        compareMenusButton.largeButtonPress { [weak self] _ in
+            guard let self else { return }
+            let viewController = CompareMenusViewController(toCompareWith: eateries[index], eateries: allEateries)
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
+        }
+
+        compareMenusButton.smallButtonPress { [weak self] _ in
+            guard let self else { return }
+            shouldOpenCompareMenusButton = false
+            if !compareMenusButton.isCollapsed {
+                compareMenusButton.snp.updateConstraints { make in
+                    make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+                }
+            } else {
+                compareMenusButton.snp.updateConstraints { make in
+                    make.centerX.equalToSuperview()
+                }
+            }
+            if #available(iOS 17.0, *) {
+                UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+                    guard let self else { return }
+                    view.layoutIfNeeded()
+                }
+            } else {
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+                    guard let self else { return }
+                    view.layoutIfNeeded()
+                }
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+            guard let self else { return }
+            if shouldOpenCompareMenusButton && compareMenusButton.isCollapsed {
+                openCompareMenusButton()
+            }
+        }
+    }
+
+    private func setUpConstraints() {
+        compareMenusButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+            make.bottom.equalToSuperview().inset(108)
+        }
+    }
+
     private func setUpPages() {
        eateries.forEach { eatery in
             let eateryVC = EateryModelController()
@@ -58,7 +114,28 @@ class EateryPageViewController: UIPageViewController {
             page.setUpMenu(eatery: eateries[index])
         }
     }
-    
+
+    private func closeCompareMenusButton() {
+        compareMenusButton.snp.updateConstraints { make in
+            make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+        }
+        compareMenusButton.collapse()
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            view.layoutIfNeeded()
+        }
+    }
+
+    private func openCompareMenusButton() {
+        compareMenusButton.snp.updateConstraints { make in
+            make.centerX.equalToSuperview()
+        }
+        compareMenusButton.expand()
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            view.layoutIfNeeded()
+        }
+    }
 }
 
 extension EateryPageViewController: UIPageViewControllerDataSource {
