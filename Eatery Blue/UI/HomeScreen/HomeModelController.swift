@@ -105,6 +105,7 @@ class HomeModelController: HomeViewController {
                 }.sorted(by: {
                     return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
                 })
+                super.allEats = allEateries
             }
         } catch {
             logger.error("\(error)")

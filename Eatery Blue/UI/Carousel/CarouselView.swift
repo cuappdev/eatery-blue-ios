@@ -202,7 +202,7 @@ extension CarouselView: UICollectionViewDataSource {
 extension CarouselView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let pageVC = EateryPageViewController(eateries: carouselItems, index: indexPath.section)
+        let pageVC = EateryPageViewController(allEateries: allItems, eateries: carouselItems, index: indexPath.section)
         pageVC.modalPresentationStyle = .overCurrentContext
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(pageVC, animated: true)

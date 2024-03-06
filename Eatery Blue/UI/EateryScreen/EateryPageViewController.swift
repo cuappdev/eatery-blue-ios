@@ -58,7 +58,7 @@ class EateryPageViewController: UIPageViewController {
     private func setUpCompareMenusButton() {
         compareMenusButton.largeButtonPress { [weak self] _ in
             guard let self else { return }
-            let viewController = CompareMenusViewController(toCompareWith: eateries[index], eateries: allEateries)
+            let viewController = CompareMenusSheetViewController(navController: navigationController, toCompareWith: eateries[index], eateries: allEateries)
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
         }
@@ -175,6 +175,7 @@ extension EateryPageViewController: UIPageViewControllerDelegate {
             if let selectedController = pendingViewControllers.first,
                let index = pages.firstIndex(of: selectedController),
                let viewController = selectedController as? EateryModelController {
+                self.index = index
                 if !viewController.menuHasLoaded {
                     viewController.setUpMenu(eatery: eateries[index])
                 }

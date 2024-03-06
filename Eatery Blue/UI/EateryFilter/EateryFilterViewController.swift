@@ -26,7 +26,13 @@ class EateryFilterViewController: UIViewController {
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()
 
+    private var viewController: UIViewController? = nil
+
     weak var delegate: EateryFilterViewControllerDelegate?
+
+    func setConnectedViewController(viewController: UIViewController) {
+        self.viewController = viewController
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,7 +128,11 @@ class EateryFilterViewController: UIViewController {
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
             viewController.delegate = self
-            tabBarController?.present(viewController, animated: true)
+            if self.viewController != nil {
+                self.viewController!.present(viewController, animated: true)
+            } else {
+                tabBarController?.present(viewController, animated: true)
+            }
         }
     }
 

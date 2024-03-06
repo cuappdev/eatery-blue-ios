@@ -54,6 +54,7 @@ class HomeViewController: UIViewController {
 
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
+    var allEats: [Eatery] = []
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
@@ -125,7 +126,7 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(allEateries: eateries, eateries: eateries, index: eateryIndex)
+        let pageVC = EateryPageViewController(allEateries: allEats, eateries: eateries, index: eateryIndex)
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)
