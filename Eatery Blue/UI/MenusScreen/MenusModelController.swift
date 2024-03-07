@@ -50,6 +50,7 @@ class MenusModelController: MenusViewController {
         view.isUserInteractionEnabled = false
         updateDateDelegate = self
         
+        setUpNavigationView()
         setUpFilterController()
         
         Task {
@@ -106,6 +107,28 @@ class MenusModelController: MenusViewController {
             }.sorted(by: { lhs, rhs in
                 lhs.name < rhs.name
             })
+        }
+    }
+    
+    private func setUpNavigationView() {
+        navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+    }
+    
+    @objc private func didRefresh(_ sender: LogoRefreshControl) {
+        Task {
+            await withTaskGroup(of: Void.self) { [weak self] group in
+                guard let strongSelf = self else { return }
+                group.addTask {
+                    await strongSelf.updateEateriesFromNetworking()
+                }
+                // Create a task to let the logo view do one complete animation cycle
+                group.addTask {
+                    try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                }
+            }
+
+            updateCellsFromState()
+            sender.endRefreshing()
         }
     }
     

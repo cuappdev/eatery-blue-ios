@@ -36,7 +36,7 @@ class MenusNavigationView: NavigationView {
         largeTitleLabel.textColor = .white
         
         addSubview(logoRefreshControl)
-        logoRefreshControl.isHidden = true
+        logoRefreshControl.isHidden = false
         
         addSubview(scrollView)
         setUpScrollView()
