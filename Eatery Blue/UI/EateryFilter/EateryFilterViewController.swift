@@ -16,12 +16,12 @@ protocol EateryFilterViewControllerDelegate: AnyObject {
 
 class EateryFilterViewController: UIViewController {
 
-    let under10Minutes = PillFilterButtonView()
-    let paymentMethods = PillFilterButtonView()
-    let favorites = PillFilterButtonView()
-    let north = PillFilterButtonView()
-    let west = PillFilterButtonView()
-    let central = PillFilterButtonView()
+    private let north = PillFilterButtonView()
+    private let west = PillFilterButtonView()
+    private let central = PillFilterButtonView()
+    private let under10Minutes = PillFilterButtonView()
+    private let paymentMethods = PillFilterButtonView()
+    private let favorites = PillFilterButtonView()
 
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()
@@ -42,15 +42,6 @@ class EateryFilterViewController: UIViewController {
     }
 
     private func setUpFiltersView() {
-        filtersView.addButton(under10Minutes)
-        setUpUnder10Minutes()
-
-        filtersView.addButton(paymentMethods)
-        setUpPaymentMethods()
-
-        filtersView.addButton(favorites)
-        setUpFavorites()
-
         filtersView.addButton(north)
         setUpNorth()
 
@@ -59,11 +50,60 @@ class EateryFilterViewController: UIViewController {
 
         filtersView.addButton(central)
         setUpCentral()
+        
+        filtersView.addButton(under10Minutes)
+        setUpUnder10Minutes()
+
+        filtersView.addButton(paymentMethods)
+        setUpPaymentMethods()
+
+        filtersView.addButton(favorites)
+        setUpFavorites()
+    }
+    
+    private func setUpNorth() {
+        north.label.text = "North"
+        north.tap { [weak self] _ in
+            guard let self else { return }
+            filter.north.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.north {
+                AppDevAnalytics.shared.logFirebase(NorthFilterPressPayload())
+            }
+        }
+    }
+
+    private func setUpWest() {
+        west.label.text = "West"
+        west.tap { [weak self] _ in
+            guard let self else { return }
+            filter.west.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.west {
+                AppDevAnalytics.shared.logFirebase(WestFilterPressPayload())
+            }
+        }
+    }
+
+    private func setUpCentral() {
+        central.label.text = "Central"
+        central.tap { [weak self] _ in
+            guard let self else { return }
+            filter.central.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.central {
+                AppDevAnalytics.shared.logFirebase(CentralFilterPressPayload())
+            }
+        }
     }
 
     private func setUpUnder10Minutes() {
         under10Minutes.label.text = "Under 10 min"
-        under10Minutes.tap { [self] _ in
+        under10Minutes.tap { [weak self] _ in
+            guard let self else { return }
             filter.under10MinutesEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -76,7 +116,8 @@ class EateryFilterViewController: UIViewController {
     private func setUpPaymentMethods() {
         paymentMethods.label.text = "Payment Methods"
         paymentMethods.imageView.isHidden = false
-        paymentMethods.tap { [self] _ in
+        paymentMethods.tap { [weak self] _ in
+            guard let self else { return }
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
@@ -87,48 +128,13 @@ class EateryFilterViewController: UIViewController {
 
     private func setUpFavorites() {
         favorites.label.text = "Favorites"
-        favorites.tap { [self] _ in
+        favorites.tap { [weak self] _ in
+            guard let self else { return }
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
             if filter.favoriteEnabled {
                 AppDevAnalytics.shared.logFirebase(FavoriteItemsPressPayload())
-            }
-        }
-    }
-
-    private func setUpNorth() {
-        north.label.text = "North"
-        north.tap { [self] _ in
-            filter.north.toggle()
-            updateFilterButtonsFromState(animated: true)
-            delegate?.eateryFilterViewController(self, filterDidChange: filter)
-            if filter.north {
-                AppDevAnalytics.shared.logFirebase(NorthFilterPressPayload())
-            }
-        }
-    }
-
-    private func setUpWest() {
-        west.label.text = "West"
-        west.tap { [self] _ in
-            filter.west.toggle()
-            updateFilterButtonsFromState(animated: true)
-            delegate?.eateryFilterViewController(self, filterDidChange: filter)
-            if filter.west {
-                AppDevAnalytics.shared.logFirebase(WestFilterPressPayload())
-            }
-        }
-    }
-
-    private func setUpCentral() {
-        central.label.text = "Central"
-        central.tap { [self] _ in
-            filter.central.toggle()
-            updateFilterButtonsFromState(animated: true)
-            delegate?.eateryFilterViewController(self, filterDidChange: filter)
-            if filter.central {
-                AppDevAnalytics.shared.logFirebase(CentralFilterPressPayload())
             }
         }
     }

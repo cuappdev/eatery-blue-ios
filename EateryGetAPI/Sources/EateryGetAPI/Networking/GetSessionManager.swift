@@ -54,6 +54,7 @@ internal class GetSessionManager {
         logger.trace("\(#function): \(String(data: responseData, encoding: .utf8) ?? "nil")")
 
         let response = try JSONDecoder().decode(ResponseWrapper<Response>.self, from: responseData)
+
         return response.response.id
     }
 

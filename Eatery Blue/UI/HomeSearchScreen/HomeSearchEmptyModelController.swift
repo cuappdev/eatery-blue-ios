@@ -67,8 +67,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
 
         for favorite in favorites {
             let cardView = EaterySmallCardView()
-            cardView.imageView.kf.setImage(with: favorite.imageUrl)
-            cardView.titleLabel.text = favorite.name
+            cardView.configure(eatery: favorite)
             cardView.tap { [self] _ in
                 let viewController = EateryModelController()
                 viewController.setUp(eatery: favorite)
