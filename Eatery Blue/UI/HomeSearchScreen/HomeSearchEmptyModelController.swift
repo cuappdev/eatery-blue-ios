@@ -71,7 +71,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             cardView.titleLabel.text = favorite.name
             cardView.tap { [self] _ in
                 let viewController = EateryModelController()
-                viewController.setUp(eatery: favorite)
+                viewController.setUp(eatery: favorite, isTracking: false)
                 navigationController?.hero.isEnabled = false
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.setUpMenu(eatery: favorite)

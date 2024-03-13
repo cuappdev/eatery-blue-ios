@@ -50,7 +50,7 @@ class EateryPageViewController: UIPageViewController {
     private func setUpPages() {
        eateries.forEach { eatery in
             let eateryVC = EateryModelController()
-            eateryVC.setUp(eatery: eatery)
+            eateryVC.setUp(eatery: eatery, isTracking: false)
             pages.append(eateryVC)
         }
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)

@@ -30,13 +30,16 @@ class EateryModelController: EateryViewController {
         }
     }
 
-    func setUp(eatery: Eatery) {
+    func setUp(eatery: Eatery, isTracking: Bool) {
         self.eatery = eatery
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
         setUpStackView(eatery)
-        setUpAnalytics(eatery)
         addSpinner()
+
+        if isTracking {
+            setUpAnalytics(eatery)
+        }
     }
     
     func setUpMenu(eatery: Eatery) {
