@@ -67,6 +67,10 @@ class MenusViewController: UIViewController {
         updateScrollViewContentInset()
     }
     
+    func scrollViewDidScroll(_ tableView: UITableView) {
+        handleNavigationView()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -120,8 +124,12 @@ class MenusViewController: UIViewController {
     }
     
     private func updateScrollViewContentInset() {
-        let top = navigationView.computeExpandedHeight()
-
+        var top = navigationView.computeExpandedHeight()
+        
+        if navigationView.logoRefreshControl.isRefreshing {
+            top += 44
+        }
+        
         tableView.contentInset.top = top
         tableView.contentInset.bottom = view.safeAreaInsets.bottom
     }

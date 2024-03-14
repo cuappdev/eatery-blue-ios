@@ -109,6 +109,9 @@ class EateryExpandableCardDetailView: UIView {
                 if menuCategory.category == "Chef's Table - Sides" {
                     sortedCategories.swapAt(1, i)
                 }
+                if menuCategory.category == "Grill" {
+                    sortedCategories.swapAt(2, i)
+                }
             }
 
             sortedCategories.forEach { category in

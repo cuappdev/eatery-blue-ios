@@ -99,8 +99,10 @@ class EateryModelController: EateryViewController {
 
     private func setUpAnalytics(_ eatery: Eatery) {
         if eatery.paymentMethods.contains(.mealSwipes) {
+
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
         } else {
+
             AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
         }
     }
@@ -232,6 +234,9 @@ class EateryModelController: EateryViewController {
             }
             if menuCategory.category == "Chef's Table - Sides" {
                 sortedCategories.swapAt(1, i)
+            }
+            if menuCategory.category == "Grill" {
+                sortedCategories.swapAt(2, i)
             }
         }
         return sortedCategories
