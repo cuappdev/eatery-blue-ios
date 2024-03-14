@@ -21,10 +21,10 @@
 	</dict>
 	<key>ANNOUNCEMENTS_PATH</key>
 	<string>$(ANNOUNCEMENTS_PATH)</string>
-	<key>DEV_URL</key>
-	<string>$(DEV_URL)</string>
-	<key>PROD_URL</key>
-	<string>$(PROD_URL)</string>
+	<key>EATERY_DEV_URL</key>
+	<string>$(EATERY_DEV_URL)</string>
+	<key>EATERY_PROD_URL</key>
+	<string>$(EATERY_PROD_URL)</string>
 	<key>ANNOUNCEMENTS_HOST</key>
 	<string>$(ANNOUNCEMENTS_HOST)</string>
 	<key>ANNOUNCEMENTS_COMMON_PATH</key>
