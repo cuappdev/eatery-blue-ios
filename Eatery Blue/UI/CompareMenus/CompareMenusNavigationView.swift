@@ -108,7 +108,7 @@ class CompareMenusNavigationView: UIView {
             make.top.equalToSuperview()
             make.width.height.equalTo(40)
         }
-
+        
         titleLabel.snp.makeConstraints { make in
             make.leading.greaterThanOrEqualTo(backButton.snp.trailing).offset(8)
             make.top.centerX.equalToSuperview()

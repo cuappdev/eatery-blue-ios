@@ -41,18 +41,35 @@ class CompareMenusPageViewController: UIPageViewController {
     }
 
     func setUpPages() {
+        pages.removeAll()
         eateries.forEach { eatery in
             let vc = CompareMenusMenuViewController()
             vc.setUp(eatery: eatery)
             vc.view.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             pages.append(vc)
+            vc.removeEateryButton.tap { [weak self] _ in
+                guard let self else { return }
+                if eateries.count == 1 {
+                    navigationController?.popViewController(animated: true)
+                } else {
+                    eateries.removeAll { eats in
+                        return eats == eatery
+                    }
+                    setUpPages()
+                }
+            }
         }
-        navigationView.configure(eatery: eateries[index])
-        setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
+        if self.index >= eateries.count {
+            self.index = min(self.index, eateries.count - 1)
+            navigationView.configure(eatery: eateries[index])
+            setViewControllers([pages[index]], direction: .reverse, animated: true, completion: nil)
+        } else {
+            navigationView.configure(eatery: eateries[index])
+            setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
+        }
         if let page = pages[index] as? CompareMenusMenuViewController {
             page.setUpMenu(eatery: eateries[index])
         }
-
     }
 
     private func setUpView() {

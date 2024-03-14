@@ -20,13 +20,14 @@ class CompareMenusMenuViewController: UIViewController {
         }
     }
 
-    private var eatery: Eatery?
+    var eatery: Eatery?
 
     private let titleLabel = UILabel()
     var previousButton = ButtonView(content: UIView())
     var nextButton = ButtonView(content: UIView())
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    let removeEateryButton = PillButtonView()
 
     private(set) var highlightedCategoryIndex: Int? = nil
     let categoryStack = UIStackView()
@@ -98,7 +99,6 @@ class CompareMenusMenuViewController: UIViewController {
         Task {
             self.eatery = await Networking.default.loadEatery(by: Int(eatery.id))
             if let eatery = self.eatery {
-//                deleteSpinner()
                 setUpAnalytics(eatery)
                 addMenuFromState()
                 menuHasLoaded = true
@@ -149,6 +149,8 @@ class CompareMenusMenuViewController: UIViewController {
         } else {
             addSorryText()
         }
+        addSpacer(height: 8)
+        addDetailsSection()
         addViewProportionalSpacer(multiplier: 0.5)
     }
 
@@ -162,6 +164,60 @@ class CompareMenusMenuViewController: UIViewController {
             make.height.equalTo(64)
         }
         stackView.addArrangedSubview(sorryText)
+    }
+
+    func addDetailsSection() {
+        let viewEateryContainer = UIView()
+        let viewEateryDetails = PillButtonView()
+        viewEateryDetails.backgroundColor = UIColor.Eatery.gray00
+        viewEateryDetails.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
+        viewEateryDetails.imageView.tintColor = UIColor.Eatery.gray05
+        viewEateryDetails.titleLabel.textColor = UIColor.Eatery.black
+        viewEateryDetails.titleLabel.text = "View Eatery Details"
+        viewEateryDetails.isUserInteractionEnabled = true
+        viewEateryDetails.tap { [weak self] _ in
+            guard let self else { return }
+            guard let eatery else { return }
+            let eateryVC = EateryModelController()
+            eateryVC.setUp(eatery: eatery)
+            eateryVC.setUpMenu(eatery: eatery)
+            navigationController?.pushViewController(eateryVC, animated: true)
+        }
+        viewEateryContainer.addSubview(viewEateryDetails)
+        viewEateryDetails.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(12)
+        }
+        stackView.addArrangedSubview(viewEateryContainer)
+        viewEateryContainer.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+
+        let removeEateryContainer = UIView()
+        removeEateryButton.backgroundColor = .white
+        removeEateryButton.imageView.image = UIImage(named: "X")?.withRenderingMode(.alwaysTemplate)
+        removeEateryButton.imageView.tintColor = UIColor.Eatery.red
+        removeEateryButton.titleLabel.textColor = UIColor.Eatery.red
+        removeEateryButton.titleLabel.text = "Remove Eatery"
+        removeEateryButton.layer.borderWidth = 1
+        removeEateryButton.layer.borderColor = UIColor.Eatery.red.cgColor
+        removeEateryButton.isUserInteractionEnabled = true
+
+        removeEateryContainer.addSubview(removeEateryButton)
+        removeEateryButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(12)
+        }
+        stackView.addArrangedSubview(removeEateryContainer)
+        removeEateryContainer.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+    }
+
+    @objc func pushEatery() {
+        guard let eatery else { return }
+        let eateryVC = EateryModelController()
+        eateryVC.setUp(eatery: eatery)
+        eateryVC.setUpMenu(eatery: eatery)
+        navigationController?.pushViewController(eateryVC, animated: true)
     }
 
     func addMenuHeaderView(title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
@@ -237,55 +293,4 @@ class CompareMenusMenuViewController: UIViewController {
             make.height.equalTo(view).multipliedBy(multiplier)
         }
     }
-
-    func highlightCategory(atIndex i: Int, animated: Bool) {
-        if highlightedCategoryIndex != nil, animated {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.beginFromCurrentState, .curveEaseOut]) {
-                self.highlightCategory(atIndex: i, animateScrollView: false)
-            }
-        } else {
-            highlightCategory(atIndex: i)
-        }
-    }
-
-    func highlightCategory(atIndex i: Int, animateScrollView: Bool = false) {
-        highlightedCategoryIndex = i
-//        foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
-
-        scrollView.scrollRectToVisible(foregroundMask.frame, animated: animateScrollView)
-    }
-
-}
-
-extension CompareMenusMenuViewController: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        handleHeaderImageScaling()
-//        handleNavigationViewTrigger()
-        handleNavigationViewCategory()
-    }
-
-    private func handleNavigationViewCategory() {
-        let offset = scrollView.contentOffset.y + scrollView.contentInset.top
-
-        // We define a cursor that the user is looking at 55px below the navigation view in the scroll view's
-        // coordinate system.
-        let cursorPosition = offset + categoryStack.frame.height + 55
-
-        // The selected category is the menu category view that is under the cursor position
-        let categoryView = stackView.arrangedSubviews.first { view in
-            guard let categoryView = view as? MenuCategoryView else { return false }
-            return categoryView.frame.minY <= cursorPosition && cursorPosition <= categoryView.frame.maxY
-        } as? MenuCategoryView
-
-        if let categoryView = categoryView {
-//            guard let index = categoryViews.firstIndex(of: categoryView) else {
-//                logger.error("\(self): Could not find index of \(categoryView) in categoryViews")
-//                return
-//            }
-//
-//            highlightCategory(atIndex: index, animated: true)
-        }
-    }
-
 }

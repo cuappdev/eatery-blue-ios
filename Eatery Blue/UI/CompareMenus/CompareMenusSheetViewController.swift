@@ -76,7 +76,7 @@ class CompareMenusSheetViewController: SheetViewController {
         eaterySelectionView.axis = .vertical
         eaterySelectionView.alignment = .fill
         eaterySelectionView.distribution = .equalSpacing
-        eaterySelectionView.spacing = 12
+        eaterySelectionView.spacing = 0
 
         let starterCell = CompareMenusEaterySelectionCell(eatery: toCompareWith)
         if selectedEateries.contains(toCompareWith) {
@@ -96,7 +96,7 @@ class CompareMenusSheetViewController: SheetViewController {
             checkForEnoughSelected()
         }
         eaterySelectionView.addArrangedSubview(starterCell)
-
+        addSpacer(height: 1)
         for eatery in shownEateries {
             if eatery == toCompareWith { continue }
 
@@ -120,6 +120,7 @@ class CompareMenusSheetViewController: SheetViewController {
             }
 
             eaterySelectionView.addArrangedSubview(cell)
+            addSpacer(height: 1)
         }
     }
 
@@ -205,10 +206,10 @@ class CompareMenusSheetViewController: SheetViewController {
         setUpSelectionView()
     }
 
-    func addSpacer(height: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
+    func addSpacer(height: CGFloat, color: UIColor? = UIColor.Eatery.gray01) {
         let spacer = UIView()
         spacer.backgroundColor = color
-        stackView.addArrangedSubview(spacer)
+        eaterySelectionView.addArrangedSubview(spacer)
         spacer.snp.makeConstraints { make in
             make.height.equalTo(height)
         }

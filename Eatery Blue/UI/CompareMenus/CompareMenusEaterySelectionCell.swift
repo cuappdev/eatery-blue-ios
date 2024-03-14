@@ -38,7 +38,7 @@ class CompareMenusEaterySelectionCell: UIView {
 
     private func setUpConstraints() {
         snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(64)
         }
 
         checkView.snp.makeConstraints { make in
@@ -64,3 +64,4 @@ class CompareMenusEaterySelectionCell: UIView {
         filled = !filled
     }
 }
+
