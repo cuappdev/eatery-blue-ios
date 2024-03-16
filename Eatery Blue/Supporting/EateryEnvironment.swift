@@ -13,9 +13,9 @@ enum EateryEnvironment {
     /// Keys from Info.plist.
     enum Keys {
 #if DEBUG
-        static let baseURL: String = "DEV_URL"
+        static let baseURL: String = "EATERY_DEV_URL"
 #else
-        static let baseURL: String = "PROD_URL"
+        static let baseURL: String = "EATERY_PROD_URL"
 #endif
         static let announcementsCommonPath = "ANNOUNCEMENTS_COMMON_PATH"
         static let announcementsHost = "ANNOUNCEMENTS_HOST"
@@ -40,9 +40,9 @@ enum EateryEnvironment {
     static let baseURL: String = {
         guard let baseURLString = EateryEnvironment.infoDict[Keys.baseURL] as? String else {
 #if DEBUG
-            fatalError("DEV_URL not found in Info.plist")
+            fatalError("EATERY_DEV_URL not found in Info.plist")
 #else
-            fatalError("PROD_URL not found in Info.plist")
+            fatalError("EATERY_PROD_URL not found in Info.plist")
 #endif
         }
         return baseURLString

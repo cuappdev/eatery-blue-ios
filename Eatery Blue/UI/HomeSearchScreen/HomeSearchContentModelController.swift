@@ -185,7 +185,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         addRecentSearch(eateryID: eatery.id, type: "place", title: eatery.name, subtitle: nil)
 
         let viewController = EateryModelController()
-        viewController.setUp(eatery: eatery)
+        viewController.setUp(eatery: eatery, isTracking: true)
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)
         viewController.setUpMenu(eatery: eatery)
@@ -198,7 +198,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
         if let eatery = eatery {
             let viewController = EateryModelController()
-            viewController.setUp(eatery: eatery)
+            viewController.setUp(eatery: eatery, isTracking: true)
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(viewController, animated: true)
             viewController.setUpMenu(eatery: eatery)

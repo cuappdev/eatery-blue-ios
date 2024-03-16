@@ -11,7 +11,7 @@ import UIKit
 
 protocol UpdateDateDelegate: AnyObject {
     
-    func updateMenuDay(date: Day, index: Int)
+    func updateMenuDay(index: Int)
 
 }
 
@@ -53,10 +53,24 @@ class MenusModelController: MenusViewController {
         setUpNavigationView()
         setUpFilterController()
         
+        setDays()
+        
         Task {
             await updateEateriesFromNetworking()
             updateCellsFromState()
             view.isUserInteractionEnabled = !isLoading
+        }
+    }
+    
+    private func setDays() {
+        days = []
+        for i in 0...6 {
+            days.append(Day().advanced(by: i))
+        }
+        
+        // If the day changed on refresh, update the selected day
+        if days[selectedIndex] != selectedDay {
+            selectedDay = selectedDay.advanced(by: 1)
         }
     }
     
@@ -126,6 +140,8 @@ class MenusModelController: MenusViewController {
                     try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
                 }
             }
+            
+            setDays()
 
             updateCellsFromState()
             sender.endRefreshing()
@@ -252,8 +268,8 @@ extension MenusModelController: MenusFilterViewControllerDelegate {
 
 extension MenusModelController: UpdateDateDelegate {
     
-    func updateMenuDay(date: Day, index: Int) {
-        selectedDay = date
+    func updateMenuDay(index: Int) {
+        selectedDay = days[index]
         selectedIndex = index
 
         Task {
