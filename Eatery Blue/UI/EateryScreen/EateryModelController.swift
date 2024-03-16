@@ -49,7 +49,6 @@ class EateryModelController: EateryViewController {
                 deleteSpinner()
                 resetSelectedEventIndex()
                 setUpNavigationView(eatery)
-                setUpAnalytics(eatery)
                 addMenuFromState()
                 menuHasLoaded = true
             }
@@ -100,7 +99,7 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 16)
     }
 
-    private func setUpAnalytics(_ eatery: Eatery) {
+    func setUpAnalytics(_ eatery: Eatery) {
         if eatery.paymentMethods.contains(.mealSwipes) {
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
         } else {

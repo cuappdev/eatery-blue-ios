@@ -55,6 +55,7 @@ class EateryPageViewController: UIPageViewController {
         }
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
         if let page = pages[index] as? EateryModelController {
+            page.setUpAnalytics(eateries[index])
             page.setUpMenu(eatery: eateries[index])
         }
     }
