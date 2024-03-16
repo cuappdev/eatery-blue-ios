@@ -13,6 +13,9 @@
 		2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E856F682B67263A0043F350 /* EateryEnvironment.swift */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
+		2ED2FC132BA2D7AA00621028 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
+		2ED2FC162BA2DBEC00621028 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */; };
+		2ED2FC182BA2DBEC00621028 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */; };
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
 		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
 		41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */; };
@@ -132,9 +135,7 @@
 		5DF304D1277A69E000E2C9A4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304D0277A69E000E2C9A4 /* ListViewController.swift */; };
 		5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF304D2277A6AF200E2C9A4 /* ListNavigationView.swift */; };
 		5DF30503277CF41700E2C9A4 /* HomeModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF30502277CF41700E2C9A4 /* HomeModelController.swift */; };
-		5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7C22773FCC4001ADCDC /* Hero */; };
 		5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7CB2773FD09001ADCDC /* Tactile */; };
-		5DF5F7CD2773FD3C001ADCDC /* Hero in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 5DF5F7C22773FCC4001ADCDC /* Hero */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5F7CF2773FD60001ADCDC /* HomeSearchViewController.swift */; };
 		5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5F7D127740140001ADCDC /* PillFilterButtonView.swift */; };
 		5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5F7D327740182001ADCDC /* CarouselView.swift */; };
@@ -152,9 +153,6 @@
 		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
 		5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */; };
 		957397B32821C50200FFB687 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957397B22821C50200FFB687 /* Analytics.swift */; };
-		95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BC2819B68600285440 /* FirebaseAnalytics */; };
-		95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */; };
-		95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
 		998F6D022ABCC2B1006B7F18 /* MenusModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D012ABCC2B1006B7F18 /* MenusModelController.swift */; };
 		998F6D082ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */; };
@@ -183,7 +181,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5DF5F7CD2773FD3C001ADCDC /* Hero in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,18 +352,17 @@
 			files = (
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
 				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
-				95A5A6BD2819B68600285440 /* FirebaseAnalytics in Frameworks */,
-				95A5A6BF2819B68600285440 /* FirebaseAnalyticsSwift-Beta in Frameworks */,
 				5D73C38D278129100020507C /* Logging in Frameworks */,
+				2ED2FC182BA2DBEC00621028 /* FirebaseCrashlytics in Frameworks */,
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
+				2ED2FC162BA2DBEC00621028 /* FirebaseAnalytics in Frameworks */,
 				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
 				2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */,
-				5DF5F7C32773FCC4001ADCDC /* Hero in Frameworks */,
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
-				95A5A6C12819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				5D75D6DF278E1DF500832359 /* SnapKit in Frameworks */,
+				2ED2FC132BA2D7AA00621028 /* Hero in Frameworks */,
 				5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -921,7 +917,6 @@
 			);
 			name = "Eatery Blue";
 			packageProductDependencies = (
-				5DF5F7C22773FCC4001ADCDC /* Hero */,
 				5DF5F7CB2773FD09001ADCDC /* Tactile */,
 				5DF5F7D827740D26001ADCDC /* Kingfisher */,
 				5D73C38727810B160020507C /* Fuse */,
@@ -932,10 +927,10 @@
 				5D75D6DE278E1DF500832359 /* SnapKit */,
 				5DBB59E1278FA3AB0028FE59 /* EateryModel */,
 				5DAE72D6278FC2F600284A72 /* EateryGetAPI */,
-				95A5A6BC2819B68600285440 /* FirebaseAnalytics */,
-				95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */,
-				95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				2E856F642B6714CB0043F350 /* AppDevAnnouncements */,
+				2ED2FC122BA2D7AA00621028 /* Hero */,
+				2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */,
+				2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -966,7 +961,6 @@
 			);
 			mainGroup = 5D8651722773CBFB000338D4;
 			packageReferences = (
-				5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */,
 				5DF5F7CA2773FD09001ADCDC /* XCRemoteSwiftPackageReference "Tactile" */,
 				5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */,
@@ -975,8 +969,9 @@
 				5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */,
 				5D75D6DD278E1DF400832359 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */,
+				2ED2FC112BA2D7AA00621028 /* XCRemoteSwiftPackageReference "Hero" */,
+				2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -1221,7 +1216,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1277,7 +1272,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1295,7 +1290,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1309,7 +1304,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1320,6 +1315,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1333,7 +1330,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1347,7 +1344,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1358,6 +1355,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1394,6 +1393,22 @@
 			requirement = {
 				branch = master;
 				kind = branch;
+			};
+		};
+		2ED2FC112BA2D7AA00621028 /* XCRemoteSwiftPackageReference "Hero" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/HeroTransitions/Hero";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.3;
+			};
+		};
+		2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.22.1;
 			};
 		};
 		5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
@@ -1444,14 +1459,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/HeroTransitions/Hero";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		5DF5F7CA2773FD09001ADCDC /* XCRemoteSwiftPackageReference "Tactile" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/delba/Tactile";
@@ -1468,14 +1475,6 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1483,6 +1482,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */;
 			productName = AppDevAnnouncements;
+		};
+		2ED2FC122BA2D7AA00621028 /* Hero */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2ED2FC112BA2D7AA00621028 /* XCRemoteSwiftPackageReference "Hero" */;
+			productName = Hero;
+		};
+		2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		5D6C3D5F278746B8000C518D /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1522,11 +1536,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = EateryModel;
 		};
-		5DF5F7C22773FCC4001ADCDC /* Hero */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5DF5F7C12773FCC4001ADCDC /* XCRemoteSwiftPackageReference "Hero" */;
-			productName = Hero;
-		};
 		5DF5F7CB2773FD09001ADCDC /* Tactile */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7CA2773FD09001ADCDC /* XCRemoteSwiftPackageReference "Tactile" */;
@@ -1536,21 +1545,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		95A5A6BC2819B68600285440 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		95A5A6BE2819B68600285440 /* FirebaseAnalyticsSwift-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseAnalyticsSwift-Beta";
-		};
-		95A5A6C02819B68600285440 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 95A5A6BB2819B68500285440 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsWithoutAdIdSupport;
 		};
 /* End XCSwiftPackageProductDependency section */
 
