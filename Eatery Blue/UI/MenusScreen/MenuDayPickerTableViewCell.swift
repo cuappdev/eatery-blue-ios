@@ -64,10 +64,6 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         // Set new data
         addDayPickerView()
         updateDayPickerCellsFromState()
-<<<<<<< HEAD
-        
-=======
->>>>>>> main
     }
     
     private func addDayPickerView() {
