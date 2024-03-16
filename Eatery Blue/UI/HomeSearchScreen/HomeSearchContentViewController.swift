@@ -138,26 +138,11 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             return cell
 
         case .eatery(let eatery):
-            let contentView = EateryLargeCardContentView()
-            contentView.imageView.kf.setImage(
-                with: eatery.imageUrl,
-                options: [
-                    .backgroundDecode
-                ]
-            )
-            contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
-            contentView.titleLabel.text = eatery.name
-            contentView.subtitleLabels[0].text = eatery.locationDescription
-            contentView.subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
+            let largeCardContent = EateryLargeCardContentView()
+            
+            largeCardContent.configure(eatery: eatery)
 
-            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            if metadata.isFavorite {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
-            } else {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
-            }
-
-            let cardView = EateryCardVisualEffectView(content: contentView)
+            let cardView = EateryCardVisualEffectView(content: largeCardContent)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
             let cell = ClearTableViewCell(content: cardView)

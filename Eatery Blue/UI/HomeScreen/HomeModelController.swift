@@ -23,6 +23,9 @@ class HomeModelController: HomeViewController {
     private var cancellables: Set<AnyCancellable> = []
 
     private lazy var loadCells: () = updateCellsFromState()
+    
+    private var favoriteCarousel: CarouselView?
+    private var nearestCarousel: CarouselView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,17 +126,11 @@ class HomeModelController: HomeViewController {
         title: String
     ) -> CarouselView {
         
-        let carouselView = CarouselView()
+        let carouselView = CarouselView(title: "Finding flavorful food...", allItems: [], carouselItems: [], navigationController: navigationController, shouldTruncate: false)
         carouselView.isUserInteractionEnabled = false
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        carouselView.titleLabel.text = title
         carouselView.titleLabel.textColor = UIColor.Eatery.gray02
-        
-        for _ in 0...2 {
-            let contentView = EateryMediumLoadingCardView()
-            carouselView.addCardView(contentView)
-        }
-        
+
         return carouselView
     }
 
@@ -141,80 +138,12 @@ class HomeModelController: HomeViewController {
         title: String,
         description: String?,
         carouselEateries: [Eatery],
-        listEateries: [Eatery]
+        listEateries: [Eatery],
+        shouldTruncate: Bool
     ) -> CarouselView {
 
-        let carouselView = CarouselView()
+        let carouselView = CarouselView(title: title, allItems: allEateries, carouselItems: listEateries, navigationController: navigationController, shouldTruncate: shouldTruncate)
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        carouselView.titleLabel.text = title
-
-        for i in 0..<min(carouselEateries.count,3) {
-            let eatery = carouselEateries[i]
-            let contentView = EateryMediumCardContentView()
-            contentView.imageView.kf.setImage(
-                with: eatery.imageUrl,
-                options: [.backgroundDecode]
-            )
-            contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
-            contentView.titleLabel.text = eatery.name
-
-            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            if metadata.isFavorite {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
-            } else {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
-            }
-
-            LocationManager.shared.$userLocation
-                .sink { userLocation in
-                    contentView.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
-                        eatery,
-                        style: .medium,
-                        font: .preferredFont(for: .footnote, weight: .medium),
-                        userLocation: userLocation,
-                        date: Date()
-                    ).first
-                }
-                .store(in: &cancellables)
-
-            let now = Date()
-            switch eatery.status {
-            case .closingSoon(let event):
-                let alert = EateryCardAlertView()
-                let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-                alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-                contentView.addAlertView(alert)
-
-            case .openingSoon(let event):
-                let alert = EateryCardAlertView()
-                let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-                alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-                contentView.addAlertView(alert)
-
-            default:
-                break
-            }
-
-            carouselView.addCardView(contentView, buttonPress: { [self] _ in
-                let pageVC = EateryPageViewController(eateries: carouselEateries, index: i)
-                pageVC.modalPresentationStyle = .overCurrentContext
-                navigationController?.hero.isEnabled = false
-                navigationController?.pushViewController(pageVC, animated: true)
-            })
-        }
-
-        if carouselEateries.count > 3 {
-            let view = CarouselMoreEateriesView()
-            view.tap { [self] _ in
-                pushListViewController(title: title, description: description, eateries: listEateries)
-            }
-            carouselView.addAccessoryView(EateryCardVisualEffectView(content: view))
-        }
-
-        carouselView.buttonImageView.tap { [self] _ in
-            pushListViewController(title: title, description: description, eateries: listEateries)
-        }
-
         return carouselView
     }
 
@@ -281,10 +210,6 @@ class HomeModelController: HomeViewController {
             AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
         }
 
-        guard !favoriteEateries.isEmpty else {
-            return nil
-        }
-
         let carouselEateries = favoriteEateries.sorted { lhs, rhs in
             if lhs.isOpen == rhs.isOpen {
                 return lhs.name < rhs.name
@@ -292,13 +217,24 @@ class HomeModelController: HomeViewController {
                 return lhs.isOpen && !rhs.isOpen
             }
         }
+        
+        if let favoriteCarousel {
+            favoriteCarousel.updateCarousel(carouselItems: carouselEateries)
+        } else {
+            favoriteCarousel = createCarouselView(
+                title: "Favorites",
+                description: nil,
+                carouselEateries: Array(carouselEateries),
+                listEateries: favoriteEateries,
+                shouldTruncate: false
+            )
+        }
+        
+        if carouselEateries.count == 0 {
+            favoriteCarousel = nil
+        }
 
-        return createCarouselView(
-            title: "Favorites",
-            description: nil,
-            carouselEateries: Array(carouselEateries),
-            listEateries: favoriteEateries
-        )
+        return favoriteCarousel
     }
 
     private func createNearestEateriesCarouselView() -> CarouselView? {
@@ -328,13 +264,20 @@ class HomeModelController: HomeViewController {
         let listEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
             lhs.totalTime < rhs.totalTime
         }.map(\.eatery)
+        
+        if let nearestCarousel {
+            nearestCarousel.updateCarousel(carouselItems: carouselEateries)
+        } else {
+            nearestCarousel = createCarouselView(
+                title: "Nearest to You",
+                description: nil,
+                carouselEateries: carouselEateries,
+                listEateries: listEateries,
+                shouldTruncate: true
+            )
+        }
 
-        return createCarouselView(
-            title: "Nearest to You",
-            description: nil,
-            carouselEateries: carouselEateries,
-            listEateries: listEateries
-        )
+        return nearestCarousel
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {

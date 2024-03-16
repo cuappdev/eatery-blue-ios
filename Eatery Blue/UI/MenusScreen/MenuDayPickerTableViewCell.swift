@@ -64,7 +64,10 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         // Set new data
         addDayPickerView()
         updateDayPickerCellsFromState()
+<<<<<<< HEAD
         
+=======
+>>>>>>> main
     }
     
     private func addDayPickerView() {
@@ -82,14 +85,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         
         contentView.addSubview(dayPickerView)
     }
-    
-//    private func setState() {
-//        days = []
-//        for i in 0...6 {
-//            days.append(Day().advanced(by: i))
-//        }
-//    }
-    
+
     private func updateDayPickerCellsFromState() {
         for (i, cell) in dayPickerView.cells.enumerated() {
             let day = days[i]

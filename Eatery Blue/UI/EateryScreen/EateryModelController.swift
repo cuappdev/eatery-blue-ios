@@ -101,8 +101,10 @@ class EateryModelController: EateryViewController {
 
     func setUpAnalytics(_ eatery: Eatery) {
         if eatery.paymentMethods.contains(.mealSwipes) {
+
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
         } else {
+
             AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
         }
     }

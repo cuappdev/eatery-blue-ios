@@ -253,27 +253,11 @@ extension ListViewController: UITableViewDataSource {
 
         } else {
             let eatery = eateries[indexPath.row - 1]
-            let contentView = EateryLargeCardContentView()
-            contentView.imageView.kf.setImage(
-                with: eatery.imageUrl,
-                options: [
-                    .backgroundDecode
-                ]
-            )
-            contentView.imageTintView.alpha = eatery.isOpen ? 0 : 0.5
-            contentView.titleLabel.text = eatery.name
+            let largeCardContent = EateryLargeCardContentView()
+            
+            largeCardContent.configure(eatery: eatery)
 
-            let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-            if metadata.isFavorite {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteSelected")
-            } else {
-                contentView.favoriteImageView.image = UIImage(named: "FavoriteUnselected")
-            }
-
-            contentView.subtitleLabels[0].text = eatery.locationDescription
-            contentView.subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
-
-            let cardView = EateryCardVisualEffectView(content: contentView)
+            let cardView = EateryCardVisualEffectView(content: largeCardContent)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
             let cell = ClearTableViewCell(content: cardView)
