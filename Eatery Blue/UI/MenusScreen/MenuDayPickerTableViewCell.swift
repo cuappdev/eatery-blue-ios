@@ -45,21 +45,25 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         
         selectionStyle = .none
         
-        setState()
-        addDayPickerView()
-        
         contentView.addSubview(dayPickerView)
-        dayPickerView.translatesAutoresizingMaskIntoConstraints = false
-        
         dayPickerView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalToSuperview()
         }
-        
-        updateDayPickerCellsFromState()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(days: [Day]) {
+        self.days = days
+        
+        // Reset data
+        dayPickerView.resetCells()
+        
+        // Set new data
+        addDayPickerView()
+        updateDayPickerCellsFromState()
     }
     
     private func addDayPickerView() {
@@ -76,13 +80,6 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         }
         
         contentView.addSubview(dayPickerView)
-    }
-    
-    private func setState() {
-        days = []
-        for i in 0...6 {
-            days.append(Day().advanced(by: i))
-        }
     }
     
     private func updateDayPickerCellsFromState() {
@@ -117,7 +114,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
 
         selectedDayIndex = index
 
-        updateDateDelegate?.updateMenuDay(date: days[index], index: index)
+        updateDateDelegate?.updateMenuDay(index: index)
         updateDayPickerCellsFromState()
     }
     
