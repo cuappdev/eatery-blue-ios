@@ -56,6 +56,7 @@ class MenusModelController: MenusViewController {
         setDays()
         
         Task {
+            updateCellsFromState()
             await updateEateriesFromNetworking()
             updateCellsFromState()
             view.isUserInteractionEnabled = !isLoading
@@ -96,10 +97,6 @@ class MenusModelController: MenusViewController {
         let cachedEateries = allEateries[selectedIndex] ?? []
 
         if cachedEateries.isEmpty {
-            isLoading = true
-            view.isUserInteractionEnabled = false
-            updateCellsFromState()
-
             do {
                 let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: selectedIndex)
                 allEateries[selectedIndex] = eateries
