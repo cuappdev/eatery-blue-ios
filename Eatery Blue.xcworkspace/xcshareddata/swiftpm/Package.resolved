@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/google/GoogleDataTransport.git",
         "state": {
           "branch": null,
-          "revision": "cc7265b8e3906304e6e81f32c1662a94bbae2357",
-          "version": "9.2.2"
+          "revision": "a637d318ae7ae246b02d7305121275bc75ed5565",
+          "version": "9.4.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/google/GoogleUtilities.git",
         "state": {
           "branch": null,
-          "revision": "871d43135925cde39ef7421d8723ce47edfdcc39",
-          "version": "7.11.1"
+          "revision": "26c898aed8bed13b8a63057ee26500abbbcb8d55",
+          "version": "7.13.1"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/HeroTransitions/Hero",
         "state": {
           "branch": null,
-          "revision": "efa709686035831b23b7bf58f652b0c4b892aa1d",
-          "version": "1.6.1"
+          "revision": "b307e2d48d582118e5101d04f5187c91595a1095",
+          "version": "1.6.3"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/google/promises.git",
         "state": {
           "branch": null,
-          "revision": "ec957ccddbcc710ccc64c9dcbd4c7006fcf8b73a",
-          "version": "2.2.0"
+          "revision": "540318ecedd63d883069ae7f1ed811a2df00b6ac",
+          "version": "2.4.0"
         }
       },
       {

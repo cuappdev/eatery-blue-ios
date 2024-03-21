@@ -19,8 +19,10 @@ struct EateryFilter: Codable {
     var west: Bool = false
     var central: Bool = false
 
+    var selected: Bool = false
+
     var isEnabled: Bool {
-        under10MinutesEnabled || !paymentMethods.isEmpty || favoriteEnabled || north || west || central
+        under10MinutesEnabled || !paymentMethods.isEmpty || favoriteEnabled || north || west || central || selected
     }
 
     func predicate(userLocation: CLLocation?, departureDate: Date) -> EateryPredicate {
@@ -71,5 +73,8 @@ struct EateryFilter: Codable {
             return .true
         }
     }
-
+    
+    func isSelectedPredicate(selected: [Eatery]) -> EateryPredicate {
+        return .isSelected(selected)
+    }
 }

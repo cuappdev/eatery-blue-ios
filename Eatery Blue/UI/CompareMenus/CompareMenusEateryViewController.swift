@@ -8,7 +8,10 @@
 import EateryModel
 import UIKit
 
-class CompareMenusMenuViewController: UIViewController {
+class CompareMenusEateryViewController: UIViewController {
+
+    var delegate: CompareMenusEateryViewControllerDelegate?
+    var previousContentOffset: CGFloat = 0
 
     var menuHasLoaded = false
     private var selectedEventIndex: Int?
@@ -21,17 +24,23 @@ class CompareMenusMenuViewController: UIViewController {
     }
 
     var eatery: Eatery?
+    var categoryViews: [MenuCategoryView] = []
 
     private let titleLabel = UILabel()
     var previousButton = ButtonView(content: UIView())
     var nextButton = ButtonView(content: UIView())
     private let scrollView = UIScrollView()
+    private let menuCategoryContainer = UIView()
+    private let menuCategoryScrollView = UIScrollView()
     private let stackView = UIStackView()
     let removeEateryButton = PillButtonView()
 
-    private(set) var highlightedCategoryIndex: Int? = nil
-    let categoryStack = UIStackView()
+    let categoriesBackground = UIStackView()
+    let categoriesForeground = UIStackView()
     let foregroundMask = PillView()
+
+    private(set) var highlightedCategoryIndex: Int? = nil
+    
 
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -49,7 +58,12 @@ class CompareMenusMenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+
+        setUpMenuCategory()
+        view.addSubview(menuCategoryContainer)
+        menuCategoryContainer.addSubview(menuCategoryScrollView)
 
         setUpScrollView()
         view.addSubview(scrollView)
@@ -66,8 +80,8 @@ class CompareMenusMenuViewController: UIViewController {
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.scrollIndicatorInsets = .zero
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.delegate = self
     }
-
 
     private func setUpStackView() {
         stackView.backgroundColor = .white
@@ -78,14 +92,62 @@ class CompareMenusMenuViewController: UIViewController {
         stackView.hero.isEnabled = true
     }
 
+    private func setUpMenuCategory() {
+        menuCategoryScrollView.bounces = false
+        menuCategoryScrollView.showsHorizontalScrollIndicator = false
+
+        menuCategoryScrollView.addSubview(categoriesBackground)
+        setUpCategoriesStackView(categoriesBackground)
+        categoriesBackground.isUserInteractionEnabled = true
+
+        menuCategoryScrollView.addSubview(categoriesForeground)
+
+        setUpCategoriesStackView(categoriesForeground)
+        categoriesForeground.isUserInteractionEnabled = false
+        categoriesForeground.backgroundColor = UIColor.Eatery.black
+
+        foregroundMask.backgroundColor = .white
+        categoriesForeground.mask = foregroundMask
+    }
+
+    private func setUpCategoriesStackView(_ stackView: UIStackView) {
+        stackView.axis = .horizontal
+        stackView.spacing = 0
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+    }
+
     private func setUpConstraints() {
+        menuCategoryContainer.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalTo(52)
+        }
+        menuCategoryScrollView.snp.makeConstraints { make in
+            make.width.equalToSuperview().inset(10)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(36)
+        }
+
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(menuCategoryContainer.snp.bottom)
+            make.bottom.width.equalToSuperview()
         }
 
         stackView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
+        }
+
+        setUpCategoriesStackViewConstraints(categoriesBackground)
+        setUpCategoriesStackViewConstraints(categoriesForeground)
+    }
+
+    private func setUpCategoriesStackViewConstraints(_ stackView: UIStackView) {
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(menuCategoryScrollView.contentLayoutGuide)
+            make.height.equalTo(menuCategoryScrollView.frameLayoutGuide)
         }
     }
 
@@ -102,6 +164,7 @@ class CompareMenusMenuViewController: UIViewController {
                 setUpAnalytics(eatery)
                 addMenuFromState()
                 menuHasLoaded = true
+                highlightCategory(atIndex: 0, animateScrollView: true)
             }
         }
     }
@@ -265,7 +328,7 @@ class CompareMenusMenuViewController: UIViewController {
             itemView.titleLabel.text = item.name
 
             if let price = item.price {
-                itemView.priceLabel.text = CompareMenusMenuViewController
+                itemView.priceLabel.text = CompareMenusEateryViewController
                     .priceNumberFormatter
                     .string(from: NSNumber(value: Double(price) / 100))
             } else {
@@ -283,6 +346,42 @@ class CompareMenusMenuViewController: UIViewController {
         }
 
         stackView.addArrangedSubview(categoryView)
+        categoryViews.append(categoryView)
+
+        let backgroundContainer = ContainerView(content: UILabel())
+        let foregroundContainer = ContainerView(content: UILabel())
+
+        backgroundContainer.content.text = menuCategory.category
+        foregroundContainer.content.text = backgroundContainer.content.text
+
+        backgroundContainer.content.font = .preferredFont(for: .footnote, weight: .semibold)
+        foregroundContainer.content.font = .preferredFont(for: .footnote, weight: .medium)
+
+        backgroundContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        foregroundContainer.layoutMargins = backgroundContainer.layoutMargins
+
+        backgroundContainer.content.textColor = UIColor.Eatery.gray05
+        foregroundContainer.content.textColor = .white
+
+        categoriesBackground.addArrangedSubview(backgroundContainer)
+        categoriesForeground.addArrangedSubview(foregroundContainer)
+
+        backgroundContainer.snp.makeConstraints { make in
+            make.width.equalTo(foregroundContainer)
+        }
+
+        let index = stackView.subviews.count - 1
+
+        backgroundContainer.tap { [weak self] _ in
+            guard let self else { return }
+            scrollToCategoryView(at: index)
+        }
+        foregroundContainer.isUserInteractionEnabled = false
+    }
+
+    func scrollToCategoryView(at index: Int) {
+        let offset = stackView.subviews[index].frame.minY - 20
+        scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
     }
 
     func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
@@ -293,4 +392,49 @@ class CompareMenusMenuViewController: UIViewController {
             make.height.equalTo(view).multipliedBy(multiplier)
         }
     }
+
+    func highlightCategory(atIndex i: Int, animated: Bool) {
+        if highlightedCategoryIndex != nil, animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.beginFromCurrentState, .curveEaseOut]) {
+                self.highlightCategory(atIndex: i, animateScrollView: false)
+            }
+        } else {
+            highlightCategory(atIndex: i)
+        }
+    }
+
+    func highlightCategory(atIndex i: Int, animateScrollView: Bool = false) {
+        highlightedCategoryIndex = i
+        foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
+
+        menuCategoryScrollView.scrollRectToVisible(foregroundMask.frame, animated: animateScrollView)
+    }
+}
+
+extension CompareMenusEateryViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let newOffset = scrollView.contentOffset.y + scrollView.contentInset.top
+        delegate?.compareMenusEateryViewController(viewWasScrolled: newOffset, positive: newOffset - previousContentOffset)
+        previousContentOffset = newOffset
+        let cursorPosition = scrollView.contentOffset.y + scrollView.contentInset.top + 25
+        // The selected category is the menu category view that is under the cursor position
+        let categoryView = stackView.arrangedSubviews.first { view in
+            guard let categoryView = view as? MenuCategoryView else { return false }
+            return categoryView.frame.minY <= cursorPosition && cursorPosition <= categoryView.frame.maxY
+        } as? MenuCategoryView
+
+        if let categoryView = categoryView {
+            guard let index = categoryViews.firstIndex(of: categoryView) else {
+                logger.error("\(self): Could not find index of \(categoryView) in categoryViews")
+                return
+            }
+
+            highlightCategory(atIndex: index, animated: true)
+        }
+    }
+}
+
+protocol CompareMenusEateryViewControllerDelegate {
+    func compareMenusEateryViewController(viewWasScrolled scrollAmount: CGFloat, positive: CGFloat)
 }

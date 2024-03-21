@@ -37,14 +37,14 @@ class CompareMenusPageViewController: UIPageViewController {
         appearance.backgroundColor = .clear
 
         setUpView()
-        setUpPages()
     }
 
-    func setUpPages() {
+    func setUpPages(delegate: CompareMenusEateryViewControllerDelegate) {
         pages.removeAll()
         eateries.forEach { eatery in
-            let vc = CompareMenusMenuViewController()
+            let vc = CompareMenusEateryViewController()
             vc.setUp(eatery: eatery)
+            vc.delegate = delegate
             vc.view.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             pages.append(vc)
             vc.removeEateryButton.tap { [weak self] _ in
@@ -55,7 +55,7 @@ class CompareMenusPageViewController: UIPageViewController {
                     eateries.removeAll { eats in
                         return eats == eatery
                     }
-                    setUpPages()
+                    setUpPages(delegate: delegate)
                 }
             }
         }
@@ -67,7 +67,7 @@ class CompareMenusPageViewController: UIPageViewController {
             navigationView.configure(eatery: eateries[index])
             setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
         }
-        if let page = pages[index] as? CompareMenusMenuViewController {
+        if let page = pages[index] as? CompareMenusEateryViewController {
             page.setUpMenu(eatery: eateries[index])
         }
     }
@@ -82,7 +82,7 @@ class CompareMenusPageViewController: UIPageViewController {
             navigationView.configure(eatery: eateries[index])
 
             setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
-            if let page = pages[index] as? CompareMenusMenuViewController {
+            if let page = pages[index] as? CompareMenusEateryViewController {
                 if !page.menuHasLoaded {
                     page.setUpMenu(eatery: eateries[index])
                 }
@@ -96,7 +96,7 @@ class CompareMenusPageViewController: UIPageViewController {
             index -= 1
             navigationView.configure(eatery: eateries[index])
             setViewControllers([pages[index]], direction: .reverse, animated: true, completion: nil)
-            if let page = pages[index] as? CompareMenusMenuViewController {
+            if let page = pages[index] as? CompareMenusEateryViewController {
                 if !page.menuHasLoaded {
                     page.setUpMenu(eatery: eateries[index])
                 }
@@ -156,11 +156,10 @@ extension CompareMenusPageViewController: UIPageViewControllerDelegate {
         _ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         if let selectedController = pendingViewControllers.first,
            let index = pages.firstIndex(of: selectedController),
-           let viewController = selectedController as? CompareMenusMenuViewController {
+           let viewController = selectedController as? CompareMenusEateryViewController {
                 self.index = index
                 if !viewController.menuHasLoaded {
                     viewController.setUpMenu(eatery: eateries[index])
-
                 }
            }
     }

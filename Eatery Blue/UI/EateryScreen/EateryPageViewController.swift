@@ -41,8 +41,8 @@ class EateryPageViewController: UIPageViewController {
         
         setUpPages()
         setUpCompareMenusButton()
-
         view.addSubview(compareMenusButton)
+
         setUpConstraints()
     }
     

@@ -143,4 +143,12 @@ class CompareMenusNavigationView: UIView {
             make.top.equalTo(eateryLabel.snp.bottom).offset(10)
         }
     }
+
+    func scrolledDown() {
+        
+    }
+
+    func scrolledUp() {
+
+    }
 }

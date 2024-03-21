@@ -51,6 +51,7 @@ class HomeViewController: UIViewController {
     let navigationView = HomeNavigationView()
     private let tableView = UITableView()
     private let tableHeaderView = UIView()
+    private let compareMenusButton = CompareMenusButton()
 
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
@@ -59,6 +60,7 @@ class HomeViewController: UIViewController {
         scrollToTop(animated: false)
     }()
     private var hasLoadedMenuData: Bool = false
+    private var shouldOpenCompareMenusButton = true
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -68,6 +70,9 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .white
 
         setUpView()
+        setUpCompareMenusButton()
+        view.addSubview(compareMenusButton)
+        
         setUpConstraints()
 
         // AppDev Announcements
@@ -92,6 +97,47 @@ class HomeViewController: UIViewController {
 
         view.addSubview(navigationView)
         setUpNavigationView()
+    }
+
+    private func setUpCompareMenusButton() {
+        compareMenusButton.largeButtonPress { [weak self] _ in
+            guard let self else { return }
+            let viewController = CompareMenusSheetViewController(navController: navigationController, toCompareWith: nil, eateries: allEats)
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
+        }
+
+        compareMenusButton.smallButtonPress { [weak self] _ in
+            guard let self else { return }
+            shouldOpenCompareMenusButton = false
+            if !compareMenusButton.isCollapsed {
+                compareMenusButton.snp.updateConstraints { make in
+                    make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+                }
+            } else {
+                compareMenusButton.snp.updateConstraints { make in
+                    make.centerX.equalToSuperview()
+                }
+            }
+            if #available(iOS 17.0, *) {
+                UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+                    guard let self else { return }
+                    view.layoutIfNeeded()
+                }
+            } else {
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+                    guard let self else { return }
+                    view.layoutIfNeeded()
+                }
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+            guard let self else { return }
+            if shouldOpenCompareMenusButton && compareMenusButton.isCollapsed {
+                openCompareMenusButton()
+            }
+        }
     }
 
     private func setUpTableView() {
@@ -122,6 +168,33 @@ class HomeViewController: UIViewController {
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalTo(tableHeaderView.snp.top).priority(.low)
             make.bottom.greaterThanOrEqualTo(tableHeaderView.snp.top)
+        }
+
+        compareMenusButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+            make.bottom.equalToSuperview().inset(108)
+        }
+    }
+
+    private func closeCompareMenusButton() {
+        compareMenusButton.snp.updateConstraints { make in
+            make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+        }
+        compareMenusButton.collapse()
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            view.layoutIfNeeded()
+        }
+    }
+
+    private func openCompareMenusButton() {
+        compareMenusButton.snp.updateConstraints { make in
+            make.centerX.equalToSuperview()
+        }
+        compareMenusButton.expand()
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            view.layoutIfNeeded()
         }
     }
 

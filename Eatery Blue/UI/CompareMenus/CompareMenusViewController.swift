@@ -20,8 +20,10 @@ class CompareMenusViewController: UIViewController {
 
     override func viewDidLoad() {
         view.backgroundColor = .white
+        
         addChild(pageController)
         view.addSubview(pageController.view)
+        pageController.setUpPages(delegate: self)
 
         setUpNavigationView()
         view.addSubview(navigationView)
@@ -62,4 +64,16 @@ class CompareMenusViewController: UIViewController {
             make.top.equalTo(navigationView.snp.bottom)
         }
     }
+}
+
+extension CompareMenusViewController: CompareMenusEateryViewControllerDelegate {
+
+    func compareMenusEateryViewController(viewWasScrolled scrollAmount: CGFloat, positive: CGFloat) {
+        if positive > 0 {
+            navigationView.scrolledDown()
+        } else if positive < 0 {
+            navigationView.scrolledUp()
+        }
+    }
+
 }

@@ -58,4 +58,8 @@ class PillFiltersView: UIView {
         stackView.addArrangedSubview(buttonView)
     }
 
+    func addButton(_ buttonView: PillFilterButtonView, at: Int) {
+        stackView.insertArrangedSubview(buttonView, at: at)
+    }
+
 }

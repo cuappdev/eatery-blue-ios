@@ -8,18 +8,15 @@
 import EateryModel
 import UIKit
 
-class CompareMenusEaterySelectionCell: UIView {
+class CompareMenusEaterySelectionCell: UITableViewCell {
 
-    var filled: Bool = false
-    let eatery: Eatery
+    static let reuse = "CompareMenusEaterySelectionCellReuse"
 
     private let nameView = UILabel()
     private let checkView = UIImageView()
 
-    init(eatery: Eatery) {
-        self.eatery = eatery
-        super.init(frame: .zero)
-
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpSelf()
         setUpConstraints()
     }
@@ -28,18 +25,34 @@ class CompareMenusEaterySelectionCell: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setUpSelf() {
-        checkView.image = UIImage(named: "CheckboxUnfilled")
+    func configure(eatery: Eatery, filled: Bool, draggable: Bool) {
         nameView.text = eatery.name
-        
+        if filled {
+            checkView.image = UIImage(named: "CheckboxFilled")
+        } else {
+            checkView.image = UIImage(named: "CheckboxUnfilled")
+        }
+        self.layoutIfNeeded()
+        if draggable {
+            nameView.snp.updateConstraints { make in
+                make.leading.equalToSuperview().offset(32)
+            }
+        } else {
+            nameView.snp.updateConstraints { make in
+                make.leading.equalToSuperview()
+            }
+        }
+        UIView.animate(withDuration: 0.1) {
+            self.layoutIfNeeded()
+        }
+    }
+
+    private func setUpSelf() {
         addSubview(nameView)
         addSubview(checkView)
     }
 
     private func setUpConstraints() {
-        snp.makeConstraints { make in
-            make.height.equalTo(64)
-        }
 
         checkView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
@@ -51,17 +64,21 @@ class CompareMenusEaterySelectionCell: UIView {
             make.leading.equalToSuperview()
             make.trailing.equalTo(checkView.snp.leading)
             make.centerY.equalToSuperview()
-
         }
     }
 
-    func toggle() {
-        if filled == false {
-            checkView.image = UIImage(named: "CheckboxFilled")
-        } else {
-            checkView.image = UIImage(named: "CheckboxUnfilled")
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let reorderControl = subviews.first(where: { subview in
+            type(of: subview).description() == "UITableViewCellReorderControl"
+        }) {
+            reorderControl.snp.remakeConstraints { make in
+                make.leading.equalToSuperview()
+                make.width.equalTo(24)
+                make.height.equalToSuperview()
+                make.centerY.equalToSuperview()
+            }
         }
-        filled = !filled
     }
 }
 
