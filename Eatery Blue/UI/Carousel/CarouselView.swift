@@ -80,6 +80,7 @@ class CarouselView: UIView {
             guard let self else { return }
             pushListViewController(title: title, description: "", eateries: carouselItems)
         }
+        
         self.carouselItems = carouselItems
         collectionView.reloadData()
     }

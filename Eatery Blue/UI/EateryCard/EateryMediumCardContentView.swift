@@ -160,7 +160,7 @@ class EateryMediumCardContentView: UIView {
         favoriteButton.snp.makeConstraints { make in
             make.leading.equalTo(subtitleLabel.snp.trailing).offset(4)
             make.trailing.equalTo(imageView.snp.trailing)
-            make.width.height.equalTo(44)
+            make.size.equalTo(44)
             make.top.equalTo(imageView.snp.bottom)
         }
 
