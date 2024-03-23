@@ -17,7 +17,8 @@ class EateryMediumCardContentView: UIView {
 
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-    private let favoriteButton = ButtonView(content: UIImageView())
+    private let favoriteButton = ButtonView(content: UIView())
+    private var favoriteButtonImage = UIImageView()
 
     private let alertView = EateryCardAlertView()
 
@@ -55,6 +56,7 @@ class EateryMediumCardContentView: UIView {
         setUpSubtitleLabel()
         
         addSubview(favoriteButton)
+        favoriteButton.addSubview(favoriteButtonImage)
     }
 
     private func setUpImageView() {
@@ -98,9 +100,9 @@ class EateryMediumCardContentView: UIView {
 
         let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
         if metadata.isFavorite {
-            favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
         } else {
-            favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
         }
         
         favoriteButton.buttonPress { [weak self] _ in
@@ -112,9 +114,9 @@ class EateryMediumCardContentView: UIView {
             coreDataStack.save()
             
             if metadata.isFavorite {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
             } else {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
             }
 
             NotificationCenter.default.post(
@@ -157,9 +159,14 @@ class EateryMediumCardContentView: UIView {
         
         favoriteButton.snp.makeConstraints { make in
             make.leading.equalTo(subtitleLabel.snp.trailing).offset(4)
-            make.trailing.equalTo(imageView.snp.trailing).inset(12)
-            make.width.height.equalTo(20)
-            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.trailing.equalTo(imageView.snp.trailing)
+            make.width.height.equalTo(44)
+            make.top.equalTo(imageView.snp.bottom)
+        }
+
+        favoriteButtonImage.snp.makeConstraints { make in
+            make.size.equalTo(20)
+            make.center.equalToSuperview()
         }
     }
 
@@ -174,9 +181,9 @@ class EateryMediumCardContentView: UIView {
     private func configureFavoriteButton(id: Int64) {
         let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: id)
         if metadata.isFavorite {
-            favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
         } else {
-            favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
         }
         
         favoriteButton.buttonPress { [weak self] _ in
@@ -188,9 +195,9 @@ class EateryMediumCardContentView: UIView {
             coreDataStack.save()
             
             if metadata.isFavorite {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
             } else {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
             }
 
             NotificationCenter.default.post(

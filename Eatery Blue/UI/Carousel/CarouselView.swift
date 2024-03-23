@@ -45,7 +45,7 @@ class CarouselView: UIView {
     public func updateCarousel(carouselItems: [Eatery]) {
         buttonImageView.tap { [weak self] _ in
             guard let self else { return }
-            pushListViewController(title: titleLabel.text ?? "", description: "", eateries: carouselItems)
+            pushListViewController(title: title, description: "", eateries: carouselItems)
         }
         
         var sects: [IndexPath] = []
@@ -74,7 +74,16 @@ class CarouselView: UIView {
         }
         collectionView.deleteSections(sectionsToRemove)
     }
-    
+
+    public func fullRefresh(carouselItems: [Eatery]) {
+        buttonImageView.tap { [weak self] _ in
+            guard let self else { return }
+            pushListViewController(title: title, description: "", eateries: carouselItems)
+        }
+        self.carouselItems = carouselItems
+        collectionView.reloadData()
+    }
+
     // MARK: - Setup
     
     private func setUpSelf() {
