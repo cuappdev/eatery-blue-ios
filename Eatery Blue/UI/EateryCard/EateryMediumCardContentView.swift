@@ -18,7 +18,7 @@ class EateryMediumCardContentView: UIView {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let favoriteButton = ButtonView(content: UIView())
-    private var favoriteButtonImage = UIImageView()
+    private let favoriteButtonImage = UIImageView()
 
     private let alertView = EateryCardAlertView()
 

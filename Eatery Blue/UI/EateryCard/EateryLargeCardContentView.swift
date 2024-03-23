@@ -19,8 +19,8 @@ class EateryLargeCardContentView: UIView {
     private let labelStackView = UIStackView()
     private let titleLabel = UILabel()
     private let subtitleLabels = [UILabel(), UILabel()]
-    private var favoriteButton = ButtonView(content: UIView())
-    private var favoriteButtonImage = UIImageView()
+    private let favoriteButton = ButtonView(content: UIView())
+    private let favoriteButtonImage = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

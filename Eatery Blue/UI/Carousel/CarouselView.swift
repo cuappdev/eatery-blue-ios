@@ -42,7 +42,7 @@ class CarouselView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func updateCarousel(carouselItems: [Eatery]) {
+    func updateCarousel(carouselItems: [Eatery]) {
         buttonImageView.tap { [weak self] _ in
             guard let self else { return }
             pushListViewController(title: title, description: "", eateries: carouselItems)
@@ -75,7 +75,7 @@ class CarouselView: UIView {
         collectionView.deleteSections(sectionsToRemove)
     }
 
-    public func fullRefresh(carouselItems: [Eatery]) {
+    func fullRefresh(carouselItems: [Eatery]) {
         buttonImageView.tap { [weak self] _ in
             guard let self else { return }
             pushListViewController(title: title, description: "", eateries: carouselItems)
