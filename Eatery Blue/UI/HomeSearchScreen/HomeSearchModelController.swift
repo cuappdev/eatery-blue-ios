@@ -79,7 +79,6 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
                 navigationController?.hero.isEnabled = false
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.setUpMenu(eatery: eatery)
-                fatalError("crash")
             }
         }
     }
