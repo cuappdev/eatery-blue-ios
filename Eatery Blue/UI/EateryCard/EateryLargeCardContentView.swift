@@ -19,7 +19,8 @@ class EateryLargeCardContentView: UIView {
     private let labelStackView = UIStackView()
     private let titleLabel = UILabel()
     private let subtitleLabels = [UILabel(), UILabel()]
-    private var favoriteButton = ButtonView(content: UIImageView())
+    private let favoriteButton = ButtonView(content: UIView())
+    private let favoriteButtonImage = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,6 +53,7 @@ class EateryLargeCardContentView: UIView {
         setUpLabelStackView()
 
         addSubview(favoriteButton)
+        favoriteButton.addSubview(favoriteButtonImage)
     }
 
     private func setUpImageView() {
@@ -111,9 +113,9 @@ class EateryLargeCardContentView: UIView {
 
         let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
         if metadata.isFavorite {
-            favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
         } else {
-            favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
         }
         
         favoriteButton.buttonPress { [weak self] _ in
@@ -124,9 +126,9 @@ class EateryLargeCardContentView: UIView {
             coreDataStack.save()
             
             if metadata.isFavorite {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
             } else {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
             }
 
             NotificationCenter.default.post(
@@ -196,11 +198,15 @@ class EateryLargeCardContentView: UIView {
         }
 
         favoriteButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(12)
-            make.top.equalTo(imageView.snp.bottom).offset(12)
-            make.leading.equalTo(labelStackView.snp.trailing).offset(16)
-            make.width.equalTo(20)
-            make.height.equalTo(20)
+            make.trailing.equalToSuperview()
+            make.top.equalTo(imageView.snp.bottom)
+            make.leading.equalTo(labelStackView.snp.trailing).offset(4)
+            make.size.equalTo(44)
+        }
+
+        favoriteButtonImage.snp.makeConstraints { make in
+            make.size.equalTo(20)
+            make.center.equalToSuperview()
         }
     }
 
