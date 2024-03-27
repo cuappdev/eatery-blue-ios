@@ -60,7 +60,6 @@ class MenuHeaderView: UIView {
         menuInaccuracyLabel.textColor = UIColor.Eatery.gray05
     }
 
-
     private func setUpConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(layoutMarginsGuide)
