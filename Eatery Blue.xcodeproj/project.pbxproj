@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E14970F2BB75B6400180A35 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */; };
 		2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */; };
 		2E6655FB2ADFB86700264391 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */; };
 		2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */ = {isa = PBXBuildFile; productRef = 2E856F642B6714CB0043F350 /* AppDevAnnouncements */; };
@@ -188,6 +189,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Extension.swift"; sourceTree = "<group>"; };
 		2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				5D8651872773CBFB000338D4 /* Assets.xcassets */,
 				5D86518C2773CBFB000338D4 /* Info.plist */,
 				5D8651892773CBFB000338D4 /* LaunchScreen.storyboard */,
+				2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */,
 			);
 			path = "Eatery Blue";
 			sourceTree = "<group>";
@@ -910,6 +913,7 @@
 				5D8651782773CBFB000338D4 /* Frameworks */,
 				5D8651792773CBFB000338D4 /* Resources */,
 				5DF5F7CE2773FD3C001ADCDC /* Embed Frameworks */,
+				C32CE60D2BAB8E120007D2CE /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -989,11 +993,38 @@
 			files = (
 				5D86518B2773CBFB000338D4 /* LaunchScreen.storyboard in Resources */,
 				5D8651882773CBFB000338D4 /* Assets.xcassets in Resources */,
+				2E14970F2BB75B6400180A35 /* PrivacyInfo.xcprivacy in Resources */,
 				2E6655FB2ADFB86700264391 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C32CE60D2BAB8E120007D2CE /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5D8651772773CBFB000338D4 /* Sources */ = {
@@ -1290,7 +1321,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 40;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1309,7 +1341,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.7;
+				MARKETING_VERSION = 3.0.8;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1330,7 +1363,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1349,7 +1382,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.7;
+				MARKETING_VERSION = 3.0.8;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
