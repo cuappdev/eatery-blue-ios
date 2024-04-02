@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "abseil",
-        "repositoryURL": "https://github.com/firebase/abseil-cpp-SwiftPM.git",
+        "repositoryURL": "https://github.com/google/abseil-cpp-binary.git",
         "state": {
           "branch": null,
           "revision": "df308b8b46607675f2b9ec8e569109008f9155ce",
@@ -35,15 +35,6 @@
           "branch": "master",
           "revision": "13a490d0982b02f489c7a76e3f03248de4c08e2c",
           "version": null
-        }
-      },
-      {
-        "package": "BoringSSL-GRPC",
-        "repositoryURL": "https://github.com/firebase/boringssl-SwiftPM.git",
-        "state": {
-          "branch": null,
-          "revision": "dd3eda2b05a3f459fc3073695ad1b28659066eab",
-          "version": "0.9.1"
         }
       },
       {

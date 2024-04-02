@@ -10,10 +10,16 @@ import UIKit
 
 class CompareMenusEaterySelectionCell: UITableViewCell {
 
+    // MARK: - Properties (data)
+
     static let reuse = "CompareMenusEaterySelectionCellReuse"
+
+    // MARK: - Properties (view)
 
     private let nameView = UILabel()
     private let checkView = UIImageView()
+
+    // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,6 +30,8 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     func configure(eatery: Eatery, filled: Bool, draggable: Bool) {
         nameView.text = eatery.name

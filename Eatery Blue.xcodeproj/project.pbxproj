@@ -14,7 +14,6 @@
 		2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E856F682B67263A0043F350 /* EateryEnvironment.swift */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
-		2ED2FC132BA2D7AA00621028 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		2ED2FC162BA2DBEC00621028 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */; };
 		2ED2FC182BA2DBEC00621028 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */; };
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
@@ -173,7 +172,7 @@
 		D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */; };
 		D050633F2B93DC650022760B /* CompareMenusSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */; };
 		D05063412B9421F30022760B /* CompareMenusEaterySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */; };
-		D053AD132BA8A92F0001E770 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = D053AD122BA8A92F0001E770 /* Hero */; };
+		D053AD132BA8A92F0001E770 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0548AD62BB5201B0064489D /* ScrollHitView.swift */; };
 		D06364532B8834E700524757 /* EateryMediumCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */; };
 		D09D20A32B96D5D8004C72ED /* CompareMenusPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A22B96D5D8004C72ED /* CompareMenusPageViewController.swift */; };
@@ -182,6 +181,7 @@
 		D0B61E9B2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B61E9A2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift */; };
 		D0C770A82B9803A900A4828F /* CompareMenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */; };
 		D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */; };
+		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusOnboardingView.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
@@ -377,6 +377,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */,
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
 				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
 				5D73C38D278129100020507C /* Logging in Frameworks */,
@@ -389,7 +390,7 @@
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
 				5D75D6DF278E1DF500832359 /* SnapKit in Frameworks */,
-				D053AD132BA8A92F0001E770 /* Hero in Frameworks */,
+				D053AD132BA8A92F0001E770 /* (null) in Frameworks */,
 				5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -730,6 +731,7 @@
 			children = (
 				5D34F08D279AF9E1000F9056 /* ButtonView.swift */,
 				5D4689FF277D146500986AFF /* ClearTableViewCell.swift */,
+				D0548AD62BB5201B0064489D /* ScrollHitView.swift */,
 				5DF5F7DA27740EFB001ADCDC /* ContainerView.swift */,
 				5D0CDC502775040800AD0E27 /* HDivider.swift */,
 				5D0CDC582775346600AD0E27 /* PillView.swift */,
@@ -941,7 +943,6 @@
 				D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */,
 				D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */,
 				D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */,
-				D0548AD62BB5201B0064489D /* ScrollHitView.swift */,
 				D0EC7C352BBA009E00F05F8E /* CompareMenusOnboardingView.swift */,
 			);
 			path = CompareMenus;

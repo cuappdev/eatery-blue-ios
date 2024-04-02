@@ -1,5 +1,5 @@
 //
-//  EateryMenuCategoryPickerView.swift
+//  MenuCategoryPickerView.swift
 //  Eatery Blue
 //
 //  Created by Peter Bidoshi  on 3/24/24.
@@ -9,18 +9,21 @@ import UIKit
 
 class MenuCategoryPickerView: UIView {
 
+    // MARK: - Properties (data)
+
     var delegate: MenuCategoryPickerDelegate?
+    private var index = 0
+    private(set) var highlightedCategoryIndex: Int? = nil
+
+    // MARK: - Properties (view)
 
     private let categoriesBackground = UIStackView()
     private let categoriesForeground = UIStackView()
     private let foregroundMask = PillView()
-
     private let menuCategoryContainer = UIView()
     private let menuCategoryScrollView = UIScrollView()
 
-    private var index = 0
-
-    private(set) var highlightedCategoryIndex: Int? = nil
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,6 +34,8 @@ class MenuCategoryPickerView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     private func setUpSelf() {
         self.backgroundColor = .white
@@ -117,8 +122,8 @@ class MenuCategoryPickerView: UIView {
             guard let self else { return }
             delegate?.menuCategoryPicker(buttonPressedAtIndex: index)
         }
-        self.index += 1
 
+        self.index += 1
         foregroundContainer.isUserInteractionEnabled = false
     }
 
@@ -137,6 +142,7 @@ class MenuCategoryPickerView: UIView {
             print("INDEX", index)
             return
         }
+
         highlightedCategoryIndex = i
         foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
 

@@ -19,8 +19,7 @@ class EateryPageViewController: UIPageViewController {
     private var index: Int
     private var shouldOpenCompareMenusButton = true
 
-    // MARK: - Properties (view)
-
+    // MARK: - Init
 
     init(allEateries: [Eatery], eateries: [Eatery], index: Int) {
         self.allEateries = allEateries
@@ -32,7 +31,9 @@ class EateryPageViewController: UIPageViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Setup
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Eatery.gray00

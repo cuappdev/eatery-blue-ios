@@ -10,12 +10,17 @@ import UIKit
 
 class CompareMenusTabsViewController: UIViewController {
 
+    // MARK: - Properties (data)
+
     private let eateries: [Eatery]
+
+    // MARK: - Properties (view)
 
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
-
     private let hitView: ScrollHitView
+
+    // MARK: - Init
 
     init(eateries: [Eatery]) {
         self.eateries = eateries
@@ -27,6 +32,8 @@ class CompareMenusTabsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     private func setUpView() {
         view.backgroundColor = UIColor.Eatery.gray00

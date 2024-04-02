@@ -22,6 +22,8 @@ class CompareMenusPageViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
+    // MARK: - Init
+
     init(eateries: [Eatery], allEateries: [Eatery]) {
         self.eateries = eateries
         self.allEateries = allEateries
@@ -32,6 +34,8 @@ class CompareMenusPageViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +84,7 @@ class CompareMenusPageViewController: UIViewController {
     private func setUpPages() {
         eateries.forEach { eatery in
             let vc = CompareMenusEateryViewController()
-            vc.setUp(eatery: eatery, allEateries: eateries)
+            vc.setUp(eatery: eatery, allEateries: allEateries)
             vc.setUpMenu(eatery: eatery)
             vc.view.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             self.addChild(vc)
@@ -97,11 +101,7 @@ class CompareMenusPageViewController: UIViewController {
     private func setUpConstraints() {
         tabsViewController.view.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            if let tabBar = self.tabBarController?.tabBar {
-                make.bottom.equalToSuperview().inset(tabBar.frame.height)
-            } else {
-                make.bottom.equalToSuperview()
-            }
+            make.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
             make.height.equalTo(64)
         }
 
@@ -127,12 +127,12 @@ extension CompareMenusPageViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
-        // if scrollView is the pages ScrollView
+        // if user swiping through pages
         if scrollView.superview == self.view {
             tabsViewController.offsetScrollBy(percentage: scrollView.contentOffset.x / scrollView.contentSize.width)
         }
 
-        // if scrollView is the tabs ScrollView
+        // if user swiping through tabs
         if scrollView.superview == self.tabsViewController.view {
             let percentage = scrollView.contentOffset.x / scrollView.contentSize.width
             if percentage.isNaN { return }

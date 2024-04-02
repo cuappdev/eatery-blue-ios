@@ -21,7 +21,7 @@ class EateryModelController: EateryViewController {
 
     var menuHasLoaded: Bool = false
     private var eatery: Eatery?
-    private var allEateries: [Eatery]?
+    private var allEateries: [Eatery] = []
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
         if let index = selectedEventIndex {
@@ -116,7 +116,6 @@ class EateryModelController: EateryViewController {
         compareMenusButton.largeButtonPress { [weak self] _ in
             guard let self else { return }
             guard let eatery else { return }
-            guard let allEateries else { return }
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)

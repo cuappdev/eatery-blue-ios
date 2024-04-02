@@ -13,18 +13,20 @@ class CompareMenusSheetViewController: SheetViewController {
 
     // MARK: - Properties (data)
 
-    var filterController = CompareMenusFilterViewController()
-    var filter = EateryFilter()
-    let parentNavigationController: UINavigationController?
-    let allEateries: [Eatery]
-    var shownEateries: [Eatery]
-    var selectedEateries: [Eatery] = []
+    private let filterController = CompareMenusFilterViewController()
+    private let parentNavigationController: UINavigationController?
+    private let allEateries: [Eatery]
+    private var shownEateries: [Eatery]
+    private var selectedEateries: [Eatery] = []
+    private var filter = EateryFilter()
 
     // MARK: - Properties (view)
 
     var selectionTableView = UITableView()
     let compareNowButton = UIButton()
     let backgroundView = UILabel()
+
+    // MARK: - Init
 
     init(parentNavigationController: UINavigationController?, allEateries: [Eatery], selectedEateries: [Eatery] = [], selectedOn: Bool = false) {
         self.parentNavigationController = parentNavigationController
@@ -37,11 +39,13 @@ class CompareMenusSheetViewController: SheetViewController {
             filterController.tapSelected()
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Setup
+
     func setUpSelf() {
         addHeader(title: "Compare Menus")
 
@@ -60,7 +64,7 @@ class CompareMenusSheetViewController: SheetViewController {
     }
 
     private func setUpFilterController() {
-        filterController.setConnectedViewController(viewController: self)
+        filterController.viewController = self
         filterController.didMove(toParent: self)
         filterController.delegate = self
     }

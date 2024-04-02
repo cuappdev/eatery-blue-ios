@@ -9,11 +9,14 @@ import EateryModel
 
 class CompareMenusFilterViewController: EateryFilterViewController {
     
+    // MARK: - Properties (view)
+
     private let selected = PillFilterButtonView()
+
+    // MARK: - Setup
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUpSelected()
     }
 
@@ -39,6 +42,7 @@ class CompareMenusFilterViewController: EateryFilterViewController {
         if filter.selected {
             removeAllFilters()
         }
+
         super.updateFilterButtonsFromState(animated: animated)
         selected.setHighlighted(filter.selected)
     }

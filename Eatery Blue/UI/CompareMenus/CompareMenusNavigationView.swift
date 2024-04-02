@@ -10,9 +10,13 @@ import UIKit
 
 class CompareMenusNavigationView: UIView {
 
+    // MARK: - Properties (view)
+
     private let titleLabel = UILabel()
     let editButton = ButtonView(content: UIImageView())
     let backButton = ButtonView(content: UIImageView())
+
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +27,8 @@ class CompareMenusNavigationView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     private func setUpSelf() {
         backgroundColor = .white

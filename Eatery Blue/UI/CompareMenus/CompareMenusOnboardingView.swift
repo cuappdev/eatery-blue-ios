@@ -78,7 +78,6 @@ class CompareMenusOnboardingView: UIView {
         actionLabel.textColor = .white
         actionLabel.lineBreakMode = .byWordWrapping
         actionLabel.numberOfLines = 0
-
     }
 
     private func setUpArrowImage() {

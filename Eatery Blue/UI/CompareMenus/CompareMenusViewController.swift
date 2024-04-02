@@ -20,12 +20,16 @@ class CompareMenusViewController: UIViewController {
 
     private let navigationView = CompareMenusNavigationView()
 
+    // MARK: - Init
+
     init(allEateries: [Eatery], comparedEateries: [Eatery]) {
         self.pageController = CompareMenusPageViewController(eateries: comparedEateries, allEateries: allEateries)
         self.allEateries = allEateries
         self.comparedEateries = comparedEateries
         super.init(nibName: nil, bundle: nil)
     }
+
+    // MARK: - Setup
 
     override func viewDidLoad() {
         view.backgroundColor = .white

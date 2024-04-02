@@ -267,7 +267,7 @@ class CompareMenusEateryViewController: UIViewController {
             guard let self else { return }
             guard let eatery else { return }
             let eateryVC = EateryModelController()
-            eateryVC.setUp(eatery: eatery, allEateries: allEateries)
+            eateryVC.setUp(eatery: eatery, allEateries: allEateries, isTracking: true)
             eateryVC.setUpMenu(eatery: eatery)
             navigationController?.pushViewController(eateryVC, animated: true)
         }
@@ -289,7 +289,7 @@ class CompareMenusEateryViewController: UIViewController {
     @objc func pushEatery() {
         guard let eatery else { return }
         let eateryVC = EateryModelController()
-        eateryVC.setUp(eatery: eatery, allEateries: allEateries)
+        eateryVC.setUp(eatery: eatery, allEateries: allEateries, isTracking: true)
         eateryVC.setUpMenu(eatery: eatery)
         navigationController?.pushViewController(eateryVC, animated: true)
     }
