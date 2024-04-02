@@ -10,9 +10,11 @@ import UIKit
 
 class CompareMenusEateryViewController: UIViewController {
 
-    var delegate: CompareMenusEateryViewControllerDelegate?
-    var previousContentOffset: CGFloat = 0
+    // MARK: - Properties (data)
 
+    private var eatery: Eatery?
+    private var allEateries: [Eatery] = []
+    var categoryViews: [UIView] = []
     var menuHasLoaded = false
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
@@ -23,47 +25,32 @@ class CompareMenusEateryViewController: UIViewController {
         }
     }
 
-    var eatery: Eatery?
-    var categoryViews: [MenuCategoryView] = []
+    // MARK: - Properties (view)
 
-    private let titleLabel = UILabel()
-    var previousButton = ButtonView(content: UIView())
-    var nextButton = ButtonView(content: UIView())
     private let scrollView = UIScrollView()
-    private let menuCategoryContainer = UIView()
-    private let menuCategoryScrollView = UIScrollView()
     private let stackView = UIStackView()
-    let removeEateryButton = PillButtonView()
-
-    let categoriesBackground = UIStackView()
-    let categoriesForeground = UIStackView()
-    let foregroundMask = PillView()
-
-    private(set) var highlightedCategoryIndex: Int? = nil
-    
-
-    private let weekdayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
-        formatter.calendar = .eatery
-        return formatter
-    }()
-
-    private static let priceNumberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = .eatery
-        return formatter
-    }()
+    private let topSpacer = UIView()
+    private let midSpacer = UIView()
+    private let hoursDataView = TimingDataView()
+    private let hoursView = TimingCellView()
+    private let menuCategoryPicker = MenuCategoryPickerView()
+    private let spinnerView = UIActivityIndicatorView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
-        setUpMenuCategory()
-        view.addSubview(menuCategoryContainer)
-        menuCategoryContainer.addSubview(menuCategoryScrollView)
+        topSpacer.backgroundColor = UIColor.Eatery.gray01
+        view.addSubview(topSpacer)
+
+        view.addSubview(hoursDataView)
+
+        setUpMenuCategoryPicker()
+        view.addSubview(menuCategoryPicker)
+
+        midSpacer.backgroundColor = UIColor.Eatery.gray01
+        view.addSubview(midSpacer)
 
         setUpScrollView()
         view.addSubview(scrollView)
@@ -71,12 +58,44 @@ class CompareMenusEateryViewController: UIViewController {
         setUpStackView()
         scrollView.addSubview(stackView)
 
+        setUpSpinnerView()
+        view.addSubview(spinnerView)
+
         setUpConstraints()
+    }
+
+    private func setUpMenuCategoryPicker() {
+        menuCategoryPicker.delegate = self
+    }
+
+    private func setUpHoursView(_ eatery: Eatery) {
+        hoursDataView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        hoursView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+
+        hoursView.titleLabel.textColor = UIColor.Eatery.gray05
+        let text = NSMutableAttributedString()
+        text.append(NSAttributedString(
+            attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: hoursView.titleLabel.font))
+        )
+        text.append(NSAttributedString(string: " Hours"))
+        hoursView.titleLabel.attributedText = text
+
+        hoursView.statusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
+
+        hoursView.tap { [weak self] _ in
+            guard let self else { return }
+            let viewController = HoursSheetViewController()
+            viewController.setUpSheetPresentation()
+            viewController.setUp(eatery.id, eatery.events)
+            tabBarController?.present(viewController, animated: true)
+        }
+
+        hoursDataView.addCellView(hoursView)
     }
 
     private func setUpScrollView() {
         scrollView.backgroundColor = UIColor.Eatery.gray00
-        scrollView.alwaysBounceVertical = true
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.scrollIndicatorInsets = .zero
         scrollView.showsVerticalScrollIndicator = false
@@ -84,55 +103,49 @@ class CompareMenusEateryViewController: UIViewController {
     }
 
     private func setUpStackView() {
-        stackView.backgroundColor = .white
+        stackView.backgroundColor = UIColor.Eatery.gray00
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = 12
+        stackView.spacing = 8
         stackView.hero.isEnabled = true
     }
 
-    private func setUpMenuCategory() {
-        menuCategoryScrollView.bounces = false
-        menuCategoryScrollView.showsHorizontalScrollIndicator = false
-
-        menuCategoryScrollView.addSubview(categoriesBackground)
-        setUpCategoriesStackView(categoriesBackground)
-        categoriesBackground.isUserInteractionEnabled = true
-
-        menuCategoryScrollView.addSubview(categoriesForeground)
-
-        setUpCategoriesStackView(categoriesForeground)
-        categoriesForeground.isUserInteractionEnabled = false
-        categoriesForeground.backgroundColor = UIColor.Eatery.black
-
-        foregroundMask.backgroundColor = .white
-        categoriesForeground.mask = foregroundMask
-    }
-
-    private func setUpCategoriesStackView(_ stackView: UIStackView) {
-        stackView.axis = .horizontal
-        stackView.spacing = 0
-        stackView.distribution = .fill
-        stackView.alignment = .fill
+    private func setUpSpinnerView() {
+        spinnerView.hidesWhenStopped = true
+        spinnerView.style = .medium
+        spinnerView.backgroundColor = .white
+        spinnerView.startAnimating();
     }
 
     private func setUpConstraints() {
-        menuCategoryContainer.snp.makeConstraints { make in
-            make.width.equalToSuperview()
+        topSpacer.snp.makeConstraints { make in
+            make.height.equalTo(1)
             make.top.equalToSuperview()
-            make.height.equalTo(52)
+            make.leading.trailing.equalToSuperview()
         }
-        menuCategoryScrollView.snp.makeConstraints { make in
-            make.width.equalToSuperview().inset(10)
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalTo(36)
+
+        hoursDataView.snp.makeConstraints { make in
+            make.top.equalTo(topSpacer).offset(12)
+            make.leading.trailing.equalToSuperview()
+        }
+
+        menuCategoryPicker.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(hoursDataView.snp.bottom)
+            make.height.equalTo(50)
+        }
+
+        midSpacer.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.top.equalTo(menuCategoryPicker.snp.bottom)
+            make.leading.trailing.equalToSuperview()
         }
 
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(menuCategoryContainer.snp.bottom)
-            make.bottom.width.equalToSuperview()
+            make.top.equalTo(midSpacer.snp.bottom)
+            make.width.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
 
         stackView.snp.makeConstraints { make in
@@ -140,20 +153,16 @@ class CompareMenusEateryViewController: UIViewController {
             make.width.equalTo(scrollView.frameLayoutGuide)
         }
 
-        setUpCategoriesStackViewConstraints(categoriesBackground)
-        setUpCategoriesStackViewConstraints(categoriesForeground)
-    }
-
-    private func setUpCategoriesStackViewConstraints(_ stackView: UIStackView) {
-        stackView.snp.makeConstraints { make in
-            make.edges.equalTo(menuCategoryScrollView.contentLayoutGuide)
-            make.height.equalTo(menuCategoryScrollView.frameLayoutGuide)
+        spinnerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 
-    func setUp(eatery: Eatery) {
+    func setUp(eatery: Eatery, allEateries: [Eatery]) {
         self.eatery = eatery
+        self.allEateries = allEateries
         resetSelectedEventIndex()
+        setUpHoursView(eatery)
         setUpAnalytics(eatery)
     }
 
@@ -163,8 +172,8 @@ class CompareMenusEateryViewController: UIViewController {
             if let eatery = self.eatery {
                 setUpAnalytics(eatery)
                 addMenuFromState()
+                spinnerView.stopAnimating()
                 menuHasLoaded = true
-                highlightCategory(atIndex: 0, animateScrollView: true)
             }
         }
     }
@@ -199,12 +208,11 @@ class CompareMenusEateryViewController: UIViewController {
             let sortedCategories = sortMenuCategories(categories: menu.categories)
             if !sortedCategories.isEmpty {
                 sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
-                    addMenuCategory(menuCategory)
-                    addSpacer(height: 8)
+                    addMenuCategory(menuCategory, isLast: false)
                 }
 
                 if let last = sortedCategories.last {
-                    addMenuCategory(last)
+                    addMenuCategory(last, isLast: true)
                 }
             } else {
                 addSorryText()
@@ -212,25 +220,42 @@ class CompareMenusEateryViewController: UIViewController {
         } else {
             addSorryText()
         }
-        addSpacer(height: 8)
+
         addDetailsSection()
         addViewProportionalSpacer(multiplier: 0.5)
     }
 
     func addSorryText() {
+        let backgroundView = UIView()
+        backgroundView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        backgroundView.backgroundColor = UIColor.Eatery.gray00
+
         let sorryText = UILabel()
-        sorryText.text = "Sorry, there is no menu available for this time."
+        sorryText.text = "Sorry, there is no menu available now."
         sorryText.font = .systemFont(ofSize: 17, weight: .medium)
         sorryText.textAlignment = .center
+        sorryText.backgroundColor = .white
+        sorryText.clipsToBounds = true
+        sorryText.layer.cornerRadius = 10
         sorryText.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        backgroundView.addSubview(sorryText)
+        stackView.addArrangedSubview(backgroundView)
+
         sorryText.snp.makeConstraints { make in
+            make.edges.equalTo(backgroundView.layoutMargins)
             make.height.equalTo(64)
         }
-        stackView.addArrangedSubview(sorryText)
     }
 
     func addDetailsSection() {
         let viewEateryContainer = UIView()
+        viewEateryContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        viewEateryContainer.backgroundColor = UIColor.Eatery.gray00
+        let backgroundView = UIView()
+        backgroundView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        backgroundView.backgroundColor = .white
+        backgroundView.layer.cornerRadius = 10
         let viewEateryDetails = PillButtonView()
         viewEateryDetails.backgroundColor = UIColor.Eatery.gray00
         viewEateryDetails.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
@@ -242,43 +267,29 @@ class CompareMenusEateryViewController: UIViewController {
             guard let self else { return }
             guard let eatery else { return }
             let eateryVC = EateryModelController()
-            eateryVC.setUp(eatery: eatery)
+            eateryVC.setUp(eatery: eatery, allEateries: allEateries)
             eateryVC.setUpMenu(eatery: eatery)
             navigationController?.pushViewController(eateryVC, animated: true)
         }
-        viewEateryContainer.addSubview(viewEateryDetails)
-        viewEateryDetails.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(12)
-        }
+
+        backgroundView.addSubview(viewEateryDetails)
+        viewEateryContainer.addSubview(backgroundView)
         stackView.addArrangedSubview(viewEateryContainer)
-        viewEateryContainer.snp.makeConstraints { make in
-            make.height.equalTo(36)
+
+        viewEateryDetails.snp.makeConstraints { make in
+            make.edges.equalTo(backgroundView.layoutMargins)
+            make.height.equalTo(42)
         }
 
-        let removeEateryContainer = UIView()
-        removeEateryButton.backgroundColor = .white
-        removeEateryButton.imageView.image = UIImage(named: "X")?.withRenderingMode(.alwaysTemplate)
-        removeEateryButton.imageView.tintColor = UIColor.Eatery.red
-        removeEateryButton.titleLabel.textColor = UIColor.Eatery.red
-        removeEateryButton.titleLabel.text = "Remove Eatery"
-        removeEateryButton.layer.borderWidth = 1
-        removeEateryButton.layer.borderColor = UIColor.Eatery.red.cgColor
-        removeEateryButton.isUserInteractionEnabled = true
-
-        removeEateryContainer.addSubview(removeEateryButton)
-        removeEateryButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(12)
-        }
-        stackView.addArrangedSubview(removeEateryContainer)
-        removeEateryContainer.snp.makeConstraints { make in
-            make.height.equalTo(36)
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalTo(viewEateryContainer.layoutMargins)
         }
     }
 
     @objc func pushEatery() {
         guard let eatery else { return }
         let eateryVC = EateryModelController()
-        eateryVC.setUp(eatery: eatery)
+        eateryVC.setUp(eatery: eatery, allEateries: allEateries)
         eateryVC.setUpMenu(eatery: eatery)
         navigationController?.pushViewController(eateryVC, animated: true)
     }
@@ -288,7 +299,8 @@ class CompareMenusEateryViewController: UIViewController {
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        menuHeaderView.buttonImageView.tap { _ in
+        menuHeaderView.buttonImageView.tap { [weak self] _ in
+            guard let self else { return }
             dropDownButtonAction?()
         }
         stackView.addArrangedSubview(menuHeaderView)
@@ -317,10 +329,14 @@ class CompareMenusEateryViewController: UIViewController {
         return sortedCategories
     }
 
-    func addMenuCategory(_ menuCategory: MenuCategory) {
+    func addMenuCategory(_ menuCategory: MenuCategory, isLast: Bool) {
+        let categoryContainer = UIView()
+        categoryContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+
         let categoryView = MenuCategoryView()
         categoryView.titleLabel.text = menuCategory.category
-        categoryView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        categoryView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        categoryView.backgroundColor = .white
 
         for item in menuCategory.items {
             let itemView = MenuItemView()
@@ -328,7 +344,7 @@ class CompareMenusEateryViewController: UIViewController {
             itemView.titleLabel.text = item.name
 
             if let price = item.price {
-                itemView.priceLabel.text = CompareMenusEateryViewController
+                itemView.priceLabel.text = EateryViewController
                     .priceNumberFormatter
                     .string(from: NSNumber(value: Double(price) / 100))
             } else {
@@ -344,43 +360,31 @@ class CompareMenusEateryViewController: UIViewController {
 
             categoryView.addItemView(itemView)
         }
-
-        stackView.addArrangedSubview(categoryView)
-        categoryViews.append(categoryView)
-
-        let backgroundContainer = ContainerView(content: UILabel())
-        let foregroundContainer = ContainerView(content: UILabel())
-
-        backgroundContainer.content.text = menuCategory.category
-        foregroundContainer.content.text = backgroundContainer.content.text
-
-        backgroundContainer.content.font = .preferredFont(for: .footnote, weight: .semibold)
-        foregroundContainer.content.font = .preferredFont(for: .footnote, weight: .medium)
-
-        backgroundContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        foregroundContainer.layoutMargins = backgroundContainer.layoutMargins
-
-        backgroundContainer.content.textColor = UIColor.Eatery.gray05
-        foregroundContainer.content.textColor = .white
-
-        categoriesBackground.addArrangedSubview(backgroundContainer)
-        categoriesForeground.addArrangedSubview(foregroundContainer)
-
-        backgroundContainer.snp.makeConstraints { make in
-            make.width.equalTo(foregroundContainer)
+        categoryContainer.addSubview(categoryView)
+        categoryView.snp.makeConstraints { make in
+            make.edges.equalTo(categoryContainer.layoutMargins)
+        }
+        
+        if categoryViews.isEmpty {
+            categoryView.clipsToBounds = true
+            categoryView.layer.cornerRadius = 10
+            categoryView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         }
 
-        let index = stackView.subviews.count - 1
-
-        backgroundContainer.tap { [weak self] _ in
-            guard let self else { return }
-            scrollToCategoryView(at: index)
+        if isLast {
+            categoryView.clipsToBounds = true
+            categoryView.layer.cornerRadius = 10
+            categoryView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
-        foregroundContainer.isUserInteractionEnabled = false
+
+        stackView.addArrangedSubview(categoryContainer)
+        categoryViews.append(categoryContainer)
+
+        menuCategoryPicker.addMenuCategory(categoryName: menuCategory.category)
     }
 
     func scrollToCategoryView(at index: Int) {
-        let offset = stackView.subviews[index].frame.minY - 20
+        let offset = stackView.subviews[index].frame.minY - 8
         scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
     }
 
@@ -393,36 +397,22 @@ class CompareMenusEateryViewController: UIViewController {
         }
     }
 
-    func highlightCategory(atIndex i: Int, animated: Bool) {
-        if highlightedCategoryIndex != nil, animated {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.beginFromCurrentState, .curveEaseOut]) {
-                self.highlightCategory(atIndex: i, animateScrollView: false)
-            }
-        } else {
-            highlightCategory(atIndex: i)
-        }
-    }
-
-    func highlightCategory(atIndex i: Int, animateScrollView: Bool = false) {
-        highlightedCategoryIndex = i
-        foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
-
-        menuCategoryScrollView.scrollRectToVisible(foregroundMask.frame, animated: animateScrollView)
-    }
 }
 
 extension CompareMenusEateryViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let newOffset = scrollView.contentOffset.y + scrollView.contentInset.top
-        delegate?.compareMenusEateryViewController(viewWasScrolled: newOffset, positive: newOffset - previousContentOffset)
-        previousContentOffset = newOffset
         let cursorPosition = scrollView.contentOffset.y + scrollView.contentInset.top + 25
         // The selected category is the menu category view that is under the cursor position
         let categoryView = stackView.arrangedSubviews.first { view in
-            guard let categoryView = view as? MenuCategoryView else { return false }
-            return categoryView.frame.minY <= cursorPosition && cursorPosition <= categoryView.frame.maxY
-        } as? MenuCategoryView
+            if !view.subviews.contains(where: { subviews in
+                subviews is MenuCategoryView
+            }) {
+                return false
+            }
+            return view.frame.minY <= cursorPosition && cursorPosition <= view.frame.maxY
+        }
 
         if let categoryView = categoryView {
             guard let index = categoryViews.firstIndex(of: categoryView) else {
@@ -430,11 +420,17 @@ extension CompareMenusEateryViewController: UIScrollViewDelegate {
                 return
             }
 
-            highlightCategory(atIndex: index, animated: true)
+            menuCategoryPicker.highlightCategory(atIndex: index, animated: true)
         }
     }
 }
 
-protocol CompareMenusEateryViewControllerDelegate {
-    func compareMenusEateryViewController(viewWasScrolled scrollAmount: CGFloat, positive: CGFloat)
+extension CompareMenusEateryViewController: MenuCategoryPickerDelegate {
+    func menuCategoryPicker(buttonPressedAtIndex idx: Int) {
+        let category = categoryViews[idx]
+        let viewIdx = stackView.subviews.firstIndex { subview in
+            subview == category
+        } ?? 0
+        self.scrollToCategoryView(at: viewIdx)
+    }
 }

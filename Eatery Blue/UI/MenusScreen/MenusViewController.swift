@@ -43,6 +43,7 @@ class MenusViewController: UIViewController {
     
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
+    private var allEateries: [Eatery] = []
     private(set) var extraIndex: Int = 0
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
@@ -146,6 +147,7 @@ class MenusViewController: UIViewController {
     
     func updateCells(cells: [Cell], allEateries: [Eatery], eateryStartIndex: Int) {
         self.cells = cells
+        self.allEateries = allEateries
         tableView.reloadData()
     }
     
@@ -214,7 +216,7 @@ extension MenusViewController: UITableViewDataSource {
             return cell
         case .expandableCard(expandedEatery: let expandedEatery):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCardCell", for: indexPath) as? MenuCardTableViewCell else { return UITableViewCell() }
-            cell.configure(expandedEatery: expandedEatery)
+            cell.configure(expandedEatery: expandedEatery, allEateries: allEateries)
             return cell
         }
     }

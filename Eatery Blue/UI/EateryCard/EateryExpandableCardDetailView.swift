@@ -17,7 +17,8 @@ class EateryExpandableCardDetailView: UIView {
     private let viewEateryDetails = PillButtonView()
     
     private var eatery: Eatery?
-    
+    private var allEateries: [Eatery]?
+
     // MARK: - init
     
     override init(frame: CGRect) {
@@ -137,7 +138,7 @@ class EateryExpandableCardDetailView: UIView {
         if let navigationController = findNavigationController() {
             if let eatery = eatery {
                 let eateryVC = EateryModelController()
-                eateryVC.setUp(eatery: eatery)
+                eateryVC.setUp(eatery: eatery, allEateries: allEateries ?? [])
                 eateryVC.setUpMenu(eatery: eatery)
                 navigationController.pushViewController(eateryVC, animated: true)
             }

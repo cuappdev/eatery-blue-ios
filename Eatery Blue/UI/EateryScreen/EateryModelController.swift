@@ -21,6 +21,7 @@ class EateryModelController: EateryViewController {
 
     var menuHasLoaded: Bool = false
     private var eatery: Eatery?
+    private var allEateries: [Eatery]?
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
         if let index = selectedEventIndex {
@@ -30,12 +31,14 @@ class EateryModelController: EateryViewController {
         }
     }
 
-    func setUp(eatery: Eatery) {
+    func setUp(eatery: Eatery, allEateries: [Eatery]) {
         self.eatery = eatery
+        self.allEateries = allEateries
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
         setUpStackView(eatery)
         setUpAnalytics(eatery)
+        setUpCompareMenusButton()
         addSpinner()
     }
     
@@ -104,6 +107,22 @@ class EateryModelController: EateryViewController {
         } else {
 
             AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
+        }
+    }
+
+    private func setUpCompareMenusButton() {
+        compareMenusButton.largeButtonPress { [weak self] _ in
+            guard let self else { return }
+            guard let eatery else { return }
+            guard let allEateries else { return }
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
+        }
+
+        compareMenusButton.smallButtonPress { [weak self] _ in
+            guard let self else { return }
+            compareMenusButton.toggle()
         }
     }
 

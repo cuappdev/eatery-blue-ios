@@ -9,15 +9,18 @@ import UIKit
 
 class CompareMenusButton: UIButton {
 
-    private let openFrame = CGRect(x: 0, y: 0, width: 206, height: 56)
-    private let closeFrame = CGRect(x: 0, y: 0, width: 56, height: 56)
-    var isCollapsed = true
+    // MARK: - Properties (data)
+
+    private var largeButtonCallback: ((UIButton) -> Void)?
+    private var smallButtonCallback: ((UIButton) -> Void)?
+    private var isCollapsed = true
+
+    // MARK: - Properties (view)
 
     private let button = UIButton()
     private let textView = UILabel()
 
-    private var largeButtonCallback: ((UIButton) -> Void)?
-    private var smallButtonCallback: ((UIButton) -> Void)?
+    // MARK: - init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,11 +32,16 @@ class CompareMenusButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Setup
+
     private func setUpSelf() {
-        frame = closeFrame
-        backgroundColor = UIColor(named: "EateryBlue")
-        layer.cornerRadius = frame.height / 2
+        backgroundColor = UIColor.Eatery.blue
+        layer.cornerRadius = 56 / 2
+        layer.shadowColor = UIColor.Eatery.black.cgColor
+        layer.shadowOpacity = 0.25
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 2
 
         addSubview(button)
         setUpButton()
@@ -47,20 +55,18 @@ class CompareMenusButton: UIButton {
     }
 
     private func setUpButton() {
-        button.layer.frame = CGRect(x: 0, y: 0, width: openFrame.height, height: openFrame.height)
-        button.backgroundColor = UIColor(named: "EateryBlue")
+        button.backgroundColor = UIColor.Eatery.blue
         button.setImage(UIImage(named: "CompareMenus"), for: .normal)
-        button.layer.cornerRadius = button.frame.width / 2
+        button.layer.cornerRadius = 56 / 2
 
         button.addTarget(self, action: #selector(smallButtonTouchUpInside), for: .touchUpInside)
         button.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
         button.addTarget(self, action: #selector(buttonTouchUpOutside), for: .touchUpOutside)
-
     }
 
     private func setUpTextView() {
         textView.text = "Compare menus"
-        textView.font = .systemFont(ofSize: 17, weight: .semibold)
+        textView.font = .systemFont(ofSize: 14, weight: .semibold)
         textView.textColor = .white
         textView.textAlignment = .center
         textView.layer.opacity = 0
@@ -68,19 +74,17 @@ class CompareMenusButton: UIButton {
 
     private func setUpConstraints() {
         snp.makeConstraints { make in
-            make.width.equalTo(closeFrame.width)
-            make.height.equalTo(closeFrame.height)
+            make.size.equalTo(56)
         }
 
         button.snp.makeConstraints { make in
-            make.width.equalTo(openFrame.height * 0.71)
-            make.height.equalTo(openFrame.height * 0.71)
-            make.centerX.equalTo(snp.right).inset(29)
+            make.size.equalTo(24)
+            make.leading.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
         }
 
         textView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(18)
+            make.leading.equalTo(button.snp.trailing).offset(12)
             make.centerY.equalToSuperview()
         }
     }
@@ -97,8 +101,8 @@ class CompareMenusButton: UIButton {
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             guard let self else { return }
             smallButtonCallback?(sender)
-            toggleCollapse()
         }
+
         UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
             if isCollapsed {
@@ -111,11 +115,11 @@ class CompareMenusButton: UIButton {
 
     @objc private func largeButtonTouchUpInside(_ sender: UIButton) {
         if isCollapsed { return }
-
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             guard let self else { return }
             largeButtonCallback?(sender)
         }
+
         UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) {
             sender.transform = .identity
         }
@@ -143,7 +147,7 @@ class CompareMenusButton: UIButton {
         }
     }
 
-    private func toggleCollapse() {
+    func toggle() {
         if isCollapsed {
             expand()
         } else {
@@ -154,49 +158,41 @@ class CompareMenusButton: UIButton {
     func expand() {
         isCollapsed = false
         snp.updateConstraints { make in
-            make.width.equalTo(openFrame.width)
+            make.width.equalTo(178)
         }
-        button.snp.updateConstraints { make in
-            make.width.equalTo(openFrame.height * 0.71)
-            make.height.equalTo(openFrame.height * 0.71)
-            make.centerX.equalTo(snp.right).inset(29)
-        }
-        UIView.animate(withDuration: 0.3) { [weak self] in
+
+        animate { [weak self] in
             guard let self else { return }
-
-            layoutIfNeeded()
-            frame.size.width = self.openFrame.width
             textView.layer.opacity = 1
-
-            button.layer.frame.size.width = openFrame.height * 0.71
-            button.layer.frame.size.height = openFrame.height * 0.71
-            button.backgroundColor = .white
-            button.setImage(UIImage(named: "X"), for: .normal)
-            button.layer.cornerRadius = button.frame.width / 2
+            self.superview?.layoutIfNeeded()
         }
     }
 
     func collapse() {
         isCollapsed = true
         snp.updateConstraints { make in
-            make.width.equalTo(closeFrame.width)
+            make.width.equalTo(56)
         }
-        button.snp.updateConstraints { make in
-            make.width.equalTo(openFrame.height)
-            make.height.equalTo(openFrame.height)
-        }
-        UIView.animate(withDuration: 0.3) { [weak self] in
+
+        animate { [weak self] in
             guard let self else { return }
-
-            layoutIfNeeded()
-            frame.size.width = self.closeFrame.width
             textView.layer.opacity = 0
-
-            button.layer.frame = CGRect(x: 0, y: 0, width: openFrame.height, height: openFrame.height)
-            button.backgroundColor = UIColor(named: "EateryBlue")
-            button.setImage(UIImage(named: "CompareMenus"), for: .normal)
-            button.layer.cornerRadius = button.frame.width / 2
+            self.superview?.layoutIfNeeded()
         }
     }
 
+    private func animate(_ uiUpdates: (() -> Void)?) {
+        if #available(iOS 17.0, *) {
+            UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+                guard let self else { return }
+                uiUpdates?()
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+                guard let self else { return }
+                uiUpdates?()
+                self.layoutIfNeeded()
+            }
+        }
+    }
 }

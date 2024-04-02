@@ -1,0 +1,132 @@
+//
+//  CompareMenusTabsView.swift
+//  Eatery Blue
+//
+//  Created by Peter Bidoshi  on 3/26/24.
+//
+
+import EateryModel
+import UIKit
+
+class CompareMenusTabsViewController: UIViewController {
+
+    private let eateries: [Eatery]
+
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView()
+
+    private let hitView: ScrollHitView
+
+    init(eateries: [Eatery]) {
+        self.eateries = eateries
+        self.hitView = ScrollHitView(scrollView: scrollView)
+        super.init(nibName: nil, bundle: nil)
+        setUpView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setUpView() {
+        view.backgroundColor = UIColor.Eatery.gray00
+
+        view.addSubview(scrollView)
+
+        setUpStackView()
+        scrollView.addSubview(stackView)
+
+        view.addSubview(hitView)
+
+        for eatery in eateries {
+            addCategory(name: eatery.name)
+        }
+
+        setUpConstraints()
+    }
+
+    func setUpScrollView(delegate: UIScrollViewDelegate) {
+        scrollView.alwaysBounceHorizontal = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.delegate = delegate
+        scrollView.isPagingEnabled = true
+        scrollView.clipsToBounds = false
+    }
+
+    private func setUpStackView() {
+        stackView.axis = .horizontal
+        stackView.spacing = 0
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+    }
+
+    private func setUpConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.centerX.height.equalToSuperview()
+            make.width.equalTo(207)
+        }
+
+        stackView.snp.makeConstraints { make in
+            make.edges.centerY.equalToSuperview()
+        }
+
+        hitView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+
+    private func addCategory(name: String) {
+        let container = UIView()
+
+        let background = UIView()
+        background.backgroundColor = .white
+        background.layer.shadowColor = UIColor.Eatery.black.cgColor
+        background.layer.shadowOpacity = 0.25
+        background.layer.shadowOffset = .zero
+        background.layer.shadowRadius = 2
+        background.layer.cornerRadius = 7
+
+
+        let categoryLabel = UILabel()
+        categoryLabel.text = name
+        categoryLabel.lineBreakMode = .byTruncatingTail
+        categoryLabel.textAlignment = .center
+        categoryLabel.font = .systemFont(ofSize: 16, weight: .medium)
+
+        background.addSubview(categoryLabel)
+        container.addSubview(background)
+        stackView.addArrangedSubview(container)
+
+        container.snp.makeConstraints { make in
+            make.width.equalTo(207)
+        }
+
+        background.snp.makeConstraints { make in
+            make.height.equalToSuperview().inset(12)
+            make.width.equalToSuperview().inset(8)
+            make.center.equalToSuperview()
+        }
+
+        categoryLabel.snp.makeConstraints { make in
+            make.height.equalToSuperview().inset(8)
+            make.width.equalToSuperview().inset(12)
+            make.center.equalToSuperview()
+        }
+
+    }
+
+    func offsetScrollBy(percentage: CGFloat) {
+        if percentage.isNaN { return }
+        let trueOffsetX = scrollView.contentSize.width * percentage
+        var scrollBounds = scrollView.bounds;
+        scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollView.bounds.origin.y);
+        scrollView.bounds = scrollBounds;
+    }
+
+}
+
+extension CompareMenusTabsViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.x)
+    }
+}

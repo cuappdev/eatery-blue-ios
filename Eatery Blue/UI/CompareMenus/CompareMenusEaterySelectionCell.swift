@@ -35,14 +35,15 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
         self.layoutIfNeeded()
         if draggable {
             nameView.snp.updateConstraints { make in
-                make.leading.equalToSuperview().offset(32)
+                make.trailing.equalToSuperview().offset(32)
             }
         } else {
             nameView.snp.updateConstraints { make in
-                make.leading.equalToSuperview()
+                make.trailing.equalToSuperview()
             }
         }
-        UIView.animate(withDuration: 0.1) {
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            guard let self else { return }
             self.layoutIfNeeded()
         }
     }
@@ -53,16 +54,15 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
     }
 
     private func setUpConstraints() {
-
         checkView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
             make.width.height.equalTo(24)
             make.centerY.equalToSuperview()
         }
 
         nameView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalTo(checkView.snp.leading)
+            make.trailing.equalToSuperview()
+            make.leading.equalTo(checkView.snp.trailing).offset(8)
             make.centerY.equalToSuperview()
         }
     }
@@ -73,8 +73,8 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
             type(of: subview).description() == "UITableViewCellReorderControl"
         }) {
             reorderControl.snp.remakeConstraints { make in
-                make.leading.equalToSuperview()
-                make.width.equalTo(24)
+                make.trailing.equalToSuperview()
+                make.leading.equalTo(self.snp.trailing).inset(24)
                 make.height.equalToSuperview()
                 make.centerY.equalToSuperview()
             }

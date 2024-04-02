@@ -6,11 +6,13 @@
 //
 
 import Combine
+import EateryModel
 import UIKit
 
 class HomeSearchModelController: HomeSearchViewController {
 
     private var cancellables: Set<AnyCancellable> = []
+    private var allEateries: [Eatery] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +36,7 @@ class HomeSearchModelController: HomeSearchViewController {
     private func updateEateriesFromNetworking() async {
         do {
             let eateries = try await Networking.default.loadAllEatery()
+            allEateries = eateries
             contentController.setUp(eateries)
             emptyController.setUp(eateries)
         } catch {
@@ -75,7 +78,7 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
                 spinner.stopAnimating()
                 view.isUserInteractionEnabled = true
                 let viewController = EateryModelController()
-                viewController.setUp(eatery: eatery)
+                viewController.setUp(eatery: eatery, allEateries: allEateries)
                 navigationController?.hero.isEnabled = false
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.setUpMenu(eatery: eatery)
@@ -84,3 +87,4 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
     }
 
 }
+

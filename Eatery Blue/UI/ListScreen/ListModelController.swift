@@ -41,10 +41,10 @@ class ListModelController: ListViewController {
                 }
             }
 
-            updateEateries(filteredEateries)
+            updateEateries(filteredEateries, allEateries: allEateries)
 
         } else {
-            updateEateries(allEateries)
+            updateEateries(allEateries, allEateries: allEateries)
         }
     }
 

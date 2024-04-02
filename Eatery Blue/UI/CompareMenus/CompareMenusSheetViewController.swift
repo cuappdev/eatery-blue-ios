@@ -11,31 +11,31 @@ import UIKit
 
 class CompareMenusSheetViewController: SheetViewController {
 
-    var eaterySelectionView = UITableView()
-    let compareNowButton = UIButton()
-    let backgroundView = UILabel()
+    // MARK: - Properties (data)
+
     var filterController = CompareMenusFilterViewController()
-
     var filter = EateryFilter()
-
-    let navController: UINavigationController?
-    let toCompareWith: Eatery?
-    let eateries: [Eatery]
+    let parentNavigationController: UINavigationController?
+    let allEateries: [Eatery]
     var shownEateries: [Eatery]
-
     var selectedEateries: [Eatery] = []
 
-    init(navController: UINavigationController?, toCompareWith: Eatery?, eateries: [Eatery]) {
-        self.navController = navController
-        self.toCompareWith = toCompareWith
-        self.eateries = eateries.filter { $0 != toCompareWith }
-        self.shownEateries = eateries.filter { $0 != toCompareWith }
-        super.init(nibName: nil, bundle: nil)
+    // MARK: - Properties (view)
 
-        if let toCompareWith {
-            selectedEateries.append(toCompareWith)
-        }
+    var selectionTableView = UITableView()
+    let compareNowButton = UIButton()
+    let backgroundView = UILabel()
+
+    init(parentNavigationController: UINavigationController?, allEateries: [Eatery], selectedEateries: [Eatery] = [], selectedOn: Bool = false) {
+        self.parentNavigationController = parentNavigationController
+        self.selectedEateries = selectedEateries
+        self.allEateries = allEateries
+        self.shownEateries = allEateries
+        super.init(nibName: nil, bundle: nil)
         setUpSelf()
+        if selectedOn {
+            filterController.tapSelected()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -49,13 +49,14 @@ class CompareMenusSheetViewController: SheetViewController {
         stackView.addArrangedSubview(filterController.view)
         setUpFilterController()
 
-        stackView.addArrangedSubview(eaterySelectionView)
+        stackView.addArrangedSubview(selectionTableView)
         setUpSelectionView()
 
         stackView.addArrangedSubview(compareNowButton)
         setUpCompareButton()
 
         setUpConstraints()
+        updateSelected()
     }
 
     private func setUpFilterController() {
@@ -65,14 +66,16 @@ class CompareMenusSheetViewController: SheetViewController {
     }
 
     private func setUpSelectionView() {
-        eaterySelectionView.register(CompareMenusEaterySelectionCell.self, forCellReuseIdentifier: CompareMenusEaterySelectionCell.reuse)
-        eaterySelectionView.dataSource = self
-        eaterySelectionView.delegate = self
+        selectionTableView.register(CompareMenusEaterySelectionCell.self, forCellReuseIdentifier: CompareMenusEaterySelectionCell.reuse)
+        selectionTableView.dataSource = self
+        selectionTableView.delegate = self
+        selectionTableView.allowsSelectionDuringEditing = true
+        selectionTableView.showsVerticalScrollIndicator = false
 
         backgroundView.text = "No eateries to show..."
         backgroundView.font = .systemFont(ofSize: 20, weight: .semibold)
-        eaterySelectionView.backgroundView = backgroundView
-        eaterySelectionView.backgroundView?.snp.makeConstraints { make in
+        selectionTableView.backgroundView = backgroundView
+        selectionTableView.backgroundView?.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
         }
     }
@@ -93,7 +96,7 @@ class CompareMenusSheetViewController: SheetViewController {
     }
 
     private func setUpConstraints() {
-        eaterySelectionView.snp.makeConstraints { make in
+        selectionTableView.snp.makeConstraints { make in
             make.height.equalTo(360)
             make.width.equalTo(stackView.snp.width)
         }
@@ -108,8 +111,9 @@ class CompareMenusSheetViewController: SheetViewController {
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
             sender.transform = .identity
         }
-        let viewController = CompareMenusViewController(eateries: selectedEateries, index: 0)
-        navController?.pushViewController(viewController, animated: true)
+
+        let viewController = CompareMenusViewController(allEateries: allEateries, comparedEateries: selectedEateries)
+        parentNavigationController?.pushViewController(viewController, animated: true)
         self.dismiss(animated: true)
     }
 
@@ -143,31 +147,33 @@ class CompareMenusSheetViewController: SheetViewController {
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             var filteredEateries: [Eatery] = []
-            for eatery in eateries {
+            for eatery in allEateries {
                 if predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id)) {
                     filteredEateries.append(eatery)
                 }
             }
+
             shownEateries = filteredEateries
 
             if filter.selected {
                 shownEateries = selectedEateries
             }
         } else {
-            shownEateries = eateries
+            shownEateries = allEateries
         }
-        eaterySelectionView.reloadData()
+
+        selectionTableView.reloadData()
     }
 
     private func enableDragging() {
-        eaterySelectionView.isEditing = true
+        selectionTableView.isEditing = true
         if selectedEateries.count != 0 {
             backgroundView.text = ""
         }
     }
 
     private func disableDragging() {
-        eaterySelectionView.isEditing = false
+        selectionTableView.isEditing = false
         backgroundView.text = "No eateries to show..."
     }
 }
@@ -180,6 +186,7 @@ extension CompareMenusSheetViewController: EateryFilterViewControllerDelegate {
         } else {
             disableDragging()
         }
+
         updateEateriesFromState()
     }
 }
@@ -193,16 +200,20 @@ extension CompareMenusSheetViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CompareMenusEaterySelectionCell.reuse, for: indexPath) as? CompareMenusEaterySelectionCell else { return UITableViewCell() }
         let cellEatery = shownEateries[indexPath.row]
-        let filled = selectedEateries.contains(cellEatery)
+        let filled = selectedEateries.contains { eatery in
+            eatery.id == cellEatery.id
+        }
         let draggable = tableView.isEditing
         cell.configure(eatery: shownEateries[indexPath.row], filled: filled, draggable: draggable)
         cell.selectionStyle = .none
+
         let cellBackground = UIView()
         cellBackground.backgroundColor = .white
         cell.backgroundView = cellBackground
         cellBackground.snp.makeConstraints { make in
             make.edges.equalTo(cell.snp.edges)
         }
+
         return cell
     }
 
@@ -212,10 +223,15 @@ extension CompareMenusSheetViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let moved = shownEateries[sourceIndexPath.row]
-        selectedEateries.remove(at: sourceIndexPath.row)
-        selectedEateries.insert(moved, at: destinationIndexPath.row)
+        if !selectedEateries.contains(moved) { return }
+
         shownEateries.remove(at: sourceIndexPath.row)
         shownEateries.insert(moved, at: destinationIndexPath.row)
+
+        selectedEateries = shownEateries.filter({ eatery in
+            selectedEateries.contains(eatery)
+        })
+
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
     }
@@ -225,13 +241,16 @@ extension CompareMenusSheetViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedEatery = shownEateries[indexPath.row]
-        if selectedEateries.contains(selectedEatery) {
+        if selectedEateries.contains(where: { eatery in
+            eatery.id == selectedEatery.id
+        }) {
             selectedEateries.removeAll { eatery in
-                eatery == selectedEatery
+                eatery.id == selectedEatery.id
             }
         } else {
             selectedEateries.append(selectedEatery)
         }
+
         updateSelected()
         tableView.reloadRows(at: [indexPath], with: .none)
     }

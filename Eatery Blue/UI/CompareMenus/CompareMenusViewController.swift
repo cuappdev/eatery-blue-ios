@@ -10,11 +10,20 @@ import UIKit
 
 class CompareMenusViewController: UIViewController {
     
-    let navigationView = CompareMenusNavigationView()
-    let pageController: CompareMenusPageViewController
+    // MARK: -  Properties (data)
 
-    init(eateries: [Eatery], index: Int) {
-        self.pageController = CompareMenusPageViewController(eateries: eateries, index: index, navigationView: navigationView)
+    private let pageController: CompareMenusPageViewController
+    private let allEateries: [Eatery]
+    private let comparedEateries: [Eatery]
+
+    // MARK: - Properties (view)
+
+    private let navigationView = CompareMenusNavigationView()
+
+    init(allEateries: [Eatery], comparedEateries: [Eatery]) {
+        self.pageController = CompareMenusPageViewController(eateries: comparedEateries, allEateries: allEateries)
+        self.allEateries = allEateries
+        self.comparedEateries = comparedEateries
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -23,7 +32,6 @@ class CompareMenusViewController: UIViewController {
         
         addChild(pageController)
         view.addSubview(pageController.view)
-        pageController.setUpPages(delegate: self)
 
         setUpNavigationView()
         view.addSubview(navigationView)
@@ -37,18 +45,17 @@ class CompareMenusViewController: UIViewController {
 
     private func setUpNavigationView() {
         navigationView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 12, right: 16)
-        navigationView.prevEateryButton.buttonPress { [weak self] _ in
-            guard let self else { return }
-            pageController.tryPrevPage()
-        }
-        navigationView.nextEateryButton.buttonPress { [weak self] _ in
-            guard let self else { return }
-            pageController.tryNextPage()
-
-        }
         navigationView.backButton.buttonPress { [weak self] _ in
             guard let self else { return }
             navigationController?.popViewController(animated: true)
+        }
+
+        navigationView.editButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+            navigationController?.popViewController(animated: true)
+            let selectionViewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries , selectedEateries: comparedEateries, selectedOn: true)
+            selectionViewController.setUpSheetPresentation()
+            navigationController?.present(selectionViewController, animated: true)
         }
     }
 
@@ -56,7 +63,7 @@ class CompareMenusViewController: UIViewController {
         navigationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
-            make.height.equalTo(108)
+            make.height.equalTo(56)
         }
 
         pageController.view.snp.makeConstraints { make in
@@ -64,16 +71,4 @@ class CompareMenusViewController: UIViewController {
             make.top.equalTo(navigationView.snp.bottom)
         }
     }
-}
-
-extension CompareMenusViewController: CompareMenusEateryViewControllerDelegate {
-
-    func compareMenusEateryViewController(viewWasScrolled scrollAmount: CGFloat, positive: CGFloat) {
-        if positive > 0 {
-            navigationView.scrolledDown()
-        } else if positive < 0 {
-            navigationView.scrolledUp()
-        }
-    }
-
 }

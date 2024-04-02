@@ -12,7 +12,7 @@ import UIKit
 import Kingfisher
 
 class HomeViewController: UIViewController {
-    
+
     enum Status {
         case open
         case closed
@@ -48,10 +48,7 @@ class HomeViewController: UIViewController {
         static let customViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
     }
 
-    let navigationView = HomeNavigationView()
-    private let tableView = UITableView()
-    private let tableHeaderView = UIView()
-    private let compareMenusButton = CompareMenusButton()
+    // MARK: - Properties (data)
 
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
@@ -60,9 +57,18 @@ class HomeViewController: UIViewController {
         scrollToTop(animated: false)
     }()
     private var hasLoadedMenuData: Bool = false
-    private var shouldOpenCompareMenusButton = true
-
     private var cancellables: Set<AnyCancellable> = []
+    private var previousScrollOffset: CGFloat = 0
+
+    // MARK: - Properties (view)
+
+    let navigationView = HomeNavigationView()
+    let compareMenusButton = CompareMenusButton()
+    let compareMenusOnboarding = CompareMenusOnboardingView()
+    private let tableView = UITableView()
+    private let tableHeaderView = UIView()
+
+    // MARK: - Setup
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,9 +76,6 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .white
 
         setUpView()
-        setUpCompareMenusButton()
-        view.addSubview(compareMenusButton)
-        
         setUpConstraints()
 
         // AppDev Announcements
@@ -97,47 +100,8 @@ class HomeViewController: UIViewController {
 
         view.addSubview(navigationView)
         setUpNavigationView()
-    }
 
-    private func setUpCompareMenusButton() {
-        compareMenusButton.largeButtonPress { [weak self] _ in
-            guard let self else { return }
-            let viewController = CompareMenusSheetViewController(navController: navigationController, toCompareWith: nil, eateries: allEats)
-            viewController.setUpSheetPresentation()
-            tabBarController?.present(viewController, animated: true)
-        }
-
-        compareMenusButton.smallButtonPress { [weak self] _ in
-            guard let self else { return }
-            shouldOpenCompareMenusButton = false
-            if !compareMenusButton.isCollapsed {
-                compareMenusButton.snp.updateConstraints { make in
-                    make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
-                }
-            } else {
-                compareMenusButton.snp.updateConstraints { make in
-                    make.centerX.equalToSuperview()
-                }
-            }
-            if #available(iOS 17.0, *) {
-                UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
-                    guard let self else { return }
-                    view.layoutIfNeeded()
-                }
-            } else {
-                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
-                    guard let self else { return }
-                    view.layoutIfNeeded()
-                }
-            }
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-            guard let self else { return }
-            if shouldOpenCompareMenusButton && compareMenusButton.isCollapsed {
-                openCompareMenusButton()
-            }
-        }
+        view.addSubview(compareMenusButton)
     }
 
     private func setUpTableView() {
@@ -171,30 +135,8 @@ class HomeViewController: UIViewController {
         }
 
         compareMenusButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
+            make.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(108)
-        }
-    }
-
-    private func closeCompareMenusButton() {
-        compareMenusButton.snp.updateConstraints { make in
-            make.centerX.equalToSuperview().offset(self.view.frame.width * 3 / 8)
-        }
-        compareMenusButton.collapse()
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self else { return }
-            view.layoutIfNeeded()
-        }
-    }
-
-    private func openCompareMenusButton() {
-        compareMenusButton.snp.updateConstraints { make in
-            make.centerX.equalToSuperview()
-        }
-        compareMenusButton.expand()
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self else { return }
-            view.layoutIfNeeded()
         }
     }
 
@@ -497,6 +439,14 @@ extension HomeViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         handleNavigationView()
+
+        if scrollView.contentOffset.y < previousScrollOffset - 150 {
+            compareMenusButton.collapse()
+            previousScrollOffset = scrollView.contentOffset.y
+        } else if scrollView.contentOffset.y > previousScrollOffset + 150 {
+            compareMenusButton.expand()
+            previousScrollOffset = scrollView.contentOffset.y
+        }
     }
 
     private func handleNavigationView() {

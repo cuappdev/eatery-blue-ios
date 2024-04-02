@@ -18,6 +18,7 @@ class EateryExpandableCardContentView: UIView {
     private let eateryStackView = UIStackView()
     private let eateryStatusLabel = UILabel()
     private var expandedEatery: ExpandedEatery?
+    private var allEateries: [Eatery] = []
 
     // MARK: - init
     
@@ -35,8 +36,9 @@ class EateryExpandableCardContentView: UIView {
     
     // MARK: - configure
     
-    func configure(expandedEatery: ExpandedEatery) {
+    func configure(expandedEatery: ExpandedEatery, allEateries: [Eatery]) {
         self.expandedEatery = expandedEatery
+        self.allEateries = allEateries
         eateryNameLabel.text = expandedEatery.eatery.name
 
         let selectedEvents = expandedEatery.eatery.events.filter { $0.canonicalDay == expandedEatery.selectedDate }
@@ -117,7 +119,7 @@ class EateryExpandableCardContentView: UIView {
             if let eatery = expandedEatery?.eatery {
                 let eateryVC = EateryModelController()
                 
-                eateryVC.setUp(eatery: eatery)
+                eateryVC.setUp(eatery: eatery, allEateries: self.allEateries)
                 eateryVC.setUpMenu(eatery: eatery)
                 navigationController.pushViewController(eateryVC, animated: true)
             }

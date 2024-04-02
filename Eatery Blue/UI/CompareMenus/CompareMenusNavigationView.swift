@@ -9,14 +9,10 @@ import EateryModel
 import UIKit
 
 class CompareMenusNavigationView: UIView {
-    let backButton = ButtonView(content: UIImageView())
-    private let titleLabel = UILabel()
-    private let spacer = UIView()
 
-    let prevEateryButton = ButtonView(content: UIImageView())
-    let nextEateryButton = ButtonView(content: UIImageView())
-    let eateryLabel = UILabel()
-    let statusLabel = UILabel()
+    private let titleLabel = UILabel()
+    let editButton = ButtonView(content: UIImageView())
+    let backButton = ButtonView(content: UIImageView())
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,11 +24,6 @@ class CompareMenusNavigationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(eatery: Eatery) {
-        eateryLabel.text = eatery.name
-        statusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
-    }
-
     private func setUpSelf() {
         backgroundColor = .white
 
@@ -42,18 +33,8 @@ class CompareMenusNavigationView: UIView {
         addSubview(titleLabel)
         setUpTitleLabel()
 
-        addSubview(spacer)
-        spacer.backgroundColor = UIColor.Eatery.gray00
-
-        addSubview(nextEateryButton)
-        addSubview(prevEateryButton)
-        setUpButtons()
-
-        addSubview(eateryLabel)
-        setUpEateryLabel()
-
-        addSubview(statusLabel)
-        setUpStatusLabel()
+        addSubview(editButton)
+        setUpEditButton()
     }
 
     private func setUpBackButton() {
@@ -72,34 +53,12 @@ class CompareMenusNavigationView: UIView {
         titleLabel.textAlignment = .center
     }
 
-    private func setUpButtons() {
-        prevEateryButton.content.image = UIImage(systemName: "chevron.left")
-        prevEateryButton.shadowColor = UIColor.Eatery.black
-        prevEateryButton.content.tintColor = UIColor.Eatery.gray02
-        prevEateryButton.shadowOffset = CGSize(width: 0, height: 4)
-        prevEateryButton.backgroundColor = .white
-        prevEateryButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        prevEateryButton.layer.zPosition = 99
-
-        nextEateryButton.content.image = UIImage(systemName: "chevron.right")
-        nextEateryButton.shadowColor = UIColor.Eatery.black
-        nextEateryButton.content.tintColor = UIColor.Eatery.gray05
-        nextEateryButton.shadowOffset = CGSize(width: 0, height: 4)
-        nextEateryButton.backgroundColor = .white
-        nextEateryButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        prevEateryButton.layer.zPosition = 99
-    }
-
-    private func setUpEateryLabel() {
-        eateryLabel.text = "Eatery Name"
-        eateryLabel.textColor = UIColor.Eatery.black
-        eateryLabel.textAlignment = .center
-    }
-
-    private func setUpStatusLabel() {
-        eateryLabel.text = "Status"
-        statusLabel.textAlignment = .center
-        statusLabel.font = .systemFont(ofSize: 14)
+    private func setUpEditButton() {
+        editButton.content.image = UIImage(named: "Pencil")
+        editButton.shadowColor = UIColor.Eatery.black
+        editButton.shadowOffset = CGSize(width: 0, height: 4)
+        editButton.backgroundColor = .white
+        editButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 
     private func setUpConstraints() {
@@ -109,46 +68,18 @@ class CompareMenusNavigationView: UIView {
             make.width.height.equalTo(40)
         }
         
+        editButton.snp.makeConstraints { make in
+            make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
+            make.centerY.equalTo(backButton.snp.centerY)
+            make.width.height.equalTo(40)
+        }
+
         titleLabel.snp.makeConstraints { make in
             make.leading.greaterThanOrEqualTo(backButton.snp.trailing).offset(8)
-            make.top.centerX.equalToSuperview()
-            make.trailing.lessThanOrEqualTo(layoutMarginsGuide.snp.trailing).inset(40)
-        }
-
-        spacer.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(12)
-        }
-
-        prevEateryButton.snp.makeConstraints { make in
-            make.leading.equalTo(layoutMarginsGuide.snp.leading)
-            make.top.equalTo(spacer.snp.bottom).offset(12)
-        }
-
-        nextEateryButton.snp.makeConstraints { make in
-            make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
-            make.top.equalTo(spacer.snp.bottom).offset(12)
-        }
-
-        eateryLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(spacer.snp.bottom).offset(10)
-            make.leading.equalTo(prevEateryButton.snp.trailing)
-            make.trailing.equalTo(nextEateryButton.snp.leading)
-        }
-
-        statusLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(eateryLabel.snp.bottom).offset(10)
+            make.centerY.equalTo(backButton.snp.centerY)
+            make.trailing.lessThanOrEqualTo(editButton.snp.trailing).inset(40)
         }
     }
 
-    func scrolledDown() {
-        
-    }
-
-    func scrolledUp() {
-
-    }
 }

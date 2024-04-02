@@ -17,19 +17,16 @@ class CompareMenusFilterViewController: EateryFilterViewController {
         setUpSelected()
     }
 
-    func setUpSelected() {
+    private func setUpSelected() {
         filtersView.addButton(selected, at: 0)
         self.selected.label.text = "Selected"
         self.selected.tap { [weak self] _ in
             guard let self else { return }
-            filter.selected.toggle()
-            self.removeAllFilters()
-            updateFilterButtonsFromState(animated: true)
-            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            tapSelected()
         }
     }
 
-    func removeAllFilters() {
+    private func removeAllFilters() {
         filter.paymentMethods = []
         filter.central = false
         filter.favoriteEnabled = false
@@ -44,6 +41,13 @@ class CompareMenusFilterViewController: EateryFilterViewController {
         }
         super.updateFilterButtonsFromState(animated: animated)
         selected.setHighlighted(filter.selected)
+    }
+
+    func tapSelected() {
+        filter.selected.toggle()
+        self.removeAllFilters()
+        updateFilterButtonsFromState(animated: true)
+        delegate?.eateryFilterViewController(self, filterDidChange: filter)
     }
 
 }
