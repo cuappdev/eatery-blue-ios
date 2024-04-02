@@ -304,7 +304,7 @@ class HomeModelController: HomeViewController {
         }.map(\.eatery)
         
         if let nearestCarousel {
-            nearestCarousel.updateCarousel(carouselItems: carouselEateries)
+            nearestCarousel.fullRefresh(carouselItems: listEateries)
         } else {
             nearestCarousel = createCarouselView(
                 title: "Nearest to You",

@@ -156,7 +156,7 @@ extension SettingsFavoritesViewController: UITableViewDelegate {
         if indexPath.row != 0 {
             let eatery = favoriteEateries[indexPath.row - 1]
             let viewController = EateryModelController()
-            viewController.setUp(eatery: eatery, allEateries: self.allEateries)
+            viewController.setUp(eatery: eatery, allEateries: self.allEateries, isTracking: true)
             navigationController?.hero.isEnabled = true
             navigationController?.heroNavigationAnimationType = .fade
             navigationController?.pushViewController(viewController, animated: true)

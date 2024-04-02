@@ -44,5 +44,10 @@ class MenuDayPickerView: UIView {
         stackView.addArrangedSubview(cell)
         cells.append(cell)
     }
+    
+    func resetCells() {
+        cells = []
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    }
 
 }

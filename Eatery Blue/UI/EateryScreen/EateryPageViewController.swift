@@ -59,12 +59,13 @@ class EateryPageViewController: UIPageViewController {
     private func setUpPages() {
         eateries.forEach { eatery in
             let eateryVC = EateryModelController()
-            eateryVC.setUp(eatery: eatery, allEateries: allEateries)
+            eateryVC.setUp(eatery: eatery, allEateries: allEateries, isTracking: false)
             pages.append(eateryVC)
         }
 
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
         if let page = pages[index] as? EateryModelController {
+            page.setUpAnalytics(eateries[index])
             page.setUpMenu(eatery: eateries[index])
         }
     }

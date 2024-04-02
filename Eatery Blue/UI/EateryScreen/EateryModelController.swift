@@ -31,15 +31,18 @@ class EateryModelController: EateryViewController {
         }
     }
 
-    func setUp(eatery: Eatery, allEateries: [Eatery]) {
+    func setUp(eatery: Eatery, allEateries: [Eatery], isTracking: Bool) {
         self.eatery = eatery
         self.allEateries = allEateries
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
         setUpStackView(eatery)
-        setUpAnalytics(eatery)
         setUpCompareMenusButton()
         addSpinner()
+
+        if isTracking {
+            setUpAnalytics(eatery)
+        }
     }
     
     func setUpMenu(eatery: Eatery) {
@@ -49,7 +52,6 @@ class EateryModelController: EateryViewController {
                 deleteSpinner()
                 resetSelectedEventIndex()
                 setUpNavigationView(eatery)
-                setUpAnalytics(eatery)
                 addMenuFromState()
                 menuHasLoaded = true
             }
@@ -100,7 +102,7 @@ class EateryModelController: EateryViewController {
         addSpacer(height: 16)
     }
 
-    private func setUpAnalytics(_ eatery: Eatery) {
+    func setUpAnalytics(_ eatery: Eatery) {
         if eatery.paymentMethods.contains(.mealSwipes) {
 
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))

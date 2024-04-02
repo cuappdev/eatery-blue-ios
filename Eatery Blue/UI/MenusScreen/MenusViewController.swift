@@ -49,6 +49,8 @@ class MenusViewController: UIViewController {
         scrollToTop(animated: false)
     }()
     
+    var days: [Day] = []
+    
     weak var updateDateDelegate: UpdateDateDelegate?
     
     private var cancellables: Set<AnyCancellable> = []
@@ -174,6 +176,7 @@ extension MenusViewController: UITableViewDataSource {
         case .dayPicker:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MenuDayPickerCell", for: indexPath) as! MenuDayPickerTableViewCell
             cell.updateDateDelegate = updateDateDelegate
+            cell.configure(days: days)
             return cell
         case .customView(let view):
             let container = ContainerView(content: view)

@@ -78,7 +78,7 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
                 spinner.stopAnimating()
                 view.isUserInteractionEnabled = true
                 let viewController = EateryModelController()
-                viewController.setUp(eatery: eatery, allEateries: allEateries)
+                viewController.setUp(eatery: eatery, allEateries: allEateries, isTracking: true)
                 navigationController?.hero.isEnabled = false
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.setUpMenu(eatery: eatery)
