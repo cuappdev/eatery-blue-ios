@@ -143,7 +143,7 @@ class HomeModelController: HomeViewController {
         cells.append(.searchBar)
         cells.append(.customView(view: filterController.view))
 
-        if !isLoading {
+        if isLoading {
             cells.append(.loadingLabel(title: "Finding flavorful food..."))
             cells.append(.loadingCard(isLarge: false))
 
