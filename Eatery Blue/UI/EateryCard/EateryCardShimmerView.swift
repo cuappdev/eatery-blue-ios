@@ -28,7 +28,7 @@ class EateryCardShimmerView: UIView {
             switch cardType {
             case .Medium:
                 let height = UIScreen.main.bounds.height/4.0
-                return CGRect(x: 0, y: 0, width: height*(295.0 / 186.0), height: height)
+                return CGRect(x: 0, y: 0, width: height*(270.0 / 186.0), height: height-20)
             case .Large:
                 let height = UIScreen.main.bounds.height/2.0
                 return CGRect(x: 0, y: 0, width: height*(343.0 / 216.0), height: height)
