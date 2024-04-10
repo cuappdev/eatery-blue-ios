@@ -12,7 +12,7 @@ import UIKit
 import Kingfisher
 
 class HomeViewController: UIViewController {
-    
+
     enum Status {
         case open
         case closed
@@ -48,18 +48,27 @@ class HomeViewController: UIViewController {
         static let customViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
     }
 
-    let navigationView = HomeNavigationView()
-    private let tableView = UITableView()
-    private let tableHeaderView = UIView()
+    // MARK: - Properties (data)
 
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
+    var allEateries: [Eatery] = []
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
     private var hasLoadedMenuData: Bool = false
-
     private var cancellables: Set<AnyCancellable> = []
+    private var previousScrollOffset: CGFloat = 0
+
+    // MARK: - Properties (view)
+
+    let navigationView = HomeNavigationView()
+    let compareMenusButton = CompareMenusButton()
+    let compareMenusOnboarding = CompareMenusExternalOnboardingView()
+    private let tableView = UITableView()
+    private let tableHeaderView = UIView()
+
+    // MARK: - Setup
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +100,8 @@ class HomeViewController: UIViewController {
 
         view.addSubview(navigationView)
         setUpNavigationView()
+
+        view.addSubview(compareMenusButton)
     }
 
     private func setUpTableView() {
@@ -122,10 +133,15 @@ class HomeViewController: UIViewController {
             make.bottom.equalTo(tableHeaderView.snp.top).priority(.low)
             make.bottom.greaterThanOrEqualTo(tableHeaderView.snp.top)
         }
+
+        compareMenusButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().inset(108)
+        }
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
+        let pageVC = EateryPageViewController(allEateries: allEateries, eateries: eateries, index: eateryIndex)
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)
@@ -442,6 +458,14 @@ extension HomeViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         handleNavigationView()
+
+        if scrollView.contentOffset.y < previousScrollOffset - 150 {
+            compareMenusButton.collapse()
+            previousScrollOffset = scrollView.contentOffset.y
+        } else if scrollView.contentOffset.y > previousScrollOffset + 150 {
+            compareMenusButton.expand()
+            previousScrollOffset = scrollView.contentOffset.y
+        }
     }
 
     private func handleNavigationView() {

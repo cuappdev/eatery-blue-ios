@@ -14,7 +14,9 @@ import UIKit
 
 class EateryViewController: UIViewController {
 
-    private static let priceNumberFormatter: NumberFormatter = {
+    private var previousScrollOffset: CGFloat = 0
+
+    static let priceNumberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = .eatery
@@ -30,6 +32,7 @@ class EateryViewController: UIViewController {
     let scrollView = UIScrollView()
     let spinner = UIActivityIndicatorView(style: .large)
     let stackView = UIStackView()
+    let compareMenusButton = CompareMenusButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +54,8 @@ class EateryViewController: UIViewController {
 
         view.addSubview(navigationView)
         setUpNavigationView()
+
+        view.addSubview(compareMenusButton)
     }
 
     private func setUpScrollView() {
@@ -98,7 +103,13 @@ class EateryViewController: UIViewController {
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
         }
+
+        compareMenusButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().inset(108)
+        }
     }
+
 
     func setCustomSpacing(_ spacing: CGFloat) {
         guard let last = stackView.arrangedSubviews.last else {
@@ -574,6 +585,16 @@ extension EateryViewController: UIScrollViewDelegate {
             }
 
             navigationView.highlightCategory(atIndex: index, animated: true)
+        }
+
+        if scrollView.contentOffset.y < 0 || scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.height { return }
+
+        if scrollView.contentOffset.y < previousScrollOffset - 150 {
+            compareMenusButton.collapse()
+            previousScrollOffset = scrollView.contentOffset.y
+        } else if scrollView.contentOffset.y > previousScrollOffset + 150 {
+            compareMenusButton.expand()
+            previousScrollOffset = scrollView.contentOffset.y
         }
     }
 

@@ -58,4 +58,19 @@ class PillFiltersView: UIView {
         stackView.addArrangedSubview(buttonView)
     }
 
+    func addButton(_ buttonView: PillFilterButtonView, at: Int) {
+        stackView.insertArrangedSubview(buttonView, at: at)
+    }
+    
+    func moveButton(from: Int, to: Int) {
+        var boundedFrom = max(min(from, stackView.arrangedSubviews.count - 1), 0)
+        var boundedTo = max(min(to, stackView.arrangedSubviews.count - 1), 0)
+        let movedView = stackView.arrangedSubviews[boundedFrom]
+        stackView.arrangedSubviews[boundedFrom].removeFromSuperview()
+        if boundedTo >= stackView.arrangedSubviews.count {
+            stackView.addArrangedSubview(movedView)
+        } else {
+            stackView.insertArrangedSubview(movedView, at: boundedTo)
+        }
+    }
 }

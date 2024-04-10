@@ -14,7 +14,6 @@
 		2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E856F682B67263A0043F350 /* EateryEnvironment.swift */; };
 		2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E42AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift */; };
 		2E9D09E72AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9D09E62AC3ED1F005A7F61 /* EateryExpandableCardMenuCategoryView.swift */; };
-		2ED2FC132BA2D7AA00621028 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		2ED2FC162BA2DBEC00621028 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */; };
 		2ED2FC182BA2DBEC00621028 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */; };
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
@@ -169,7 +168,22 @@
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor+Extension.swift */; };
+		D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */; };
+		D01D80772BC638C900253976 /* CompareMenusInternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */; };
+		D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */; };
+		D050633F2B93DC650022760B /* CompareMenusSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */; };
+		D05063412B9421F30022760B /* CompareMenusEaterySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */; };
+		D053AD132BA8A92F0001E770 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0548AD62BB5201B0064489D /* ScrollHitView.swift */; };
 		D06364532B8834E700524757 /* EateryMediumCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */; };
+		D09D20A32B96D5D8004C72ED /* CompareMenusPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A22B96D5D8004C72ED /* CompareMenusPageViewController.swift */; };
+		D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A42B96DE19004C72ED /* CompareMenusNavigationView.swift */; };
+		D09D20A72B97A429004C72ED /* CompareMenusEateryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A62B97A429004C72ED /* CompareMenusEateryViewController.swift */; };
+		D0B61E9B2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B61E9A2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift */; };
+		D0C770A82B9803A900A4828F /* CompareMenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */; };
+		D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */; };
+		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
+		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDCCF9472AFB0C8E00557FED /* StayLoggedInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */; };
@@ -341,7 +355,20 @@
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusTabsViewController.swift; sourceTree = "<group>"; };
+		D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusInternalOnboardingView.swift; sourceTree = "<group>"; };
+		D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusButton.swift; sourceTree = "<group>"; };
+		D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusSheetViewController.swift; sourceTree = "<group>"; };
+		D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusEaterySelectionCell.swift; sourceTree = "<group>"; };
+		D0548AD62BB5201B0064489D /* ScrollHitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollHitView.swift; sourceTree = "<group>"; };
 		D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		D09D20A22B96D5D8004C72ED /* CompareMenusPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusPageViewController.swift; sourceTree = "<group>"; };
+		D09D20A42B96DE19004C72ED /* CompareMenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusNavigationView.swift; sourceTree = "<group>"; };
+		D09D20A62B97A429004C72ED /* CompareMenusEateryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusEateryViewController.swift; sourceTree = "<group>"; };
+		D0B61E9A2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCategoryPickerView.swift; sourceTree = "<group>"; };
+		D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusViewController.swift; sourceTree = "<group>"; };
+		D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusFilterViewController.swift; sourceTree = "<group>"; };
+		D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusExternalOnboardingView.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayLoggedInSheet.swift; sourceTree = "<group>"; };
@@ -352,6 +379,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */,
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
 				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
 				5D73C38D278129100020507C /* Logging in Frameworks */,
@@ -364,7 +392,7 @@
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
 				5D75D6DF278E1DF500832359 /* SnapKit in Frameworks */,
-				2ED2FC132BA2D7AA00621028 /* Hero in Frameworks */,
+				D053AD132BA8A92F0001E770 /* (null) in Frameworks */,
 				5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -660,6 +688,7 @@
 		5DF304B427797C3100E2C9A4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D050633D2B93DC270022760B /* CompareMenus */,
 				5D698F932788ACDA0054E1AB /* Account */,
 				5D212AD627A44D49008B070D /* AlertMessage */,
 				5D75D6E5278E402300832359 /* Carousel */,
@@ -704,6 +733,7 @@
 			children = (
 				5D34F08D279AF9E1000F9056 /* ButtonView.swift */,
 				5D4689FF277D146500986AFF /* ClearTableViewCell.swift */,
+				D0548AD62BB5201B0064489D /* ScrollHitView.swift */,
 				5DF5F7DA27740EFB001ADCDC /* ContainerView.swift */,
 				5D0CDC502775040800AD0E27 /* HDivider.swift */,
 				5D0CDC582775346600AD0E27 /* PillView.swift */,
@@ -760,6 +790,7 @@
 				5D0CDC54277505B400AD0E27 /* MenuItemView.swift */,
 				5D0CDC4A2774F26700AD0E27 /* TimingCellView.swift */,
 				5D0CDC482774F15E00AD0E27 /* TimingDataView.swift */,
+				D0B61E9A2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift */,
 			);
 			path = EateryScreen;
 			sourceTree = "<group>";
@@ -900,6 +931,32 @@
 				998F6D242AC3568C006B7F18 /* MealType.swift */,
 			);
 			path = MealTypeSheet;
+			sourceTree = "<group>";
+		};
+		D01D80752BC638A000253976 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */,
+				D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D050633D2B93DC270022760B /* CompareMenus */ = {
+			isa = PBXGroup;
+			children = (
+				D01D80752BC638A000253976 /* Onboarding */,
+				D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */,
+				D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */,
+				D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */,
+				D09D20A22B96D5D8004C72ED /* CompareMenusPageViewController.swift */,
+				D09D20A42B96DE19004C72ED /* CompareMenusNavigationView.swift */,
+				D09D20A62B97A429004C72ED /* CompareMenusEateryViewController.swift */,
+				D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */,
+				D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */,
+				D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */,
+			);
+			path = CompareMenus;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1061,6 +1118,7 @@
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
 				99F320F32AB2456500A39597 /* MenusViewController.swift in Sources */,
+				D05063412B9421F30022760B /* CompareMenusEaterySelectionCell.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
 				5DA434B4278B5A10001337FD /* AccountBalanceTableViewCell.swift in Sources */,
 				5D377CE527A19B0200F8DC37 /* UserDefaultsKeys.swift in Sources */,
@@ -1071,6 +1129,7 @@
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
 				5DF304C6277A22AD00E2C9A4 /* ReportIssueButtonView.swift in Sources */,
 				5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */,
+				D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */,
 				5D34F08E279AF9E1000F9056 /* ButtonView.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
 				5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */,
@@ -1080,9 +1139,12 @@
 				5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */,
 				BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* MenuCategoryView.swift in Sources */,
+				D09D20A32B96D5D8004C72ED /* CompareMenusPageViewController.swift in Sources */,
 				5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
+				D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */,
 				5DCB86A427835EF900134066 /* DummyLocationManager.swift in Sources */,
+				D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */,
 				5D3A14A327A30A9200768E13 /* SettingsAboutModelController.swift in Sources */,
 				5D0CDC592775346600AD0E27 /* PillView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
@@ -1090,11 +1152,13 @@
 				5DF304CD277A3ACA00E2C9A4 /* IssueDescriptionView.swift in Sources */,
 				5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */,
 				5DF30503277CF41700E2C9A4 /* HomeModelController.swift in Sources */,
+				D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
+				D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */,
 				5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */,
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment+Extension.swift in Sources */,
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
@@ -1102,6 +1166,7 @@
 				957397B32821C50200FFB687 /* Analytics.swift in Sources */,
 				99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */,
 				5DA434B1278A04A1001337FD /* NavigationImageButton.swift in Sources */,
+				D01D80772BC638C900253976 /* CompareMenusInternalOnboardingView.swift in Sources */,
 				5DA434BC278B69E1001337FD /* AccountTransactionsHeaderView.swift in Sources */,
 				5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */,
 				99BA26F429F8A8AF007BE992 /* EateryLargeLoadingCardView.swift in Sources */,
@@ -1122,6 +1187,7 @@
 				2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */,
 				5DF304D1277A69E000E2C9A4 /* ListViewController.swift in Sources */,
 				5DBA89A42784D606002DCA6B /* RootModelController.swift in Sources */,
+				D0B61E9B2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift in Sources */,
 				5D73C38A27810F370020507C /* FuseFuture+Extension.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
@@ -1130,6 +1196,7 @@
 				2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */,
 				5DF304932777830F00E2C9A4 /* HoursSheetViewController.swift in Sources */,
 				5DBB59E4278FA7F80028FE59 /* EateryPredicate.swift in Sources */,
+				D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */,
 				5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */,
 				5DCB86A22783544C00134066 /* LocationManager.swift in Sources */,
 				5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */,
@@ -1145,6 +1212,7 @@
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */,
+				D09D20A72B97A429004C72ED /* CompareMenusEateryViewController.swift in Sources */,
 				D06364532B8834E700524757 /* EateryMediumCardCollectionViewCell.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont+Extension.swift in Sources */,
 				5DF3049727778A7600E2C9A4 /* WaitTimesView.swift in Sources */,
@@ -1166,10 +1234,12 @@
 				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
 				5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */,
 				998F6D112AC09EC2006B7F18 /* EateryExpandLoadingCardView.swift in Sources */,
+				D0C770A82B9803A900A4828F /* CompareMenusViewController.swift in Sources */,
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
 				5DBA899F2784CC03002DCA6B /* MainViewController.swift in Sources */,
 				5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */,
 				5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */,
+				D050633F2B93DC650022760B /* CompareMenusSheetViewController.swift in Sources */,
 				5D75D6D1278CD59000832359 /* SettingsMainMenuViewController.swift in Sources */,
 				5D698F8627888EC80054E1AB /* LoginView.swift in Sources */,
 				5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */,
@@ -1321,7 +1391,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 42;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1341,7 +1411,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.8;
+				MARKETING_VERSION = 3.0.9;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1363,7 +1433,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1382,7 +1452,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.8;
+				MARKETING_VERSION = 3.0.9;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";

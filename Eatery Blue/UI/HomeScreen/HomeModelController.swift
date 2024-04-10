@@ -16,7 +16,6 @@ class HomeModelController: HomeViewController {
     private var isLoading = true
 
     private var filter = EateryFilter()
-    private var allEateries: [Eatery] = []
 
     private let filterController = EateryFilterViewController()
 
@@ -51,6 +50,7 @@ class HomeModelController: HomeViewController {
                     await self.updateAllEateriesFromNetworking()
                 }
             }
+            setUpCompareMenusButton()
         }
     }
 
@@ -61,6 +61,28 @@ class HomeModelController: HomeViewController {
 
         LocationManager.shared.requestAuthorization()
         LocationManager.shared.requestLocation()
+    }
+
+    private func trySetCompareMenusUpOnboarding() {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) { return }
+
+        compareMenusOnboarding.layer.opacity = 0.01
+        navigationController?.tabBarController?.parent?.view.addSubview(compareMenusOnboarding)
+        compareMenusOnboarding.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard let self else { return }
+            compareMenusOnboarding.layer.opacity = 1
+        }
+
+        compareMenusOnboarding.compareMenusButton.tap { [weak self] _ in
+            guard let self else { return }
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
+        }
     }
 
     private func setUpFilterController() {
@@ -89,6 +111,16 @@ class HomeModelController: HomeViewController {
         )
     }
 
+    private func setUpCompareMenusButton() {
+        compareMenusButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+            
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
+        }
+    }
+
     private func setUpUserLocationSubscription() {
         // Update cells when the user location changes because we may need to display the "Nearest to You" carousel
         LocationManager.shared.userLocationDidChange.sink { [self] _ in
@@ -99,6 +131,7 @@ class HomeModelController: HomeViewController {
     private func updateSimpleEateriesFromNetworking() async {
         do {
             let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
+            trySetCompareMenusUpOnboarding()
             if isLoading {
                 allEateries = eateries.filter { eatery in
                     return !eatery.name.isEmpty
@@ -290,7 +323,7 @@ class HomeModelController: HomeViewController {
 
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description)
+        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

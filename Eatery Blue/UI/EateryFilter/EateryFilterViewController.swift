@@ -23,8 +23,12 @@ class EateryFilterViewController: UIViewController {
     private let paymentMethods = PillFilterButtonView()
     private let favorites = PillFilterButtonView()
 
-    private(set) var filter = EateryFilter()
-    private let filtersView = PillFiltersView()
+    private var allFiltersCallback: (() -> Void)?
+
+    var filter = EateryFilter()
+    let filtersView = PillFiltersView()
+
+    var viewController: UIViewController?
 
     weak var delegate: EateryFilterViewControllerDelegate?
 
@@ -60,11 +64,13 @@ class EateryFilterViewController: UIViewController {
         filtersView.addButton(favorites)
         setUpFavorites()
     }
-    
+
     private func setUpNorth() {
         north.label.text = "North"
         north.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.north.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -78,6 +84,8 @@ class EateryFilterViewController: UIViewController {
         west.label.text = "West"
         west.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -91,6 +99,8 @@ class EateryFilterViewController: UIViewController {
         central.label.text = "Central"
         central.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.central.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -104,6 +114,8 @@ class EateryFilterViewController: UIViewController {
         under10Minutes.label.text = "Under 10 min"
         under10Minutes.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.under10MinutesEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -118,11 +130,17 @@ class EateryFilterViewController: UIViewController {
         paymentMethods.imageView.isHidden = false
         paymentMethods.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
             viewController.delegate = self
-            tabBarController?.present(viewController, animated: true)
+            if self.viewController != nil {
+                self.viewController?.present(viewController, animated: true)
+            } else {
+                tabBarController?.present(viewController, animated: true)
+            }
         }
     }
 
@@ -130,6 +148,8 @@ class EateryFilterViewController: UIViewController {
         favorites.label.text = "Favorites"
         favorites.tap { [weak self] _ in
             guard let self else { return }
+            
+            allFiltersCallback?()
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -137,6 +157,10 @@ class EateryFilterViewController: UIViewController {
                 AppDevAnalytics.shared.logFirebase(FavoriteItemsPressPayload())
             }
         }
+    }
+
+    func anyFilterTap(_ callback: (() -> Void)?) {
+        self.allFiltersCallback = callback
     }
 
     private func setUpConstraints() {
@@ -149,7 +173,7 @@ class EateryFilterViewController: UIViewController {
         filtersView.scrollView.contentInset = view.layoutMargins
     }
 
-    private func updateFilterButtonsFromState(animated: Bool) {
+    func updateFilterButtonsFromState(animated: Bool) {
         guard !animated else {
             UIView.transition(with: view, duration: 0.1, options: [.allowUserInteraction, .transitionCrossDissolve]) {
                 self.updateFilterButtonsFromState(animated: false)

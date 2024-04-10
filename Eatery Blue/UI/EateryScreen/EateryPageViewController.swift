@@ -10,20 +10,30 @@ import UIKit
 
 class EateryPageViewController: UIPageViewController {
     
-    private var pages = [UIViewController]()
-    private var eateries = [Eatery]()
+    // MARK: - Properties (data)
+
+    private var allEateries: [Eatery] = []
+    private var eateries: [Eatery] = []
     private var index: Int
-    
-    init(eateries: [Eatery], index: Int) {
+    private var previousScrollOffset: CGFloat = 0
+    private var pages: [UIViewController] = []
+
+    // MARK: - Init
+
+    init(allEateries: [Eatery], eateries: [Eatery], index: Int) {
+        self.allEateries = allEateries
         self.eateries = eateries
         self.index = index
+
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Setup
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Eatery.gray00
@@ -46,20 +56,21 @@ class EateryPageViewController: UIPageViewController {
         }
         super.viewDidLayoutSubviews()
     }
-    
+
     private func setUpPages() {
-       eateries.forEach { eatery in
+        eateries.forEach { eatery in
             let eateryVC = EateryModelController()
-            eateryVC.setUp(eatery: eatery, isTracking: false)
+            eateryVC.setUp(eatery: eatery, allEateries: allEateries, isTracking: false)
             pages.append(eateryVC)
         }
+
         setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
         if let page = pages[index] as? EateryModelController {
             page.setUpAnalytics(eateries[index])
             page.setUpMenu(eatery: eateries[index])
         }
     }
-    
+
 }
 
 extension EateryPageViewController: UIPageViewControllerDataSource {
@@ -99,10 +110,15 @@ extension EateryPageViewController: UIPageViewControllerDelegate {
             if let selectedController = pendingViewControllers.first,
                let index = pages.firstIndex(of: selectedController),
                let viewController = selectedController as? EateryModelController {
+                self.index = index
                 if !viewController.menuHasLoaded {
                     viewController.setUpMenu(eatery: eateries[index])
                 }
             }
         }
-    
+
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        previousScrollOffset = 0
+    }
+
 }

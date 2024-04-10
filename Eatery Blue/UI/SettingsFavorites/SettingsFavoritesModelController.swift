@@ -26,7 +26,7 @@ class SettingsFavoritesModelController: SettingsFavoritesViewController {
             }.sorted { lhs, rhs in
                 lhs.name < rhs.name
             }
-            updateFavoriteEateries(favoriteEateries)
+            updateFavoriteEateries(favoriteEateries, allEateries: allEateries)
         } catch {
             logger.error("\(#function): \(error)")
         }
