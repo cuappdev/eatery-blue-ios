@@ -114,16 +114,12 @@ class EateryModelController: EateryViewController {
     }
 
     private func setUpCompareMenusButton() {
-        compareMenusButton.largeButtonPress { [weak self] _ in
+        compareMenusButton.buttonPress { [weak self] _ in
             guard let self, let eatery else { return }
+
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
-        }
-
-        compareMenusButton.smallButtonPress { [weak self] _ in
-            guard let self else { return }
-            compareMenusButton.toggle()
         }
     }
 

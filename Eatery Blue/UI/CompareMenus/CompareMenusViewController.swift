@@ -35,7 +35,8 @@ class CompareMenusViewController: UIViewController {
 
     override func viewDidLoad() {
         view.backgroundColor = .white
-        
+        view.clipsToBounds = true
+
         addChild(pageController)
         view.addSubview(pageController.view)
 
@@ -77,7 +78,7 @@ class CompareMenusViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             let selectionViewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries , selectedEateries: comparedEateries, selectedOn: true)
             selectionViewController.setUpSheetPresentation()
-            navigationController?.present(selectionViewController, animated: true)
+            tabBarController?.present(selectionViewController, animated: true)
         }
     }
 

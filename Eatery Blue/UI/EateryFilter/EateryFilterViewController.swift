@@ -23,6 +23,8 @@ class EateryFilterViewController: UIViewController {
     private let paymentMethods = PillFilterButtonView()
     private let favorites = PillFilterButtonView()
 
+    private var allFiltersCallback: (() -> Void)?
+
     var filter = EateryFilter()
     let filtersView = PillFiltersView()
 
@@ -62,11 +64,13 @@ class EateryFilterViewController: UIViewController {
         filtersView.addButton(favorites)
         setUpFavorites()
     }
-    
+
     private func setUpNorth() {
         north.label.text = "North"
         north.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.north.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -80,6 +84,8 @@ class EateryFilterViewController: UIViewController {
         west.label.text = "West"
         west.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.west.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -93,6 +99,8 @@ class EateryFilterViewController: UIViewController {
         central.label.text = "Central"
         central.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.central.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -106,6 +114,8 @@ class EateryFilterViewController: UIViewController {
         under10Minutes.label.text = "Under 10 min"
         under10Minutes.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             filter.under10MinutesEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -120,6 +130,8 @@ class EateryFilterViewController: UIViewController {
         paymentMethods.imageView.isHidden = false
         paymentMethods.tap { [weak self] _ in
             guard let self else { return }
+
+            allFiltersCallback?()
             let viewController = PaymentMethodsFilterSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
@@ -136,6 +148,8 @@ class EateryFilterViewController: UIViewController {
         favorites.label.text = "Favorites"
         favorites.tap { [weak self] _ in
             guard let self else { return }
+            
+            allFiltersCallback?()
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
@@ -143,6 +157,10 @@ class EateryFilterViewController: UIViewController {
                 AppDevAnalytics.shared.logFirebase(FavoriteItemsPressPayload())
             }
         }
+    }
+
+    func anyFilterTap(_ callback: (() -> Void)?) {
+        self.allFiltersCallback = callback
     }
 
     private func setUpConstraints() {

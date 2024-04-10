@@ -19,6 +19,17 @@ class CompareMenusFilterViewController: EateryFilterViewController {
         super.viewDidLoad()
         
         setUpSelected()
+        anyFilterTap { [weak self] in
+            guard let self else { return }
+
+            filter.selected = false
+        }
+
+        // Moving "Favorites" button to the 5th position.
+        filtersView.moveButton(from: 999, to: 4)
+        // "moveButton" handles out of binds index to bounds. Because "Favorites"
+        // button is always last, a large from will ensure this doesn't
+        // break if more filters are added
     }
 
     private func setUpSelected() {
@@ -40,10 +51,6 @@ class CompareMenusFilterViewController: EateryFilterViewController {
     }
 
     override func updateFilterButtonsFromState(animated: Bool) {
-        if filter.selected {
-            removeAllFilters()
-        }
-
         super.updateFilterButtonsFromState(animated: animated)
         selected.setHighlighted(filter.selected)
     }
