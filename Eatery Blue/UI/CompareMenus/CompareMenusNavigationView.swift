@@ -12,14 +12,15 @@ class CompareMenusNavigationView: UIView {
 
     // MARK: - Properties (view)
 
-    private let titleLabel = UILabel()
-    let editButton = ButtonView(content: UIImageView())
     let backButton = ButtonView(content: UIImageView())
+    let editButton = ButtonView(content: UIImageView())
+    private let titleLabel = UILabel()
 
     // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         setUpSelf()
         setUpConstraints()
     }
@@ -54,7 +55,7 @@ class CompareMenusNavigationView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.text = "Compare Menus"
-        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.font = .eateryNavigationBarTitleFont
         titleLabel.textColor = UIColor.Eatery.black
         titleLabel.textAlignment = .center
     }
@@ -77,7 +78,7 @@ class CompareMenusNavigationView: UIView {
         editButton.snp.makeConstraints { make in
             make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
             make.centerY.equalTo(backButton.snp.centerY)
-            make.width.height.equalTo(40)
+            make.width.height.equalTo(36)
         }
 
         titleLabel.snp.makeConstraints { make in

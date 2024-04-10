@@ -12,13 +12,14 @@ class CompareMenusViewController: UIViewController {
     
     // MARK: -  Properties (data)
 
-    private let pageController: CompareMenusPageViewController
     private let allEateries: [Eatery]
     private let comparedEateries: [Eatery]
+    private let pageController: CompareMenusPageViewController
 
     // MARK: - Properties (view)
 
     private let navigationView = CompareMenusNavigationView()
+    private let compareMenusOnboarding = CompareMenusInternalOnboardingView()
 
     // MARK: - Init
 
@@ -26,6 +27,7 @@ class CompareMenusViewController: UIViewController {
         self.pageController = CompareMenusPageViewController(eateries: comparedEateries, allEateries: allEateries)
         self.allEateries = allEateries
         self.comparedEateries = comparedEateries
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -41,6 +43,22 @@ class CompareMenusViewController: UIViewController {
         view.addSubview(navigationView)
 
         setUpConstraints()
+        trySetCompareMenusUpOnboarding()
+    }
+
+    private func trySetCompareMenusUpOnboarding() {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didInternallyOnboardCompareMenus) { return }
+
+        compareMenusOnboarding.layer.opacity = 0.01
+        navigationController?.tabBarController?.parent?.view.addSubview(compareMenusOnboarding)
+        compareMenusOnboarding.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard let self else { return }
+            compareMenusOnboarding.layer.opacity = 1
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -75,4 +93,5 @@ class CompareMenusViewController: UIViewController {
             make.top.equalTo(navigationView.snp.bottom)
         }
     }
+    
 }

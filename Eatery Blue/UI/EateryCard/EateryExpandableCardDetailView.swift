@@ -33,9 +33,10 @@ class EateryExpandableCardDetailView: UIView {
     
     // MARK: - configure
     
-    func configure(eatery: Eatery, selectedDay: Day, selectedMealType: String) {
+    func configure(eatery: Eatery, selectedDay: Day, selectedMealType: String, allEateries: [Eatery]) {
         self.eatery = eatery
-        
+        self.allEateries = allEateries
+
         let selectedEvents = eatery.events.filter { $0.canonicalDay == selectedDay }
         
         // TODO: Ideally this should be an enum but good for now

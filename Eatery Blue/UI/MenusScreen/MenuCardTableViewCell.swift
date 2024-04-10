@@ -50,7 +50,7 @@ class MenuCardTableViewCell: UITableViewCell {
 
         if let selectedMealType = expandedEatery.selectedMealType,
            let selectedDay = expandedEatery.selectedDate  {
-            expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedDay: selectedDay, selectedMealType: selectedMealType)
+            expandableCardDetailView.configure(eatery: expandedEatery.eatery, selectedDay: selectedDay, selectedMealType: selectedMealType, allEateries: allEateries)
         }
         
         if expandedEatery.isExpanded {

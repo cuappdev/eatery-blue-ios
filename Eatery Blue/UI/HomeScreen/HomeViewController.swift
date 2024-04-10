@@ -52,7 +52,7 @@ class HomeViewController: UIViewController {
 
     private(set) var cells: [Cell] = []
     private(set) var eateries: [Eatery] = []
-    var allEats: [Eatery] = []
+    var allEateries: [Eatery] = []
     private lazy var setLoadingInset: Void = {
         scrollToTop(animated: false)
     }()
@@ -64,7 +64,7 @@ class HomeViewController: UIViewController {
 
     let navigationView = HomeNavigationView()
     let compareMenusButton = CompareMenusButton()
-    let compareMenusOnboarding = CompareMenusOnboardingView()
+    let compareMenusOnboarding = CompareMenusExternalOnboardingView()
     private let tableView = UITableView()
     private let tableHeaderView = UIView()
 
@@ -141,7 +141,7 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(allEateries: allEats, eateries: eateries, index: eateryIndex)
+        let pageVC = EateryPageViewController(allEateries: allEateries, eateries: eateries, index: eateryIndex)
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)

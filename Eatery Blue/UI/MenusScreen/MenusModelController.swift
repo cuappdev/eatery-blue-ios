@@ -100,7 +100,6 @@ class MenusModelController: MenusViewController {
             do {
                 let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: selectedIndex)
                 allEateries[selectedIndex] = eateries
-
                 fetchedEateries = eateries.filter { eatery in
                     return !eatery.name.isEmpty
                 }.sorted(by: { lhs, rhs in
@@ -194,7 +193,7 @@ class MenusModelController: MenusViewController {
                     if eatery.campusArea == "North" && eatery.paymentMethods.contains(.mealSwipes) {
                         !didAppendNorthLabel ? cells.append(.titleLabel(title: "North")) : nil
                         didAppendNorthLabel = true
-                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay), allEateries: allEateries[selectedIndex] ?? []))
                     }
                 }
             }
@@ -205,7 +204,7 @@ class MenusModelController: MenusViewController {
                     !didAppendWestLabel ? cells.append(.titleLabel(title: "West")) : nil
                     didAppendWestLabel = true
                     if eatery.campusArea == "West" && eatery.paymentMethods.contains(.mealSwipes) {
-                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay), allEateries: allEateries[selectedIndex] ?? []))
                     }
                 }
             }
@@ -216,7 +215,7 @@ class MenusModelController: MenusViewController {
                     if eatery.campusArea == "Central" && eatery.paymentMethods.contains(.mealSwipes) {
                         !didAppendCentralLabel ? cells.append(.titleLabel(title: "Central")) : nil
                         didAppendCentralLabel = true
-                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay)))
+                        cells.append(.expandableCard(expandedEatery: ExpandedEatery(eatery: eatery, selectedMealType: currentMealType, selectedDate: selectedDay), allEateries: allEateries[selectedIndex] ?? []))
                     }
                 }
             }
@@ -231,7 +230,7 @@ class MenusModelController: MenusViewController {
     
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description)
+        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries[selectedIndex] ?? [])
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

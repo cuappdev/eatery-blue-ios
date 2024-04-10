@@ -12,19 +12,20 @@ import Foundation
 class ListModelController: ListViewController {
 
     private var filter = EateryFilter()
-
-    private var allEateries: [Eatery] = []
+    private var listEateries: [Eatery] = []
 
     func setUp(
         _ eateries: [Eatery],
         title: String? = nil,
-        description: String? = nil
+        description: String? = nil,
+        allEateries: [Eatery]
     ) {
         filterController.delegate = self
         filterController.setFilter(filter, animated: false)
 
         super.setUp(title: title, description: description)
-        self.allEateries = eateries
+        self.listEateries = eateries
+        self.allEateries = allEateries
 
         updateEateriesFromState()
     }
@@ -35,16 +36,15 @@ class ListModelController: ListViewController {
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             var filteredEateries: [Eatery] = []
-            for eatery in allEateries {
+            for eatery in listEateries {
                 if predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id)) {
                     filteredEateries.append(eatery)
                 }
             }
 
-            updateEateries(filteredEateries, allEateries: allEateries)
-
+            updateEateries(eateries: filteredEateries)
         } else {
-            updateEateries(allEateries, allEateries: allEateries)
+            updateEateries(eateries: listEateries)
         }
     }
 

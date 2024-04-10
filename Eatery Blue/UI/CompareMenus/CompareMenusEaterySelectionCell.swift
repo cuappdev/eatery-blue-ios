@@ -16,13 +16,14 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
 
     // MARK: - Properties (view)
 
-    private let nameView = UILabel()
     private let checkView = UIImageView()
+    private let nameView = UILabel()
 
     // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
         setUpSelf()
         setUpConstraints()
     }
@@ -40,6 +41,7 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
         } else {
             checkView.image = UIImage(named: "CheckboxUnfilled")
         }
+
         self.layoutIfNeeded()
         if draggable {
             nameView.snp.updateConstraints { make in
@@ -50,9 +52,18 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
                 make.trailing.equalToSuperview()
             }
         }
+
         UIView.animate(withDuration: 0.1) { [weak self] in
             guard let self else { return }
             self.layoutIfNeeded()
+        }
+
+        self.selectionStyle = .none
+        let cellBackground = UIView()
+        cellBackground.backgroundColor = .white
+        self.backgroundView = cellBackground
+        cellBackground.snp.makeConstraints { make in
+            make.edges.equalTo(self.snp.edges)
         }
     }
 
@@ -63,15 +74,13 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
 
     private func setUpConstraints() {
         checkView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.width.height.equalTo(24)
-            make.centerY.equalToSuperview()
+            make.leading.centerY.equalToSuperview()
+            make.size.equalTo(24)
         }
 
         nameView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.trailing.centerY.equalToSuperview()
             make.leading.equalTo(checkView.snp.trailing).offset(8)
-            make.centerY.equalToSuperview()
         }
     }
 
@@ -81,12 +90,10 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
             type(of: subview).description() == "UITableViewCellReorderControl"
         }) {
             reorderControl.snp.remakeConstraints { make in
-                make.trailing.equalToSuperview()
+                make.trailing.height.centerY.equalToSuperview()
                 make.leading.equalTo(self.snp.trailing).inset(24)
-                make.height.equalToSuperview()
-                make.centerY.equalToSuperview()
             }
         }
     }
+    
 }
-

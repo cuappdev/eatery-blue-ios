@@ -16,16 +16,18 @@ class CompareMenusTabsViewController: UIViewController {
 
     // MARK: - Properties (view)
 
+    private let hitView: ScrollHitView
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
-    private let hitView: ScrollHitView
 
     // MARK: - Init
 
     init(eateries: [Eatery]) {
         self.eateries = eateries
         self.hitView = ScrollHitView(scrollView: scrollView)
+
         super.init(nibName: nil, bundle: nil)
+
         setUpView()
     }
 
@@ -45,9 +47,7 @@ class CompareMenusTabsViewController: UIViewController {
 
         view.addSubview(hitView)
 
-        for eatery in eateries {
-            addCategory(name: eatery.name)
-        }
+        eateries.forEach { addCategory(name: $0.name) }
 
         setUpConstraints()
     }
@@ -119,7 +119,6 @@ class CompareMenusTabsViewController: UIViewController {
             make.width.equalToSuperview().inset(12)
             make.center.equalToSuperview()
         }
-
     }
 
     func offsetScrollBy(percentage: CGFloat) {
@@ -130,10 +129,4 @@ class CompareMenusTabsViewController: UIViewController {
         scrollView.bounds = scrollBounds;
     }
 
-}
-
-extension CompareMenusTabsViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.x)
-    }
 }

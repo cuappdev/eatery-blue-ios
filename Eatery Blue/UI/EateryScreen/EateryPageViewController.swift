@@ -12,12 +12,11 @@ class EateryPageViewController: UIPageViewController {
     
     // MARK: - Properties (data)
 
-    private var previousScrollOffset: CGFloat = 0
-    private var pages = [UIViewController]()
-    private var allEateries = [Eatery]()
-    private var eateries = [Eatery]()
+    private var allEateries: [Eatery] = []
+    private var eateries: [Eatery] = []
     private var index: Int
-    private var shouldOpenCompareMenusButton = true
+    private var previousScrollOffset: CGFloat = 0
+    private var pages: [UIViewController] = []
 
     // MARK: - Init
 
@@ -25,6 +24,7 @@ class EateryPageViewController: UIPageViewController {
         self.allEateries = allEateries
         self.eateries = eateries
         self.index = index
+
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     

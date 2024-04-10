@@ -11,9 +11,9 @@ class MenuCategoryPickerView: UIView {
 
     // MARK: - Properties (data)
 
-    var delegate: MenuCategoryPickerDelegate?
+    weak var delegate: MenuCategoryPickerDelegate?
+    private var highlightedCategoryIndex: Int?
     private var index = 0
-    private(set) var highlightedCategoryIndex: Int? = nil
 
     // MARK: - Properties (view)
 
@@ -27,6 +27,7 @@ class MenuCategoryPickerView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setUpSelf()
         setUpConstraints()
     }
@@ -138,10 +139,7 @@ class MenuCategoryPickerView: UIView {
     }
 
     func highlightCategory(atIndex i: Int, animateScrollView: Bool = false) {
-        if i >= index {
-            print("INDEX", index)
-            return
-        }
+        if i >= index { return }
 
         highlightedCategoryIndex = i
         foregroundMask.frame = categoriesForeground.arrangedSubviews[i].frame
@@ -151,6 +149,6 @@ class MenuCategoryPickerView: UIView {
 
 }
 
-protocol MenuCategoryPickerDelegate {
-    func menuCategoryPicker(buttonPressedAtIndex idx: Int) 
+protocol MenuCategoryPickerDelegate: AnyObject {
+    func menuCategoryPicker(buttonPressedAtIndex idx: Int)
 }

@@ -1,27 +1,26 @@
 //
-//  CompareMenusOnboardingView.swift
+//  CompareMenusInternalOnboardingView.swift
 //  Eatery Blue
 //
-//  Created by Peter Bidoshi  on 3/31/24.
+//  Created by Peter Bidoshi  on 4/9/24.
 //
 
 import EateryModel
 import UIKit
 
-class CompareMenusOnboardingView: UIView {
+class CompareMenusInternalOnboardingView: UIView {
 
     // MARK: - Properties (view)
 
-    private let dismissLabel = UILabel()
     private let actionLabel = UILabel()
-    private let arrowImage = UIImageView()
-    let compareMenusButton = UIView()
-    private let compareMenusImage = UIImageView()
+    private let fingerSwipeImage = UIImageView()
+    private let dismissLabel = UILabel()
 
     // MARK: - Init
 
     init() {
         super.init(frame: .zero)
+
         setUpSelf()
     }
 
@@ -44,19 +43,15 @@ class CompareMenusOnboardingView: UIView {
         setUpActionLabel()
         addSubview(actionLabel)
 
-        setUpArrowImage()
-        addSubview(arrowImage)
-
-        setUpCompareMenusButton()
-        compareMenusButton.addSubview(compareMenusImage)
-        addSubview(compareMenusButton)
+        setUpFingerSwipeImage()
+        addSubview(fingerSwipeImage)
 
         setUpConstraints()
     }
 
     func dismiss() {
         self.layer.opacity = 1
-        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didOnboardCompareMenus)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didInternallyOnboardCompareMenus)
         UIView.animate(withDuration: 0.2) { [weak self] in
             guard let self else { return }
             self.layer.opacity = 0.01
@@ -73,51 +68,36 @@ class CompareMenusOnboardingView: UIView {
     }
 
     private func setUpActionLabel() {
-        actionLabel.text = "Compare dining menus easily"
+        actionLabel.text = "Swipe to compare menus"
         actionLabel.font = .systemFont(ofSize: 40, weight: .semibold)
         actionLabel.textColor = .white
         actionLabel.lineBreakMode = .byWordWrapping
         actionLabel.numberOfLines = 0
     }
 
-    private func setUpArrowImage() {
-        arrowImage.image = UIImage(named: "Arrow")
-    }
-
-    private func setUpCompareMenusButton() {
-        compareMenusButton.backgroundColor = UIColor.Eatery.blue
-        compareMenusButton.layer.cornerRadius = 56 / 2
-        compareMenusImage.image = UIImage(named: "CompareMenus")
+    private func setUpFingerSwipeImage() {
+        fingerSwipeImage.image = UIImage(named: "FingerSwipe")
+        fingerSwipeImage.contentMode = .scaleAspectFill
     }
 
     private func setUpConstraints() {
-        compareMenusButton.snp.makeConstraints { make in
+        fingerSwipeImage.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(108)
-            make.size.equalTo(56)
-        }
-
-        compareMenusImage.snp.makeConstraints { make in
-            make.size.equalTo(24)
-            make.center.equalToSuperview()
-        }
-
-        arrowImage.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(70)
-            make.bottom.equalTo(compareMenusButton.snp.top)
+            make.leading.equalTo(self.snp.centerX).inset(10)
+            make.bottom.equalToSuperview().inset(235)
         }
 
         actionLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(arrowImage.snp.bottom).inset(30)
+            make.bottom.equalTo(fingerSwipeImage.snp.bottom)
             make.leading.equalToSuperview().inset(16)
-            make.width.equalTo(250)
-            make.height.equalTo(144)
+            make.trailing.equalTo(self.snp.centerX).inset(10)
         }
 
         dismissLabel.snp.makeConstraints { make in
             make.leading.equalTo(actionLabel.snp.leading)
-            make.bottom.equalTo(actionLabel.snp.top).offset(8)
+            make.bottom.equalTo(actionLabel.snp.top).inset(-8)
         }
     }
 
 }
+

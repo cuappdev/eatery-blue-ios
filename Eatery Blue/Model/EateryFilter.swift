@@ -77,4 +77,5 @@ struct EateryFilter: Codable {
     func isSelectedPredicate(selected: [Eatery]) -> EateryPredicate {
         return .isSelected(selected)
     }
+    
 }

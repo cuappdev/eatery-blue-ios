@@ -24,7 +24,7 @@ class ListViewController: UIViewController {
     // A view that holds the place of the filtersView in the stack view
     private let filterPlaceholder = UIView()
 
-    private var allEateries: [Eatery] = []
+    var allEateries: [Eatery] = []
     private(set) var eateries: [Eatery] = []
 
     private var cancellables: Set<AnyCancellable> = []
@@ -207,7 +207,7 @@ class ListViewController: UIViewController {
         tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
     }
 
-    func updateEateries(_ eateries: [Eatery], allEateries: [Eatery]) {
+    func updateEateries(eateries: [Eatery]) {
         self.eateries = eateries
         tableView.reloadData()
     }

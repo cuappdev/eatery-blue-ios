@@ -18,9 +18,9 @@ class CompareMenusPageViewController: UIViewController {
 
     // MARK: - Properties (view)
 
-    private let tabsViewSpacer = UIView()
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    private let tabsViewSpacer = UIView()
 
     // MARK: - Init
 
@@ -28,6 +28,7 @@ class CompareMenusPageViewController: UIViewController {
         self.eateries = eateries
         self.allEateries = allEateries
         self.tabsViewController = CompareMenusTabsViewController(eateries: eateries)
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,6 +40,7 @@ class CompareMenusPageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setUpView()
     }
 
@@ -144,5 +146,3 @@ extension CompareMenusPageViewController: UIScrollViewDelegate {
     }
 
 }
-
-

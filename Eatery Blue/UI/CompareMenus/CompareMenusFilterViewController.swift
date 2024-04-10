@@ -17,6 +17,7 @@ class CompareMenusFilterViewController: EateryFilterViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpSelected()
     }
 

@@ -60,7 +60,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
 
         favoritesView.buttonImageView.tap { [self] _ in
             let viewController = ListModelController()
-            viewController.setUp(favorites, title: "Favorite Eateries", description: nil)
+            viewController.setUp(favorites, title: "Favorite Eateries", description: nil, allEateries: allEateries)
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(viewController, animated: true)
         }

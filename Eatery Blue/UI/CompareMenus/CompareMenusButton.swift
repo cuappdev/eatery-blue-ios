@@ -11,9 +11,9 @@ class CompareMenusButton: UIButton {
 
     // MARK: - Properties (data)
 
+    private var isCollapsed: Bool = true
     private var largeButtonCallback: ((UIButton) -> Void)?
     private var smallButtonCallback: ((UIButton) -> Void)?
-    private var isCollapsed = true
 
     // MARK: - Properties (view)
 
@@ -100,11 +100,13 @@ class CompareMenusButton: UIButton {
     @objc private func smallButtonTouchUpInside(_ sender: UIButton) {
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             guard let self else { return }
+
             smallButtonCallback?(sender)
         }
 
         UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
+
             if isCollapsed {
                 transform = .identity
             } else {
@@ -117,6 +119,7 @@ class CompareMenusButton: UIButton {
         if isCollapsed { return }
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             guard let self else { return }
+
             largeButtonCallback?(sender)
         }
 
@@ -128,6 +131,7 @@ class CompareMenusButton: UIButton {
     @objc private func buttonTouchDown(_ sender: UIButton) {
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
+
             if isCollapsed {
                 transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
             } else {
@@ -139,6 +143,7 @@ class CompareMenusButton: UIButton {
     @objc private func buttonTouchUpOutside(_ sender: UIButton) {
         UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
+
             if isCollapsed {
                 transform = .identity
             } else {
@@ -148,11 +153,7 @@ class CompareMenusButton: UIButton {
     }
 
     func toggle() {
-        if isCollapsed {
-            expand()
-        } else {
-            collapse()
-        }
+        isCollapsed ? expand(): collapse()
     }
 
     func expand() {
@@ -176,6 +177,7 @@ class CompareMenusButton: UIButton {
 
         animate { [weak self] in
             guard let self else { return }
+            
             textView.layer.opacity = 0
             self.superview?.layoutIfNeeded()
         }
@@ -185,14 +187,17 @@ class CompareMenusButton: UIButton {
         if #available(iOS 17.0, *) {
             UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
                 guard let self else { return }
+
                 uiUpdates?()
             }
         } else {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
                 guard let self else { return }
+
                 uiUpdates?()
                 self.layoutIfNeeded()
             }
         }
     }
+
 }

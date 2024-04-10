@@ -34,6 +34,7 @@ class EateryModelController: EateryViewController {
     func setUp(eatery: Eatery, allEateries: [Eatery], isTracking: Bool) {
         self.eatery = eatery
         self.allEateries = allEateries
+
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
         setUpStackView(eatery)
@@ -114,8 +115,7 @@ class EateryModelController: EateryViewController {
 
     private func setUpCompareMenusButton() {
         compareMenusButton.largeButtonPress { [weak self] _ in
-            guard let self else { return }
-            guard let eatery else { return }
+            guard let self, let eatery else { return }
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)

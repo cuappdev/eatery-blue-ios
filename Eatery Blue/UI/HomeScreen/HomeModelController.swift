@@ -16,7 +16,6 @@ class HomeModelController: HomeViewController {
     private var isLoading = true
 
     private var filter = EateryFilter()
-    private var allEateries: [Eatery] = []
 
     private let filterController = EateryFilterViewController()
 
@@ -65,7 +64,7 @@ class HomeModelController: HomeViewController {
     }
 
     private func trySetCompareMenusUpOnboarding() {
-        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didOnboardCompareMenus) { return }
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) { return }
 
         compareMenusOnboarding.layer.opacity = 0.01
         navigationController?.tabBarController?.parent?.view.addSubview(compareMenusOnboarding)
@@ -142,7 +141,6 @@ class HomeModelController: HomeViewController {
                 }.sorted(by: {
                     return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
                 })
-                super.allEats = allEateries
             }
         } catch {
             logger.error("\(error)")
@@ -340,7 +338,7 @@ class HomeModelController: HomeViewController {
 
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description)
+        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

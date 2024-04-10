@@ -153,7 +153,7 @@ class CarouselView: UIView {
     
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description)
+        viewController.setUp(eateries, title: title, description: description, allEateries: allItems)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

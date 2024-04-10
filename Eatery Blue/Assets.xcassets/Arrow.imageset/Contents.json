@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Arrow.svg",
+      "filename" : "Arrow@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Arrow@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Arrow@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
