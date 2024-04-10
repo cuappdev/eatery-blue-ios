@@ -185,9 +185,7 @@ class CompareMenusButton: UIButton {
 
     private func animate(_ uiUpdates: (() -> Void)?) {
         if #available(iOS 17.0, *) {
-            UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
-                guard let self else { return }
-
+            UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) {
                 uiUpdates?()
             }
         } else {

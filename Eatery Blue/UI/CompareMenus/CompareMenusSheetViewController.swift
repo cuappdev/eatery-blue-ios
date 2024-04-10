@@ -47,7 +47,7 @@ class CompareMenusSheetViewController: SheetViewController {
 
     // MARK: - Setup
 
-    func setUpSelf() {
+    private func setUpSelf() {
         addHeader(title: "Compare Menus")
 
         addChild(filterController)
@@ -146,7 +146,7 @@ class CompareMenusSheetViewController: SheetViewController {
         }
     }
 
-    func updateEateriesFromState() {
+    private func updateEateriesFromState() {
         if filter.isEnabled {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let coreDataStack = AppDelegate.shared.coreDataStack

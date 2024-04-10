@@ -219,7 +219,7 @@ class CompareMenusEateryViewController: UIViewController {
         addViewProportionalSpacer(multiplier: 0.5)
     }
 
-    func addSorryText() {
+    private func addSorryText() {
         let backgroundView = UIView()
         backgroundView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         backgroundView.backgroundColor = UIColor.Eatery.gray00
@@ -242,7 +242,7 @@ class CompareMenusEateryViewController: UIViewController {
         }
     }
 
-    func addDetailsSection() {
+    private func addDetailsSection() {
         let viewEateryContainer = UIView()
         viewEateryContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         viewEateryContainer.backgroundColor = UIColor.Eatery.gray00
@@ -282,19 +282,7 @@ class CompareMenusEateryViewController: UIViewController {
         }
     }
 
-    func addMenuHeaderView(title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
-        let menuHeaderView = MenuHeaderView()
-        menuHeaderView.titleLabel.text = title
-        menuHeaderView.subtitleLabel.text = subtitle
-        menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        menuHeaderView.buttonImageView.tap { [weak self] _ in
-            guard let self else { return }
-            dropDownButtonAction?()
-        }
-        stackView.addArrangedSubview(menuHeaderView)
-    }
-
-    func addSpacer(height: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
+    private func addSpacer(height: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
         let spacer = UIView()
         spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
@@ -317,7 +305,7 @@ class CompareMenusEateryViewController: UIViewController {
         return sortedCategories
     }
 
-    func addMenuCategory(_ menuCategory: MenuCategory, isLast: Bool) {
+    private func addMenuCategory(_ menuCategory: MenuCategory, isLast: Bool) {
         let categoryContainer = UIView()
         categoryContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 
@@ -371,12 +359,12 @@ class CompareMenusEateryViewController: UIViewController {
         menuCategoryPicker.addMenuCategory(categoryName: menuCategory.category)
     }
 
-    func scrollToCategoryView(at index: Int) {
+    private func scrollToCategoryView(at index: Int) {
         let offset = stackView.subviews[index].frame.minY - 8
         scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
     }
 
-    func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
+    private func addViewProportionalSpacer(multiplier: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
         let spacer = UIView()
         spacer.backgroundColor = color
         stackView.addArrangedSubview(spacer)
@@ -418,7 +406,7 @@ extension CompareMenusEateryViewController: MenuCategoryPickerDelegate {
     func menuCategoryPicker(buttonPressedAtIndex idx: Int) {
         let category = categoryViews[idx]
         let viewIdx = stackView.subviews.firstIndex { $0 == category } ?? 0
-        self.scrollToCategoryView(at: viewIdx)
+        scrollToCategoryView(at: viewIdx)
     }
 
 }
