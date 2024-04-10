@@ -79,8 +79,9 @@ class HomeModelController: HomeViewController {
 
         compareMenusOnboarding.compareMenusButton.tap { [weak self] _ in
             guard let self else { return }
-            compareMenusOnboarding.dismiss()
-            compareMenusButton.expand()
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
         }
     }
 
@@ -111,16 +112,12 @@ class HomeModelController: HomeViewController {
     }
 
     private func setUpCompareMenusButton() {
-        compareMenusButton.largeButtonPress { [weak self] _ in
+        compareMenusButton.buttonPress { [weak self] _ in
             guard let self else { return }
+            
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
-        }
-
-        compareMenusButton.smallButtonPress { [weak self] _ in
-            guard let self else { return }
-            compareMenusButton.toggle()
         }
     }
 

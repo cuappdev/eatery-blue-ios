@@ -344,10 +344,10 @@ class CompareMenusEateryViewController: UIViewController {
         if categoryViews.isEmpty {
             categoryView.clipsToBounds = true
             categoryView.layer.cornerRadius = 10
-            categoryView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        }
-
-        if isLast {
+            if !isLast {
+                categoryView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+            }
+        } else if isLast {
             categoryView.clipsToBounds = true
             categoryView.layer.cornerRadius = 10
             categoryView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]

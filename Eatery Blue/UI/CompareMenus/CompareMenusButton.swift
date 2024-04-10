@@ -11,13 +11,12 @@ class CompareMenusButton: UIButton {
 
     // MARK: - Properties (data)
 
+    private var buttonCallback: ((UIButton) -> Void)?
     private var isCollapsed: Bool = true
-    private var largeButtonCallback: ((UIButton) -> Void)?
-    private var smallButtonCallback: ((UIButton) -> Void)?
 
     // MARK: - Properties (view)
 
-    private let button = UIButton()
+    private let compareImageView = UIImageView()
     private let textView = UILabel()
 
     // MARK: - init
@@ -43,25 +42,21 @@ class CompareMenusButton: UIButton {
         layer.shadowOffset = .zero
         layer.shadowRadius = 2
 
-        addSubview(button)
-        setUpButton()
+        addSubview(compareImageView)
+        setUpCompareImageView()
 
         addSubview(textView)
         setUpTextView()
 
-        self.addTarget(self, action: #selector(largeButtonTouchUpInside), for: .touchUpInside)
+        self.addTarget(self, action: #selector(buttonTouchUpInside), for: .touchUpInside)
         self.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
         self.addTarget(self, action: #selector(buttonTouchUpOutside), for: .touchUpOutside)
     }
 
-    private func setUpButton() {
-        button.backgroundColor = UIColor.Eatery.blue
-        button.setImage(UIImage(named: "CompareMenus"), for: .normal)
-        button.layer.cornerRadius = 56 / 2
-
-        button.addTarget(self, action: #selector(smallButtonTouchUpInside), for: .touchUpInside)
-        button.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
-        button.addTarget(self, action: #selector(buttonTouchUpOutside), for: .touchUpOutside)
+    private func setUpCompareImageView() {
+        compareImageView.backgroundColor = UIColor.Eatery.blue
+        compareImageView.image = UIImage(named: "CompareMenus")
+        compareImageView.layer.cornerRadius = 56 / 2
     }
 
     private func setUpTextView() {
@@ -77,53 +72,30 @@ class CompareMenusButton: UIButton {
             make.size.equalTo(56)
         }
 
-        button.snp.makeConstraints { make in
+        compareImageView.snp.makeConstraints { make in
             make.size.equalTo(24)
             make.leading.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
         }
 
         textView.snp.makeConstraints { make in
-            make.leading.equalTo(button.snp.trailing).offset(12)
+            make.leading.equalTo(compareImageView.snp.trailing).offset(12)
             make.centerY.equalToSuperview()
         }
     }
 
-    func smallButtonPress(_ callback: ((UIButton) -> Void)?) {
-        self.smallButtonCallback = callback
+    func buttonPress(_ callback: ((UIButton) -> Void)?) {
+        self.buttonCallback = callback
     }
 
-    func largeButtonPress(_ callback: ((UIButton) -> Void)?) {
-        self.largeButtonCallback = callback
-    }
-
-    @objc private func smallButtonTouchUpInside(_ sender: UIButton) {
+    @objc private func buttonTouchUpInside(_ sender: UIButton) {
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             guard let self else { return }
 
-            smallButtonCallback?(sender)
+            buttonCallback?(sender)
         }
 
-        UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
-            guard let self else { return }
-
-            if isCollapsed {
-                transform = .identity
-            } else {
-                sender.transform = .identity
-            }
-        }
-    }
-
-    @objc private func largeButtonTouchUpInside(_ sender: UIButton) {
-        if isCollapsed { return }
-        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
-            guard let self else { return }
-
-            largeButtonCallback?(sender)
-        }
-
-        UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) {
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
             sender.transform = .identity
         }
     }
@@ -132,23 +104,16 @@ class CompareMenusButton: UIButton {
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
 
-            if isCollapsed {
-                transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-            } else {
-                sender.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-            }
+            let transformPercentage = isCollapsed ? 0.9 : 0.95
+            transform = CGAffineTransform(scaleX: transformPercentage, y: transformPercentage)
         }
     }
 
     @objc private func buttonTouchUpOutside(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.15, delay: 0.15, options: .beginFromCurrentState) { [weak self] in
+        UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
 
-            if isCollapsed {
-                transform = .identity
-            } else {
-                sender.transform = .identity
-            }
+            transform = .identity
         }
     }
 
@@ -164,6 +129,7 @@ class CompareMenusButton: UIButton {
 
         animate { [weak self] in
             guard let self else { return }
+            
             textView.layer.opacity = 1
             self.superview?.layoutIfNeeded()
         }

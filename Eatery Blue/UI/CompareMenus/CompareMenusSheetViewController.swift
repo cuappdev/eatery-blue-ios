@@ -90,6 +90,7 @@ class CompareMenusSheetViewController: SheetViewController {
         compareNowButton.setTitle("Compare now", for: .normal)
         compareNowButton.setTitleColor(UIColor(named: "Gray03"), for: .disabled)
         compareNowButton.setTitleColor(.white, for: .normal)
+        compareNowButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
 
         compareNowButton.backgroundColor = UIColor(named: "Gray00")
         compareNowButton.isEnabled = false
