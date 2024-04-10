@@ -16,7 +16,6 @@ class HomeModelController: HomeViewController {
     private var isLoading = true
 
     private var filter = EateryFilter()
-    private var allEateries: [Eatery] = []
 
     private let filterController = EateryFilterViewController()
 
@@ -51,6 +50,7 @@ class HomeModelController: HomeViewController {
                     await self.updateAllEateriesFromNetworking()
                 }
             }
+            setUpCompareMenusButton()
         }
     }
 
@@ -61,6 +61,27 @@ class HomeModelController: HomeViewController {
 
         LocationManager.shared.requestAuthorization()
         LocationManager.shared.requestLocation()
+    }
+
+    private func trySetCompareMenusUpOnboarding() {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) { return }
+
+        compareMenusOnboarding.layer.opacity = 0.01
+        navigationController?.tabBarController?.parent?.view.addSubview(compareMenusOnboarding)
+        compareMenusOnboarding.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard let self else { return }
+            compareMenusOnboarding.layer.opacity = 1
+        }
+
+        compareMenusOnboarding.compareMenusButton.tap { [weak self] _ in
+            guard let self else { return }
+            compareMenusOnboarding.dismiss()
+            compareMenusButton.expand()
+        }
     }
 
     private func setUpFilterController() {
@@ -89,6 +110,20 @@ class HomeModelController: HomeViewController {
         )
     }
 
+    private func setUpCompareMenusButton() {
+        compareMenusButton.largeButtonPress { [weak self] _ in
+            guard let self else { return }
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            viewController.setUpSheetPresentation()
+            tabBarController?.present(viewController, animated: true)
+        }
+
+        compareMenusButton.smallButtonPress { [weak self] _ in
+            guard let self else { return }
+            compareMenusButton.toggle()
+        }
+    }
+
     private func setUpUserLocationSubscription() {
         // Update cells when the user location changes because we may need to display the "Nearest to You" carousel
         LocationManager.shared.userLocationDidChange.sink { [self] _ in
@@ -99,6 +134,7 @@ class HomeModelController: HomeViewController {
     private func updateSimpleEateriesFromNetworking() async {
         do {
             let eateries = isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
+            trySetCompareMenusUpOnboarding()
             if isLoading {
                 allEateries = eateries.filter { eatery in
                     return !eatery.name.isEmpty
@@ -120,18 +156,6 @@ class HomeModelController: HomeViewController {
         } catch {
             logger.error("\(error)")
         }
-    }
-    
-    private func createLoadingCarouselView(
-        title: String
-    ) -> CarouselView {
-        
-        let carouselView = CarouselView(title: "Finding flavorful food...", allItems: [], carouselItems: [], navigationController: navigationController, shouldTruncate: false)
-        carouselView.isUserInteractionEnabled = false
-        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        carouselView.titleLabel.textColor = UIColor.Eatery.gray02
-
-        return carouselView
     }
 
     private func createCarouselView(
@@ -156,12 +180,12 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if isLoading {
-            let carouselView = createLoadingCarouselView(title: "Loading nearby eateries...")
-            cells.append(.carouselView(carouselView))
+            cells.append(.loadingLabel(title: "Finding flavorful food..."))
+            cells.append(.loadingCard(isLarge: false))
 
             cells.append(.loadingLabel(title: "Checking for chow..."))
             for _ in 0...4 {
-                cells.append(.loadingCard)
+                cells.append(.loadingCard(isLarge: true))
             }
         } else {
             if !filter.isEnabled {
@@ -302,7 +326,7 @@ class HomeModelController: HomeViewController {
 
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description)
+        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

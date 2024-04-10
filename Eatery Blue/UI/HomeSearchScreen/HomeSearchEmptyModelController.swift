@@ -60,7 +60,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
 
         favoritesView.buttonImageView.tap { [self] _ in
             let viewController = ListModelController()
-            viewController.setUp(favorites, title: "Favorite Eateries", description: nil)
+            viewController.setUp(favorites, title: "Favorite Eateries", description: nil, allEateries: allEateries)
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(viewController, animated: true)
         }
@@ -70,7 +70,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             cardView.configure(eatery: favorite)
             cardView.tap { [self] _ in
                 let viewController = EateryModelController()
-                viewController.setUp(eatery: favorite, isTracking: false)
+                viewController.setUp(eatery: favorite, allEateries: allEateries, isTracking: false)
                 navigationController?.hero.isEnabled = false
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.setUpMenu(eatery: favorite)

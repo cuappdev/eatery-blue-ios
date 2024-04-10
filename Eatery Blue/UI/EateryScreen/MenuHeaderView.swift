@@ -40,7 +40,7 @@ class MenuHeaderView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
+        titleLabel.font = .preferredFont(for: .largeTitle, weight: .bold)
         titleLabel.textColor = UIColor.Eatery.black
     }
 

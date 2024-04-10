@@ -14,6 +14,7 @@ class SettingsFavoritesViewController: UIViewController {
 
     private let tableView = UITableView()
 
+    private var allEateries: [Eatery] = []
     private var favoriteEateries: [Eatery] = []
 
     private var cancellables: Set<AnyCancellable> = []
@@ -86,8 +87,9 @@ class SettingsFavoritesViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
-    func updateFavoriteEateries(_ eateries: [Eatery]) {
+    func updateFavoriteEateries(_ eateries: [Eatery], allEateries: [Eatery]) {
         favoriteEateries = eateries
+        self.allEateries = allEateries
         tableView.reloadData()
     }
 
@@ -154,7 +156,7 @@ extension SettingsFavoritesViewController: UITableViewDelegate {
         if indexPath.row != 0 {
             let eatery = favoriteEateries[indexPath.row - 1]
             let viewController = EateryModelController()
-            viewController.setUp(eatery: eatery, isTracking: true)
+            viewController.setUp(eatery: eatery, allEateries: self.allEateries, isTracking: true)
             navigationController?.hero.isEnabled = true
             navigationController?.heroNavigationAnimationType = .fade
             navigationController?.pushViewController(viewController, animated: true)

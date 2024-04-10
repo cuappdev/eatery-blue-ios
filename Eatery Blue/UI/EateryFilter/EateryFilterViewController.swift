@@ -23,8 +23,10 @@ class EateryFilterViewController: UIViewController {
     private let paymentMethods = PillFilterButtonView()
     private let favorites = PillFilterButtonView()
 
-    private(set) var filter = EateryFilter()
-    private let filtersView = PillFiltersView()
+    var filter = EateryFilter()
+    let filtersView = PillFiltersView()
+
+    var viewController: UIViewController?
 
     weak var delegate: EateryFilterViewControllerDelegate?
 
@@ -122,7 +124,11 @@ class EateryFilterViewController: UIViewController {
             viewController.setUpSheetPresentation()
             viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
             viewController.delegate = self
-            tabBarController?.present(viewController, animated: true)
+            if self.viewController != nil {
+                self.viewController?.present(viewController, animated: true)
+            } else {
+                tabBarController?.present(viewController, animated: true)
+            }
         }
     }
 
@@ -149,7 +155,7 @@ class EateryFilterViewController: UIViewController {
         filtersView.scrollView.contentInset = view.layoutMargins
     }
 
-    private func updateFilterButtonsFromState(animated: Bool) {
+    func updateFilterButtonsFromState(animated: Bool) {
         guard !animated else {
             UIView.transition(with: view, duration: 0.1, options: [.allowUserInteraction, .transitionCrossDissolve]) {
                 self.updateFilterButtonsFromState(animated: false)

@@ -24,6 +24,7 @@ indirect enum EateryPredicate {
     case isFavorite
     case isOpen
     case underNMinutes(_ n: Int, userLocation: CLLocation, departureDate: Date)
+    case isSelected([Eatery])
 
     func isSatisfied(by eatery: Eatery, metadata: EateryMetadata?) -> Bool {
         if let metadata = metadata, metadata.eateryId != eatery.id {
@@ -71,6 +72,9 @@ indirect enum EateryPredicate {
 
         case .isOpen:
             return eatery.isOpen
+
+        case .isSelected(let eateries):
+            return eateries.contains(eatery)
         }
     }
 

@@ -26,7 +26,7 @@ class MenusViewController: UIViewController {
         case customView(view: UIView)
         case titleLabel(title: String)
         case loadingLabel(title: String)
-        case expandableCard(expandedEatery: ExpandedEatery)
+        case expandableCard(expandedEatery: ExpandedEatery, allEateries: [Eatery])
         case loadingCard
     }
     
@@ -215,9 +215,9 @@ extension MenusViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: cardView)
             cell.selectionStyle = .none
             return cell
-        case .expandableCard(expandedEatery: let expandedEatery):
+        case .expandableCard(expandedEatery: let expandedEatery, allEateries: let allEateries):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCardCell", for: indexPath) as? MenuCardTableViewCell else { return UITableViewCell() }
-            cell.configure(expandedEatery: expandedEatery)
+            cell.configure(expandedEatery: expandedEatery, allEateries: allEateries)
             return cell
         }
     }
@@ -243,7 +243,7 @@ extension MenusViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.section] {
-        case .expandableCard(expandedEatery: let expandedEatery):
+        case .expandableCard(expandedEatery: let expandedEatery, allEateries: let allEateries):
             let selectedEvents = expandedEatery.eatery.events.filter { $0.canonicalDay == expandedEatery.selectedDate }
             let selectedMealType = expandedEatery.selectedMealType
             var event: Event?
@@ -260,7 +260,7 @@ extension MenusViewController: UITableViewDelegate {
             }
 
             if let event, event.endDate > Date() {
-                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate))
+                self.cells[indexPath.section] = .expandableCard(expandedEatery: ExpandedEatery(eatery: expandedEatery.eatery, isExpanded: !expandedEatery.isExpanded, selectedMealType: expandedEatery.selectedMealType, selectedDate: expandedEatery.selectedDate), allEateries: allEateries)
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         default:
