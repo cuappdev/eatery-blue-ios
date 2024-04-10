@@ -27,8 +27,8 @@ class HomeViewController: UIViewController {
         case statusLabel(status: Status)
         case loadingLabel(title: String)
         case eateryCard(eatery: Eatery)
-        case loadingCard
-        
+        case loadingCard(isLarge: Bool)
+
         func getEateryId() -> Int64? {
             switch self {
             case .eateryCard(let eatery):
@@ -307,15 +307,34 @@ extension HomeViewController: UITableViewDataSource {
             let cell = ClearTableViewCell(content: container)
             cell.selectionStyle = .none
             return cell
-        case .loadingCard:
-            let contentView = EateryLargeLoadingCardView()
+        case .loadingCard(let isLarge):
+            if isLarge {
+                let contentView = EateryLargeLoadingCardView()
 
-            let cardView = EateryCardVisualEffectView(content: contentView)
-            cardView.layoutMargins = Constants.cardViewLayoutMargins
+                let cardView = EateryCardVisualEffectView(content: contentView)
+                cardView.layoutMargins = Constants.cardViewLayoutMargins
 
-            let cell = ClearTableViewCell(content: cardView)
-            cell.selectionStyle = .none
-            return cell
+                let cell = ClearTableViewCell(content: cardView)
+                cell.selectionStyle = .none
+                return cell
+            } else {
+                let stackView = UIStackView()
+                stackView.distribution = .equalSpacing
+                stackView.spacing = 16
+                stackView.semanticContentAttribute = .forceRightToLeft
+                stackView.isLayoutMarginsRelativeArrangement = true
+                stackView.layoutMargins = Constants.cardViewLayoutMargins
+
+                for _ in 0..<2 {
+                    let contentView = EateryMediumLoadingCardView()
+                    let cardView = EateryCardVisualEffectView(content: contentView)
+                    stackView.addArrangedSubview(cardView)
+                }
+
+                let cell = ClearTableViewCell(content: stackView)
+                cell.selectionStyle = .none
+                return cell
+            }
         case .eateryCard(eatery: let eatery):
             let largeCardContent = EateryLargeCardContentView()
             

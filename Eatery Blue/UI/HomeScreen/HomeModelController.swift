@@ -157,18 +157,6 @@ class HomeModelController: HomeViewController {
             logger.error("\(error)")
         }
     }
-    
-    private func createLoadingCarouselView(
-        title: String
-    ) -> CarouselView {
-        
-        let carouselView = CarouselView(title: "Finding flavorful food...", allItems: [], carouselItems: [], navigationController: navigationController, shouldTruncate: false)
-        carouselView.isUserInteractionEnabled = false
-        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        carouselView.titleLabel.textColor = UIColor.Eatery.gray02
-
-        return carouselView
-    }
 
     private func createCarouselView(
         title: String,
@@ -192,12 +180,12 @@ class HomeModelController: HomeViewController {
         cells.append(.customView(view: filterController.view))
 
         if isLoading {
-            let carouselView = createLoadingCarouselView(title: "Loading nearby eateries...")
-            cells.append(.carouselView(carouselView))
+            cells.append(.loadingLabel(title: "Finding flavorful food..."))
+            cells.append(.loadingCard(isLarge: false))
 
             cells.append(.loadingLabel(title: "Checking for chow..."))
             for _ in 0...4 {
-                cells.append(.loadingCard)
+                cells.append(.loadingCard(isLarge: true))
             }
         } else {
             if !filter.isEnabled {
