@@ -55,11 +55,13 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
 
         var didAttemptLogOut = false
 
-        addLoginStatusView(logOut: {
+        addLoginStatusView { [weak self] in
+            guard let self else { return }
+
             if !didAttemptLogOut {
                 Networking.default.logOut()
                 didAttemptLogOut = true
             }
-        })
+        }
     }
 }

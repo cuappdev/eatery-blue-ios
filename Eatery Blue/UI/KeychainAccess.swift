@@ -14,9 +14,9 @@ class KeychainAccess {
     static let shared: KeychainAccess = KeychainAccess()
 
     /// Saves session token to Keychain under "GETLogin", access with KeychainAccess.shared.retrieveToken
-    func saveToken(sessionId: String) {
+    func saveToken(sessionId: String) async {
         // Invalidate old token if exists
-        invalidateToken()
+        await invalidateToken()
         
         // Save session token to Keychain
         let token = sessionId
@@ -31,16 +31,14 @@ class KeychainAccess {
     }
     
     /// Deletes token under "GETLogin" if it exists
-    func invalidateToken() {
+    func invalidateToken() async {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: "GETLogin"
         ]
-        
-        Task {
-            let status = SecItemDelete(query as CFDictionary)
-            guard status == errSecSuccess || status == errSecItemNotFound else { return }
-        }
+
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else { return }
     }
     
     /// Returns token under "GETLogin" if it exists, nil otherwise

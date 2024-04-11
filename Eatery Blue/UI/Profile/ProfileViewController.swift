@@ -9,18 +9,11 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-    enum Mode {
-        case account
-        case login
-    }
-
     private var profileNavigationController = UINavigationController()
-
-    private var currentMode: Mode = .login
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        setMode(currentMode, animated: false)
+        setMode(animated: false)
     }
 
     required init?(coder: NSCoder) {
@@ -32,13 +25,6 @@ class ProfileViewController: UIViewController {
 
         setUpNavigationController()
         setUpConstraints()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didLogOut(_:)),
-            name: Networking.didLogOutNotification,
-            object: nil
-        )
     }
 
     private func setUpNavigationController() {
@@ -57,19 +43,8 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    func setMode(_ mode: Mode, animated: Bool) {
-        currentMode = mode
-
-        let viewController: UIViewController
-        switch mode {
-        case .login:
-            let login = ProfileLoginModelController()
-            login.delegate = self
-            viewController = login
-
-        case .account:
-            viewController = AccountModelController()
-        }
+    func setMode(animated: Bool) {
+        let viewController = AccountModelController()
 
         var viewControllers = profileNavigationController.viewControllers
         if viewControllers.isEmpty {
@@ -80,21 +55,6 @@ class ProfileViewController: UIViewController {
         DispatchQueue.main.async {
             self.profileNavigationController.setViewControllers(viewControllers, animated: animated)
         }
-    }
-
-    @objc private func didLogOut(_ notification: Notification) {
-        DispatchQueue.main.async {
-            self.profileNavigationController.popToRootViewController(animated: true)
-            self.setMode(.login, animated: false)
-        }
-    }
-
-}
-
-extension ProfileViewController: ProfileLoginModelControllerDelegate {
-
-    func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
-        setMode(.account, animated: true)
     }
 
 }

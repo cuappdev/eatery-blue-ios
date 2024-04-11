@@ -35,6 +35,7 @@ class RootViewController: UIViewController {
         super.viewDidLoad()
 
         setUpStatusBarStyleNotifications()
+        setUpLogOutNotification()
     }
 
     func setMode(_ mode: Mode) {
@@ -104,8 +105,6 @@ class RootViewController: UIViewController {
         addChild(controller)
         view.addSubview(controller.view)
         controller.didMove(toParent: self)
-
-
     }
 
     private func addToBackground(_ controller: UIViewController) {
@@ -142,6 +141,23 @@ class RootViewController: UIViewController {
                 setNeedsStatusBarAppearanceUpdate()
             }
             .store(in: &cancellables)
+    }
+
+    @objc private func didLogOut(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.setMode(.onboarding)
+        }
+    }
+
+    private func setUpLogOutNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didLogOut(_:)),
+            name: Networking.didLogOutNotification,
+            object: nil
+        )
     }
 
 }

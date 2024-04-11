@@ -74,8 +74,11 @@ class Networking {
     }
 
     func logOut() {
-        KeychainAccess.shared.invalidateToken()
-        NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
+        Task {
+            await KeychainAccess.shared.invalidateToken()
+            NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
+            UserDefaults.standard.set(false, forKey: UserDefaultsKeys.didOnboard)
+        }
     }
     
 }
@@ -106,7 +109,7 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
-                KeychainAccess.shared.invalidateToken()
+                await KeychainAccess.shared.invalidateToken()
                 return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
                 
             } else {

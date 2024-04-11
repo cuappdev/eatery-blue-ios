@@ -18,7 +18,7 @@ class OnboardingFeaturesViewController: UIViewController {
     private let backButton = ContainerView(content: UIImageView())
     private let nextButton = ButtonView(pillContent: UILabel())
     private let scrollView = UIScrollView()
-    private let skipButton = ContainerView(content: UILabel())
+//    private let skipButton = ContainerView(content: UILabel())
     private let stackView = UIStackView()
 
     private var pages: [OnboardingPage] = []
@@ -84,8 +84,8 @@ class OnboardingFeaturesViewController: UIViewController {
         view.addSubview(nextButton)
         setUpNextButton()
         
-        view.addSubview(skipButton)
-        setUpSkipButton()
+//        view.addSubview(skipButton)
+//        setUpSkipButton()
     }
 
     private func setUpBackButton() {
@@ -99,15 +99,15 @@ class OnboardingFeaturesViewController: UIViewController {
         }
     }
 
-    private func setUpSkipButton() {
-        skipButton.content.font = .preferredFont(for: .body, weight: .semibold)
-        skipButton.content.text = "Skip"
-        skipButton.isHidden = true
-
-        skipButton.tap { [self] _ in
-            didTapSkipButton()
-        }
-    }
+//    private func setUpSkipButton() {
+//        skipButton.content.font = .preferredFont(for: .body, weight: .semibold)
+//        skipButton.content.text = "Skip"
+//        skipButton.isHidden = true
+//
+//        skipButton.tap { [self] _ in
+//            didTapSkipButton()
+//        }
+//    }
     
     private func setUpScrollView() {
         scrollView.showsHorizontalScrollIndicator = false
@@ -160,11 +160,11 @@ class OnboardingFeaturesViewController: UIViewController {
         }
         nextButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
         
-        skipButton.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.top)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.height.equalTo(backButton.snp.height)
-        }
+//        skipButton.snp.makeConstraints { make in
+//            make.top.equalTo(backButton.snp.top)
+//            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+//            make.height.equalTo(backButton.snp.height)
+//        }
     }
 
     func setUpPages(_ pages: [OnboardingPage]) {
@@ -199,7 +199,7 @@ class OnboardingFeaturesViewController: UIViewController {
         let nextIndex = clampedIndex + 1
         
         if nextIndex == pages.count - 1 {
-            skipButton.isHidden = false
+//            skipButton.isHidden = false
             nextButton.content.text = "Log in"
             nextButton.content.font = .preferredFont(for: .body, weight: .semibold)
             nextButton.content.textAlignment = .center
@@ -211,8 +211,9 @@ class OnboardingFeaturesViewController: UIViewController {
                 Task {
                     let vc = GetLoginWebViewController()
                     vc.delegate = self
-                    self.tabBarController?.present(vc, animated: true)
-                    finishOnboarding()
+//                    print(tabBarController)
+                    self.navigationController?.present(vc, animated: true)
+//                    finishOnboarding()
                 }
             })
         }
@@ -235,9 +236,9 @@ class OnboardingFeaturesViewController: UIViewController {
         NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
     }
     
-    private func didTapSkipButton() {
-        NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
-    }
+//    private func didTapSkipButton() {
+//        NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
+//    }
     
     private func updatePageTransforms() {
         let contentOffset = scrollView.contentOffset.x
@@ -298,10 +299,13 @@ extension OnboardingFeaturesViewController: UIScrollViewDelegate {
 
 extension OnboardingFeaturesViewController: GetLoginWebViewControllerDelegate {
 
-    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
-        KeychainAccess.shared.saveToken(sessionId: sessionId)
-        if !Networking.default.sessionId.isEmpty {
-            completion()
+    func setSessionId(_ sessionId: String, _ completion: @escaping  (() -> Void)) {
+        Task {
+            await KeychainAccess.shared.saveToken(sessionId: sessionId)
+            if !Networking.default.sessionId.isEmpty {
+                completion()
+                finishOnboarding()
+            }
         }
     }
 
