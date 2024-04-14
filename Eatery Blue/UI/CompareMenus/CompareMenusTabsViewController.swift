@@ -130,7 +130,7 @@ class CompareMenusTabsViewController: UIViewController {
 
     private func highlightCategoryAtIndex(_ index: Int) {
         let boundedIndex = max(min(index, categoryViews.count - 1), 0)
-        for i in 0..<categoryViews.count {
+        categoryViews.indices.forEach { i in
             let opacity: Float = i == boundedIndex ? 1 : 0.4
             categoryViews[i].layer.opacity = opacity
         }

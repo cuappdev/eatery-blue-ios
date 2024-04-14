@@ -9,7 +9,7 @@ import UIKit
 
 protocol MenuCategoryPickerDelegate: AnyObject {
 
-    func menuCategoryPicker(buttonPressedAtIndex idx: Int)
+    func menuCategoryPicker(buttonPressedAtIndex index: Int)
 
 }
 
