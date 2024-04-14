@@ -121,6 +121,8 @@ class CompareMenusSheetViewController: SheetViewController {
         let viewController = CompareMenusViewController(allEateries: allEateries, comparedEateries: selectedEateries)
         parentNavigationController?.pushViewController(viewController, animated: true)
         self.dismiss(animated: true)
+        let eateryNames = selectedEateries.map { $0.name }
+        AppDevAnalytics.shared.logFirebase(CompareMenusStartComparingPayload(eateries: eateryNames))
     }
 
     @objc private func buttonTouchDown(_ sender: UIButton) {

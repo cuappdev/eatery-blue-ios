@@ -125,6 +125,7 @@ class EateryModelController: EateryViewController {
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
+            AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "EateryModelController"))
         }
     }
 
