@@ -143,7 +143,7 @@ class CompareMenusSheetViewController: SheetViewController {
         } else {
             compareNowButton.isEnabled = false
             compareNowButton.backgroundColor = UIColor(named: "Gray00")
-            compareNowButton.setTitle("Select at least \(2 - selectedEateries.count) more", for: .disabled)
+            compareNowButton.setTitle("Select at least 2", for: .disabled)
         }
     }
 

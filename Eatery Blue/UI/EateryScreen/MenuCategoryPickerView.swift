@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol MenuCategoryPickerDelegate: AnyObject {
+
+    func menuCategoryPicker(buttonPressedAtIndex idx: Int)
+
+}
+
 class MenuCategoryPickerView: UIView {
 
     // MARK: - Properties (data)
@@ -147,8 +153,4 @@ class MenuCategoryPickerView: UIView {
         menuCategoryScrollView.scrollRectToVisible(foregroundMask.frame, animated: animateScrollView)
     }
 
-}
-
-protocol MenuCategoryPickerDelegate: AnyObject {
-    func menuCategoryPicker(buttonPressedAtIndex idx: Int)
 }
