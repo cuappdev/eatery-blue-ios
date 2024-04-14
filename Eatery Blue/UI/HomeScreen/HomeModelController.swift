@@ -114,10 +114,11 @@ class HomeModelController: HomeViewController {
     private func setUpCompareMenusButton() {
         compareMenusButton.buttonPress { [weak self] _ in
             guard let self else { return }
-            
+
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
+            AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "HomeModelController"))
         }
     }
 

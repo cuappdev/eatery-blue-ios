@@ -108,3 +108,21 @@ struct CampusCafeCellPressPayload: Payload {
         ["cafe_name": cafeName]
     }
 }
+
+/// Log whenever compare menus button is pressed
+struct CompareMenusButtonPressPayload: Payload {
+    let eventName = "compare_menus_button_press"
+    let entryPage: String
+    var parameters: [String: Any]? {
+        ["entry_page": entryPage]
+    }
+}
+
+/// Log whenever compare menus button is pressed
+struct CompareMenusStartComparingPayload: Payload {
+    let eventName = "compare_menus_start_comparing"
+    let eateries: [String]
+    var parameters: [String: Any]? {
+        ["eateries": eateries]
+    }
+}

@@ -128,10 +128,14 @@ class CompareMenusPageViewController: UIViewController {
 extension CompareMenusPageViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
         // if user swiping through pages
         if scrollView.superview == self.view {
-            tabsViewController.offsetScrollBy(percentage: scrollView.contentOffset.x / scrollView.contentSize.width)
+            let percentage = scrollView.contentOffset.x / scrollView.contentSize.width
+            if percentage.isNaN { return }
+            tabsViewController.offsetScrollBy(percentage: percentage)
+
+            // find tab index to highlight
+            self.tabsViewController.highlightFromScrollPercentage(percentage)
         }
 
         // if user swiping through tabs
@@ -142,6 +146,9 @@ extension CompareMenusPageViewController: UIScrollViewDelegate {
             var scrollBounds = self.scrollView.bounds;
             scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollBounds.origin.y);
             self.scrollView.bounds = scrollBounds;
+
+            // find tab index to highlight
+            self.tabsViewController.highlightFromScrollPercentage(percentage)
         }
     }
 
