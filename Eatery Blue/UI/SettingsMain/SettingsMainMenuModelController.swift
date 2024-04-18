@@ -52,6 +52,17 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
         ))
         addSeparator()
         addSettingsItem(SettingsItem(
+            image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate).withTintColor(UIColor.Eatery.gray05),
+            title: "App Icon",
+            subtitle: "Select the Eatery app icon for your phone",
+            action: { [self] in
+                let viewController = SettingsAppIconSheetViewController()
+                viewController.setUpSheetPresentation()
+                tabBarController?.present(viewController, animated: true)
+            }
+        ))
+        addSeparator()
+        addSettingsItem(SettingsItem(
             image: UIImage(named: "Lock"),
             title: "Privacy",
             subtitle: "Manage permissions and analytics",

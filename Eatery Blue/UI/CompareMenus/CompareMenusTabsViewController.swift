@@ -75,7 +75,7 @@ class CompareMenusTabsViewController: UIViewController {
         }
 
         scrollView.snp.makeConstraints { make in
-            make.centerX.height.equalToSuperview()
+            make.top.bottom.centerX.equalTo(hitView)
             make.width.equalTo(207)
         }
 
