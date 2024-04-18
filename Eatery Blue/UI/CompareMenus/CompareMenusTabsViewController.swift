@@ -75,7 +75,7 @@ class CompareMenusTabsViewController: UIViewController {
         }
 
         scrollView.snp.makeConstraints { make in
-            make.centerX.height.equalToSuperview()
+            make.top.bottom.centerX.equalTo(hitView)
             make.width.equalTo(207)
         }
 
@@ -127,6 +127,10 @@ class CompareMenusTabsViewController: UIViewController {
         container.tap { [weak self] _ in
             guard let self else { return }
 
+<<<<<<< HEAD
+=======
+            print("container Index", containerIndex)
+>>>>>>> f700b62 (implement tappable tabs for compare menus)
             self.scrollToIndex(containerIndex)
         }
 

@@ -38,7 +38,11 @@ class SettingsAppIconSheetViewController: SheetViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
+<<<<<<< HEAD
         setupSelf()
+=======
+        setUpSelf()
+>>>>>>> f700b62 (implement tappable tabs for compare menus)
     }
 
     required init?(coder: NSCoder) {
@@ -47,6 +51,7 @@ class SettingsAppIconSheetViewController: SheetViewController {
 
     // MARK: - Setup
 
+<<<<<<< HEAD
     private func setupSelf() {
         addHeader(title: "Change App Icon")
 
@@ -63,6 +68,25 @@ class SettingsAppIconSheetViewController: SheetViewController {
     }
 
     private func setupIconCollectionView() {
+=======
+    private func setUpSelf() {
+        addHeader(title: "Change App Icon")
+
+        setUpSelectedIcon()
+
+        stackView.addArrangedSubview(iconsCollectionView)
+        setUpIconCollectionView()
+
+        setUpConstraints()
+    }
+
+    private func setUpSelectedIcon() {
+        let iconName = UserDefaults.standard.string(forKey: UserDefaultsKeys.activeIcon) ?? "Default"
+        setIcon(named: iconName)
+    }
+
+    private func setUpIconCollectionView() {
+>>>>>>> f700b62 (implement tappable tabs for compare menus)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         iconsCollectionView.setCollectionViewLayout(layout, animated: true)
@@ -72,7 +96,11 @@ class SettingsAppIconSheetViewController: SheetViewController {
         iconsCollectionView.showsVerticalScrollIndicator = false
     }
 
+<<<<<<< HEAD
     private func setupConstraints() {
+=======
+    private func setUpConstraints() {
+>>>>>>> f700b62 (implement tappable tabs for compare menus)
         iconsCollectionView.snp.makeConstraints { make in
             make.height.equalTo(256)
             make.leading.trailing.equalTo(stackView).inset(16)
