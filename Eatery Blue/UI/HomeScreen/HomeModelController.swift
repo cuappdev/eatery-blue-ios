@@ -79,6 +79,8 @@ class HomeModelController: HomeViewController {
 
         compareMenusOnboarding.compareMenusButton.tap { [weak self] _ in
             guard let self else { return }
+            
+            compareMenusOnboarding.dismiss()
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)

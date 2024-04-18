@@ -14,5 +14,6 @@ enum UserDefaultsKeys {
     static let didInternallyOnboardCompareMenus = "didInternallyOnboardCompareMenus"
     static let hasLoggedIn = "hasLoggedIn"
     static let isAnalyticsEnabled = "isAnalyticsEnabled"
+    static let activeIcon = "activeIcon"
 
 }
