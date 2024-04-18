@@ -31,18 +31,23 @@ class EateryModelController: EateryViewController {
         }
     }
 
-    func setUp(eatery: Eatery, allEateries: [Eatery], isTracking: Bool) {
+    func setUp(eatery: Eatery, allEateries: [Eatery], isTracking: Bool, shouldShowCompareMenus: Bool = true) {
         self.eatery = eatery
         self.allEateries = allEateries
 
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
         setUpStackView(eatery)
-        setUpCompareMenusButton()
         addSpinner()
 
         if isTracking {
             setUpAnalytics(eatery)
+        }
+
+        if shouldShowCompareMenus {
+            setUpCompareMenusButton()
+        } else {
+            compareMenusButton.isHidden = true
         }
     }
     
@@ -120,6 +125,7 @@ class EateryModelController: EateryViewController {
             let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
+            AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "EateryModelController"))
         }
     }
 

@@ -121,6 +121,8 @@ class CompareMenusSheetViewController: SheetViewController {
         let viewController = CompareMenusViewController(allEateries: allEateries, comparedEateries: selectedEateries)
         parentNavigationController?.pushViewController(viewController, animated: true)
         self.dismiss(animated: true)
+        let eateryNames = selectedEateries.map { $0.name }
+        AppDevAnalytics.shared.logFirebase(CompareMenusStartComparingPayload(eateries: eateryNames))
     }
 
     @objc private func buttonTouchDown(_ sender: UIButton) {
@@ -143,7 +145,7 @@ class CompareMenusSheetViewController: SheetViewController {
         } else {
             compareNowButton.isEnabled = false
             compareNowButton.backgroundColor = UIColor(named: "Gray00")
-            compareNowButton.setTitle("Select at least \(2 - selectedEateries.count) more", for: .disabled)
+            compareNowButton.setTitle("Select at least 2", for: .disabled)
         }
     }
 

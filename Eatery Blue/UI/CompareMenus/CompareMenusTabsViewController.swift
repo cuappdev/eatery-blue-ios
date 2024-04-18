@@ -12,6 +12,7 @@ class CompareMenusTabsViewController: UIViewController {
 
     // MARK: - Properties (data)
 
+    private var categoryViews: [UIView] = []
     private let eateries: [Eatery]
     private var index = 0
 
@@ -48,6 +49,7 @@ class CompareMenusTabsViewController: UIViewController {
         scrollView.addSubview(stackView)
 
         eateries.forEach { addCategory(name: $0.name) }
+        highlightCategoryAtIndex(0)
 
         setUpConstraints()
     }
@@ -84,8 +86,6 @@ class CompareMenusTabsViewController: UIViewController {
 
     private func addCategory(name: String) {
         let container = UIView()
-        container.isUserInteractionEnabled = true
-
         let background = UIView()
         background.backgroundColor = .white
         background.layer.shadowColor = UIColor.Eatery.black.cgColor
@@ -130,6 +130,21 @@ class CompareMenusTabsViewController: UIViewController {
         }
 
         index += 1
+
+        categoryViews.append(background)
+    }
+
+    func highlightFromScrollPercentage(_ percentage: Double) {
+        let index = Int((percentage * Double(categoryViews.count)).rounded(.toNearestOrAwayFromZero))
+        highlightCategoryAtIndex(index)
+    }
+
+    private func highlightCategoryAtIndex(_ index: Int) {
+        let boundedIndex = max(min(index, categoryViews.count - 1), 0)
+        categoryViews.indices.forEach { i in
+            let opacity: Float = i == boundedIndex ? 1 : 0.4
+            categoryViews[i].layer.opacity = opacity
+        }
     }
 
     func offsetScrollBy(percentage: CGFloat) {
