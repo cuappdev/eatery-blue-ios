@@ -171,6 +171,8 @@
 		D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */; };
 		D01D80772BC638C900253976 /* CompareMenusInternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */; };
 		D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */; };
+		D04FB8792BCEE7820058F732 /* SettingsAppIconSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04FB8782BCEE7820058F732 /* SettingsAppIconSheetViewController.swift */; };
+		D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04FB87A2BCEE89B0058F732 /* SettingsAppIconCell.swift */; };
 		D050633F2B93DC650022760B /* CompareMenusSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */; };
 		D05063412B9421F30022760B /* CompareMenusEaterySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */; };
 		D053AD132BA8A92F0001E770 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
@@ -358,6 +360,8 @@
 		D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusTabsViewController.swift; sourceTree = "<group>"; };
 		D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusInternalOnboardingView.swift; sourceTree = "<group>"; };
 		D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusButton.swift; sourceTree = "<group>"; };
+		D04FB8782BCEE7820058F732 /* SettingsAppIconSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAppIconSheetViewController.swift; sourceTree = "<group>"; };
+		D04FB87A2BCEE89B0058F732 /* SettingsAppIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAppIconCell.swift; sourceTree = "<group>"; };
 		D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusSheetViewController.swift; sourceTree = "<group>"; };
 		D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusEaterySelectionCell.swift; sourceTree = "<group>"; };
 		D0548AD62BB5201B0064489D /* ScrollHitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollHitView.swift; sourceTree = "<group>"; };
@@ -715,6 +719,7 @@
 				5DF304C1277A1F4400E2C9A4 /* ReportIssueView */,
 				5DBA89A52784D898002DCA6B /* Root */,
 				5D377CF327A20EE400F8DC37 /* SettingsAbout */,
+				D04FB8772BCEE74D0058F732 /* SettingsAppIcon */,
 				5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */,
 				5DA434C4278CD0DF001337FD /* SettingsMain */,
 				5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */,
@@ -942,6 +947,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		D04FB8772BCEE74D0058F732 /* SettingsAppIcon */ = {
+			isa = PBXGroup;
+			children = (
+				D04FB8782BCEE7820058F732 /* SettingsAppIconSheetViewController.swift */,
+				D04FB87A2BCEE89B0058F732 /* SettingsAppIconCell.swift */,
+			);
+			path = SettingsAppIcon;
+			sourceTree = "<group>";
+		};
 		D050633D2B93DC270022760B /* CompareMenus */ = {
 			isa = PBXGroup;
 			children = (
@@ -1155,6 +1169,7 @@
 				D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
+				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
@@ -1244,6 +1259,7 @@
 				5D698F8627888EC80054E1AB /* LoginView.swift in Sources */,
 				5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
+				D04FB8792BCEE7820058F732 /* SettingsAppIconSheetViewController.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
 				5DAE72D5278FC12600284A72 /* NetIDKeychainManager.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
@@ -1387,8 +1403,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2E856F662B6725F00043F350 /* Keys.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 44;
@@ -1431,6 +1449,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 44;

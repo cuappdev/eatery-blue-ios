@@ -14,6 +14,7 @@ class CompareMenusTabsViewController: UIViewController {
 
     private var categoryViews: [UIView] = []
     private let eateries: [Eatery]
+    private var index = 0
 
     // MARK: - Properties (view)
 
@@ -41,12 +42,11 @@ class CompareMenusTabsViewController: UIViewController {
     private func setUpView() {
         view.backgroundColor = UIColor.Eatery.gray00
 
+        view.addSubview(hitView)
         view.addSubview(scrollView)
 
         setUpStackView()
         scrollView.addSubview(stackView)
-
-        view.addSubview(hitView)
 
         eateries.forEach { addCategory(name: $0.name) }
         highlightCategoryAtIndex(0)
@@ -70,22 +70,24 @@ class CompareMenusTabsViewController: UIViewController {
     }
 
     private func setUpConstraints() {
+        hitView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         scrollView.snp.makeConstraints { make in
-            make.centerX.height.equalToSuperview()
+            make.top.bottom.centerX.equalTo(hitView)
             make.width.equalTo(207)
         }
 
         stackView.snp.makeConstraints { make in
             make.edges.centerY.equalToSuperview()
         }
-
-        hitView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
     }
 
     private func addCategory(name: String) {
         let container = UIView()
+        container.isUserInteractionEnabled = true
+
         let background = UIView()
         background.backgroundColor = .white
         background.layer.shadowColor = UIColor.Eatery.black.cgColor
@@ -106,6 +108,7 @@ class CompareMenusTabsViewController: UIViewController {
 
         container.snp.makeConstraints { make in
             make.width.equalTo(207)
+            make.height.equalToSuperview()
         }
 
         background.snp.makeConstraints { make in
@@ -120,20 +123,15 @@ class CompareMenusTabsViewController: UIViewController {
             make.center.equalToSuperview()
         }
 
-        categoryViews.append(background)
-    }
+        let containerIndex = index
+        container.tap { [weak self] _ in
+            guard let self else { return }
 
-    func highlightFromScrollPercentage(_ percentage: Double) {
-        let index = Int((percentage * Double(categoryViews.count)).rounded(.toNearestOrAwayFromZero))
-        highlightCategoryAtIndex(index)
-    }
-
-    private func highlightCategoryAtIndex(_ index: Int) {
-        let boundedIndex = max(min(index, categoryViews.count - 1), 0)
-        categoryViews.indices.forEach { i in
-            let opacity: Float = i == boundedIndex ? 1 : 0.4
-            categoryViews[i].layer.opacity = opacity
+            print("container Index", containerIndex)
+            self.scrollToIndex(containerIndex)
         }
+
+        index += 1
     }
 
     func offsetScrollBy(percentage: CGFloat) {
@@ -142,6 +140,10 @@ class CompareMenusTabsViewController: UIViewController {
         var scrollBounds = scrollView.bounds;
         scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollView.bounds.origin.y);
         scrollView.bounds = scrollBounds;
+    }
+
+    func scrollToIndex(_ index: Int) {
+        scrollView.setContentOffset(.init(x: scrollView.contentSize.width * CGFloat(index) / CGFloat(eateries.count), y: 0), animated: true)
     }
 
 }
