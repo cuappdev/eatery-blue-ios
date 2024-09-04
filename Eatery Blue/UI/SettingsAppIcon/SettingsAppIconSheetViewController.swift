@@ -60,7 +60,6 @@ class SettingsAppIconSheetViewController: SheetViewController {
 
     private func setUpSelectedIcon() {
         let iconName = UserDefaults.standard.string(forKey: UserDefaultsKeys.activeIcon) ?? "Default"
-        setIcon(named: iconName)
     }
 
     private func setUpIconCollectionView() {
