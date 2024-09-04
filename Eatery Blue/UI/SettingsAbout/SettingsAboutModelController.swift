@@ -21,7 +21,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Conner Swenberg",
             "Connor Reinhold",
             "Gracie Jing",
-            "Matthew Wong"
+            "Matthew Wong",
+            "Antoinette Torres",
+            "Thomas Vignos"
         ]),
         Section(title: "Product Designers", members: [
             "TK Kong",
@@ -30,7 +32,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Michael Huang",
             "Ravina Patel",
             "Gracie Jing",
-            "Kathleen Anderson"
+            "Kathleen Anderson",
+            "Funmi Olukanmi",
+            "Carrie Kim"
         ]),
         Section(title: "iOS Developers", members: [
             "William Ma",
@@ -42,7 +46,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Justin Ngai",
             "Jennifer Gu",
             "Antoinette Torres",
-            "Jayson Hahn"
+            "Jayson Hahn",
+            "Peter Bidoshi",
+            "Cassidy Xu"
         ]),
         Section(title: "Android Developers", members: [
             "Lesley Huang",
@@ -56,7 +62,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Jonah Gershon",
             "Emily Hu",
             "Sophie Meng",
-            "Gregor Guerrier"
+            "Gregor Guerrier",
+            "Olivia Jiang",
+            "Helen Bian"
         ]),
         Section(title: "Backend Developers", members: [
             "Conner Swenberg",
@@ -67,7 +75,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Shungo Najima",
             "Mateo Weiner",
             "Kidus Zegeye",
-            "Thomas Vignos"
+            "Thomas Vignos",
+            "Aayush Agnihotri",
+            "Daniel Weiner"
         ]),
         Section(title: "Marketers", members: [
             "Cat Zhang",
@@ -76,7 +86,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Neha Malepati",
             "Vivian Park",
             "Carnell Zhou",
-            "Matthew Wong"
+            "Matthew Wong",
+            "Anvi Savant",
+            "Candy Wu"
         ])
     ]
 
