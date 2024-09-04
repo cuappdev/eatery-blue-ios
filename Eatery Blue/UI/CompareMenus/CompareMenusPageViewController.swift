@@ -93,15 +93,17 @@ class CompareMenusPageViewController: UIViewController {
             stackView.addArrangedSubview(vc.view)
 
             vc.view.snp.makeConstraints { make in
-                make.bottom.width.equalTo(self.view)
-                make.top.equalTo(tabsViewController.view.snp.bottom)
+                make.top.equalTo(self.view.snp.top)
+                make.bottom.equalTo(tabsViewController.view.snp.top)
+                make.width.equalTo(self.view.snp.width)
             }
         }
     }
 
     private func setUpConstraints() {
         tabsViewController.view.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
             make.height.equalTo(64)
         }
 
@@ -112,9 +114,8 @@ class CompareMenusPageViewController: UIViewController {
         }
 
         scrollView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
-            make.top.equalTo(tabsViewController.view.snp.bottom)
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(tabsViewController.view.snp.top)
         }
 
         stackView.snp.makeConstraints { make in
