@@ -39,10 +39,14 @@ class SettingsAppIconSheetViewController: SheetViewController {
         super.init(nibName: nil, bundle: nil)
         
 <<<<<<< HEAD
+<<<<<<< HEAD
         setupSelf()
 =======
         setUpSelf()
 >>>>>>> f700b62 (implement tappable tabs for compare menus)
+=======
+        setupSelf()
+>>>>>>> ff7a063 (address pr comments)
     }
 
     required init?(coder: NSCoder) {
@@ -51,6 +55,7 @@ class SettingsAppIconSheetViewController: SheetViewController {
 
     // MARK: - Setup
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     private func setupSelf() {
         addHeader(title: "Change App Icon")
@@ -70,22 +75,29 @@ class SettingsAppIconSheetViewController: SheetViewController {
     private func setupIconCollectionView() {
 =======
     private func setUpSelf() {
+=======
+    private func setupSelf() {
+>>>>>>> ff7a063 (address pr comments)
         addHeader(title: "Change App Icon")
 
-        setUpSelectedIcon()
+        setupSelectedIcon()
 
         stackView.addArrangedSubview(iconsCollectionView)
-        setUpIconCollectionView()
+        setupIconCollectionView()
 
-        setUpConstraints()
+        setupConstraints()
     }
 
-    private func setUpSelectedIcon() {
+    private func setupSelectedIcon() {
         let iconName = UserDefaults.standard.string(forKey: UserDefaultsKeys.activeIcon) ?? "Default"
     }
 
+<<<<<<< HEAD
     private func setUpIconCollectionView() {
 >>>>>>> f700b62 (implement tappable tabs for compare menus)
+=======
+    private func setupIconCollectionView() {
+>>>>>>> ff7a063 (address pr comments)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         iconsCollectionView.setCollectionViewLayout(layout, animated: true)
@@ -96,10 +108,14 @@ class SettingsAppIconSheetViewController: SheetViewController {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     private func setupConstraints() {
 =======
     private func setUpConstraints() {
 >>>>>>> f700b62 (implement tappable tabs for compare menus)
+=======
+    private func setupConstraints() {
+>>>>>>> ff7a063 (address pr comments)
         iconsCollectionView.snp.makeConstraints { make in
             make.height.equalTo(256)
             make.leading.trailing.equalTo(stackView).inset(16)

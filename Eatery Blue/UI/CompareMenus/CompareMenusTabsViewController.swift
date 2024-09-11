@@ -128,9 +128,12 @@ class CompareMenusTabsViewController: UIViewController {
             guard let self else { return }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             print("container Index", containerIndex)
 >>>>>>> f700b62 (implement tappable tabs for compare menus)
+=======
+>>>>>>> ff7a063 (address pr comments)
             self.scrollToIndex(containerIndex)
         }
 
