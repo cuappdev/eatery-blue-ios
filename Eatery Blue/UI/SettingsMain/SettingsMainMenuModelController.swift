@@ -36,6 +36,8 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             }
         ))
         addSeparator()
+
+
         addSettingsItem(SettingsItem(
             image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate).withTintColor(UIColor.Eatery.gray05),
             title: "App Icon",
