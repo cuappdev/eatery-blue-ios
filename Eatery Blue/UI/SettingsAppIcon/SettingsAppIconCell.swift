@@ -11,7 +11,7 @@ class SettingsAppIconCell: UICollectionViewCell {
 
     // MARK: - Properties (data)
 
-    static let reuse = "SettingsAppIconCellReuse"
+    static let reuse = "SettingsAppIconCellReuseId"
 
     // MARK: - Properties (view)
 
@@ -25,8 +25,8 @@ class SettingsAppIconCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setUpSelf()
-        setUpConstraints()
+        setupViews()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -47,50 +47,50 @@ class SettingsAppIconCell: UICollectionViewCell {
         }
     }
 
-    private func setUpSelf() {
+    private func setupViews() {
         backgroundColor = .clear
 
         addSubview(containerView)
-        setUpContainterView()
+        setupContainterView()
 
         containerView.addSubview(iconView)
-        setUpIconView()
+        setupIconView()
 
         addSubview(overlayView)
-        setUpOverlayView()
+        setupOverlayView()
 
         addSubview(checkImageView)
-        setUpCheckImageView()
+        setupCheckImageView()
     }
 
-    private func setUpContainterView() {
+    private func setupContainterView() {
         containerView.layer.shadowColor = UIColor.Eatery.black.cgColor
         containerView.layer.shadowOpacity = 0.20
         containerView.layer.shadowOffset = .zero
         containerView.layer.shadowRadius = 5
     }
 
-    private func setUpIconView() {
+    private func setupIconView() {
         iconView.contentMode = .scaleAspectFit
         iconView.layer.cornerRadius = 12
         iconView.layer.masksToBounds = true
     }
 
-    private func setUpOverlayView() {
+    private func setupOverlayView() {
         overlayView.backgroundColor = .black
         overlayView.alpha = 0
         overlayView.layer.cornerRadius = 12
         overlayView.layer.masksToBounds = true
     }
 
-    private func setUpCheckImageView() {
+    private func setupCheckImageView() {
         checkImageView.image = UIImage(named: "CheckboxFilled")
         checkImageView.isHidden = true
     }
 
     // MARK: - Constraints
 
-    private func setUpConstraints() {
+    private func setupConstraints() {
         containerView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.size.equalTo(64)

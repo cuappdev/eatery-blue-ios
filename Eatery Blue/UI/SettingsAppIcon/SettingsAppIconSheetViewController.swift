@@ -38,7 +38,7 @@ class SettingsAppIconSheetViewController: SheetViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        setUpSelf()
+        setupSelf()
     }
 
     required init?(coder: NSCoder) {
@@ -47,22 +47,22 @@ class SettingsAppIconSheetViewController: SheetViewController {
 
     // MARK: - Setup
 
-    private func setUpSelf() {
+    private func setupSelf() {
         addHeader(title: "Change App Icon")
 
-        setUpSelectedIcon()
+        setupSelectedIcon()
 
         stackView.addArrangedSubview(iconsCollectionView)
-        setUpIconCollectionView()
+        setupIconCollectionView()
 
-        setUpConstraints()
+        setupConstraints()
     }
 
-    private func setUpSelectedIcon() {
+    private func setupSelectedIcon() {
         let iconName = UserDefaults.standard.string(forKey: UserDefaultsKeys.activeIcon) ?? "Default"
     }
 
-    private func setUpIconCollectionView() {
+    private func setupIconCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         iconsCollectionView.setCollectionViewLayout(layout, animated: true)
@@ -72,7 +72,7 @@ class SettingsAppIconSheetViewController: SheetViewController {
         iconsCollectionView.showsVerticalScrollIndicator = false
     }
 
-    private func setUpConstraints() {
+    private func setupConstraints() {
         iconsCollectionView.snp.makeConstraints { make in
             make.height.equalTo(256)
             make.leading.trailing.equalTo(stackView).inset(16)
