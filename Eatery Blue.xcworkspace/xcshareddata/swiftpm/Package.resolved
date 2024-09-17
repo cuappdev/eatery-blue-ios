@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "abseil",
+        "repositoryURL": "https://github.com/google/abseil-cpp-binary.git",
+        "state": {
+          "branch": null,
+          "revision": "df308b8b46607675f2b9ec8e569109008f9155ce",
+          "version": "1.2022062300.1"
+        }
+      },
+      {
         "package": "Alamofire",
         "repositoryURL": "https://github.com/Alamofire/Alamofire",
         "state": {
@@ -11,12 +20,192 @@
         }
       },
       {
+        "package": "AppCheck",
+        "repositoryURL": "https://github.com/google/app-check.git",
+        "state": {
+          "branch": null,
+          "revision": "3e464dad87dad2d29bb29a97836789bf0f8f67d2",
+          "version": "10.18.1"
+        }
+      },
+      {
+        "package": "AppDevAnnouncements",
+        "repositoryURL": "https://github.com/cuappdev/appdev-announcements",
+        "state": {
+          "branch": "master",
+          "revision": "13a490d0982b02f489c7a76e3f03248de4c08e2c",
+          "version": null
+        }
+      },
+      {
+        "package": "Firebase",
+        "repositoryURL": "https://github.com/firebase/firebase-ios-sdk",
+        "state": {
+          "branch": null,
+          "revision": "be49849dcba96f2b5ee550d4eceb2c0fa27dade4",
+          "version": "10.22.1"
+        }
+      },
+      {
+        "package": "Fuse",
+        "repositoryURL": "https://github.com/krisk/fuse-swift",
+        "state": {
+          "branch": null,
+          "revision": "26ba868691b2d8b7bf2b1322951eb591be70ccca",
+          "version": "1.4.0"
+        }
+      },
+      {
+        "package": "GoogleAppMeasurement",
+        "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
+        "state": {
+          "branch": null,
+          "revision": "482cfa4e5880f0a29f66ecfd60c5a62af28bd1f0",
+          "version": "10.22.1"
+        }
+      },
+      {
+        "package": "GoogleDataTransport",
+        "repositoryURL": "https://github.com/google/GoogleDataTransport.git",
+        "state": {
+          "branch": null,
+          "revision": "a637d318ae7ae246b02d7305121275bc75ed5565",
+          "version": "9.4.0"
+        }
+      },
+      {
+        "package": "GoogleUtilities",
+        "repositoryURL": "https://github.com/google/GoogleUtilities.git",
+        "state": {
+          "branch": null,
+          "revision": "26c898aed8bed13b8a63057ee26500abbbcb8d55",
+          "version": "7.13.1"
+        }
+      },
+      {
+        "package": "gRPC",
+        "repositoryURL": "https://github.com/google/grpc-binary.git",
+        "state": {
+          "branch": null,
+          "revision": "ea4cb5cc0c39c732b85386263116d2e2fdbbdc61",
+          "version": "1.49.2"
+        }
+      },
+      {
+        "package": "GTMSessionFetcher",
+        "repositoryURL": "https://github.com/google/gtm-session-fetcher.git",
+        "state": {
+          "branch": null,
+          "revision": "76135c9f4e1ac85459d5fec61b6f76ac47ab3a4c",
+          "version": "3.3.1"
+        }
+      },
+      {
+        "package": "Hero",
+        "repositoryURL": "https://github.com/HeroTransitions/Hero",
+        "state": {
+          "branch": null,
+          "revision": "b307e2d48d582118e5101d04f5187c91595a1095",
+          "version": "1.6.3"
+        }
+      },
+      {
+        "package": "InteropForGoogle",
+        "repositoryURL": "https://github.com/google/interop-ios-for-google-sdks.git",
+        "state": {
+          "branch": null,
+          "revision": "2d12673670417654f08f5f90fdd62926dc3a2648",
+          "version": "100.0.0"
+        }
+      },
+      {
+        "package": "Kingfisher",
+        "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
+        "state": {
+          "branch": null,
+          "revision": "5b92f029fab2cce44386d28588098b5be0824ef5",
+          "version": "7.11.0"
+        }
+      },
+      {
+        "package": "leveldb",
+        "repositoryURL": "https://github.com/firebase/leveldb.git",
+        "state": {
+          "branch": null,
+          "revision": "43aaef65e0c665daadf848761d560e446d350d3d",
+          "version": "1.22.4"
+        }
+      },
+      {
+        "package": "nanopb",
+        "repositoryURL": "https://github.com/firebase/nanopb.git",
+        "state": {
+          "branch": null,
+          "revision": "b7e1104502eca3a213b46303391ca4d3bc8ddec1",
+          "version": "2.30910.0"
+        }
+      },
+      {
+        "package": "Promises",
+        "repositoryURL": "https://github.com/google/promises.git",
+        "state": {
+          "branch": null,
+          "revision": "540318ecedd63d883069ae7f1ed811a2df00b6ac",
+          "version": "2.4.0"
+        }
+      },
+      {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/SnapKit/SnapKit",
+        "state": {
+          "branch": null,
+          "revision": "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+          "version": "5.7.1"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "46989693916f56d1186bd59ac15124caef896560",
+          "version": "1.3.1"
+        }
+      },
+      {
         "package": "swift-log",
         "repositoryURL": "https://github.com/apple/swift-log",
         "state": {
           "branch": null,
           "revision": "6fe203dc33195667ce1759bf0182975e4653ba1c",
           "version": "1.4.4"
+        }
+      },
+      {
+        "package": "SwiftProtobuf",
+        "repositoryURL": "https://github.com/apple/swift-protobuf.git",
+        "state": {
+          "branch": null,
+          "revision": "65e8f29b2d63c4e38e736b25c27b83e012159be8",
+          "version": "1.25.2"
+        }
+      },
+      {
+        "package": "SwiftSoup",
+        "repositoryURL": "https://github.com/scinfu/SwiftSoup",
+        "state": {
+          "branch": null,
+          "revision": "1d39e56d364cba79ce43b341f9661b534cccb18d",
+          "version": "2.7.1"
+        }
+      },
+      {
+        "package": "Tactile",
+        "repositoryURL": "https://github.com/delba/Tactile",
+        "state": {
+          "branch": "master",
+          "revision": "e68399a54f471079293596c7e78cf71948481733",
+          "version": null
         }
       }
     ]
