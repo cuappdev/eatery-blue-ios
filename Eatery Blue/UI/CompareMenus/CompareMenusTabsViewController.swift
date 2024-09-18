@@ -133,6 +133,19 @@ class CompareMenusTabsViewController: UIViewController {
         index += 1
     }
 
+    func highlightFromScrollPercentage(_ percentage: Double) {
+        let index = Int((percentage * Double(categoryViews.count)).rounded(.toNearestOrAwayFromZero))
+        highlightCategoryAtIndex(index)
+    }
+
+    private func highlightCategoryAtIndex(_ index: Int) {
+        let boundedIndex = max(min(index, categoryViews.count - 1), 0)
+        categoryViews.indices.forEach { i in
+            let opacity: Float = i == boundedIndex ? 1 : 0.4
+            categoryViews[i].layer.opacity = opacity
+        }
+    }
+
     func offsetScrollBy(percentage: CGFloat) {
         if percentage.isNaN { return }
         let trueOffsetX = scrollView.contentSize.width * percentage
