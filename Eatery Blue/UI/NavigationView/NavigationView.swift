@@ -9,12 +9,16 @@ import UIKit
 
 class NavigationView: UIView {
 
-    let normalNavigationBar = UIView()
+    // MARK: - Properties (View)
+
     let leftButtons = UIStackView()
+    let largeTitleLabel = UILabel()
+    let normalNavigationBar = UIView()
+    let notificationButton = NotificationButton()
     let titleLabel = UILabel()
     let rightButtons = UIStackView()
 
-    let largeTitleLabel = UILabel()
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,12 +31,16 @@ class NavigationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Set up
+
     private func setUpSelf() {
         addSubview(normalNavigationBar)
         setUpNormalNavigationBar()
 
         addSubview(largeTitleLabel)
         setUpLargeTitleLabel()
+
+        addSubview(notificationButton)
     }
 
     private func setUpNormalNavigationBar() {
@@ -84,6 +92,7 @@ class NavigationView: UIView {
             make.top.bottom.centerX.equalToSuperview()
             make.trailing.lessThanOrEqualTo(rightButtons.snp.leading).offset(-8)
         }
+
         titleLabel.setContentHuggingPriority(.defaultLow - 1, for: .horizontal)
         titleLabel.setContentCompressionResistancePriority(.defaultHigh - 1, for: .horizontal)
 
@@ -94,7 +103,13 @@ class NavigationView: UIView {
         largeTitleLabel.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
         }
+
         largeTitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        notificationButton.snp.makeConstraints { make in
+            make.trailing.equalTo(layoutMarginsGuide)
+            make.centerY.equalTo(largeTitleLabel.snp.centerY)
+        }
     }
 
     func computeExpandedHeight() -> CGFloat {

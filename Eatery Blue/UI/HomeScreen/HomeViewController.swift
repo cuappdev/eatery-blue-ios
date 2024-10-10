@@ -121,6 +121,10 @@ class HomeViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.logoRefreshControl.delegate = self
         navigationView.setFadeInProgress(0)
+        navigationView.notificationButton.onTapGetVC { [weak self] vc in
+            // we need to push the correct vc here
+
+        }
     }
 
     private func setUpConstraints() {
@@ -501,6 +505,7 @@ extension HomeViewController: UIScrollViewDelegate {
         let progress = max(0, min(1, 1 - deltaFromTop / fadeDistance))
         navigationView.logoRefreshControl.alpha = progress
         navigationView.largeTitleLabel.alpha = progress
+        navigationView.notificationButton.alpha = progress
     }
 
 }
