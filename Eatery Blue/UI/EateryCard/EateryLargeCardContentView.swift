@@ -16,13 +16,13 @@ class EateryLargeCardContentView: UIView {
     private let imageView = UIImageView()
     private let imageTintView = UIView()
     private let alertsStackView = UIStackView()
+    
 
     private let labelStackView = UIStackView()
     private let titleLabel = UILabel()
     private let subtitleLabels = [UILabel(), UILabel()]
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
-    
     
     private var cancellables = Set<AnyCancellable>()
 
