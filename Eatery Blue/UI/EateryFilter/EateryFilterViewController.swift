@@ -57,8 +57,6 @@ class EateryFilterViewController: UIViewController {
         filtersView.addButton(central)
         setUpCentral()
         
-        filtersView.addButton(paymentMethods)
-        setUpPaymentMethods()
 
         filtersView.addButton(mealSwipes)
         setUpSwipes()
@@ -120,7 +118,6 @@ class EateryFilterViewController: UIViewController {
         }
     }
     
-    //new swipes filter
     private func setUpSwipes() {
         mealSwipes.label.text = "Meal Swipes"
         mealSwipes.tap { [weak self] _ in
@@ -162,25 +159,6 @@ class EateryFilterViewController: UIViewController {
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
             if filter.under10MinutesEnabled {
                 AppDevAnalytics.shared.logFirebase(NearestFilterPressPayload())
-            }
-        }
-    }
-
-    private func setUpPaymentMethods() {
-        paymentMethods.label.text = "Payment Methods"
-        paymentMethods.imageView.isHidden = false
-        paymentMethods.tap { [weak self] _ in
-            guard let self else { return }
-
-            allFiltersCallback?()
-            let viewController = PaymentMethodsFilterSheetViewController()
-            viewController.setUpSheetPresentation()
-            viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
-            viewController.delegate = self
-            if self.viewController != nil {
-                self.viewController?.present(viewController, animated: true)
-            } else {
-                tabBarController?.present(viewController, animated: true)
             }
         }
     }
