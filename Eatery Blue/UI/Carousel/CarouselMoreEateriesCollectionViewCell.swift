@@ -69,5 +69,4 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
             make.top.greaterThanOrEqualToSuperview()
         }
     }
-
 }
