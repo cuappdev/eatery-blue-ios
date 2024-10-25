@@ -170,7 +170,6 @@ class HomeModelController: HomeViewController {
         return carouselView
     }
     
-    
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
@@ -305,7 +304,6 @@ class HomeModelController: HomeViewController {
     @objc func refreshFavorites(_ notification: Notification) {
         updateCellsFromState()
     }
-
 }
 
 extension HomeModelController: EateryFilterViewControllerDelegate {
