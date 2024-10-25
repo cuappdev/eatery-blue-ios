@@ -57,18 +57,21 @@ class EateryFilterViewController: UIViewController {
         filtersView.addButton(central)
         setUpCentral()
         
-        filtersView.addButton(under10Minutes)
-        setUpUnder10Minutes()
-
         filtersView.addButton(paymentMethods)
         setUpPaymentMethods()
 
         filtersView.addButton(mealSwipes)
         setUpSwipes()
         
+        filtersView.addButton(brbs)
+        setUpBRBs()
+        
         filtersView.addButton(favorites)
         setUpFavorites()
         
+        
+        filtersView.addButton(under10Minutes)
+        setUpUnder10Minutes()
         
     }
 
@@ -128,6 +131,21 @@ class EateryFilterViewController: UIViewController {
             updateFilterButtonsFromState(animated: true)
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
             if filter.mealSwipesEnabled {
+                AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            }
+        }
+    }
+    
+    private func setUpBRBs() {
+        brbs.label.text = "BRBs"
+        brbs.tap { [weak self] _ in
+            guard let self else { return }
+
+            allFiltersCallback?()
+            filter.brbsEnabled.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.brbsEnabled {
                 AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
             }
         }
@@ -210,6 +228,7 @@ class EateryFilterViewController: UIViewController {
         west.setHighlighted(filter.west)
         central.setHighlighted(filter.central)
         mealSwipes.setHighlighted(filter.mealSwipesEnabled)
+        brbs.setHighlighted(filter.brbsEnabled)
 
         if filter.paymentMethods.isEmpty {
             paymentMethods.setHighlighted(false)
