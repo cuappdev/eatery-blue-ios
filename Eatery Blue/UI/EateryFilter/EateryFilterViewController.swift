@@ -20,6 +20,8 @@ class EateryFilterViewController: UIViewController {
     private let west = PillFilterButtonView()
     private let central = PillFilterButtonView()
     private let under10Minutes = PillFilterButtonView()
+    private let brbs = PillFilterButtonView()
+    private let mealSwipes = PillFilterButtonView()
     private let paymentMethods = PillFilterButtonView()
     private let favorites = PillFilterButtonView()
 
@@ -61,8 +63,13 @@ class EateryFilterViewController: UIViewController {
         filtersView.addButton(paymentMethods)
         setUpPaymentMethods()
 
+        filtersView.addButton(mealSwipes)
+        setUpSwipes()
+        
         filtersView.addButton(favorites)
         setUpFavorites()
+        
+        
     }
 
     private func setUpNorth() {
@@ -109,7 +116,23 @@ class EateryFilterViewController: UIViewController {
             }
         }
     }
+    
+    //new swipes filter
+    private func setUpSwipes() {
+        mealSwipes.label.text = "Meal Swipes"
+        mealSwipes.tap { [weak self] _ in
+            guard let self else { return }
 
+            allFiltersCallback?()
+            filter.mealSwipesEnabled.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.mealSwipesEnabled {
+                AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            }
+        }
+    }
+    
     private func setUpUnder10Minutes() {
         under10Minutes.label.text = "Under 10 min"
         under10Minutes.tap { [weak self] _ in
@@ -186,6 +209,7 @@ class EateryFilterViewController: UIViewController {
         north.setHighlighted(filter.north)
         west.setHighlighted(filter.west)
         central.setHighlighted(filter.central)
+        mealSwipes.setHighlighted(filter.mealSwipesEnabled)
 
         if filter.paymentMethods.isEmpty {
             paymentMethods.setHighlighted(false)

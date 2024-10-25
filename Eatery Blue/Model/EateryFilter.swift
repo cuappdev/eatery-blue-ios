@@ -14,7 +14,8 @@ struct EateryFilter: Codable {
     var under10MinutesEnabled: Bool = false
     var paymentMethods: Set<PaymentMethod> = []
     var favoriteEnabled: Bool = false
-
+    var mealSwipesEnabled: Bool = false
+    var brbsEnabled: Bool = false
     var north: Bool = false
     var west: Bool = false
     var central: Bool = false
@@ -22,14 +23,15 @@ struct EateryFilter: Codable {
     var selected: Bool = false
 
     var isEnabled: Bool {
-        under10MinutesEnabled || !paymentMethods.isEmpty || favoriteEnabled || north || west || central || selected
+        under10MinutesEnabled || /* !paymentMethods.isEmpty || */ favoriteEnabled || north || west || central || selected || mealSwipesEnabled
     }
 
     func predicate(userLocation: CLLocation?, departureDate: Date) -> EateryPredicate {
         .and([
             under10MinutesPredicate(userLocation: userLocation, departureDate: departureDate),
-            paymentMethodsPredicate(),
+            //paymentMethodsPredicate(),
             favoritePredicate(),
+            mealSwipesPredicate(),
             campusAreaPredicate()
         ])
     }
@@ -46,11 +48,19 @@ struct EateryFilter: Codable {
         }
     }
 
-    func paymentMethodsPredicate() -> EateryPredicate {
-        if paymentMethods.isEmpty {
-            return .true
+//    func paymentMethodsPredicate() -> EateryPredicate {
+//        if paymentMethods.isEmpty {
+//            return .true
+//        } else {
+//            return .or(paymentMethods.map { .acceptsPaymentMethod($0) })
+//        }
+//    }
+    
+    func mealSwipesPredicate() -> EateryPredicate {
+        if mealSwipesEnabled {
+            return .acceptsPaymentMethod(.brbs)
         } else {
-            return .or(paymentMethods.map { .acceptsPaymentMethod($0) })
+            return .true
         }
     }
 

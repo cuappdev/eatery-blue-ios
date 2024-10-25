@@ -206,11 +206,9 @@ class HomeModelController: HomeViewController {
             }
         }
         
-        var openEateries = currentEateries.filter(\.isOpen)
-        
         LocationManager.shared.$userLocation
         .sink { userLocation in
-            openEateries = openEateries.sorted(by: { eatery1, eatery2 in
+                currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
                 let dist1 = eatery1.walkTime(userLocation: userLocation)
                 let dist2 = eatery2.walkTime(userLocation: userLocation)
                 guard let dist1 else { return true }
@@ -220,7 +218,8 @@ class HomeModelController: HomeViewController {
         }
         .store(in: &cancellables)
 
-        
+        var openEateries = currentEateries.filter(\.isOpen)
+
         if !openEateries.isEmpty {
             cells.append(.statusLabel(status: .open))
             openEateries.forEach { eatery in
