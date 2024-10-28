@@ -24,7 +24,6 @@ class HomeModelController: HomeViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var favoriteCarousel: CarouselView?
-    private var nearestCarousel: CarouselView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,10 +191,7 @@ class HomeModelController: HomeViewController {
                 if let carouselView = createFavoriteEateriesCarouselView() {
                     cells.append(.carouselView(carouselView))
                 }
-                if let carouselView = createNearestEateriesCarouselView() {
-                    cells.append(.carouselView(carouselView))
-                }
-
+             
                 currentEateries = allEateries
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
@@ -261,48 +257,6 @@ class HomeModelController: HomeViewController {
         return favoriteCarousel
     }
 
-    private func createNearestEateriesCarouselView() -> CarouselView? {
-        let userLocation = LocationManager.shared.userLocation
-        let departureDate = Date()
-
-        let nearestEateriesAndTotalTime: [(eatery: Eatery, totalTime: TimeInterval)] = allEateries.compactMap {
-            if let totalTime = $0.expectedTotalTime(userLocation: userLocation, departureDate: departureDate) {
-                return (eatery: $0, totalTime: totalTime)
-            } else {
-                return nil
-            }
-        }
-
-        guard !nearestEateriesAndTotalTime.isEmpty else {
-            return nil
-        }
-
-        let carouselEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
-            if lhs.eatery.isOpen == rhs.eatery.isOpen {
-                return lhs.totalTime < rhs.totalTime
-            } else {
-                return lhs.eatery.isOpen && !rhs.eatery.isOpen
-            }
-        }.map(\.eatery)
-
-        let listEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
-            lhs.totalTime < rhs.totalTime
-        }.map(\.eatery)
-        
-        if let nearestCarousel {
-            nearestCarousel.fullRefresh(carouselItems: listEateries)
-        } else {
-            nearestCarousel = createCarouselView(
-                title: "Nearest to You",
-                description: nil,
-                carouselEateries: carouselEateries,
-                listEateries: listEateries,
-                shouldTruncate: true
-            )
-        }
-
-        return nearestCarousel
-    }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         LocationManager.shared.requestLocation()
