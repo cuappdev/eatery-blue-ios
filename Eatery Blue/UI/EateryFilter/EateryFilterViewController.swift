@@ -56,7 +56,6 @@ class EateryFilterViewController: UIViewController {
 
         filtersView.addButton(central)
         setUpCentral()
-        
 
         filtersView.addButton(mealSwipes)
         setUpSwipes()
@@ -66,7 +65,6 @@ class EateryFilterViewController: UIViewController {
         
         filtersView.addButton(favorites)
         setUpFavorites()
-        
         
         filtersView.addButton(under10Minutes)
         setUpUnder10Minutes()

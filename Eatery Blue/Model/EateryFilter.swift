@@ -29,10 +29,9 @@ struct EateryFilter: Codable {
     func predicate(userLocation: CLLocation?, departureDate: Date) -> EateryPredicate {
         .and([
             under10MinutesPredicate(userLocation: userLocation, departureDate: departureDate),
-            brbsPredicate(),
             favoritePredicate(),
-            mealSwipesPredicate(),
-            campusAreaPredicate()
+            campusAreaPredicate(),
+            paymentsPredicate()
         ])
     }
 
@@ -48,17 +47,12 @@ struct EateryFilter: Codable {
         }
     }
 
-    func mealSwipesPredicate() -> EateryPredicate {
-        if mealSwipesEnabled {
-            return .acceptsPaymentMethod(.mealSwipes)
-        } else {
-            return .true
-        }
-    }
-    
-    func brbsPredicate() -> EateryPredicate {
-        if brbsEnabled {
-            return .acceptsPaymentMethod(.brbs)
+    func paymentsPredicate() -> EateryPredicate {
+        if brbsEnabled || mealSwipesEnabled {
+            return .or([
+                brbsEnabled ? .acceptsPaymentMethod(.brbs) : .false,
+                mealSwipesEnabled ? .acceptsPaymentMethod(.mealSwipes) : .false,
+            ])
         } else {
             return .true
         }
