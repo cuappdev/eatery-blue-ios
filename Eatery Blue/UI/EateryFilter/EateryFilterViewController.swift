@@ -241,5 +241,5 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
         delegate?.eateryFilterViewController(self, filterDidChange: filter)
         viewController.dismiss(animated: true)
     }
-
+    
 }
