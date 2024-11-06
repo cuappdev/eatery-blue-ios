@@ -33,6 +33,7 @@ class CarouselView: UIView {
         self.navigationController = navigationController
         self.shouldTruncate = shouldTruncate
         super.init(frame: .zero)
+        
         setUpSelf()
         setUpConstraints()
     }

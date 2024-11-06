@@ -169,7 +169,7 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return carouselView
     }
-    
+
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
@@ -228,7 +228,6 @@ class HomeModelController: HomeViewController {
         }
         
         let closedEateries = currentEateries.filter { !$0.isOpen }
-        // sort
         if !closedEateries.isEmpty {
             cells.append(.statusLabel(status: .closed))
             closedEateries.forEach { eatery in
@@ -303,6 +302,7 @@ class HomeModelController: HomeViewController {
     @objc func refreshFavorites(_ notification: Notification) {
         updateCellsFromState()
     }
+
 }
 
 extension HomeModelController: EateryFilterViewControllerDelegate {
