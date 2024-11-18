@@ -169,7 +169,7 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return carouselView
     }
-
+    
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
@@ -206,19 +206,21 @@ class HomeModelController: HomeViewController {
             }
         }
         
+        
         LocationManager.shared.$userLocation
         .sink { userLocation in
                 currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
                 let dist1 = eatery1.walkTime(userLocation: userLocation)
                 let dist2 = eatery2.walkTime(userLocation: userLocation)
-                guard let dist1 else { return true }
-                guard let dist2 else { return true }
+                guard let dist1, let dist2 else { return true }
+                    
                 return dist1 < dist2
             })
         }
         .store(in: &cancellables)
 
-        var openEateries = currentEateries.filter(\.isOpen)
+        
+        let openEateries = currentEateries.filter(\.isOpen)
 
         if !openEateries.isEmpty {
             cells.append(.statusLabel(status: .open))
@@ -228,6 +230,7 @@ class HomeModelController: HomeViewController {
         }
         
         let closedEateries = currentEateries.filter { !$0.isOpen }
+        // sort
         if !closedEateries.isEmpty {
             cells.append(.statusLabel(status: .closed))
             closedEateries.forEach { eatery in
@@ -302,8 +305,8 @@ class HomeModelController: HomeViewController {
     @objc func refreshFavorites(_ notification: Notification) {
         updateCellsFromState()
     }
-
 }
+
 
 extension HomeModelController: EateryFilterViewControllerDelegate {
 
