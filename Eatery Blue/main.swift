@@ -69,6 +69,7 @@ struct EateryBlue: ParsableCommand {
     }
 }
 
+
 extension Networking {
 
     static var `default` = Networking(fetchUrl: URL(string: "\(EateryEnvironment.baseURL)/eatery/")!)

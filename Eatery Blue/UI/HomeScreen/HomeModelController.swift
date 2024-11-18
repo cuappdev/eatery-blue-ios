@@ -212,14 +212,15 @@ class HomeModelController: HomeViewController {
                 currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
                 let dist1 = eatery1.walkTime(userLocation: userLocation)
                 let dist2 = eatery2.walkTime(userLocation: userLocation)
-                guard let dist1 else { return true }
-                guard let dist2 else { return true }
+                guard let dist1, let dist2 else { return true }
+                    
                 return dist1 < dist2
             })
         }
         .store(in: &cancellables)
 
-        var openEateries = currentEateries.filter(\.isOpen)
+        
+        let openEateries = currentEateries.filter(\.isOpen)
 
         if !openEateries.isEmpty {
             cells.append(.statusLabel(status: .open))
@@ -305,6 +306,7 @@ class HomeModelController: HomeViewController {
         updateCellsFromState()
     }
 }
+
 
 extension HomeModelController: EateryFilterViewControllerDelegate {
 
