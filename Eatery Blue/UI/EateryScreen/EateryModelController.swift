@@ -281,7 +281,7 @@ class EateryModelController: EateryViewController {
             ))
         }
 
-        viewController.setUp(eatery.events)
+        viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
 
         tabBarController?.present(viewController, animated: true)
     }

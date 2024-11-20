@@ -38,7 +38,6 @@ class MenuPickerSheetViewController: SheetViewController {
     }
 
     private let dayPickerView = MenuDayPickerView()
-    private let hoursVC = HoursSheetViewController()
 
     weak var delegate: MenuPickerSheetViewControllerDelegate?
 
@@ -50,13 +49,16 @@ class MenuPickerSheetViewController: SheetViewController {
 
     private var menuChoiceViews: [MenuChoiceView] = []
 
-    func setUp(_ events: [Event]) {
+    func setUp(menuChoices: [MenuChoice], selectedMenuIndex: Int? = nil) {
+        // don't remove
+        setState(menuChoices: menuChoices, selectedMenuIndex: selectedMenuIndex)
+
+        
         addHeader(title: "Change Date", image: UIImage(named: "Calendar"))
         addDayPickerView()
         
         //remove everything related to menu choices
-        hoursVC.addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
-        hoursVC.addSchedule(events)
+        //addMenuChoiceViews()
         
         addPillButton(title: "See menu", style: .prominent) { [self] in
             if let selectedIndex = self.selectedMenuIndex {
@@ -86,7 +88,25 @@ class MenuPickerSheetViewController: SheetViewController {
 
         stackView.addArrangedSubview(dayPickerView)
     }
+    
+    // possibly remove menuChoices and selectedMenuIndex, but right now this works properly
+    private func setState(menuChoices: [MenuChoice], selectedMenuIndex: Int?) {
+        days = []
+        for i in 0...6 {
+            days.append(Day().advanced(by: i))
+        }
 
+        if let selectedMenuIndex = selectedMenuIndex {
+            let selectedDay = menuChoices[selectedMenuIndex].event.canonicalDay
+
+            selectedDayIndex = days.firstIndex(where: { day in
+                day == selectedDay
+            })
+        }
+
+        self.menuChoices = menuChoices
+        self.selectedMenuIndex = selectedMenuIndex
+    }
 
     private func updateDayPickerCellsFromState() {
         for (i, cell) in dayPickerView.cells.enumerated() {
@@ -133,7 +153,6 @@ class MenuPickerSheetViewController: SheetViewController {
     private func maxMenuChoices() -> Int {
         days.map { filterMenuChoices(on: $0).count }.max() ?? 0
     }
-
 
     private func updateMenuChoiceViewsFromState() {
         let menuChoicesOnDay: [MenuChoice]
