@@ -20,8 +20,10 @@ class HoursSheetViewController: SheetViewController {
     func setUp(_ eateryId: Int64, _ events: [Event]) {
         addHeader(title: "Hours", image: UIImage(named: "Clock"))
         
-        addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
-        addSchedule(events)
+        UIHelper.addStatusLabel(to: stackView, attributedText: EateryFormatter.default.formatStatus(EateryStatus(events)))
+        UIHelper.addSchedule(events: events, to: self)
+        
+//        addSchedule(events)
         
         setCustomSpacing(24)
         addPillButton(title: "Close", style: .regular) { [self] in
@@ -86,11 +88,68 @@ class HoursSheetViewController: SheetViewController {
         }
     }
 
-    func addStatusLabel(_ attributedText: NSAttributedString) {
+}
+
+class UIHelper: SheetViewController {
+    static func addStatusLabel(to stackView: UIStackView, attributedText: NSAttributedString) {
         let label = UILabel()
         label.attributedText = attributedText
         label.font = .preferredFont(for: .body, weight: .semibold)
         stackView.addArrangedSubview(label)
     }
+    
+    static func addSchedule(events: [Event], to viewController: SheetViewController) {
+            let current = Day()
+            let weekdayFormatter = DateFormatter()
+            weekdayFormatter.dateFormat = "EEEE"
 
+            var dayToDescription: [Day: String] = [:]
+            for day in stride(from: current, to: current.advanced(by: 7), by: 1) {
+                dayToDescription[day] = EateryFormatter.default.formatEventTimes(events.filter {
+                    $0.canonicalDay == day
+                }.sorted(by: { lhs, rhs in
+                    lhs.startDate < rhs.startDate
+                }))
+            }
+
+            var weekdayToDay: [Int: Day] = [:]
+            for day in dayToDescription.keys {
+                weekdayToDay[day.weekday()] = day
+            }
+
+            var consolidated: [(start: Day, end: Day, String)] = []
+            var i = 0
+            let weekdays = weekdayToDay.keys.sorted()
+            while i < weekdays.count {
+                let start = i
+                let description = dayToDescription[weekdayToDay[weekdays[i]]!]!
+
+                while i + 1 < weekdays.count, dayToDescription[weekdayToDay[weekdays[i + 1]]!]! == description {
+                    i += 1
+                }
+
+                let end = i
+                consolidated.append((start: weekdayToDay[weekdays[start]]!, end: weekdayToDay[weekdays[end]]!, description))
+
+                i += 1
+            }
+
+            for (start, end, description) in consolidated {
+                if start == end {
+                    let weekday = weekdayFormatter.string(from: start.date())
+                    viewController.addTextSection(title: weekday, description: description)
+                } else {
+                    let start = weekdayFormatter.string(from: start.date())
+                    let end = weekdayFormatter.string(from: end.date())
+
+                    if weekdays.count == 2 {
+                        viewController.addTextSection(title: "\(start), \(end)", description: description)
+                    } else {
+                        viewController.addTextSection(title: "\(start) to \(end)", description: description)
+                    }
+                }
+            }
+        }
+    
+    
 }

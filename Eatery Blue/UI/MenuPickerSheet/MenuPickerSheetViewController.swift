@@ -60,9 +60,8 @@ class MenuPickerSheetViewController: SheetViewController {
         addDayPickerView()
         
         //remove everything related to menu choices
-        hoursVC.addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
-        hoursVC.addSchedule(events)
-        
+        UIHelper.addStatusLabel(to: stackView, attributedText: EateryFormatter.default.formatStatus(EateryStatus(events)))
+        UIHelper.addSchedule(events: events, to: self)
         
         addPillButton(title: "See menu", style: .prominent) { [self] in
             if let selectedIndex = self.selectedMenuIndex {
@@ -74,6 +73,13 @@ class MenuPickerSheetViewController: SheetViewController {
         }
 
         updateDayPickerCellsFromState()
+    }
+    
+    func addStatusLabel(_ attributedText: NSAttributedString) {
+        let label = UILabel()
+        label.attributedText = attributedText
+        label.font = .preferredFont(for: .body, weight: .semibold)
+        stackView.addArrangedSubview(label)
     }
 
     /// Adds calendar with selectable dates.
