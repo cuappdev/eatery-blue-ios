@@ -431,7 +431,7 @@ class EateryViewController: UIViewController {
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        menuHeaderView.buttonImageView.tap { _ in
+        menuHeaderView.changeDateButton.tap { _ in
             // this is what allows me  to tap the calendar
             dropDownButtonAction?()
         }
