@@ -19,8 +19,10 @@ class HoursSheetViewController: SheetViewController {
 
     func setUp(_ eateryId: Int64, _ events: [Event]) {
         addHeader(title: "Hours", image: UIImage(named: "Clock"))
+        
         addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
         addSchedule(events)
+        
         setCustomSpacing(24)
         addPillButton(title: "Close", style: .regular) { [self] in
             dismiss(animated: true)
@@ -32,7 +34,7 @@ class HoursSheetViewController: SheetViewController {
         }
     }
 
-    private func addSchedule(_ events: [Event]) {
+    func addSchedule(_ events: [Event]) {
         let current = Day()
 
         var dayToDescription: [Day: String] = [:]
@@ -84,7 +86,7 @@ class HoursSheetViewController: SheetViewController {
         }
     }
 
-    private func addStatusLabel(_ attributedText: NSAttributedString) {
+    func addStatusLabel(_ attributedText: NSAttributedString) {
         let label = UILabel()
         label.attributedText = attributedText
         label.font = .preferredFont(for: .body, weight: .semibold)
