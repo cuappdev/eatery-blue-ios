@@ -222,25 +222,25 @@ class EateryModelController: EateryViewController {
         ) { [self] in
             presentMenuPicker()
         }
-
-        // Search bar is currently unimplemented
-        // addSearchBar()
-
-        addSpacer(height: 16)
-
-        if let menu = event.menu {
-            let sortedCategories = sortMenuCategories(categories: menu.categories)
-            if !sortedCategories.isEmpty {
-                sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
-                    addMenuCategory(menuCategory)
-                    addSpacer(height: 8)
-                }
-
-                if let last = sortedCategories.last {
-                    addMenuCategory(last)
-                }
-            }
-        }
+//
+//        // Search bar is currently unimplemented
+//        // addSearchBar()
+//
+//        addSpacer(height: 16)
+//
+//        if let menu = event.menu {
+//            let sortedCategories = sortMenuCategories(categories: menu.categories)
+//            if !sortedCategories.isEmpty {
+//                sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
+//                    addMenuCategory(menuCategory)
+//                    addSpacer(height: 8)
+//                }
+//
+//                if let last = sortedCategories.last {
+//                    addMenuCategory(last)
+//                }
+//            }
+//        }
 
         addSpacer(height: 8)
         addReportIssueView(eateryId: eatery?.id)
@@ -280,8 +280,9 @@ class EateryModelController: EateryViewController {
                 event: event
             ))
         }
-
-        viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
+        
+        // add extra code to present hours here
+        viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex, eatery.events)
 
         tabBarController?.present(viewController, animated: true)
     }

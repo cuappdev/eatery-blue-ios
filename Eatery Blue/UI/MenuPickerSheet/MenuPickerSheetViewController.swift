@@ -38,6 +38,8 @@ class MenuPickerSheetViewController: SheetViewController {
     }
 
     private let dayPickerView = MenuDayPickerView()
+    private let hoursVC = HoursSheetViewController()
+    
 
     weak var delegate: MenuPickerSheetViewControllerDelegate?
 
@@ -49,7 +51,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
     private var menuChoiceViews: [MenuChoiceView] = []
 
-    func setUp(menuChoices: [MenuChoice], selectedMenuIndex: Int? = nil) {
+    func setUp(menuChoices: [MenuChoice], selectedMenuIndex: Int? = nil, _ events: [Event]) {
         // don't remove
         setState(menuChoices: menuChoices, selectedMenuIndex: selectedMenuIndex)
 
@@ -58,7 +60,9 @@ class MenuPickerSheetViewController: SheetViewController {
         addDayPickerView()
         
         //remove everything related to menu choices
-        //addMenuChoiceViews()
+        hoursVC.addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
+        hoursVC.addSchedule(events)
+        
         
         addPillButton(title: "See menu", style: .prominent) { [self] in
             if let selectedIndex = self.selectedMenuIndex {

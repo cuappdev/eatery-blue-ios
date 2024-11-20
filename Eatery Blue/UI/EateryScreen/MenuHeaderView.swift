@@ -12,6 +12,8 @@ class MenuHeaderView: UIView {
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let buttonImageView = UIImageView()
+    let changeDateButton = PillButtonView()
+    let buttonLabel = UILabel()
     let menuInaccuracyLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -32,7 +34,7 @@ class MenuHeaderView: UIView {
         addSubview(subtitleLabel)
         setUpSubtitleLabel()
 
-        addSubview(buttonImageView)
+        addSubview(changeDateButton)
         setUpButtonImageView()
 
         addSubview(menuInaccuracyLabel)
@@ -50,8 +52,17 @@ class MenuHeaderView: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "EateryCalendar")
-        buttonImageView.isUserInteractionEnabled = true
+//        buttonImageView.image = UIImage(named: "EateryCalendar")
+//        buttonImageView.isUserInteractionEnabled = true
+        changeDateButton.layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        changeDateButton.backgroundColor = UIColor.Eatery.gray00
+        changeDateButton.imageView.image = UIImage(named: "EateryCalendar")
+        changeDateButton.imageView.tintColor = UIColor.Eatery.black
+        changeDateButton.titleLabel.textColor = UIColor.Eatery.black
+        changeDateButton.titleLabel.text = "Change Date"
+        changeDateButton.titleLabel.font = .preferredFont(for: .caption1, weight: .semibold)
+        changeDateButton.isUserInteractionEnabled = true
+        
     }
 
     private func setUpMenuInaccuracyLabel() {
@@ -70,10 +81,11 @@ class MenuHeaderView: UIView {
             make.leading.equalTo(layoutMarginsGuide)
         }
 
-        buttonImageView.snp.makeConstraints { make in
+        changeDateButton.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(8)
             make.leading.equalTo(subtitleLabel.snp.trailing).offset(8)
-            make.width.height.equalTo(40)
+            make.height.equalTo(36)
+            make.width.equalTo(136)
             make.trailing.equalTo(layoutMarginsGuide)
             make.centerY.equalTo(layoutMarginsGuide).offset(-8)
         }

@@ -364,6 +364,7 @@ class EateryViewController: UIViewController {
         cell.statusLabel.attributedText = EateryFormatter.default.formatStatus(eatery.status)
 
         cell.tap { [self] _ in
+            // this is what is done when we tap the hours cell
             let viewController = HoursSheetViewController()
             viewController.setUpSheetPresentation()
             viewController.setUp(eatery.id, eatery.events)
@@ -431,6 +432,7 @@ class EateryViewController: UIViewController {
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         menuHeaderView.buttonImageView.tap { _ in
+            // this is what allows me  to tap the calendar
             dropDownButtonAction?()
         }
         stackView.addArrangedSubview(menuHeaderView)
