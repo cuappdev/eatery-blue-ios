@@ -52,7 +52,8 @@ class MenuPickerSheetViewController: SheetViewController {
     func setUp(menuChoices: [MenuChoice], selectedMenuIndex: Int? = nil) {
         setState(menuChoices: menuChoices, selectedMenuIndex: selectedMenuIndex)
 
-        addHeader(title: "Menus")
+        
+        addHeader(title: "Change Date", image: UIImage(named: "Calendar"))
         addDayPickerView()
         addMenuChoiceViews()
         addPillButton(title: "Show menu", style: .prominent) { [self] in

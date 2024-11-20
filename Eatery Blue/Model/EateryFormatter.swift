@@ -257,13 +257,13 @@ class EateryFormatter {
             secondLine.append(NSAttributedString(string: " "))
             
             // TODO: Temporarily removed wait times.
-//            secondLine.append(NSAttributedString(string: formatEateryWaitTime(
-//                eatery,
-//                font: font,
-//                userLocation: userLocation,
-//                departureDate: date
-//            )))
-//            lines.append(secondLine)
+            secondLine.append(NSAttributedString(string: formatEateryWaitTime(
+                eatery,
+                font: font,
+                userLocation: userLocation,
+                departureDate: date
+            )))
+            lines.append(secondLine)
 
             return lines
 

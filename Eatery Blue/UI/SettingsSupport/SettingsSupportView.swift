@@ -48,16 +48,16 @@ struct SettingsSupportView: View {
             preselectedIssueType: .incorrectHours
         ),
         // TODO: Temporarily remove wait time FAQ
-//        FAQItem(
-//            title: "Why is the wait time longer?",
-//            body: Text("""
-//            We work with Cornell Dining to get the most accurate wait times to students. Sometimes, wait times can grow when classes or events end around meal times.
-//
-//            If you see inaccurate wait times, help us improve Eatery by letting us know how long you waited.
-//            """),
-//            isReportIssueButtonShown: true,
-//            preselectedIssueType: .inaccurateWaitTime
-//        ),
+        FAQItem(
+            title: "Why is the wait time longer?",
+            body: Text("""
+            We work with Cornell Dining to get the most accurate wait times to students. Sometimes, wait times can grow when classes or events end around meal times.
+
+            If you see inaccurate wait times, help us improve Eatery by letting us know how long you waited.
+            """),
+            isReportIssueButtonShown: true,
+            preselectedIssueType: .inaccurateWaitTime
+        ),
         FAQItem(
             title: "Why can’t I order food on Eatery?",
             body: Text("""
