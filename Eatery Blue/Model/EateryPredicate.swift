@@ -57,10 +57,10 @@ indirect enum EateryPredicate {
             }
 
             return totalTime < TimeInterval(60 * n)
-
+        
         case .acceptsPaymentMethod(let paymentMethod):
             return eatery.paymentMethods.contains(paymentMethod)
-
+            
         case .campusArea(let campusArea):
             return eatery.campusArea == campusArea
 
@@ -78,5 +78,4 @@ indirect enum EateryPredicate {
             return eateries.contains(eatery)
         }
     }
-
 }

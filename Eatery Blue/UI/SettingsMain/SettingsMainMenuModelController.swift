@@ -16,7 +16,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "AppDevLogo"),
             title: "About Eatery",
             subtitle: "Learn more about Cornell AppDev",
-            action: { [self] in
+            action: { [weak self] in
+                guard let self else { return }
+
                 let viewController = SettingsAboutModelController()
                 navigationController?.pushViewController(viewController, animated: true)
             }
@@ -26,10 +28,26 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "FavoriteUnselected"),
             title: "Favorites",
             subtitle: "Manage your favorite eateries",
-            action: { [self] in
-                let viewController = SettingsFavoritesViewController()
-                navigationController?.navigationBar.isHidden = true
+            action: { [weak self] in
+                guard let self else { return }
+
+                let viewController = SettingsFavoritesModelController()
                 navigationController?.pushViewController(viewController, animated: true)
+            }
+        ))
+        addSeparator()
+
+
+        addSettingsItem(SettingsItem(
+            image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate).withTintColor(UIColor.Eatery.gray05),
+            title: "App Icon",
+            subtitle: "Select the Eatery app icon for your phone",
+            action: { [weak self] in
+                guard let self else { return }
+
+                let viewController = SettingsAppIconSheetViewController()
+                viewController.setUpSheetPresentation()
+                tabBarController?.present(viewController, animated: true)
             }
         ))
         addSeparator()
@@ -48,7 +66,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "Lock"),
             title: "Privacy",
             subtitle: "Manage permissions and analytics",
-            action: { [self] in
+            action: { [weak self] in
+                guard let self else { return }
+
                 let viewController = SettingsPrivacyViewController()
                 navigationController?.pushViewController(viewController, animated: true) 
             }
@@ -58,7 +78,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "Help"),
             title: "Support",
             subtitle: "Report issues and contact Cornell AppDev",
-            action: { [self] in
+            action: { [weak self] in
+                guard let self else { return }
+
                 let viewController = SettingsSupportViewController()
                 navigationController?.pushViewController(viewController, animated: true)
             }

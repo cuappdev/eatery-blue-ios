@@ -67,8 +67,8 @@ struct EateryBlue: ParsableCommand {
 
         AppDelegate.main()
     }
-
 }
+
 
 extension Networking {
 

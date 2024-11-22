@@ -86,6 +86,8 @@ class CompareMenusTabsViewController: UIViewController {
 
     private func addCategory(name: String) {
         let container = UIView()
+        container.isUserInteractionEnabled = true
+
         let background = UIView()
         background.backgroundColor = .white
         background.layer.shadowColor = UIColor.Eatery.black.cgColor
@@ -130,7 +132,14 @@ class CompareMenusTabsViewController: UIViewController {
 
         index += 1
 
-        categoryViews.append(background)
+        let containerIndex = index
+        container.tap { [weak self] _ in
+            guard let self else { return }
+
+            self.scrollToIndex(containerIndex)
+        }
+
+        index += 1
     }
 
     func highlightFromScrollPercentage(_ percentage: Double) {

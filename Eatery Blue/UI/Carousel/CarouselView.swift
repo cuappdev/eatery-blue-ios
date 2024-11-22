@@ -34,7 +34,6 @@ class CarouselView: UIView {
         
     init() {
         super.init(frame: .zero)
-        
         setUpSelf()
         setUpConstraints()
     }

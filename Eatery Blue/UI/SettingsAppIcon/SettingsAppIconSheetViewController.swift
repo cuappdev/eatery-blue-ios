@@ -18,7 +18,7 @@ class SettingsAppIconSheetViewController: SheetViewController {
     // MARK: - Properties (data)
 
     private var icons = [
-        AppIcon(name: "Default", icon: UIImage(named: "AppIcon")),
+        AppIcon(name: "Default", icon: UIImage(named: "AppIcon-Preview")),
         AppIcon(name: "Inverted", icon: UIImage(named: "AppIcon-Preview-White")),
         AppIcon(name: "OG", icon: UIImage(named: "AppIcon-Preview-OG")),
         AppIcon(name: "StPaddy", icon: UIImage(named: "AppIcon-Preview-StPaddy")),

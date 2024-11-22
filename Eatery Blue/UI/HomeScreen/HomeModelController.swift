@@ -24,7 +24,6 @@ class HomeModelController: HomeViewController {
     private lazy var loadCells: () = updateCellsFromState()
     
     private var favoriteCarousel: CarouselView?
-    private var nearestCarousel: CarouselView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,7 +169,7 @@ class HomeModelController: HomeViewController {
         carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return carouselView
     }
-
+    
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
         var cells: [Cell] = []
@@ -192,10 +191,7 @@ class HomeModelController: HomeViewController {
                 if let carouselView = createFavoriteEateriesCarouselView() {
                     cells.append(.carouselView(carouselView))
                 }
-                if let carouselView = createNearestEateriesCarouselView() {
-                    cells.append(.carouselView(carouselView))
-                }
-
+             
                 currentEateries = allEateries
             } else {
                 let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
@@ -210,7 +206,22 @@ class HomeModelController: HomeViewController {
             }
         }
         
+        
+        LocationManager.shared.$userLocation
+        .sink { userLocation in
+                currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
+                let dist1 = eatery1.walkTime(userLocation: userLocation)
+                let dist2 = eatery2.walkTime(userLocation: userLocation)
+                guard let dist1, let dist2 else { return true }
+                    
+                return dist1 < dist2
+            })
+        }
+        .store(in: &cancellables)
+
+        
         let openEateries = currentEateries.filter(\.isOpen)
+
         if !openEateries.isEmpty {
             cells.append(.statusLabel(status: .open))
             openEateries.forEach { eatery in
@@ -219,6 +230,7 @@ class HomeModelController: HomeViewController {
         }
         
         let closedEateries = currentEateries.filter { !$0.isOpen }
+        // sort
         if !closedEateries.isEmpty {
             cells.append(.statusLabel(status: .closed))
             closedEateries.forEach { eatery in
@@ -261,48 +273,6 @@ class HomeModelController: HomeViewController {
         return favoriteCarousel
     }
 
-    private func createNearestEateriesCarouselView() -> CarouselView? {
-        let userLocation = LocationManager.shared.userLocation
-        let departureDate = Date()
-
-        let nearestEateriesAndTotalTime: [(eatery: Eatery, totalTime: TimeInterval)] = allEateries.compactMap {
-            if let totalTime = $0.expectedTotalTime(userLocation: userLocation, departureDate: departureDate) {
-                return (eatery: $0, totalTime: totalTime)
-            } else {
-                return nil
-            }
-        }
-
-        guard !nearestEateriesAndTotalTime.isEmpty else {
-            return nil
-        }
-
-        let carouselEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
-            if lhs.eatery.isOpen == rhs.eatery.isOpen {
-                return lhs.totalTime < rhs.totalTime
-            } else {
-                return lhs.eatery.isOpen && !rhs.eatery.isOpen
-            }
-        }.map(\.eatery)
-
-        let listEateries = nearestEateriesAndTotalTime.sorted { lhs, rhs in
-            lhs.totalTime < rhs.totalTime
-        }.map(\.eatery)
-        
-        if let nearestCarousel {
-            nearestCarousel.fullRefresh(carouselItems: listEateries)
-        } else {
-            nearestCarousel = createCarouselView(
-                title: "Nearest to You",
-                description: nil,
-                carouselEateries: carouselEateries,
-                listEateries: listEateries,
-                shouldTruncate: true
-            )
-        }
-
-        return nearestCarousel
-    }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         LocationManager.shared.requestLocation()
@@ -335,8 +305,8 @@ class HomeModelController: HomeViewController {
     @objc func refreshFavorites(_ notification: Notification) {
         updateCellsFromState()
     }
-
 }
+
 
 extension HomeModelController: EateryFilterViewControllerDelegate {
 
