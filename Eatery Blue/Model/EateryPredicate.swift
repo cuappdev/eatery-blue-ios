@@ -27,6 +27,7 @@ indirect enum EateryPredicate {
     case isSelected([Eatery])
 
     func isSatisfied(by eatery: Eatery, metadata: EateryMetadata?) -> Bool {
+
         if let metadata = metadata, metadata.eateryId != eatery.id {
             logger.warning("\(#function): eatery.id (\(eatery.id)) does not match metadata.eateryId (\(metadata.eateryId))")
         }

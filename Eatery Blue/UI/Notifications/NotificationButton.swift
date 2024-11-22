@@ -16,8 +16,8 @@ class NotificationButton: ButtonView<UIView> {
 
     // MARK: - Properties (Data)
 
-    private var loggedIn = false
     private var completion: ((UIViewController) -> Void)?
+//    private var notifictions: [EateryNotification]
 
     // MARK: - Init
 
@@ -42,21 +42,34 @@ class NotificationButton: ButtonView<UIView> {
         setUpNotificationDotImageView()
 
         setUpConstraints()
-        checkLogin()
 
-        self.tap { [weak self] _ in
+        self.buttonPress { [weak self] _ in
+            guard let self else { return }
+            
+            var loggedIn = false
+            if let sessionId = KeychainAccess.shared.retrieveToken() {
+                loggedIn = true
+            }
 
-            self?.completion(UIViewController())
+            let plvc = ProfileLoginModelController(canGoBack: true)
+//            let vc = NotificationViewController(loggedIn: loggedIn)
+            completion?(loggedIn ? UIViewController(): plvc)
         }
+
+        checkforNotifications()
     }
 
-    private func checkLogin() {
-        if let sessionId = KeychainAccess.shared.retrieveToken() {
-            loggedIn = true
-        }
+    func checkforNotifications() {
+        guard let sessionId = KeychainAccess.shared.retrieveToken() else { return }
+
+        // make networking call to see if there are any notis
+
+        // if we have notis that are unread, we want to show the red dot
+        notificationDotImageView.isHidden = false
+
     }
 
-    func onTap(_ completion: (UIViewController) -> Void) {
+    func onTap(_ completion: @escaping (UIViewController) -> Void) {
         self.completion = completion
     }
 

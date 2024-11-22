@@ -125,7 +125,6 @@ class CompareMenusTabsViewController: UIViewController {
         container.tap { [weak self] _ in
             guard let self else { return }
 
-            print("container Index", containerIndex)
             self.scrollToIndex(containerIndex)
         }
 

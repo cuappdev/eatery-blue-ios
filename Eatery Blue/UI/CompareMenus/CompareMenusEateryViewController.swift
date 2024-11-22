@@ -315,25 +315,7 @@ class CompareMenusEateryViewController: UIViewController {
         categoryView.backgroundColor = .white
 
         for item in menuCategory.items {
-            let itemView = MenuItemView()
-            itemView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-            itemView.titleLabel.text = item.name
-
-            if let price = item.price {
-                itemView.priceLabel.text = EateryViewController
-                    .priceNumberFormatter
-                    .string(from: NSNumber(value: Double(price) / 100))
-            } else {
-                itemView.priceLabel.text = ""
-            }
-
-            if let description = item.description {
-                itemView.descriptionLabel.isHidden = false
-                itemView.descriptionLabel.text = description
-            } else {
-                itemView.descriptionLabel.isHidden = true
-            }
-
+            let itemView = MenuItemView(item)
             categoryView.addItemView(itemView)
         }
         categoryContainer.addSubview(categoryView)

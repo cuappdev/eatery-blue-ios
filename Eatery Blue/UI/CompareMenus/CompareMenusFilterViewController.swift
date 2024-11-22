@@ -26,7 +26,7 @@ class CompareMenusFilterViewController: EateryFilterViewController {
         }
 
         // Moving "Favorites" button to the 5th position.
-        filtersView.moveButton(from: 999, to: 4)
+        filtersView.moveButton(from: .max, to: 4)
         // "moveButton" handles out of binds index to bounds. Because "Favorites"
         // button is always last, a large from will ensure this doesn't
         // break if more filters are added
@@ -37,6 +37,7 @@ class CompareMenusFilterViewController: EateryFilterViewController {
         self.selected.label.text = "Selected"
         self.selected.tap { [weak self] _ in
             guard let self else { return }
+
             tapSelected()
         }
     }

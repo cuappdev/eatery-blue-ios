@@ -121,9 +121,11 @@ class HomeViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.logoRefreshControl.delegate = self
         navigationView.setFadeInProgress(0)
-        navigationView.notificationButton.onTapGetVC { [weak self] vc in
-            // we need to push the correct vc here
-
+        navigationView.notificationButton.onTap { [weak self] vc in
+            guard let self else { return }
+            
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 

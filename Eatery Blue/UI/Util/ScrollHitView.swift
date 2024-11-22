@@ -36,7 +36,6 @@ class ScrollHitView: UIView {
         // Go through the stackView's subviews. If one is within hit point, return that
         for stackSubView in stackView.subviews {
             if stackSubView.frame.contains(adjustedPoint) {
-                print("hit", stackSubView)
                 return stackSubView
             }
         }

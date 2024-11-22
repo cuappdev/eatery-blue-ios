@@ -27,7 +27,8 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             title: "Favorites",
             subtitle: "Manage your favorite eateries",
             action: { [self] in
-                let viewController = SettingsFavoritesModelController()
+                let viewController = SettingsFavoritesViewController()
+                navigationController?.navigationBar.isHidden = true
                 navigationController?.pushViewController(viewController, animated: true)
             }
         ))
