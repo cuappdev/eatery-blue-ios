@@ -13,6 +13,8 @@ class FavoritesNavigationView: UIView {
 
     private let backButton = ButtonView(content: UIImageView())
     private let searchButton = ButtonView(content: UIImageView())
+    private let searchBar = UISearchBar()
+
     private let titleLabel = UILabel()
     private let eateriesTab = TabButtonView()
     private let itemsTab = TabButtonView()
@@ -26,6 +28,39 @@ class FavoritesNavigationView: UIView {
         didSet {
             eateriesTab.delegate = tabButtonsDelegate
             itemsTab.delegate = tabButtonsDelegate
+        }
+    }
+    var searchDelegate: UISearchBarDelegate? {
+        didSet {
+            searchBar.delegate = searchDelegate
+        }
+    }
+
+    var searchShown = false {
+        didSet {
+            if !searchShown {
+
+                searchBar.text = ""
+                searchDelegate?.searchBar?(searchBar, textDidChange: "")
+
+                UIView.animate(withDuration: 0.1) { [weak self] in
+                    guard let self else { return }
+                    searchBar.snp.updateConstraints { make in
+                        make.height.equalTo(0)
+                    }
+
+                    layoutIfNeeded()
+                }
+            } else {
+                UIView.animate(withDuration: 0.1) { [weak self] in
+                    guard let self else { return }
+                    searchBar.snp.updateConstraints { make in
+                        make.height.equalTo(36)
+                    }
+
+                    layoutIfNeeded()
+                }
+            }
         }
     }
 
@@ -62,6 +97,10 @@ class FavoritesNavigationView: UIView {
         setUpItemsTab()
 
         addSubview(placeholderView)
+
+        addSubview(searchBar)
+        setUpSearchBar()
+
         setUpConstraints()
     }
 
@@ -92,6 +131,14 @@ class FavoritesNavigationView: UIView {
         searchButton.shadowOffset = CGSize(width: 0, height: 4)
         searchButton.backgroundColor = .white
         searchButton.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 0)
+
+        searchButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+
+            searchShown = true
+            print("good")
+            searchBar.becomeFirstResponder()
+        }
     }
 
     private func setUpEateriesTab() {
@@ -114,6 +161,13 @@ class FavoritesNavigationView: UIView {
         itemsTab.selected = false
     }
 
+    private func setUpSearchBar() {
+        searchBar.setShowsCancelButton(true, animated: false)
+        searchBar.placeholder = "Search for faves..."
+        searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        searchBar.backgroundImage = UIImage()
+        searchBar.backgroundColor = .white
+    }
 
     private func setUpConstraints() {
         backButton.snp.makeConstraints { make in
@@ -153,6 +207,12 @@ class FavoritesNavigationView: UIView {
             make.leading.equalTo(placeholderView.snp.trailing)
             make.trailing.bottom.equalTo(layoutMarginsGuide)
         }
+
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(layoutMarginsGuide)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(0)
+        }
     }
 
 }
@@ -160,9 +220,7 @@ class FavoritesNavigationView: UIView {
 extension FavoritesNavigationView: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if !scrollView.isDragging {
-            return
-        }
+        if !scrollView.isDragging { return }
 
         if scrollView.contentOffset.x > scrollView.contentSize.width / 4 {
             self.eateriesTab.selected = false

@@ -19,7 +19,6 @@
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
 		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
 		41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */; };
-		5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController 2.swift */; };
 		5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */; };
 		5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D78279F1DB1004B4AA1 /* SettingsPrivacyView.swift */; };
 		5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */; };
@@ -222,7 +221,6 @@
 		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
 		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuPickerSheetViewController.swift; sourceTree = "<group>"; };
-		5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsFavoritesViewController 2.swift"; sourceTree = "<group>"; };
 		5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
 		5D0B9D78279F1DB1004B4AA1 /* SettingsPrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyView.swift; sourceTree = "<group>"; };
 		5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButtonView.swift; sourceTree = "<group>"; };
@@ -432,14 +430,6 @@
 				2E856F682B67263A0043F350 /* EateryEnvironment.swift */,
 			);
 			path = Supporting;
-			sourceTree = "<group>";
-		};
-		5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */ = {
-			isa = PBXGroup;
-			children = (
-				5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController 2.swift */,
-			);
-			path = SettingsFavorites;
 			sourceTree = "<group>";
 		};
 		5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */ = {
@@ -733,7 +723,6 @@
 				5DBA89A52784D898002DCA6B /* Root */,
 				5D377CF327A20EE400F8DC37 /* SettingsAbout */,
 				D04FB8772BCEE74D0058F732 /* SettingsAppIcon */,
-				5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */,
 				5DA434C4278CD0DF001337FD /* SettingsMain */,
 				5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */,
 				5D377CE627A1AB7200F8DC37 /* SettingsSupport */,
@@ -1177,7 +1166,6 @@
 				5D34F090279B48CE000F9056 /* EateryCardAlertView.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
 				5DF304C6277A22AD00E2C9A4 /* ReportIssueButtonView.swift in Sources */,
-				5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController 2.swift in Sources */,
 				D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */,
 				5D34F08E279AF9E1000F9056 /* ButtonView.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,

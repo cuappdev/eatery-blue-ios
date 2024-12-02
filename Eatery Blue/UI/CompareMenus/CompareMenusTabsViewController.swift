@@ -131,15 +131,6 @@ class CompareMenusTabsViewController: UIViewController {
         }
 
         index += 1
-
-        let containerIndex = index
-        container.tap { [weak self] _ in
-            guard let self else { return }
-
-            self.scrollToIndex(containerIndex)
-        }
-
-        index += 1
     }
 
     func highlightFromScrollPercentage(_ percentage: Double) {

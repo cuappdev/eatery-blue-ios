@@ -22,31 +22,31 @@ class FavoritesViewController: UIViewController {
 
     private var allEateries: [Eatery] = []
     private var favoriteEateries: [Eatery] = []
-    private var favoriteItems: [ItemMetadata]
-
-    // MARK: - Init
-
-    init(allEateries: [Eatery], favoriteEateries: [Eatery], favoriteItems: [ItemMetadata]) {
-        self.allEateries = allEateries
-        self.favoriteEateries = favoriteEateries
-        self.favoriteItems = favoriteItems
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var favoriteItems: [ItemMetadata] = []
 
     // MARK: - Configure
 
-    func configure(allEateries: [Eatery], favoriteItems: [ItemMetadata], favoriteEateries: [Eatery]) {
+    private func configure(allEateries: [Eatery], favoriteItems: [ItemMetadata], favoriteEateries: [Eatery]) {
+        self.allEateries = allEateries
+        self.favoriteEateries = favoriteEateries
+        self.favoriteItems = favoriteItems
         favoriteEateriesView.allEateries = allEateries
+        favoriteEateriesView.listEateries = favoriteEateries
         favoriteItemsView.allEateries = allEateries
         favoriteItemsView.favoriteItems = favoriteItems
-        favoriteEateriesView.listEateries = favoriteEateries
     }
 
     // MARK: - Set Up
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+        navigationItem.standardAppearance = nil
+
+        Task {
+            await updateFavoritesFromNetworking()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,9 +72,14 @@ class FavoritesViewController: UIViewController {
         setUpConstraints()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+
     private func setUpFavoritesNavigationView() {
         favoritesNavigationView.navigationController = navigationController
         favoritesNavigationView.tabButtonsDelegate = self
+        favoritesNavigationView.searchDelegate = self
     }
 
     private func setUpFavoriteEateriesView() {
@@ -130,6 +135,25 @@ class FavoritesViewController: UIViewController {
         }
     }
 
+    // MARK: - Networking
+
+    private func updateFavoritesFromNetworking() async {
+        do {
+            let allEateries = try await Networking.default.loadAllEatery()
+
+            let favoriteEateries = allEateries.filter { eatery in
+                AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
+            }.sorted { lhs, rhs in
+                lhs.name < rhs.name
+            }
+
+            let favoriteItems = AppDelegate.shared.coreDataStack.fetchFavoriteItems()
+
+            self.configure(allEateries: allEateries, favoriteItems: favoriteItems, favoriteEateries: favoriteEateries)
+        } catch {
+            logger.error("\(#function): \(error)")
+        }
+    }
 }
 
 extension FavoritesViewController: TabButtonViewDelegate {
@@ -143,3 +167,24 @@ extension FavoritesViewController: TabButtonViewDelegate {
     }
 
 }
+
+extension FavoritesViewController: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // if search text is empty, show all eateries
+        if searchText.isEmpty {
+            favoriteEateriesView.listEateries = favoriteEateries
+            favoriteItemsView.favoriteItems = favoriteItems
+        } else {
+            favoriteEateriesView.listEateries = favoriteEateries.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            favoriteItemsView.favoriteItems = favoriteItems.filter { $0.itemName?.lowercased().contains(searchText.lowercased()) ?? false }
+        }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        favoritesNavigationView.searchShown = false
+    }
+
+
+}
+

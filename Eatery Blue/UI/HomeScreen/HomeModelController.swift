@@ -23,7 +23,7 @@ class HomeModelController: HomeViewController {
 
     private lazy var loadCells: () = updateCellsFromState()
     
-    private var favoriteCarousel: CarouselView?
+    private var favoritesCarousel = CarouselView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,19 +156,6 @@ class HomeModelController: HomeViewController {
             logger.error("\(error)")
         }
     }
-
-    private func createCarouselView(
-        title: String,
-        description: String?,
-        carouselEateries: [Eatery],
-        listEateries: [Eatery],
-        shouldTruncate: Bool
-    ) -> CarouselView {
-
-        let carouselView = CarouselView(title: title, allItems: allEateries, carouselItems: listEateries, navigationController: navigationController, shouldTruncate: shouldTruncate)
-        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        return carouselView
-    }
     
     private func updateCellsFromState() {
         let coreDataStack = AppDelegate.shared.coreDataStack
@@ -244,33 +231,23 @@ class HomeModelController: HomeViewController {
     private func createFavoriteEateriesCarouselView() -> CarouselView? {
         let favoriteEateries = allEateries.filter {
             AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
-        }
-
-        let carouselEateries = favoriteEateries.sorted { lhs, rhs in
+        }.sorted { lhs, rhs in
             if lhs.isOpen == rhs.isOpen {
                 return lhs.name < rhs.name
             } else {
                 return lhs.isOpen && !rhs.isOpen
             }
         }
-        
-        if let favoriteCarousel {
-            favoriteCarousel.updateCarousel(carouselItems: carouselEateries)
-        } else {
-            favoriteCarousel = createCarouselView(
-                title: "Favorites",
-                description: nil,
-                carouselEateries: Array(carouselEateries),
-                listEateries: favoriteEateries,
-                shouldTruncate: false
-            )
-        }
-        
-        if carouselEateries.count == 0 {
-            favoriteCarousel = nil
-        }
 
-        return favoriteCarousel
+        let favoritesViewController = FavoritesViewController()
+        favoritesCarousel.title = "Favorites"
+        favoritesCarousel.carouselEateries = favoriteEateries
+        favoritesCarousel.truncateAfter = 3
+        favoritesCarousel.navigationController = navigationController
+        favoritesCarousel.viewControllerToPush = favoritesViewController
+        favoritesCarousel.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        return favoriteEateries.count == 0 ? nil : favoritesCarousel
     }
 
 

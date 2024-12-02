@@ -11,22 +11,25 @@ import UIKit
 class FavoritesItemsView: UIView {
 
     // MARK: - Properties (View)
+
     let tableView = UITableView()
 
     // MARK: - Properties (Data)
+
     var allEateries: [Eatery] = [] {
         didSet {
             findFavorites()
         }
     }
-    private var expanded: [Int] = []
     var favoriteItems: [ItemMetadata] = [] {
         didSet {
             findFavorites()
         }
     }
-    private var sortedFavorites: [ItemMetadata] = []
+
+    private var expanded: [Int] = []
     private var itemData: [String: [String: Set<String>]] = [:]
+    private var sortedFavorites: [ItemMetadata] = []
 
     // MARK: - Init
 
@@ -67,10 +70,13 @@ class FavoritesItemsView: UIView {
         let favoriteIdsSet: Set<String> = Set(favoriteItems.compactMap { $0.itemName })
         var favoriteItemsData = [(eateryName: String, timeOfDay: String, itemName: String)]()
 
+        let today = Day()
+
         for eatery in allEateries {
             let eateryName = eatery.name
 
             for event in eatery.events {
+                if event.canonicalDay != today { continue }
                 guard let timeOfDay = event.description else { continue }
 
                 let favoriteItemsInEvent = event.menu?.categories.flatMap { category in
@@ -78,6 +84,7 @@ class FavoritesItemsView: UIView {
                         (eateryName: eateryName, timeOfDay: timeOfDay, itemName: item.name)
                     }
                 } ?? []
+
                 favoriteItemsData.append(contentsOf: favoriteItemsInEvent)
             }
         }
@@ -124,6 +131,7 @@ extension FavoritesItemsView: UITableViewDataSource {
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesItemsTableViewCell.reuse, for: indexPath) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
+
 
         cell.configure(item: sortedFavorites[indexPath.row], expanded: expanded.contains(indexPath.row), itemData: itemData[sortedFavorites[indexPath.row].itemName ?? ""])
 
