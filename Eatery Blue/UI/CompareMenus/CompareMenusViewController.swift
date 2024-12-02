@@ -76,7 +76,7 @@ class CompareMenusViewController: UIViewController {
         navigationView.editButton.buttonPress { [weak self] _ in
             guard let self else { return }
             navigationController?.popViewController(animated: true)
-            let selectionViewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries , selectedEateries: comparedEateries, selectedOn: true)
+            let selectionViewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: comparedEateries, selectedOn: true)
             selectionViewController.setUpSheetPresentation()
             tabBarController?.present(selectionViewController, animated: true)
         }

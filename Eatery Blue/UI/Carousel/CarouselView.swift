@@ -11,21 +11,15 @@ import UIKit
 class CarouselView: UIView {
     
     // MARK: - Properties (data)
-    
-    var title: String = "" {
-        didSet {
-            titleLabel.text = title
-        }
-    }
 
-    var allEateries: [Eatery] = [] {
-        didSet {
-            fullRefresh()
-        }
-    }
     var carouselEateries: [Eatery] = [] {
         didSet {
             fullRefresh()
+        }
+    }
+    var title: String = "" {
+        didSet {
+            titleLabel.text = title
         }
     }
     var navigationController: UINavigationController?
@@ -139,7 +133,7 @@ class CarouselView: UIView {
         }
 
         let viewController = ListModelController()
-        viewController.setUp(carouselEateries, title: title, description: nil, allEateries: allEateries)
+        viewController.setUp(carouselEateries, title: title, description: nil)
 
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -197,7 +191,7 @@ extension CarouselView: UICollectionViewDelegate {
             return
         }
 
-        let pageVC = EateryPageViewController(allEateries: allEateries, eateries: carouselEateries, index: indexPath.section)
+        let pageVC = EateryPageViewController(eateries: carouselEateries, index: indexPath.section)
         pageVC.modalPresentationStyle = .overCurrentContext
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(pageVC, animated: true)

@@ -148,7 +148,7 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(allEateries: allEateries, eateries: eateries, index: eateryIndex)
+        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)

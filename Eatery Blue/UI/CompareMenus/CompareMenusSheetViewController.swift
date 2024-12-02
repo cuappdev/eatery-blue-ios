@@ -12,10 +12,10 @@ class CompareMenusSheetViewController: SheetViewController {
 
     // MARK: - Properties (data)
 
-    private let allEateries: [Eatery]
+    private var allEateries: [Eatery] = []
     private var filter = EateryFilter()
     private var selectedEateries: [Eatery] = []
-    private var shownEateries: [Eatery]
+    private var shownEateries: [Eatery] = []
 
     // MARK: - Properties (view)
 
@@ -27,17 +27,19 @@ class CompareMenusSheetViewController: SheetViewController {
 
     // MARK: - Init
 
-    init(parentNavigationController: UINavigationController?, allEateries: [Eatery], selectedEateries: [Eatery] = [], selectedOn: Bool = false) {
+    init(parentNavigationController: UINavigationController?, selectedEateries: [Eatery] = [], selectedOn: Bool = false) {
         self.parentNavigationController = parentNavigationController
         self.selectedEateries = selectedEateries
-        self.allEateries = allEateries
-        self.shownEateries = allEateries
 
         super.init(nibName: nil, bundle: nil)
 
         setUpSelf()
         if selectedOn {
             filterController.tapSelected()
+        }
+
+        Task {
+            await updateAllEateriesFromNetworking()
         }
     }
 
@@ -183,6 +185,18 @@ class CompareMenusSheetViewController: SheetViewController {
     private func disableDragging() {
         selectionTableView.isEditing = false
         backgroundView.text = "No eateries to show..."
+    }
+
+    // MARK: - Networking
+
+    private func updateAllEateriesFromNetworking() async {
+        do {
+            let allEateries = try await Networking.default.loadAllEatery()
+            self.allEateries = allEateries
+            self.shownEateries = allEateries
+        } catch {
+            logger.error("\(#function): \(error)")
+        }
     }
 
 }

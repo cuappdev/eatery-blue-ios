@@ -230,7 +230,7 @@ class MenusModelController: MenusViewController {
     
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries[selectedIndex] ?? [])
+        viewController.setUp(eateries, title: title, description: description)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

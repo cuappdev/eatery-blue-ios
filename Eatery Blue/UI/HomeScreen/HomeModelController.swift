@@ -80,7 +80,7 @@ class HomeModelController: HomeViewController {
             guard let self else { return }
             
             compareMenusOnboarding.dismiss()
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
         }
@@ -116,7 +116,7 @@ class HomeModelController: HomeViewController {
         compareMenusButton.buttonPress { [weak self] _ in
             guard let self else { return }
 
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
             AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "HomeModelController"))
@@ -273,7 +273,7 @@ class HomeModelController: HomeViewController {
 
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries)
+        viewController.setUp(eateries, title: title, description: description)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

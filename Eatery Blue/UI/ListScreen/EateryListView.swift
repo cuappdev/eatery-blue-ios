@@ -186,7 +186,7 @@ extension EateryListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 { return }
 
-        let pageVC = EateryPageViewController(allEateries: allEateries, eateries: shownEateries, index: indexPath.row)
+        let pageVC = EateryPageViewController(eateries: shownEateries, index: indexPath.row)
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)
