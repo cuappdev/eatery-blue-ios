@@ -40,7 +40,8 @@ class NavigationView: UIView {
         addSubview(largeTitleLabel)
         setUpLargeTitleLabel()
 
-        addSubview(notificationButton)
+//        TODO: - NOTIFICATIONS
+//        addSubview(notificationButton)
     }
 
     private func setUpNormalNavigationBar() {
@@ -106,10 +107,11 @@ class NavigationView: UIView {
 
         largeTitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        notificationButton.snp.makeConstraints { make in
-            make.trailing.equalTo(layoutMarginsGuide)
-            make.centerY.equalTo(largeTitleLabel.snp.centerY)
-        }
+//        TODO: - NOTIFICATIONS
+//        notificationButton.snp.makeConstraints { make in
+//            make.trailing.equalTo(layoutMarginsGuide)
+//            make.centerY.equalTo(largeTitleLabel.snp.centerY)
+//        }
     }
 
     func computeExpandedHeight() -> CGFloat {

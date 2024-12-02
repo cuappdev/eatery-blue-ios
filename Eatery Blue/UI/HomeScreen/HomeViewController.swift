@@ -121,12 +121,13 @@ class HomeViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.logoRefreshControl.delegate = self
         navigationView.setFadeInProgress(0)
-        navigationView.notificationButton.onTap { [weak self] vc in
-            guard let self else { return }
-            
-            vc.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(vc, animated: true)
-        }
+//        TODO: - NOTIFICATIONS
+//        navigationView.notificationButton.onTap { [weak self] vc in
+//            guard let self else { return }
+//            
+//            vc.hidesBottomBarWhenPushed = true
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
     }
 
     private func setUpConstraints() {
