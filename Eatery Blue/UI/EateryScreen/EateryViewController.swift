@@ -458,7 +458,8 @@ class EateryViewController: UIViewController {
         categoryView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
 
         for item in menuCategory.items {
-            let itemView = MenuItemView(item)
+            let itemView = MenuItemView()
+            itemView.item = item
             categoryView.addItemView(itemView)
         }
 

@@ -12,19 +12,28 @@ class MenuItemView: UIView {
 
     // MARK: - Properties (View)
 
+    private let descriptionLabel = UILabel()
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
+    private let priceLabel = UILabel()
     private let stackView = UIStackView()
     private let titleLabel = UILabel()
-    private let priceLabel = UILabel()
-    private let descriptionLabel = UILabel()
 
     // MARK: - Properties (Data)
 
-    private let item: MenuItem
+    /// item to display
+    var item: MenuItem? {
+        didSet {
+            setUpTitleLabel()
+            setUpPriceLabel()
+            setUpDescriptionLabel()
+            setUpFavoriteButton()
+        }
+    }
 
-    init(_ item: MenuItem) {
-        self.item = item
+    // MARK: - Init
+
+    init() {
         super.init(frame: .zero)
 
         setUpSelf()
@@ -44,6 +53,10 @@ class MenuItemView: UIView {
     }
 
     private func setUpStackView() {
+        stackView.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .fill
@@ -67,13 +80,13 @@ class MenuItemView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.text = item.name
+        titleLabel.text = item?.name ?? ""
         titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         titleLabel.textColor = UIColor.Eatery.black
     }
 
     private func setUpPriceLabel() {
-        if let price = item.price {
+        if let price = item?.price {
             priceLabel.text = EateryViewController
                 .priceNumberFormatter
                 .string(from: NSNumber(value: Double(price) / 100))
@@ -86,7 +99,7 @@ class MenuItemView: UIView {
     }
 
     private func setUpDescriptionLabel() {
-        if let description = item.description {
+        if let description = item?.description {
             descriptionLabel.isHidden = false
             descriptionLabel.text = description
         } else {
@@ -100,6 +113,8 @@ class MenuItemView: UIView {
     }
 
     private func setUpFavoriteButton() {
+        guard let item = item else { return }
+
         let itemdata = AppDelegate.shared.coreDataStack.metadata(itemName: item.name)
         let isFavorite = itemdata.isFavorite
 

@@ -25,11 +25,9 @@ class CompareMenusFilterViewController: EateryFilterViewController {
             filter.selected = false
         }
 
-        // Moving "Favorites" button to the 5th position.
+        // Moving "Favorites" button to the 5th position
+        // "moveButton" forces out of bounds index to the bounds
         filtersView.moveButton(from: .max, to: 4)
-        // "moveButton" handles out of binds index to bounds. Because "Favorites"
-        // button is always last, a large from will ensure this doesn't
-        // break if more filters are added
     }
 
     private func setUpSelected() {

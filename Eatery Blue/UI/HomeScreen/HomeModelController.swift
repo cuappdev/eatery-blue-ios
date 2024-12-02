@@ -241,7 +241,7 @@ class HomeModelController: HomeViewController {
 
         let favoritesViewController = FavoritesViewController()
         favoritesCarousel.title = "Favorites"
-        favoritesCarousel.carouselEateries = favoriteEateries
+        favoritesCarousel.eateries = favoriteEateries
         favoritesCarousel.truncateAfter = 3
         favoritesCarousel.navigationController = navigationController
         favoritesCarousel.viewControllerToPush = favoritesViewController

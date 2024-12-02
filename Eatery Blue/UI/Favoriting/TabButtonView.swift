@@ -13,16 +13,18 @@ class TabButtonView: ButtonView<UIView> {
 
     private let container = UIView()
     private let label = UILabel()
-    var delegate: TabButtonViewDelegate?
 
     // MARK: - Properties (Data)
 
+    /// Whether or not the button is selected
     var selected = false {
         didSet {
             selected ? select() : deselect()
         }
     }
-
+    /// TabButtonDelegate responsible for handling selection of this TabButtonView
+    var delegate: TabButtonViewDelegate?
+    /// The text to be displayed on this TabButtonView
     var text = "" {
         didSet {
             label.text = text

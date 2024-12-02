@@ -315,7 +315,8 @@ class CompareMenusEateryViewController: UIViewController {
         categoryView.backgroundColor = .white
 
         for item in menuCategory.items {
-            let itemView = MenuItemView(item)
+            let itemView = MenuItemView()
+            itemView.item = item
             categoryView.addItemView(itemView)
         }
         categoryContainer.addSubview(categoryView)

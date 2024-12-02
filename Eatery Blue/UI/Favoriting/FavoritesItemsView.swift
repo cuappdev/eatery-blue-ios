@@ -16,11 +16,13 @@ class FavoritesItemsView: UIView {
 
     // MARK: - Properties (Data)
 
+    /// All of the available eateries, used to find where favorite items are
     var allEateries: [Eatery] = [] {
         didSet {
             findFavorites()
         }
     }
+    /// A users favorite items, taken from Core Data
     var favoriteItems: [ItemMetadata] = [] {
         didSet {
             findFavorites()

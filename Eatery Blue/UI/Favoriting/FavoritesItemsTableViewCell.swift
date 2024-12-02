@@ -15,16 +15,15 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     private let availableLabel = UILabel()
     private let chevronImageView = UIImageView()
     private let container = UIView()
-    private let headerContainer = UIView()
-    private let itemNameLabel = UILabel()
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
+    private let headerContainer = UIView()
+    private let itemNameLabel = UILabel()
     private let stackView = UIStackView()
 
     // MARK: - Properties (Data)
 
     private let headerHeight = 92
-    private var item: MenuItem?
     static let reuse = "FavoritesItemsTableViewCellReuse"
 
     // MARK: - Init
@@ -61,6 +60,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
                 make.width.equalToSuperview()
             }
 
+            // these categories should appear first if they are available
             let firstKeys = ["Breakfast", "Brunch", "Lunch", "Dinner"]
 
             for key in firstKeys {
@@ -94,9 +94,6 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             stackView.isHidden = true
         }
     }
-
-
-
 
     func addCategory(_ category: String, eateries: [String]) {
         if eateries.isEmpty { return }
@@ -132,10 +129,10 @@ class FavoritesItemsTableViewCell: UITableViewCell {
         headerContainer.clipsToBounds = true
         container.addSubview(headerContainer)
 
-        setUpItemNameLabel()
+        itemNameLabel.font = .systemFont(ofSize: 16, weight: .medium)
         headerContainer.addSubview(itemNameLabel)
 
-        setUpAvailableLabel()
+        availableLabel.font = .systemFont(ofSize: 13, weight: .medium)
         headerContainer.addSubview(availableLabel)
 
         headerContainer.addSubview(favoriteButton)
@@ -149,6 +146,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
 
         setUpConstraints()
 
+        // Needs to be called after setting up constraints to prevent overflow
         stackView.layoutIfNeeded()
         stackView.isHidden = true
     }
@@ -163,14 +161,6 @@ class FavoritesItemsTableViewCell: UITableViewCell {
         container.layer.shadowOffset = CGSize(width: 0, height: 0)
         container.layer.backgroundColor = UIColor.white.cgColor
         container.layoutMargins = UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14)
-    }
-
-    private func setUpItemNameLabel() {
-        itemNameLabel.font = .systemFont(ofSize: 16, weight: .medium)
-    }
-
-    private func setUpAvailableLabel() {
-        availableLabel.font = .systemFont(ofSize: 13, weight: .medium)
     }
 
     private func setUpFavoriteButton(_ menuItem: ItemMetadata) {
@@ -217,7 +207,6 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     }
 
     private func setUpConstraints() {
-
         container.snp.makeConstraints { make in
             make.edges.equalTo(contentView).inset(12)
         }

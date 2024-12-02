@@ -40,7 +40,9 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate).withTintColor(UIColor.Eatery.gray05),
             title: "App Icon",
             subtitle: "Select the Eatery app icon for your phone",
-            action: { [self] in
+            action: { [weak self] in
+                guard let self else { return }
+                
                 let viewController = SettingsAppIconSheetViewController()
                 viewController.setUpSheetPresentation()
                 tabBarController?.present(viewController, animated: true)

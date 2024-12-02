@@ -16,16 +16,13 @@ class EateryListView: UIView {
 
     // MARK: - Properties (Data)
 
-    var allEateries: [Eatery] = [] {
+    /// Eateries to display in the list view when no filter is applied
+    var eateries: [Eatery] = [] {
         didSet {
             updateEateriesFromState()
         }
     }
-    var listEateries: [Eatery] = [] {
-        didSet {
-            updateEateriesFromState()
-        }
-    }
+    /// The navigation controller that this view uses to pop on back button press
     var navigationController: UINavigationController?
 
     private var filter = EateryFilter()
@@ -113,7 +110,7 @@ class EateryListView: UIView {
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             var filteredEateries: [Eatery] = []
-            for eatery in listEateries {
+            for eatery in eateries {
                 if predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id)) {
                     filteredEateries.append(eatery)
                 }
@@ -121,7 +118,7 @@ class EateryListView: UIView {
 
             updatedEateries = filteredEateries
         } else {
-            updatedEateries = listEateries
+            updatedEateries = eateries
         }
 
         reloadTableViewData(newEateries: updatedEateries)
@@ -129,7 +126,7 @@ class EateryListView: UIView {
 
 }
 
-// MARK: - Table View Data Source
+// MARK: - Extensions
 
 extension EateryListView: UITableViewDataSource {
 
@@ -179,8 +176,6 @@ extension EateryListView: UITableViewDataSource {
 
 }
 
-// MARK: - Table View Delegate
-
 extension EateryListView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -207,8 +202,6 @@ extension EateryListView: UITableViewDelegate {
     }
 
 }
-
-// MARK: - Filter View Controller Delegate
 
 extension EateryListView: EateryFilterViewControllerDelegate {
 

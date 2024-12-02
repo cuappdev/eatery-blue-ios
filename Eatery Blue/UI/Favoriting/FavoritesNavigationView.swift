@@ -12,34 +12,27 @@ class FavoritesNavigationView: UIView {
     // MARK: - Properties (View)
 
     private let backButton = ButtonView(content: UIImageView())
-    private let searchButton = ButtonView(content: UIImageView())
-    private let searchBar = UISearchBar()
-
-    private let titleLabel = UILabel()
     private let eateriesTab = TabButtonView()
     private let itemsTab = TabButtonView()
-
     private let placeholderView = UIView()
+    private let searchBar = UISearchBar()
+    private let searchButton = ButtonView(content: UIImageView())
+    private let titleLabel = UILabel()
 
     // MARK: - Properties (Data)
 
+    /// The controller that this view uses to pop on back button press
     var navigationController: UINavigationController?
-    var tabButtonsDelegate: TabButtonViewDelegate? {
-        didSet {
-            eateriesTab.delegate = tabButtonsDelegate
-            itemsTab.delegate = tabButtonsDelegate
-        }
-    }
+    /// Search bar delegate, called when search bar text changes
     var searchDelegate: UISearchBarDelegate? {
         didSet {
             searchBar.delegate = searchDelegate
         }
     }
-
+    /// Whether or not the search bar should be shown
     var searchShown = false {
         didSet {
             if !searchShown {
-
                 searchBar.text = ""
                 searchDelegate?.searchBar?(searchBar, textDidChange: "")
 
@@ -63,12 +56,20 @@ class FavoritesNavigationView: UIView {
             }
         }
     }
+    /// Tab buttons delegate, called when tab buttons are pressed
+    var tabButtonsDelegate: TabButtonViewDelegate? {
+        didSet {
+            eateriesTab.delegate = tabButtonsDelegate
+            itemsTab.delegate = tabButtonsDelegate
+        }
+    }
+
 
     // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUp()
+        setUpSelf()
     }
 
     required init?(coder: NSCoder) {
@@ -77,7 +78,7 @@ class FavoritesNavigationView: UIView {
 
     // MARK: - Set Up
 
-    private func setUp() {
+    private func setUpSelf() {
         self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 4, right: 16)
         backgroundColor = .white
 

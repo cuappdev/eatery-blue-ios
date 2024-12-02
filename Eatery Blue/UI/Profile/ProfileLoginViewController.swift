@@ -28,7 +28,6 @@ class ProfileLoginViewController: UIViewController {
     }
 
     override init(nibName: String?, bundle: Bundle?) {
-        self.canGoBack = false
         super.init(nibName: nibName, bundle: bundle)
     }
 

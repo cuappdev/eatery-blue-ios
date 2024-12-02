@@ -30,8 +30,7 @@ class FavoritesViewController: UIViewController {
         self.allEateries = allEateries
         self.favoriteEateries = favoriteEateries
         self.favoriteItems = favoriteItems
-        favoriteEateriesView.allEateries = allEateries
-        favoriteEateriesView.listEateries = favoriteEateries
+        favoriteEateriesView.eateries = favoriteEateries
         favoriteItemsView.allEateries = allEateries
         favoriteItemsView.favoriteItems = favoriteItems
     }
@@ -83,8 +82,7 @@ class FavoritesViewController: UIViewController {
     }
 
     private func setUpFavoriteEateriesView() {
-        favoriteEateriesView.listEateries = favoriteEateries
-        favoriteEateriesView.allEateries = allEateries
+        favoriteEateriesView.eateries = favoriteEateries
         favoriteEateriesView.navigationController = navigationController
     }
 
@@ -154,6 +152,7 @@ class FavoritesViewController: UIViewController {
             logger.error("\(#function): \(error)")
         }
     }
+    
 }
 
 extension FavoritesViewController: TabButtonViewDelegate {
@@ -171,12 +170,11 @@ extension FavoritesViewController: TabButtonViewDelegate {
 extension FavoritesViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // if search text is empty, show all eateries
         if searchText.isEmpty {
-            favoriteEateriesView.listEateries = favoriteEateries
+            favoriteEateriesView.eateries = favoriteEateries
             favoriteItemsView.favoriteItems = favoriteItems
         } else {
-            favoriteEateriesView.listEateries = favoriteEateries.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            favoriteEateriesView.eateries = favoriteEateries.filter { $0.name.lowercased().contains(searchText.lowercased()) }
             favoriteItemsView.favoriteItems = favoriteItems.filter { $0.itemName?.lowercased().contains(searchText.lowercased()) ?? false }
         }
     }
@@ -184,7 +182,6 @@ extension FavoritesViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         favoritesNavigationView.searchShown = false
     }
-
 
 }
 

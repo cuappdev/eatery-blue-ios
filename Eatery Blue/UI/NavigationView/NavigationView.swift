@@ -15,8 +15,8 @@ class NavigationView: UIView {
     let largeTitleLabel = UILabel()
     let normalNavigationBar = UIView()
     let notificationButton = NotificationButton()
-    let titleLabel = UILabel()
     let rightButtons = UIStackView()
+    let titleLabel = UILabel()
 
     // MARK: - Init
 
