@@ -100,6 +100,7 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Carnell Zhou",
             "Jane Lee",
             "Matthew Wong",
+            "Candy Wu",
             "Anvi Savant"
         ])
     ]
