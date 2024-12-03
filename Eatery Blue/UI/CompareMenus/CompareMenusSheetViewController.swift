@@ -33,13 +33,13 @@ class CompareMenusSheetViewController: SheetViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        setUpSelf()
-        if selectedOn {
-            filterController.tapSelected()
-        }
-
         Task {
             await updateAllEateriesFromNetworking()
+
+            setUpSelf()
+            if selectedOn {
+                filterController.tapSelected()
+            }
         }
     }
 

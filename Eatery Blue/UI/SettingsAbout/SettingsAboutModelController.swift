@@ -21,7 +21,10 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Conner Swenberg",
             "Connor Reinhold",
             "Gracie Jing",
-            "Matthew Wong"
+            "Sergio Diaz",
+            "Matthew Wong",
+            "Antoinette Torres",
+            "Thomas Vignos"
         ]),
         Section(title: "Product Designers", members: [
             "TK Kong",
@@ -30,7 +33,11 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Michael Huang",
             "Ravina Patel",
             "Gracie Jing",
-            "Kathleen Anderson"
+            "Zixian Jia",
+            "Dennis Quizhpi",
+            "Kathleen Anderson",
+            "Funmi Olukanmi",
+            "Carrie Kim"
         ]),
         Section(title: "iOS Developers", members: [
             "William Ma",
@@ -42,7 +49,10 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Justin Ngai",
             "Jennifer Gu",
             "Antoinette Torres",
-            "Jayson Hahn"
+            "Jayson Hahn",
+            "Peter Bidoshi",
+            "Cassidy Xu",
+            "Charles Liggins"
         ]),
         Section(title: "Android Developers", members: [
             "Lesley Huang",
@@ -54,9 +64,15 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Adam Kadhim",
             "Aastha Shab",
             "Jonah Gershon",
+            "Justin Guo",
+            "Kevin Sun",
             "Emily Hu",
             "Sophie Meng",
-            "Gregor Guerrier"
+            "Gregor Guerrier",
+            "Olivia Jiang",
+            "Helen Bian",
+            "Amy Wang",
+            "Zach Seidner"
         ]),
         Section(title: "Backend Developers", members: [
             "Conner Swenberg",
@@ -67,7 +83,13 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Shungo Najima",
             "Mateo Weiner",
             "Kidus Zegeye",
-            "Thomas Vignos"
+            "Archit Mehta",
+            "Marcus Kim",
+            "Thomas Vignos",
+            "Aayush Agnihotri",
+            "Daniel Weiner",
+            "Skye Slattery",
+            "Cassidy Xu"
         ]),
         Section(title: "Marketers", members: [
             "Cat Zhang",
@@ -76,7 +98,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Neha Malepati",
             "Vivian Park",
             "Carnell Zhou",
-            "Matthew Wong"
+            "Jane Lee",
+            "Matthew Wong",
+            "Anvi Savant"
         ])
     ]
 
