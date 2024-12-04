@@ -226,7 +226,9 @@ class EateryModelController: EateryViewController {
         // Search bar is currently unimplemented
         // addSearchBar()
 
-        addSpacer(height: 16)
+        // addSpacer(height: 16)
+        // TODO: ADD B/L/D TAB RIGHT HERE
+        addBLDView()
 
         if let menu = event.menu {
             let sortedCategories = sortMenuCategories(categories: menu.categories)

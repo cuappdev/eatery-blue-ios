@@ -230,4 +230,26 @@ class MenuPickerSheetViewController: SheetViewController {
         updateMenuChoiceViewsFromState()
     }
 
+    
+    // TODO: Find how I can display this on my BLD view
+    private func addMenuChoiceViews() {
+        if maxMenuChoices() != 1 {
+            for i in 0..<maxMenuChoices() {
+                if i != 0 {
+                    stackView.addArrangedSubview(HDivider())
+                }
+
+                let menuChoiceView = MenuChoiceView()
+                menuChoiceView.layoutMargins = .zero
+                stackView.addArrangedSubview(menuChoiceView)
+                menuChoiceView.tap { [self] _ in
+                    didTapMenuChoiceView(at: i)
+                }
+                menuChoiceViews.append(menuChoiceView)
+            }
+        }
+
+        updateMenuChoiceViewsFromState()
+    }
+    
 }

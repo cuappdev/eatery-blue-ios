@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E14970F2BB75B6400180A35 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */; };
+		2E2BA60A2CFFBE220046A802 /* MealTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2BA6092CFFBE120046A802 /* MealTimePicker.swift */; };
 		2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */; };
 		2E6655FB2ADFB86700264391 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */; };
 		2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */ = {isa = PBXBuildFile; productRef = 2E856F642B6714CB0043F350 /* AppDevAnnouncements */; };
@@ -206,6 +207,7 @@
 
 /* Begin PBXFileReference section */
 		2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		2E2BA6092CFFBE120046A802 /* MealTimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTimePicker.swift; sourceTree = "<group>"; };
 		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Extension.swift"; sourceTree = "<group>"; };
 		2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -785,6 +787,7 @@
 		5DF304BA27797D3C00E2C9A4 /* EateryScreen */ = {
 			isa = PBXGroup;
 			children = (
+				2E2BA6092CFFBE120046A802 /* MealTimePicker.swift */,
 				5D0CDC562775256D00AD0E27 /* EateryNavigationView.swift */,
 				5D0CDC442774E7EA00AD0E27 /* EateryPillButtonStackView.swift */,
 				5DF304A427791D2C00E2C9A4 /* EateryModelController.swift */,
@@ -1169,6 +1172,7 @@
 				D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
+				2E2BA60A2CFFBE220046A802 /* MealTimePicker.swift in Sources */,
 				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,

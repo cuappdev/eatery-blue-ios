@@ -29,6 +29,7 @@ class EateryViewController: UIViewController {
     var headerView: UIView?
     var navigationTriggerView: UIView?
     let navigationView = EateryNavigationView()
+    let bldTabView = MealTimePicker()
     let scrollView = UIScrollView()
     let spinner = UIActivityIndicatorView(style: .large)
     let stackView = UIStackView()
@@ -336,6 +337,15 @@ class EateryViewController: UIViewController {
 
         stackView.addArrangedSubview(containerView)
     }
+    
+    // TODO: implement...
+    func addBLDView() {
+        let view = MealTimePicker()
+        let containerView = ContainerView(content: view)
+        containerView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        
+        stackView.addArrangedSubview(containerView)
+    }
 
     func addTimingView(_ eatery: Eatery) {
         let timingView = TimingDataView()
@@ -437,6 +447,7 @@ class EateryViewController: UIViewController {
         }
         stackView.addArrangedSubview(menuHeaderView)
     }
+    
 
     func addSearchBar() {
         let searchBar = UISearchBar()
@@ -601,3 +612,4 @@ extension EateryViewController: UIScrollViewDelegate {
     }
 
 }
+

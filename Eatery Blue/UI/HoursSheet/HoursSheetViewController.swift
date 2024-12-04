@@ -22,9 +22,7 @@ class HoursSheetViewController: SheetViewController {
         
         UIHelper.addStatusLabel(to: stackView, attributedText: EateryFormatter.default.formatStatus(EateryStatus(events)))
         UIHelper.addSchedule(events: events, to: self)
-        
-//        addSchedule(events)
-        
+                
         setCustomSpacing(24)
         addPillButton(title: "Close", style: .regular) { [self] in
             dismiss(animated: true)
