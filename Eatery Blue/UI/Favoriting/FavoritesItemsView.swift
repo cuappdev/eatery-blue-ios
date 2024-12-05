@@ -105,7 +105,7 @@ class FavoritesItemsView: UIView {
             itemData[itemName]![timeOfDay]!.insert(eateryName)
         }
 
-        sortedFavorites = favoriteItems.sorted { itemData[$0.itemName ?? ""] == nil && itemData[$1.itemName ?? ""] == nil }
+        sortedFavorites = favoriteItems.sorted { itemData[$1.itemName ?? ""] == nil }
         tableView.reloadData()
     }
 
