@@ -89,7 +89,7 @@ internal enum Schema {
 
         internal let healthy: Bool?
 
-        internal let id: Int?
+        internal let id: Int
 
         internal let name: String
 

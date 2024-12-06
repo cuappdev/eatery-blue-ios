@@ -56,4 +56,35 @@ class CoreDataStack {
         }
     }
 
+    func metadata(itemName: String) -> ItemMetadata {
+        let fetchRequest = NSFetchRequest<ItemMetadata>()
+        fetchRequest.entity = ItemMetadata.entity()
+        fetchRequest.predicate = NSPredicate(format: "itemName == %@", itemName)
+        fetchRequest.fetchLimit = 1
+
+        if let metadata = try? context.fetch(fetchRequest).first {
+            return metadata
+
+        } else {
+            let metadata = ItemMetadata(context: context)
+            metadata.itemName = itemName
+            metadata.isFavorite = false
+            save()
+            return metadata
+        }
+    }
+
+    func fetchFavoriteItems() -> [ItemMetadata] {
+        let fetchRequest = NSFetchRequest<ItemMetadata>()
+        fetchRequest.entity = ItemMetadata.entity()
+        fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
+
+        do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            print("Failed to fetch favorite items: \(error)")
+            return []
+        }
+    }
+
 }

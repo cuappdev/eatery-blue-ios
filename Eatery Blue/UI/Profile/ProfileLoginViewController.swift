@@ -9,10 +9,32 @@ import UIKit
 
 class ProfileLoginViewController: UIViewController {
 
+    // MARK: - Properties (View)
+
+    private let backButton = ButtonView(content: UIImageView())
     private let eateryLogo = UIImageView()
     private let loginView = LoginView()
     private let loginButton = ButtonView(pillContent: UILabel())
 
+    // MARK: - Properties (Data)
+
+    private var canGoBack = false
+
+    // MARK: - Init
+
+    init(canGoBack: Bool) {
+        self.canGoBack = canGoBack
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -69,6 +91,11 @@ class ProfileLoginViewController: UIViewController {
         
         view.addSubview(eateryLogo)
         setUpLogo()
+
+        if canGoBack {
+            view.addSubview(backButton)
+            setUpBackButton()
+        }
     }
     
     private func setUpLogo() {
@@ -98,6 +125,19 @@ class ProfileLoginViewController: UIViewController {
         }
     }
 
+    private func setUpBackButton() {
+        backButton.content.image = UIImage(named: "ArrowLeft")
+        backButton.shadowColor = UIColor.Eatery.black
+        backButton.shadowOffset = CGSize(width: 0, height: 4)
+        backButton.backgroundColor = .white
+        backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        backButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
     private func setUpConstraints() {
         loginView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -115,6 +155,14 @@ class ProfileLoginViewController: UIViewController {
         eateryLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(view.frame.width - 124)
+        }
+
+        if canGoBack {
+            backButton.snp.makeConstraints { make in
+                make.leading.equalToSuperview().inset(12)
+                make.top.equalTo(view.layoutMarginsGuide.snp.top)
+                make.width.height.equalTo(40)
+            }
         }
     }
 

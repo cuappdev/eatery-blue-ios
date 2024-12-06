@@ -12,7 +12,6 @@ class EateryPageViewController: UIPageViewController {
     
     // MARK: - Properties (data)
 
-    private var allEateries: [Eatery] = []
     private var eateries: [Eatery] = []
     private var index: Int
     private var previousScrollOffset: CGFloat = 0
@@ -20,8 +19,7 @@ class EateryPageViewController: UIPageViewController {
 
     // MARK: - Init
 
-    init(allEateries: [Eatery], eateries: [Eatery], index: Int) {
-        self.allEateries = allEateries
+    init(eateries: [Eatery], index: Int) {
         self.eateries = eateries
         self.index = index
 
@@ -60,7 +58,7 @@ class EateryPageViewController: UIPageViewController {
     private func setUpPages() {
         eateries.forEach { eatery in
             let eateryVC = EateryModelController()
-            eateryVC.setUp(eatery: eatery, allEateries: allEateries, isTracking: false)
+            eateryVC.setUp(eatery: eatery, isTracking: false)
             pages.append(eateryVC)
         }
 

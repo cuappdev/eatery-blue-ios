@@ -15,12 +15,14 @@ enum DummyData {
     static let macsBreakfastMenu = Menu(categories: [
         MenuCategory(category: "Meat", items: [
             MenuItem(
+                id: 0,
                 description: "A bacon strip.",
                 healthy: false,
                 name: "Bacon",
                 price: 625
             ),
             MenuItem(
+                id: 1,
                 description: "Pork sausage link.",
                 healthy: false,
                 name: "Pork",
@@ -29,6 +31,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Egg", items: [
             MenuItem(
+                id: 2,
                 description: "Scrambled egg.",
                 healthy: true,
                 name: "Egg",
@@ -40,12 +43,14 @@ enum DummyData {
     static let macsLunchMenu = Menu(categories: [
         MenuCategory(category: "Enchiladas", items: [
             MenuItem(
+                id: 3,
                 description: "A tortilla-wrapped chicken enchilada with your choice of toppings.",
                 healthy: false,
                 name: "Chicken",
                 price: 625
             ),
             MenuItem(
+                id: 4,
                 description: "A tortilla-wrapped bean and corn enchilada with your choice of toppings.",
                 healthy: false,
                 name: "Bean & Corn",
@@ -54,6 +59,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Salads", items: [
             MenuItem(
+                id: 5,
                 description: "A chopped salad with your choice of toppings.",
                 healthy: true,
                 name: "Chopped Salad",
@@ -65,12 +71,14 @@ enum DummyData {
     static let macsDinnerMenu = Menu(categories: [
         MenuCategory(category: "Grill", items: [
             MenuItem(
+                id: 6,
                 description: "Carolina BBQ Pulled Pork with Coleslaw.",
                 healthy: false,
                 name: "BBQ",
                 price: 625
             ),
             MenuItem(
+                id: 7,
                 description: "French fries.",
                 healthy: false,
                 name: "Potatoes",
@@ -79,6 +87,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Chef's Table", items: [
             MenuItem(
+                id: 8,
                 description: "Vegan tofu chili.",
                 healthy: true,
                 name: "Chili",
@@ -139,6 +148,7 @@ enum DummyData {
     static let terraceBreakfastMenu = Menu(categories: [
         MenuCategory(category: "Potato", items: [
             MenuItem(
+                id: 9,
                 description: "Fried potato puffs.",
                 healthy: false,
                 name: "Potato",
@@ -147,6 +157,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Bread", items: [
             MenuItem(
+                id: 10,
                 description: "Chocolate bread pudding.",
                 healthy: true,
                 name: "Chocolate Bread",
@@ -158,12 +169,14 @@ enum DummyData {
     static let terraceLunchMenu = Menu(categories: [
         MenuCategory(category: "Pho Bar", items: [
             MenuItem(
+                id: 11,
                 description: "A pho bowl with your choice of toppings.",
                 healthy: false,
                 name: "Pho Bowl",
                 price: 1025
             ),
             MenuItem(
+                id: 12,
                 description: "A rice bowl with your choice of toppings.",
                 healthy: false,
                 name: "Rice Bowl",
@@ -172,6 +185,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Salads", items: [
             MenuItem(
+                id: 13,
                 description: "A mixed salad with your choice of toppings.",
                 healthy: true,
                 name: "Mixed Salad",
@@ -183,12 +197,14 @@ enum DummyData {
     static let terraceDinnerMenu = Menu(categories: [
         MenuCategory(category: "Chef's Table - Sides", items: [
             MenuItem(
+                id: 14,
                 description: "Papas Bravas - spicy potatoes.",
                 healthy: false,
                 name: "Potato",
                 price: 1025
             ),
             MenuItem(
+                id: 16,
                 description: "Steamed fresh broccoli.",
                 healthy: false,
                 name: "Broccoli",
@@ -197,6 +213,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Salads", items: [
             MenuItem(
+                id: 15,
                 description: "Traditional hummus.",
                 healthy: true,
                 name: "Hummus",
@@ -257,11 +274,13 @@ enum DummyData {
     static let roseBreakfastMenu = Menu(categories: [
         MenuCategory(category: "Taco Breakfast", items: [
             MenuItem(
+                id: 17,
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Southwest chicken"
             ),
             MenuItem(
+                id: 18,
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Corn & Beans"
@@ -269,6 +288,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Desserts Breakfast", items: [
             MenuItem(
+                id: 19,
                 description: "A chocolate chip cookie.",
                 healthy: false,
                 name: "Cookie"
@@ -279,11 +299,13 @@ enum DummyData {
     static let roseLunchMenu = Menu(categories: [
         MenuCategory(category: "Taco Lunch", items: [
             MenuItem(
+                id: 20,
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Southwest chicken"
             ),
             MenuItem(
+                id: 21,
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Corn & Beans"
@@ -291,6 +313,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Dessert Lunch", items: [
             MenuItem(
+                id: 22,
                 description: "A chocolate chip cookie.",
                 healthy: false,
                 name: "Cookie"
@@ -301,11 +324,13 @@ enum DummyData {
     static let roseDinnerMenu = Menu(categories: [
         MenuCategory(category: "Taco Dinner", items: [
             MenuItem(
+                id: 23,
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Southwest chicken"
             ),
             MenuItem(
+                id: 24,
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Corn & Beans"
@@ -313,6 +338,7 @@ enum DummyData {
         ]),
         MenuCategory(category: "Desserts Dinner", items: [
             MenuItem(
+                id: 25,
                 description: "A chocolate chip cookie.",
                 healthy: false,
                 name: "Cookie"
