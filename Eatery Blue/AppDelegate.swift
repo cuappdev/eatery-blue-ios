@@ -14,6 +14,13 @@ import Tactile
 import UIKit
 import FirebaseMessaging
 
+import OSLog
+
+extension Logger {
+    private static var subsystem = Bundle.main.bundleIdentifier! // Your app's bundle identifier
+    static let notifications = Logger(subsystem: subsystem, category: "notifications")
+}
+
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     static let shared = UIApplication.shared.delegate as! AppDelegate
@@ -28,9 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
-            print("Notification permissions granted: \(granted)")
             if let error = error {
-                print("Notification permission error: \(error.localizedDescription)")
+                Logger.notifications.error("Failed to request notification permissions: \(error.localizedDescription)")
+            } else {
+                Logger.notifications.info("Notification permissions granted: \(granted)")
             }
         }
 
@@ -49,21 +57,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Set APNs token for Firebase Messaging
-        print("APNs device token received: \(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())")
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        Logger.notifications.info("APNs device token received: \(tokenString)")
         Messaging.messaging().apnsToken = deviceToken
 
         // Fetch FCM token once APNs token is set
         Messaging.messaging().token { token, error in
             if let error = error {
-                print("Error fetching FCM token: \(error.localizedDescription)")
+                Logger.notifications.error("Error fetching FCM token: \(error.localizedDescription)")
             } else if let token = token {
-                print("FCM registration token: \(token)")
+                Logger.notifications.info("FCM registration token: \(token)")
             }
         }
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register for remote notifications: \(error.localizedDescription)")
+        Logger.notifications.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
 
     // MARK: UISceneSession Lifecycle
@@ -89,14 +98,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("Foreground notification received: \(notification.request.content.userInfo)")
+        Logger.notifications.info("Foreground notification received: \(notification.request.content.userInfo)")
         completionHandler([.alert, .badge, .sound])
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("Notification tapped: \(response.notification.request.content.userInfo)")
+        Logger.notifications.info("Notification tapped: \(response.notification.request.content.userInfo)")
         completionHandler()
     }
 }
