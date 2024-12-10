@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "notis-read@1x.png",
+      "filename" : "notif@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "notis-read@2x.png",
+      "filename" : "notif@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "notis-read@3x.png",
+      "filename" : "notif@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

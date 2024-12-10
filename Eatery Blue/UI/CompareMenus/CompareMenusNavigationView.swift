@@ -50,7 +50,6 @@ class CompareMenusNavigationView: UIView {
         backButton.shadowOffset = CGSize(width: 0, height: 4)
         backButton.backgroundColor = .white
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        
     }
 
     private func setUpTitleLabel() {
@@ -71,7 +70,7 @@ class CompareMenusNavigationView: UIView {
     private func setUpConstraints() {
         backButton.snp.makeConstraints { make in
             make.leading.equalTo(layoutMarginsGuide.snp.leading)
-            make.top.equalToSuperview()
+            make.top.equalTo(layoutMarginsGuide.snp.top)
             make.width.height.equalTo(40)
         }
         

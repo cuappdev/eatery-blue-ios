@@ -23,7 +23,7 @@ class HomeModelController: HomeViewController {
 
     private lazy var loadCells: () = updateCellsFromState()
     
-    private var favoriteCarousel: CarouselView?
+    private var favoritesCarousel = CarouselView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +80,7 @@ class HomeModelController: HomeViewController {
             guard let self else { return }
             
             compareMenusOnboarding.dismiss()
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
         }
@@ -116,7 +116,7 @@ class HomeModelController: HomeViewController {
         compareMenusButton.buttonPress { [weak self] _ in
             guard let self else { return }
 
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [])
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
             AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "HomeModelController"))
@@ -155,19 +155,6 @@ class HomeModelController: HomeViewController {
         } catch {
             logger.error("\(error)")
         }
-    }
-
-    private func createCarouselView(
-        title: String,
-        description: String?,
-        carouselEateries: [Eatery],
-        listEateries: [Eatery],
-        shouldTruncate: Bool
-    ) -> CarouselView {
-
-        let carouselView = CarouselView(title: title, allItems: allEateries, carouselItems: listEateries, navigationController: navigationController, shouldTruncate: shouldTruncate)
-        carouselView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        return carouselView
     }
     
     private func updateCellsFromState() {
@@ -244,33 +231,23 @@ class HomeModelController: HomeViewController {
     private func createFavoriteEateriesCarouselView() -> CarouselView? {
         let favoriteEateries = allEateries.filter {
             AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
-        }
-
-        let carouselEateries = favoriteEateries.sorted { lhs, rhs in
+        }.sorted { lhs, rhs in
             if lhs.isOpen == rhs.isOpen {
                 return lhs.name < rhs.name
             } else {
                 return lhs.isOpen && !rhs.isOpen
             }
         }
-        
-        if let favoriteCarousel {
-            favoriteCarousel.updateCarousel(carouselItems: carouselEateries)
-        } else {
-            favoriteCarousel = createCarouselView(
-                title: "Favorites",
-                description: nil,
-                carouselEateries: Array(carouselEateries),
-                listEateries: favoriteEateries,
-                shouldTruncate: false
-            )
-        }
-        
-        if carouselEateries.count == 0 {
-            favoriteCarousel = nil
-        }
 
-        return favoriteCarousel
+        let favoritesViewController = FavoritesViewController()
+        favoritesCarousel.title = "Favorites"
+        favoritesCarousel.eateries = favoriteEateries
+        favoritesCarousel.truncateAfter = 3
+        favoritesCarousel.navigationController = navigationController
+        favoritesCarousel.viewControllerToPush = favoritesViewController
+        favoritesCarousel.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+        return favoriteEateries.count == 0 ? nil : favoritesCarousel
     }
 
 
@@ -296,7 +273,7 @@ class HomeModelController: HomeViewController {
 
     private func pushListViewController(title: String, description: String?, eateries: [Eatery]) {
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: title, description: description, allEateries: allEateries)
+        viewController.setUp(eateries, title: title, description: description)
 
         navigationController?.hero.isEnabled = false
         navigationController?.pushViewController(viewController, animated: true)

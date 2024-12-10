@@ -121,6 +121,13 @@ class HomeViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.logoRefreshControl.delegate = self
         navigationView.setFadeInProgress(0)
+//        TODO: - NOTIFICATIONS
+//        navigationView.notificationButton.onTap { [weak self] vc in
+//            guard let self else { return }
+//            
+//            vc.hidesBottomBarWhenPushed = true
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
     }
 
     private func setUpConstraints() {
@@ -141,7 +148,7 @@ class HomeViewController: UIViewController {
     }
 
     func pushViewController(eateryIndex: Int) {
-        let pageVC = EateryPageViewController(allEateries: allEateries, eateries: eateries, index: eateryIndex)
+        let pageVC = EateryPageViewController(eateries: eateries, index: eateryIndex)
         navigationController?.hero.isEnabled = true
         navigationController?.heroNavigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)
@@ -501,6 +508,7 @@ extension HomeViewController: UIScrollViewDelegate {
         let progress = max(0, min(1, 1 - deltaFromTop / fadeDistance))
         navigationView.logoRefreshControl.alpha = progress
         navigationView.largeTitleLabel.alpha = progress
+        navigationView.notificationButton.alpha = progress
     }
 
 }

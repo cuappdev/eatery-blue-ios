@@ -21,7 +21,6 @@ class EateryModelController: EateryViewController {
 
     var menuHasLoaded: Bool = false
     private var eatery: Eatery?
-    private var allEateries: [Eatery] = []
     private var selectedEventIndex: Int?
     private var selectedEvent: Event? {
         if let index = selectedEventIndex {
@@ -31,9 +30,8 @@ class EateryModelController: EateryViewController {
         }
     }
 
-    func setUp(eatery: Eatery, allEateries: [Eatery], isTracking: Bool, shouldShowCompareMenus: Bool = true) {
+    func setUp(eatery: Eatery, isTracking: Bool, shouldShowCompareMenus: Bool = true) {
         self.eatery = eatery
-        self.allEateries = allEateries
 
         resetSelectedEventIndex()
         setUpNavigationView(eatery)
@@ -122,7 +120,7 @@ class EateryModelController: EateryViewController {
         compareMenusButton.buttonPress { [weak self] _ in
             guard let self, let eatery else { return }
 
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, allEateries: allEateries, selectedEateries: [eatery])
+            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [eatery])
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
             AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "EateryModelController"))

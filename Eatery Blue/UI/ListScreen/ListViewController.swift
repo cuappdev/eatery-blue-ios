@@ -24,7 +24,6 @@ class ListViewController: UIViewController {
     // A view that holds the place of the filtersView in the stack view
     private let filterPlaceholder = UIView()
 
-    var allEateries: [Eatery] = []
     private(set) var eateries: [Eatery] = []
 
     private var cancellables: Set<AnyCancellable> = []
@@ -129,7 +128,7 @@ class ListViewController: UIViewController {
 
     private func pushViewController(for eatery: Eatery) {
         let viewController = EateryModelController()
-        viewController.setUp(eatery: eatery, allEateries: allEateries, isTracking: false)
+        viewController.setUp(eatery: eatery, isTracking: false)
         navigationController?.pushViewController(viewController, animated: true)
         viewController.setUpMenu(eatery: eatery)
     }

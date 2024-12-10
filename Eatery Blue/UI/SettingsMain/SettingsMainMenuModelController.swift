@@ -31,20 +31,18 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             action: { [weak self] in
                 guard let self else { return }
 
-                let viewController = SettingsFavoritesModelController()
+                let viewController = FavoritesViewController()
                 navigationController?.pushViewController(viewController, animated: true)
             }
         ))
         addSeparator()
-
-
         addSettingsItem(SettingsItem(
             image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate).withTintColor(UIColor.Eatery.gray05),
             title: "App Icon",
             subtitle: "Select the Eatery app icon for your phone",
             action: { [weak self] in
                 guard let self else { return }
-
+                
                 let viewController = SettingsAppIconSheetViewController()
                 viewController.setUpSheetPresentation()
                 tabBarController?.present(viewController, animated: true)
