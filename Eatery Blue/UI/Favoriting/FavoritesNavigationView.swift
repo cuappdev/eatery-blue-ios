@@ -137,7 +137,6 @@ class FavoritesNavigationView: UIView {
             guard let self else { return }
 
             searchShown = true
-            print("good")
             searchBar.becomeFirstResponder()
         }
     }

@@ -166,11 +166,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     private func setUpFavoriteButton(_ menuItem: ItemMetadata) {
         favoriteButton.content.contentMode = .scaleAspectFill
 
-        if menuItem.isFavorite {
-            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-        } else {
-            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-        }
+        favoriteButtonImage.image = UIImage(named: menuItem.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
 
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
@@ -178,11 +174,8 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             menuItem.isFavorite.toggle()
             coreDataStack.save()
 
-            if menuItem.isFavorite {
-                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-            } else {
-                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-            }
+            favoriteButtonImage.image = UIImage(named: menuItem.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
+
 
             NotificationCenter.default.post(
                 name: NSNotification.Name("favoriteEatery"),

@@ -133,8 +133,6 @@ extension FavoritesItemsView: UITableViewDataSource {
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesItemsTableViewCell.reuse, for: indexPath) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-
-
         cell.configure(item: sortedFavorites[indexPath.row], expanded: expanded.contains(indexPath.row), itemData: itemData[sortedFavorites[indexPath.row].itemName ?? ""])
 
         return cell

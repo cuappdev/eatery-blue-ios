@@ -128,11 +128,7 @@ class MenuItemView: UIView {
             metadata.isFavorite.toggle()
             coreDataStack.save()
 
-            if metadata.isFavorite {
-                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-            } else {
-                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-            }
+            favoriteButtonImage.image = UIImage(named: metadata.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
 
             NotificationCenter.default.post(
                 name: NSNotification.Name("favoriteEatery"),
