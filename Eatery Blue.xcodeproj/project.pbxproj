@@ -166,6 +166,7 @@
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor+Extension.swift */; };
+		C31EC93B2CF3DEBB00B2E99F /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */; };
 		D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */; };
 		D01D80772BC638C900253976 /* CompareMenusInternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */; };
 		D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */; };
@@ -360,6 +361,7 @@
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Eatery Blue.entitlements"; sourceTree = "<group>"; };
 		D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusTabsViewController.swift; sourceTree = "<group>"; };
 		D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusInternalOnboardingView.swift; sourceTree = "<group>"; };
 		D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusButton.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C31EC93B2CF3DEBB00B2E99F /* FirebaseMessaging in Frameworks */,
 				D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */,
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
 				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
@@ -562,6 +565,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
@@ -1029,6 +1033,7 @@
 				2ED2FC122BA2D7AA00621028 /* Hero */,
 				2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */,
 				2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */,
+				C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -1435,6 +1440,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Eatery Blue/Eatery Blue.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 46;
@@ -1478,6 +1484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Eatery Blue/Eatery Blue.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 46;
@@ -1696,6 +1703,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 
