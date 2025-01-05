@@ -122,6 +122,13 @@ class SettingsMainMenuViewController: UIViewController {
         stackView.addArrangedSubview(loginView)
     }
 
+    func clearStackView() {
+        stackView.arrangedSubviews.forEach { view in
+            stackView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+    }
+
     private func setUpConstraints() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

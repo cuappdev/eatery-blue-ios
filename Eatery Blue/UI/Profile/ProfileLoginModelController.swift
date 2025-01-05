@@ -6,6 +6,7 @@
 //
 
 import EateryGetAPI
+import GoogleSignIn
 import UIKit
 
 protocol ProfileLoginModelControllerDelegate: AnyObject {
@@ -21,11 +22,9 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
     weak var delegate: ProfileLoginModelControllerDelegate?
     
-    private lazy var loginOnLaunch: () = attemptLogin()
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        let _ = loginOnLaunch
     }
 
     override init(canGoBack: Bool) {
@@ -43,14 +42,13 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let _ = KeychainAccess.shared.retrieveToken() {
-            attemptLogin()
-        } else if firstView && UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn) {
-            firstView = false
-            let stayloginSheet = StayLoggedInSheet()
-            stayloginSheet.setUpSheetPresentation()
-            stayloginSheet.setUp(delegate: self)
-            tabBarController?.present(stayloginSheet, animated: true)
+
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            if error != nil || user == nil {
+                
+            } else {
+
+            }
         }
     }
 
@@ -68,14 +66,20 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
         updateLoginButtonFromState()
         AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
-        Task {
-            if let sessionId = KeychainAccess.shared.retrieveToken() {
-                delegate?.profileLoginModelController(self, didLogin: sessionId)
-            } else {
-                let vc = GetLoginWebViewController()
-                vc.delegate = self
-                self.tabBarController?.present(vc, animated: true)
-            }
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard let self else { return }
+            guard error == nil else { return }
+            guard let signInResult = signInResult else { return }
+
+            let user = signInResult.user
+
+            let emailAddress = user.profile?.email
+
+            let fullName = user.profile?.name
+            let givenName = user.profile?.givenName
+            let familyName = user.profile?.familyName
+
+            let profilePicUrl = user.profile?.imageURL(withDimension: 320)
 
             isLoggingIn = false
             updateLoginButtonFromState()

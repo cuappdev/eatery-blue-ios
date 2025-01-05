@@ -33,5 +33,16 @@
 	<string>$(ANNOUNCEMENTS_COMMON_PATH)</string>
 	<key>ANNOUNCEMENTS_SCHEME</key>
 	<string>$(ANNOUNCEMENTS_SCHEME)</string>
+	<key>GIDClientID</key>
+	<string>1052054007429-8f8rki2qv9uj18grgerm00subf8r7fad.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1052054007429-8f8rki2qv9uj18grgerm00subf8r7fad</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

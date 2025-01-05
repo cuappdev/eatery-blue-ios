@@ -9,7 +9,7 @@ import UIKit
 
 class PillButtonView: UIView {
 
-    private let container = UIView()
+    let container = UIView()
     let imageView = UIImageView()
     let titleLabel = UILabel()
 

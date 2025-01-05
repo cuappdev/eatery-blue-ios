@@ -7,6 +7,7 @@
 
 import AppDevAnnouncements
 import Firebase
+import GoogleSignIn
 import Hero
 import Kingfisher
 import SnapKit
@@ -23,14 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
 
-        // Setup AppDevAnnouncements
-        AnnouncementNetworking.setupConfig(
-            scheme: EateryEnvironment.announcementsScheme,
-            host: EateryEnvironment.announcementsHost,
-            commonPath: EateryEnvironment.announcementsCommonPath,
-            announcementPath: EateryEnvironment.announcementsPath
-        )
+        // Request notification permissions
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
+            if let error = error {
+                Logger.notifications.error("Failed to request notification permissions: \(error.localizedDescription)")
+            } else {
+                Logger.notifications.info("Notification permissions granted: \(granted)")
+            }
+        }
 
+        application.registerForRemoteNotifications()
         return true
     }
 
@@ -52,4 +57,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         .portrait
     }
 
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        var handled: Bool
+
+        handled = GIDSignIn.sharedInstance.handle(url)
+
+        if handled {
+            return true
+        }
+
+        return false
+    }
+
+    // MARK: - UNUserNotificationCenterDelegate
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        Logger.notifications.info("Foreground notification received: \(notification.request.content.userInfo)")
+        completionHandler([.alert, .badge, .sound])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        Logger.notifications.info("Notification tapped: \(response.notification.request.content.userInfo)")
+        completionHandler()
+    }
 }

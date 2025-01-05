@@ -6,11 +6,18 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class SettingsMainMenuModelController: SettingsMainMenuViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setUpSettingsItems()
+    }
+
+    private func setUpSettingsItems() {
+        clearStackView()
 
         addSettingsItem(SettingsItem(
             image: UIImage(named: "AppDevLogo"),
@@ -42,7 +49,7 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             subtitle: "Select the Eatery app icon for your phone",
             action: { [weak self] in
                 guard let self else { return }
-                
+
                 let viewController = SettingsAppIconSheetViewController()
                 viewController.setUpSheetPresentation()
                 tabBarController?.present(viewController, animated: true)
@@ -57,7 +64,7 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
                 guard let self else { return }
 
                 let viewController = SettingsPrivacyViewController()
-                navigationController?.pushViewController(viewController, animated: true) 
+                navigationController?.pushViewController(viewController, animated: true)
             }
         ))
         addSeparator()
@@ -72,15 +79,47 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
                 navigationController?.pushViewController(viewController, animated: true)
             }
         ))
-        setCustomSpacing(24)
+        addSeparator()
+        GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
+            guard let self else { return }
 
-        var didAttemptLogOut = false
+            if error != nil || user == nil {
+                addSettingsItem(SettingsItem(
+                    image: UIImage(named: "User"),
+                    title: "Sign In",
+                    subtitle: "Sync favorites and use AI features",
+                    action: { [weak self] in
+                        guard let self else { return }
 
-        addLoginStatusView(logOut: {
-            if !didAttemptLogOut {
-                Networking.default.logOut()
-                didAttemptLogOut = true
+                        let viewController = SettingsLoginSheetViewController()
+                        viewController.setUpSheetPresentation()
+                        viewController.onSuccess { [weak self] vc in
+                            guard let self else { return }
+
+                            vc.dismiss(animated: true)
+                            setUpSettingsItems()
+                        }
+                        tabBarController?.present(viewController, animated: true)
+                    }
+                ))
+            } else {
+                addSettingsItem(SettingsItem(
+                    image: UIImage(named: "User"),
+                    title: user?.profile?.givenName ?? "User",
+                    subtitle: "Click to log out",
+                    action: { [weak self] in
+                        guard let self else { return }
+
+                        GIDSignIn.sharedInstance.signOut()
+                        setUpSettingsItems()
+                    }
+                ))
             }
-        })
+
+            setCustomSpacing(24)
+
+            }
+
     }
+
 }
