@@ -10,8 +10,8 @@ import EateryModel
 import UIKit
 import CoreLocation
 
-class HomeModelController: HomeViewController {
-    
+class OldHomeModelController: OldHomeViewController {
+
     private var isTesting = false
     private var isLoading = true
 
@@ -285,7 +285,7 @@ class HomeModelController: HomeViewController {
 }
 
 
-extension HomeModelController: EateryFilterViewControllerDelegate {
+extension OldHomeModelController: EateryFilterViewControllerDelegate {
 
     func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter

@@ -7,7 +7,9 @@
 
 import UIKit
 
-class EateryCardShimmerView: UIView {
+class EateryCardShimmerView: UICollectionViewCell {
+
+    static let reuse = "EateryCardShimmerViewReuseId"
 
     enum EateryCardType {
         case Medium
@@ -18,29 +20,20 @@ class EateryCardShimmerView: UIView {
     private var gradientColorOne : CGColor = UIColor.Eatery.gray00.cgColor
     private var gradientColorTwo : CGColor = UIColor.Eatery.gray01.cgColor
 
-    func setUpShimmerView(for cardType: EateryCardType) {
-        self.cardType = cardType
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        configure()
     }
-    
+
     private func createGradientLayer() -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = {
-            switch cardType {
-            case .Medium:
-                let height = UIScreen.main.bounds.height/4.0
-                return CGRect(x: 0, y: 0, width: height*(270.0 / 186.0), height: height-20)
-            case .Large:
-                let height = UIScreen.main.bounds.height/2.0
-                return CGRect(x: 0, y: 0, width: height*(343.0 / 216.0), height: height)
-            case .none:
-                return .zero
-            }
-        }()
+        gradientLayer.frame.size = contentView.frame.size
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.8)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
         gradientLayer.colors = [gradientColorOne, gradientColorTwo, gradientColorOne]
+        gradientLayer.cornerRadius = 8
         gradientLayer.locations = [0.0, 0.5, 1.0]
-        self.layer.addSublayer(gradientLayer)
+        self.contentView.layer.addSublayer(gradientLayer)
 
         return gradientLayer
     }
@@ -55,7 +48,7 @@ class EateryCardShimmerView: UIView {
         return animation
     }
 
-    func startLoadingAnimation() {
+    func configure() {
         let gradientLayer = createGradientLayer()
         let animation = createAnimation()
 

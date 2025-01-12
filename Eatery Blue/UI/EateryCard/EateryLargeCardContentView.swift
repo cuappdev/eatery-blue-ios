@@ -9,7 +9,7 @@ import EateryModel
 import UIKit
 import Combine
 
-class EateryLargeCardContentView: UIView {
+class EateryLargeCardContentView: UICollectionViewCell {
 
     // MARK: - Properties (view)
     
@@ -22,9 +22,15 @@ class EateryLargeCardContentView: UIView {
     private let subtitleLabels = [UILabel(), UILabel()]
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
-    
-    
+
+    // MARK: - Properties (data)
+
     private var cancellables = Set<AnyCancellable>()
+    private var eatery: Eatery?
+
+    static let reuse = "EateryLargeCardContentViewReuseId"
+
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,6 +44,7 @@ class EateryLargeCardContentView: UIView {
     }
     
     func configure(eatery: Eatery) {
+        self.eatery = eatery
         titleLabel.text = eatery.name
         setUpFavoriteButton(eatery: eatery)
         configureImageView(imageUrl: eatery.imageUrl, isOpen: eatery.isOpen)
@@ -46,18 +53,26 @@ class EateryLargeCardContentView: UIView {
     }
 
     private func setUpSelf() {
-        insetsLayoutMarginsFromSafeArea = false
-        layoutMargins = .zero
-        backgroundColor = UIColor.Eatery.offWhite
+        contentView.insetsLayoutMarginsFromSafeArea = false
+        contentView.layoutMargins = .zero
+        contentView.backgroundColor = UIColor.Eatery.offWhite
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 8
+        layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        layer.shadowOpacity = 0.25
 
-        addSubview(imageView)
+        contentView.addSubview(imageView)
         setUpImageView()
 
-        addSubview(labelStackView)
+        contentView.addSubview(labelStackView)
         setUpLabelStackView()
 
-        addSubview(favoriteButton)
+        contentView.addSubview(favoriteButton)
         favoriteButton.addSubview(favoriteButtonImage)
+
+        setUpFavNotification()
     }
 
     private func setUpImageView() {
@@ -137,11 +152,22 @@ class EateryLargeCardContentView: UIView {
 
             NotificationCenter.default.post(
                 name: NSNotification.Name("favoriteEatery"),
-                object: nil
+                object: nil,
+                userInfo: ["favorited": metadata.isFavorite]
             )
         }
     }
-    
+
+    private func setUpFavNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshFavorite(_:)),
+            name: NSNotification.Name("favoriteEatery"),
+            object: nil
+        )
+    }
+
+
     private func configureImageView(imageUrl: URL?, isOpen: Bool) {
         imageView.image = UIImage()
         imageView.kf.setImage(with: imageUrl)
@@ -227,6 +253,12 @@ class EateryLargeCardContentView: UIView {
 
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
+    }
+
+    @objc private func refreshFavorite(_ notification: Notification) {
+        guard let eatery else { return }
+
+        setUpFavoriteButton(eatery: eatery)
     }
 
 }

@@ -220,7 +220,7 @@ class OnboardingFeaturesViewController: UIViewController {
         if nextIndex == pages.count {
             // We've reached the last page
             
-            navigationController?.pushViewController(HomeModelController(), animated: true)
+            navigationController?.pushViewController(OldHomeModelController(), animated: true)
 
         } else {
             // Move to the next page

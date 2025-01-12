@@ -68,6 +68,8 @@ class FavoritesViewController: UIViewController {
         setUpFavoriteItemsView()
         stackView.addArrangedSubview(favoriteItemsView)
 
+        setUpFavNotification()
+
         setUpConstraints()
     }
 
@@ -104,6 +106,15 @@ class FavoritesViewController: UIViewController {
     private func setUpFavoriteItemsView() {
         favoriteItemsView.allEateries = allEateries
         favoriteItemsView.favoriteItems = favoriteItems
+    }
+
+    private func setUpFavNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshFavorites(_:)),
+            name: NSNotification.Name("favoriteEatery"),
+            object: nil
+        )
     }
 
     private func setUpConstraints() {
@@ -152,7 +163,15 @@ class FavoritesViewController: UIViewController {
             logger.error("\(#function): \(error)")
         }
     }
-    
+
+    // MARK: - Actions
+
+    @objc private func refreshFavorites(_ notification: Notification) {
+        Task {
+            await updateFavoritesFromNetworking()
+        }
+    }
+
 }
 
 extension FavoritesViewController: TabButtonViewDelegate {

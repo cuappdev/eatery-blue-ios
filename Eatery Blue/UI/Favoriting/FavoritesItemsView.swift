@@ -33,6 +33,9 @@ class FavoritesItemsView: UIView {
     private var itemData: [String: [String: Set<String>]] = [:]
     private var sortedFavorites: [ItemMetadata] = []
 
+    private lazy var dataSource = makeDataSource()
+
+
     // MARK: - Init
 
     init() {
@@ -44,7 +47,9 @@ class FavoritesItemsView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Set Up
+
     private func setUpSelf() {
         setUpTableView()
         self.addSubview(tableView)
@@ -55,7 +60,7 @@ class FavoritesItemsView: UIView {
 
     private func setUpTableView() {
         tableView.register(FavoritesItemsTableViewCell.self, forCellReuseIdentifier: FavoritesItemsTableViewCell.reuse)
-        tableView.dataSource = self
+        tableView.register(ClearTableViewCell.self, forCellReuseIdentifier: ClearTableViewCell.reuse)
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
@@ -106,36 +111,49 @@ class FavoritesItemsView: UIView {
         }
 
         sortedFavorites = favoriteItems.sorted { itemData[$1.itemName ?? ""] == nil }
-        tableView.reloadData()
+
+        applySnapshot(animated: true, animation: .automatic)
     }
 
-}
+    // MARK: - Table View Data Source
 
-extension FavoritesItemsView: UITableViewDataSource {
+    /// Creates and returns the table view data source
+    private func makeDataSource() -> DataSource {
+        let dataSource = DataSource(tableView: tableView) { [weak self] (tableview, indexPath, row) in
+            guard let self else { return UITableViewCell() }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sortedFavorites.isEmpty ? 1 : sortedFavorites.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        if sortedFavorites.isEmpty {
-            let label = UILabel()
-            label.text = "No items found..."
-            label.font = .preferredFont(for: .title2, weight: .semibold)
-            let container = ContainerView(content: label)
-            container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
-
-            let cell = ClearTableViewCell(content: container)
-            cell.selectionStyle = .none
-            return cell
+            switch row {
+            case .item(let item, let expanded):
+                guard let cell = tableview.dequeueReusableCell(withIdentifier: FavoritesItemsTableViewCell.reuse, for: indexPath) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
+                cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
+                cell.selectionStyle = .none
+                return cell
+            case .label(let text):
+                guard let cell = tableview.dequeueReusableCell(withIdentifier: ClearTableViewCell.reuse, for: indexPath) as? ClearTableViewCell else { return UITableViewCell() }
+                let label = UILabel()
+                label.text = text
+                label.font = .preferredFont(for: .title2, weight: .semibold)
+                let container = ContainerView(content: label)
+                container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+                cell.configure(content: container)
+                cell.selectionStyle = .none
+                return cell
+            }
         }
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesItemsTableViewCell.reuse, for: indexPath) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
-        cell.selectionStyle = .none
-        cell.configure(item: sortedFavorites[indexPath.row], expanded: expanded.contains(indexPath.row), itemData: itemData[sortedFavorites[indexPath.row].itemName ?? ""])
+        return dataSource
+    }
 
-        return cell
+    /// Updates the table view data source, and animates if desired
+    private func applySnapshot(animated: Bool = true, animation: UITableView.RowAnimation = .fade) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(
+            (sortedFavorites.isEmpty ? [.label("No items found")] : sortedFavorites.map({ .item($0, expanded.contains(sortedFavorites.firstIndex(of: $0) ?? 0)) }))
+        )
+
+        dataSource.defaultRowAnimation = animation
+        dataSource.apply(snapshot, animatingDifferences: animated)
     }
 
 }
@@ -151,7 +169,25 @@ extension FavoritesItemsView: UITableViewDelegate {
             expanded.append(indexPath.row)
         }
 
-        tableView.reloadRows(at: [indexPath], with: .fade)
+        applySnapshot(animated: true)
+    }
+
+}
+
+extension FavoritesItemsView {
+
+    typealias DataSource = UITableViewDiffableDataSource<Section, Row>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
+
+    // For multiple sections, add to the enum
+    enum Section {
+        case main
+    }
+
+    // For multiple data sources, add to the enum
+    enum Row: Hashable {
+        case item(ItemMetadata, Bool)
+        case label(String)
     }
 
 }

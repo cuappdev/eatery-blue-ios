@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NavigationView: UIView {
+class NavigationView: UICollectionReusableView {
 
     // MARK: - Properties (View)
 

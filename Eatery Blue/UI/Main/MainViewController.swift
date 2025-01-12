@@ -10,7 +10,7 @@ import UIKit
 class MainViewController: UIViewController {
 
     private let theTabBarController = UITabBarController()
-    private let home = HomeModelController()
+    private let home = HomeViewController()
     private let menus = MenusModelController()
     private let profile = ProfileViewController()
 

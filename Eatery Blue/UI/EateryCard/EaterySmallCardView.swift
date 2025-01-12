@@ -2,23 +2,31 @@
 //  EaterySmallCardView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/22/21.
+//  Created by Peter Bidoshi on 2/11/25.
+//  Originally created by William Ma on 12/22/21.
 //
 
 import EateryModel
 import UIKit
 
-class EaterySmallCardView: UIView {
+class EaterySmallCardView: UICollectionViewCell {
+
+    // MARK: - Properties (View)
 
     private let imageView = UIImageView()
     private let favoriteButton = ContainerView(pillContent: UIImageView())
     private let titleLabel = UILabel()
 
+    // MARK: - Properties (Data)
+
+    static let reuse = "EaterySmallCardViewReuseId"
+
+    // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         setUpSelf()
-        setUpConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -27,11 +35,20 @@ class EaterySmallCardView: UIView {
     
     func configure(eatery: Eatery) {
         imageView.kf.setImage(with: eatery.imageUrl)
+        imageView.hero.id = eatery.imageUrl?.absoluteString
         titleLabel.text = eatery.name
         setUpFavoriteButton(eatery: eatery)
     }
 
     private func setUpSelf() {
+        contentView.backgroundColor = .white
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 8
+        layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        layer.shadowOpacity = 0.25
+
         addSubview(imageView)
         setUpImageView()
 
@@ -39,25 +56,37 @@ class EaterySmallCardView: UIView {
         setUpTitleLabel()
 
         addSubview(favoriteButton)
+
+        setUpConstraints()
     }
 
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
+        imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
 
     private func setUpTitleLabel() {
-        titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
+        titleLabel.font = .preferredFont(for: .headline, weight: .semibold)
         titleLabel.textColor = UIColor.Eatery.black
-        titleLabel.numberOfLines = 2
-        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 1
+        titleLabel.textAlignment = .left
     }
 
     private func setUpFavoriteButton(eatery: Eatery) {
-        favoriteButton.content.contentMode = .scaleAspectFill
-        favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-        
+        let coreDataStack = AppDelegate.shared.coreDataStack
+        let metadata = coreDataStack.metadata(eateryId: eatery.id)
+        if metadata.isFavorite {
+            self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
+        } else {
+            self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
+        }
+
+        favoriteButton.shadowColor = UIColor.Eatery.black
+        favoriteButton.shadowOffset = CGSize(width: 0, height: 4)
+        favoriteButton.backgroundColor = .white
+        favoriteButton.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         favoriteButton.tap { [weak self] _ in
             guard let self else { return }
             
@@ -74,7 +103,8 @@ class EaterySmallCardView: UIView {
 
             NotificationCenter.default.post(
                 name: NSNotification.Name("favoriteEatery"),
-                object: nil
+                object: nil,
+                userInfo: ["favorited": metadata.isFavorite]
             )
         }
     }
@@ -87,13 +117,14 @@ class EaterySmallCardView: UIView {
 
         favoriteButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.trailing.bottom.equalTo(imageView)
+            make.trailing.bottom.equalTo(imageView).inset(6)
         }
 
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().inset(10)
+            make.bottom.lessThanOrEqualToSuperview().offset(8)
         }
     }
 
