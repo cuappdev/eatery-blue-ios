@@ -105,7 +105,7 @@ class EateryListView: UIView {
 
             switch row {
             case .eatery(let eatery):
-                let largeCardContent = EateryLargeCardContentView()
+                let largeCardContent = EateryLargeCardView()
                 largeCardContent.configure(eatery: eatery)
                 let cardView = EateryCardVisualEffectView(content: largeCardContent)
                 cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

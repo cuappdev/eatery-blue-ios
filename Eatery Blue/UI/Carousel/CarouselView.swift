@@ -98,7 +98,7 @@ class CarouselView: UIView {
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 18
         collectionView.setCollectionViewLayout(layout, animated: true)
-        collectionView.register(EateryMediumCardCollectionViewCell.self, forCellWithReuseIdentifier: EateryMediumCardCollectionViewCell.reuse)
+        collectionView.register(EateryMediumCardView.self, forCellWithReuseIdentifier: EateryMediumCardView.reuse)
         collectionView.register(CarouselMoreEateriesCollectionViewCell.self, forCellWithReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -160,7 +160,7 @@ class CarouselView: UIView {
 
             switch row {
             case .eatery(let eatery):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryMediumCardCollectionViewCell.reuse, for: indexPath) as? EateryMediumCardCollectionViewCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryMediumCardView.reuse, for: indexPath) as? EateryMediumCardView else { return UICollectionViewCell() }
                 cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
 
                 UIView.animate(

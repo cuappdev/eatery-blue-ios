@@ -138,7 +138,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             return cell
 
         case .eatery(let eatery):
-            let largeCardContent = EateryLargeCardContentView()
+            let largeCardContent = EateryLargeCardView()
             
             largeCardContent.configure(eatery: eatery)
 

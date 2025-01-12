@@ -1,40 +1,40 @@
 //
-//  EateryLargeCardContentView.swift
+//  EateryMediumCardContentView.swift
 //  Eatery Blue
 //
-//  Created by William Ma on 12/23/21.
+//  Created by William Ma on 12/22/21.
 //
 
+import Combine
 import EateryModel
 import UIKit
-import Combine
 
-class EateryLargeCardContentView: UICollectionViewCell {
+class EateryMediumCardView: UICollectionViewCell {
 
     // MARK: - Properties (view)
-    
+
     private let imageView = UIImageView()
     private let imageTintView = UIView()
     private let alertsStackView = UIStackView()
 
-    private let labelStackView = UIStackView()
     private let titleLabel = UILabel()
-    private let subtitleLabels = [UILabel(), UILabel()]
+    private let subtitleLabel = UILabel()
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
+
+    private let alertView = EateryCardAlertView()
 
     // MARK: - Properties (data)
 
     private var cancellables = Set<AnyCancellable>()
-    private var eatery: Eatery?
 
-    static let reuse = "EateryLargeCardContentViewReuseId"
+    static let reuse = "EateryMediumCardContentViewReuseId"
 
     // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setUpSelf()
         setUpConstraints()
     }
@@ -42,20 +42,17 @@ class EateryLargeCardContentView: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configure(eatery: Eatery) {
-        self.eatery = eatery
         titleLabel.text = eatery.name
-        setUpFavoriteButton(eatery: eatery)
+        setupFavoriteButton(eatery: eatery)
         configureImageView(imageUrl: eatery.imageUrl, isOpen: eatery.isOpen)
         configureSubtitleLabels(eatery: eatery)
         configureAlerts(status: eatery.status)
     }
 
     private func setUpSelf() {
-        contentView.insetsLayoutMarginsFromSafeArea = false
-        contentView.layoutMargins = .zero
-        contentView.backgroundColor = UIColor.Eatery.offWhite
+        backgroundColor = UIColor.Eatery.offWhite
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
         layer.shadowRadius = 4
@@ -66,24 +63,28 @@ class EateryLargeCardContentView: UICollectionViewCell {
         contentView.addSubview(imageView)
         setUpImageView()
 
-        contentView.addSubview(labelStackView)
-        setUpLabelStackView()
+        contentView.addSubview(titleLabel)
+        setUpTitleLabel()
 
+        contentView.addSubview(subtitleLabel)
+        setUpSubtitleLabel()
+        
         contentView.addSubview(favoriteButton)
         favoriteButton.addSubview(favoriteButtonImage)
-
-        setUpFavNotification()
     }
 
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
 
-        imageView.addSubview(imageTintView)
+        contentView.addSubview(imageTintView)
         setUpImageTintView()
 
-        imageView.addSubview(alertsStackView)
+        contentView.addSubview(alertsStackView)
         setUpAlertsStackView()
+        
+        alertsStackView.addArrangedSubview(alertView)
+        alertView.isHidden = true
     }
 
     private func setUpImageTintView() {
@@ -98,36 +99,17 @@ class EateryLargeCardContentView: UICollectionViewCell {
         alertsStackView.distribution = .equalSpacing
     }
 
-    private func setUpLabelStackView() {
-        labelStackView.axis = .vertical
-        labelStackView.spacing = 4
-        labelStackView.distribution = .fill
-        labelStackView.alignment = .fill
-        
-        labelStackView.addArrangedSubview(titleLabel)
-        setUpTitleLabel()
-
-        for subtitleLabel in subtitleLabels {
-            labelStackView.addArrangedSubview(subtitleLabel)
-            setUpSubtitleLabel(subtitleLabel)
-        }
-    }
-
     private func setUpTitleLabel() {
-        titleLabel.numberOfLines = 0
-        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.textColor = UIColor.Eatery.black
     }
 
-    private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
+    private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         subtitleLabel.textColor = UIColor.Eatery.gray05
-        subtitleLabel.numberOfLines = 0
-        subtitleLabel.lineBreakMode = .byWordWrapping
     }
 
-    private func setUpFavoriteButton(eatery: Eatery) {
+    private func setupFavoriteButton(eatery: Eatery) {
         favoriteButton.content.contentMode = .scaleAspectFill
 
         let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
@@ -139,6 +121,7 @@ class EateryLargeCardContentView: UICollectionViewCell {
         
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
+
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
@@ -158,72 +141,14 @@ class EateryLargeCardContentView: UICollectionViewCell {
         }
     }
 
-    private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshFavorite(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
-    }
-
-
-    private func configureImageView(imageUrl: URL?, isOpen: Bool) {
-        imageView.image = UIImage()
-        imageView.kf.setImage(with: imageUrl)
-        imageTintView.alpha = isOpen ? 0 : 0.5
-        imageView.hero.id = imageUrl?.absoluteString
-    }
-    
-    private func configureSubtitleLabels(eatery: Eatery) {
-        subtitleLabels[0].text = eatery.locationDescription
-        LocationManager.shared.$userLocation
-            .sink { userLocation in
-                self.subtitleLabels[1].attributedText = EateryFormatter.default.formatEatery(
-                    eatery,
-                    style: .medium,
-                    font: .preferredFont(for: .footnote, weight: .medium),
-                    userLocation: userLocation,
-                    date: Date()
-                ).first
-            }
-            .store(in: &cancellables)
-        
-    }
-    
-    private func configureAlerts(status: EateryStatus) {
-        let now = Date()
-        switch status {
-        case .closingSoon(let event):
-            let alert = EateryCardAlertView()
-            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
-            alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
-            addAlertView(alert)
-
-        case .openingSoon(let event):
-            let alert = EateryCardAlertView()
-            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
-            alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
-            addAlertView(alert)
-
-        default:
-            break
-        }
-    }
-
     private func setUpConstraints() {
         snp.makeConstraints { make in
-            make.width.equalTo(snp.height).multipliedBy(343.0 / 216.0).priority(.required.advanced(by: -1))
+            make.width.equalTo(snp.height).multipliedBy(295.0 / 186.0).priority(.required.advanced(by: -1))
         }
 
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
-        
-        imageView.setContentCompressionResistancePriority(
-            titleLabel.contentCompressionResistancePriority(for: .vertical) - 1,
-            for: .vertical
-        )
 
         imageTintView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -233,16 +158,25 @@ class EateryLargeCardContentView: UICollectionViewCell {
             make.top.trailing.equalToSuperview().inset(12)
         }
 
-        labelStackView.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(12)
+            make.trailing.equalTo(favoriteButton.snp.leading)
             make.top.equalTo(imageView.snp.bottom).offset(12)
-            make.leading.bottom.equalToSuperview().inset(12)
         }
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
+        subtitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview().inset(12)
+        }
+        subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        
         favoriteButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom)
-            make.leading.equalTo(labelStackView.snp.trailing).offset(4)
+            make.leading.equalTo(subtitleLabel.snp.trailing).offset(4)
+            make.trailing.equalTo(imageView.snp.trailing)
             make.size.equalTo(44)
+            make.top.equalTo(imageView.snp.bottom)
         }
 
         favoriteButtonImage.snp.makeConstraints { make in
@@ -251,14 +185,79 @@ class EateryLargeCardContentView: UICollectionViewCell {
         }
     }
 
+    private func configureImageView(imageUrl: URL?, isOpen: Bool) {
+        imageView.kf.setImage(
+            with: imageUrl,
+            options: [.backgroundDecode]
+        )
+        imageTintView.alpha = isOpen ? 0 : 0.5
+    }
+    
+    private func configureFavoriteButton(id: Int64) {
+        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: id)
+        if metadata.isFavorite {
+            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
+        } else {
+            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
+        }
+        
+        favoriteButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+            
+            let coreDataStack = AppDelegate.shared.coreDataStack
+            let metadata = coreDataStack.metadata(eateryId: id)
+            metadata.isFavorite.toggle()
+            coreDataStack.save()
+            
+            if metadata.isFavorite {
+                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
+            } else {
+                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
+            }
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("favoriteEatery"),
+                object: nil,
+                userInfo: ["favorited": metadata.isFavorite]
+            )
+        }
+    }
+    
+    private func configureSubtitleLabels(eatery: Eatery) {
+        LocationManager.shared.$userLocation
+            .sink { userLocation in
+                self.subtitleLabel.attributedText = EateryFormatter.default.formatEatery(
+                    eatery,
+                    style: .medium,
+                    font: .preferredFont(for: .footnote, weight: .medium),
+                    userLocation: userLocation,
+                    date: Date()
+                ).first
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func configureAlerts(status: EateryStatus) {
+        let now = Date()
+        switch status {
+        case .closingSoon(let event):
+            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
+            alertView.titleLabel.text = "Closing in \(minutesUntilClosed) min"
+            alertView.isHidden = false
+
+        case .openingSoon(let event):
+            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
+            alertView.titleLabel.text = "Opening in \(minutesUntilOpen) min"
+            alertView.isHidden = false
+            
+        default:
+            alertView.isHidden = true
+            break
+        }
+    }
+    
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
-    }
-
-    @objc private func refreshFavorite(_ notification: Notification) {
-        guard let eatery else { return }
-
-        setUpFavoriteButton(eatery: eatery)
     }
 
 }

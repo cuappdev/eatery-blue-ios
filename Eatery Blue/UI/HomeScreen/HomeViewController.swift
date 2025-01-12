@@ -122,7 +122,7 @@ class HomeViewController: UIViewController {
 
         collectionView.register(EateryCardShimmerView.self, forCellWithReuseIdentifier: EateryCardShimmerView.reuse)
 
-        collectionView.register(EateryLargeCardContentView.self, forCellWithReuseIdentifier: EateryLargeCardContentView.reuse)
+        collectionView.register(EateryLargeCardView.self, forCellWithReuseIdentifier: EateryLargeCardView.reuse)
         collectionView.register(EaterySmallCardView.self, forCellWithReuseIdentifier: EaterySmallCardView.reuse)
         collectionView.register(ClearCollectionViewCell.self, forCellWithReuseIdentifier: ClearCollectionViewCell.reuse)
 
@@ -332,7 +332,6 @@ class HomeViewController: UIViewController {
         navigationController?.hero.isEnabled = true
         navigationController?.hero.navigationAnimationType = .fade
         navigationController?.pushViewController(pageVC, animated: true)
-        pageVC
     }
 
     /// Animate all of the cells loading in
@@ -382,7 +381,7 @@ class HomeViewController: UIViewController {
 
             switch item {
             case .largeEateryCard(eatery: let eatery):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryLargeCardContentView.reuse, for: indexPath) as? EateryLargeCardContentView else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryLargeCardView.reuse, for: indexPath) as? EateryLargeCardView else { return UICollectionViewCell() }
                 cell.configure(eatery: eatery)
                 return cell
             case .smallEateryCard(eatery: let eatery):

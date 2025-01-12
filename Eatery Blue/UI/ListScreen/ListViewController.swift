@@ -253,14 +253,12 @@ extension ListViewController: UITableViewDataSource {
 
         } else {
             let eatery = eateries[indexPath.row - 1]
-            let largeCardContent = EateryLargeCardContentView()
+            let largeCardContent = EateryLargeCardView()
             
             largeCardContent.configure(eatery: eatery)
+            largeCardContent.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
-            let cardView = EateryCardVisualEffectView(content: largeCardContent)
-            cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-
-            let cell = ClearTableViewCell(content: cardView)
+            let cell = ClearTableViewCell(content: largeCardContent)
             cell.selectionStyle = .none
             return cell
         }

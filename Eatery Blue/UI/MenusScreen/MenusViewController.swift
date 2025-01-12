@@ -207,9 +207,9 @@ extension MenusViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         case .loadingCard:
-            let contentView = EateryExpandLoadingCardView()
+//            let contentView = EateryExpandLoadingCardView()
             
-            let cardView = EateryCardVisualEffectView(content: contentView)
+            let cardView = EateryCardVisualEffectView(content: UIView())
             cardView.layoutMargins = Constants.cardViewLayoutMargins
             
             let cell = ClearTableViewCell(content: cardView)
