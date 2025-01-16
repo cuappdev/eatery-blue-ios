@@ -1,5 +1,5 @@
 //
-//  EateryLargeCardContentView.swift
+//  EateryLargeCardView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/23/21.

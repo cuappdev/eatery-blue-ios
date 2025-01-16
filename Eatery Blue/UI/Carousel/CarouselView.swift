@@ -104,6 +104,7 @@ class CarouselView: UIView {
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.delegate = self
         collectionView.alwaysBounceHorizontal = true
+        collectionView.backgroundColor = .clear
     }
 
     private func setUpConstraints() {
@@ -186,7 +187,7 @@ class CarouselView: UIView {
     }
 
     /// Updates the table view data source, and animates if desired
-    private func applySnapshot(animatingDifferences: Bool = true) {
+    private func applySnapshot(animated: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         if truncateAfter > -1 {
@@ -199,7 +200,7 @@ class CarouselView: UIView {
             )
         }
 
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+        dataSource.apply(snapshot, animatingDifferences: animated)
     }
 
 }

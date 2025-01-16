@@ -7,9 +7,7 @@
 
 import UIKit
 
-class EateryCardShimmerView: UICollectionViewCell {
-
-    static let reuse = "EateryCardShimmerViewReuseId"
+class EateryCardShimmerView: UITableViewCell {
 
     enum EateryCardType {
         case Medium
@@ -20,6 +18,18 @@ class EateryCardShimmerView: UICollectionViewCell {
     private var gradientColorOne : CGColor = UIColor.Eatery.gray00.cgColor
     private var gradientColorTwo : CGColor = UIColor.Eatery.gray01.cgColor
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        snp.makeConstraints{ make in
+            make.height.equalTo(76)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         configure()

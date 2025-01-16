@@ -28,7 +28,8 @@ class SettingsAppIconSheetViewController: SheetViewController {
         AppIcon(name: "Red", icon: UIImage(named: "AppIcon-Preview-WhiteRed")),
         AppIcon(name: "Green", icon: UIImage(named: "AppIcon-Preview-WhiteGreen")),
         AppIcon(name: "Orange", icon: UIImage(named: "AppIcon-Preview-WhiteOrange")),
-        AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow"))
+        AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow")),
+        AppIcon(name: "Secret", icon: UIImage(named: "AppIcon-Preview-Secret")),
     ]
 
     // MARK: - Properties (view)
@@ -72,12 +73,12 @@ class SettingsAppIconSheetViewController: SheetViewController {
         iconsCollectionView.dataSource = self
         iconsCollectionView.delegate = self
         iconsCollectionView.showsVerticalScrollIndicator = false
+        iconsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
     private func setUpConstraints() {
         iconsCollectionView.snp.makeConstraints { make in
             make.height.equalTo(372)
-            make.leading.trailing.equalTo(stackView).inset(16)
         }
     }
 

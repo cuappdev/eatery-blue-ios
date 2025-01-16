@@ -10,7 +10,7 @@ import SnapKit
 import UIKit
 
 class MenuDayPickerTableViewCell: UITableViewCell {
-    
+
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = .eatery
@@ -37,17 +37,17 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     
     private var menuChoices: [MenuChoice] = []
     private var selectedMenuIndex: Int?
-    
+
+    static let reuse = "MenuDayPickerCollectionViewCellReuseId"
+
     weak var updateDateDelegate: UpdateDateDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        selectionStyle = .none
-        
+
         contentView.addSubview(dayPickerView)
         dayPickerView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
@@ -57,7 +57,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     
     func configure(days: [Day]) {
         self.days = days
-        
+
         // Reset data
         dayPickerView.resetCells()
         
@@ -118,4 +118,10 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         updateDayPickerCellsFromState()
     }
     
+}
+
+protocol UpdateDateDelegate: AnyObject {
+
+    func updateMenuDay(index: Int)
+
 }

@@ -19,7 +19,7 @@ class EateryListView: UIView {
     /// Eateries to display in the list view when no filter is applied
     var eateries: [Eatery] = [] {
         didSet {
-            updateEateriesFromState()
+            updateEateriesFromState(animated: !oldValue.isEmpty)
         }
     }
     /// The navigation controller that this view uses to pop on back button press
@@ -51,7 +51,7 @@ class EateryListView: UIView {
         setUpEateriesFilterViewController()
 
         setUpConstraints()
-        applySnapshot(animatingDifferences: true)
+        applySnapshot(animated: true)
     }
 
     private func setUpTableView() {
@@ -72,7 +72,7 @@ class EateryListView: UIView {
         }
     }
 
-    private func updateEateriesFromState() {
+    private func updateEateriesFromState(animated: Bool = true) {
         var updatedEateries: [Eatery] = []
 
         if filter.isEnabled {
@@ -92,7 +92,7 @@ class EateryListView: UIView {
         }
 
         shownEateries = updatedEateries
-        applySnapshot(animatingDifferences: true)
+        applySnapshot(animated: animated)
     }
 
     // MARK: - Table View Data Source
@@ -134,7 +134,7 @@ class EateryListView: UIView {
     }
 
     /// Updates the table view data source, and animates if desired
-    private func applySnapshot(animatingDifferences: Bool = true) {
+    private func applySnapshot(animated: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(
@@ -142,7 +142,7 @@ class EateryListView: UIView {
             (shownEateries.isEmpty ? [.label("No eateries found")] : shownEateries.map({ .eatery($0) }))
         )
 
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+        dataSource.apply(snapshot, animatingDifferences: animated)
     }
 
 }

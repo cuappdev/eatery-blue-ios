@@ -24,15 +24,18 @@ class HomeViewController: UIViewController {
 
     private var allEateries: [Eatery] = []
     private var cancellables: Set<AnyCancellable> = []
+    private lazy var dataSource = makeDataSource()
     private var filter = EateryFilter()
     private let filterController = EateryFilterViewController()
     private var headerHeight: CGFloat = Constants.maxHeaderHeight
     private var isLoading = true
     private var previousScrollOffset: CGFloat = 0
-    private var selectedDisplayStyle: DisplayStyle = .list
+    private var selectedDisplayStyle: DisplayStyle = {
+        DisplayStyle(rawValue: UserDefaults.standard.integer(forKey: UserDefaultsKeys.preferedDisplayStyle)) ?? .list
+    }()
     private var shownEateries: [Eatery] = []
 
-    private lazy var dataSource = makeDataSource()
+    // MARK: - Constants
 
     struct Constants {
         static let carouselViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
@@ -85,16 +88,12 @@ class HomeViewController: UIViewController {
 
         view.layoutIfNeeded()
 
-        applySnapshot(animated: true)
-
         Task {
             do {
-                view.isUserInteractionEnabled = false
+                startLoading()
                 try await updateSimpleEateriesFromNetworking()
-                isLoading = false
+                stopLoading()
                 trySetUpCompareMenusOnboarding()
-                applySnapshot()
-                animateCellLoading()
             } catch {
                 logger.error("\(#function): \(error)")
             }
@@ -114,13 +113,13 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpCollectionView() {
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .Eatery.offWhite
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.delegate = self
         collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0
         collectionView.showsVerticalScrollIndicator = false
 
-        collectionView.register(EateryCardShimmerView.self, forCellWithReuseIdentifier: EateryCardShimmerView.reuse)
+        collectionView.register(EateryCardShimmerCollectionViewCell.self, forCellWithReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse)
 
         collectionView.register(EateryLargeCardView.self, forCellWithReuseIdentifier: EateryLargeCardView.reuse)
         collectionView.register(EaterySmallCardView.self, forCellWithReuseIdentifier: EaterySmallCardView.reuse)
@@ -217,7 +216,7 @@ class HomeViewController: UIViewController {
     // MARK: - Actions
 
     func scrollToTop(animated: Bool) {
-        collectionView.scrollRectToVisible(CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height), animated: true)
+        collectionView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
 
     @objc private func updateFavorites(_ notification: Notification) {
@@ -235,7 +234,7 @@ class HomeViewController: UIViewController {
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
-        isLoading = true
+        startLoading()
         LocationManager.shared.requestLocation()
 
         Task {
@@ -258,9 +257,7 @@ class HomeViewController: UIViewController {
                 }
             }
 
-            isLoading = false
-            applySnapshot()
-            animateCellLoading()
+            stopLoading()
             sender.endRefreshing()
         }
     }
@@ -282,8 +279,6 @@ class HomeViewController: UIViewController {
         }.sorted(by: {
             return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
         })
-
-        view.isUserInteractionEnabled = true
     }
 
     /// Returns the favorites carousel using the core data stack. Returns nil if the carousel is empty.
@@ -303,6 +298,7 @@ class HomeViewController: UIViewController {
             }
         }
 
+        favoritesCarousel.backgroundColor = .clear
         favoritesCarousel.eateries = favoriteEateries
         favoritesCarousel.setupObserver("favoriteEatery") { [weak self] in
             guard let self else { return }
@@ -372,6 +368,19 @@ class HomeViewController: UIViewController {
         }
     }
 
+    private func startLoading() {
+        isLoading = true
+        applySnapshot(animated: true)
+        view.isUserInteractionEnabled = false
+    }
+
+    private func stopLoading() {
+        isLoading = false
+        applySnapshot(animated: false)
+        animateCellLoading()
+        view.isUserInteractionEnabled = true
+    }
+
     // MARK: - Collection View Data Source
 
     /// Creates and returns the table view data source
@@ -389,7 +398,7 @@ class HomeViewController: UIViewController {
                 cell.configure(eatery: eatery)
                 return cell
             case .loadingCard(isLarge: let isLarge, key: _):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryCardShimmerView.reuse, for: indexPath) as? EateryCardShimmerView else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse, for: indexPath) as? EateryCardShimmerCollectionViewCell else { return UICollectionViewCell() }
                 cell.configure()
                 return cell
             default:
@@ -406,19 +415,16 @@ class HomeViewController: UIViewController {
                 searchBar.backgroundImage = UIImage()
                 searchBar.hero.id = "searchBar"
                 cell.configure(content: searchBar)
-                break
             case .customView(let view, _, _):
                 let container = ContainerView(content: view)
                 container.layoutMargins = Constants.customViewLayoutMargins
                 cell.configure(content: container)
-                break
             case .titleLabel(title: let title):
                 let label = UILabel()
                 label.text = title
                 label.font = .preferredFont(for: .title2, weight: .semibold)
                 let container = ContainerView(content: label)
                 cell.configure(content: container)
-                break
             case .loadingLabel(title: let title):
                 let label = UILabel()
                 label.text = title
@@ -426,7 +432,6 @@ class HomeViewController: UIViewController {
                 label.font = .preferredFont(for: .title2, weight: .semibold)
                 let container = ContainerView(content: label)
                 cell.configure(content: container)
-                break
             case .carouselView(let carouselView):
                 let container = ContainerView(content: carouselView)
                 cell.configure(content: container)
@@ -437,7 +442,7 @@ class HomeViewController: UIViewController {
                 stackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 0)
                 stackView.isLayoutMarginsRelativeArrangement = true
                 for _ in 0...1 {
-                    let view = EateryCardShimmerView()
+                    let view = EateryCardShimmerCollectionViewCell()
                     stackView.addArrangedSubview(view)
                     view.snp.makeConstraints { make in
                         make.width.equalTo(312)
@@ -531,25 +536,27 @@ class HomeViewController: UIViewController {
         .store(in: &cancellables)
 
         let label = UILabel()
-        label.text = "All Eateries"
+        label.text = filter.isEnabled ? "Filtered Eateries" : "All Eateries"
         label.font = .preferredFont(for: .title2, weight: .semibold)
 
         let selectionButtons = MiniSelectionView()
-        selectionButtons.addButton(DisplayStyle.list.description, image: UIImage(named: "Burger")!, padding: 8)
-        selectionButtons.addButton(DisplayStyle.grid.description, image: UIImage(systemName: "square.grid.2x2")!, padding: 4)
+        selectionButtons.addButton(DisplayStyle.list.rawValue, image: UIImage(named: "Burger")!, padding: 8)
+        selectionButtons.addButton(DisplayStyle.grid.rawValue, image: UIImage(systemName: "square.grid.2x2")!, padding: 4)
         selectionButtons.onTap = { [weak self] selection in
             guard let self else { return }
 
-            if selection == DisplayStyle.list.description {
+            if selection == DisplayStyle.list.rawValue {
                 selectedDisplayStyle = .list
             } else {
                 selectedDisplayStyle = .grid
             }
 
+            UserDefaults.standard.set(selectedDisplayStyle.rawValue, forKey: UserDefaultsKeys.preferedDisplayStyle)
+
             applySnapshot()
         }
 
-        selectionButtons.selectButton(selectedDisplayStyle.description)
+        selectionButtons.selectButton(selectedDisplayStyle.rawValue)
 
         let container = UIView()
         container.addSubview(label)
@@ -619,7 +626,6 @@ extension HomeViewController {
         case loadingCard(isLarge: Bool, key: Int)
 
         func getSize(collectionView: UICollectionView) -> CGSize {
-
             var width = collectionView.contentSize.width - Constants.collectionViewSectionPadding * 2
             var height = collectionView.bounds.width * 7 / 12
             switch self {
@@ -668,9 +674,9 @@ extension HomeViewController {
         case closed
     }
 
-    enum DisplayStyle: CustomStringConvertible {
-        case list
-        case grid
+    enum DisplayStyle: Int {
+        case list = 0
+        case grid = 1
 
         var description: String {
             switch self {

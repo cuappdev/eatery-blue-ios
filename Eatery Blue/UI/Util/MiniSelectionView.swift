@@ -15,9 +15,9 @@ class MiniSelectionView: UIView {
 
     // MARK: - Properties (data)
 
-    private var buttons: [String:(container: UIView, image: UIImageView)] = [:]
+    private var buttons: [Int:(container: UIView, image: UIImageView)] = [:]
     /// Called when a button is tapped
-    var onTap: ((String) -> Void)? {
+    var onTap: ((Int) -> Void)? {
         didSet {
             buttons.forEach { button in
                 button.value.container.tap { [weak self] _ in
@@ -72,8 +72,8 @@ class MiniSelectionView: UIView {
     // MARK: - Actions
 
     /// Adds a button to the view, if the title isn't already in the view
-    func addButton(_ title: String, image: UIImage, padding: CGFloat = 0) {
-        if buttons.keys.contains(title) { return }
+    func addButton(_ identifier: Int, image: UIImage, padding: CGFloat = 0) {
+        if buttons.keys.contains(identifier) { return }
 
         let imageView = UIImageView()
         imageView.image = image
@@ -88,8 +88,8 @@ class MiniSelectionView: UIView {
         button.tap { [weak self] _ in
             guard let self else { return }
 
-            selectButton(title)
-            onTap?(title)
+            selectButton(identifier)
+            onTap?(identifier)
         }
 
         button.addSubview(imageView)
@@ -103,13 +103,11 @@ class MiniSelectionView: UIView {
             make.width.equalTo(button.snp.height).multipliedBy(1.4)
         }
 
-        buttons[title] = (container: button, image: imageView)
+        buttons[identifier] = (container: button, image: imageView)
     }
 
-    func selectButton(_ title: String) {
-        guard let button = buttons[title] else { return }
-
-        print("WE ARE HERE")
+    func selectButton(_ identifier: Int) {
+        guard let button = buttons[identifier] else { return }
 
         for pair in buttons.values {
             pair.container.backgroundColor = .Eatery.gray00
