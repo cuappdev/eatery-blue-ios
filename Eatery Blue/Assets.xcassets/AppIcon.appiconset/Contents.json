@@ -55,10 +55,10 @@
       "size": "57x57"
     },
     {
-      "filename": "120 1.png",
-      "idiom": "iphone",
-      "scale": "2x",
-      "size": "60x60"
+      "filename" : "120.png",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "size" : "60x60"
     },
     {
       "filename": "180.png",
@@ -73,34 +73,34 @@
       "size": "20x20"
     },
     {
-      "filename": "40 1.png",
-      "idiom": "ipad",
-      "scale": "2x",
-      "size": "20x20"
+      "filename" : "40.png",
+      "idiom" : "ipad",
+      "scale" : "2x",
+      "size" : "20x20"
     },
     {
-      "filename": "29 1.png",
-      "idiom": "ipad",
-      "scale": "1x",
-      "size": "29x29"
+      "filename" : "29.png",
+      "idiom" : "ipad",
+      "scale" : "1x",
+      "size" : "29x29"
     },
     {
-      "filename": "58 1.png",
-      "idiom": "ipad",
-      "scale": "2x",
-      "size": "29x29"
+      "filename" : "58.png",
+      "idiom" : "ipad",
+      "scale" : "2x",
+      "size" : "29x29"
     },
     {
-      "filename": "40 2.png",
-      "idiom": "ipad",
-      "scale": "1x",
-      "size": "40x40"
+      "filename" : "40.png",
+      "idiom" : "ipad",
+      "scale" : "1x",
+      "size" : "40x40"
     },
     {
-      "filename": "80 1.png",
-      "idiom": "ipad",
-      "scale": "2x",
-      "size": "40x40"
+      "filename" : "80.png",
+      "idiom" : "ipad",
+      "scale" : "2x",
+      "size" : "40x40"
     },
     {
       "filename": "50.png",
@@ -163,10 +163,10 @@
       "size": "16x16"
     },
     {
-      "filename": "32 1.png",
-      "idiom": "mac",
-      "scale": "1x",
-      "size": "32x32"
+      "filename" : "32.png",
+      "idiom" : "mac",
+      "scale" : "1x",
+      "size" : "32x32"
     },
     {
       "filename": "64.png",
@@ -187,10 +187,10 @@
       "size": "128x128"
     },
     {
-      "filename": "256 1.png",
-      "idiom": "mac",
-      "scale": "1x",
-      "size": "256x256"
+      "filename" : "256.png",
+      "idiom" : "mac",
+      "scale" : "1x",
+      "size" : "256x256"
     },
     {
       "filename": "512.png",
@@ -199,16 +199,16 @@
       "size": "256x256"
     },
     {
-      "filename": "512 1.png",
-      "idiom": "mac",
-      "scale": "1x",
-      "size": "512x512"
+      "filename" : "512.png",
+      "idiom" : "mac",
+      "scale" : "1x",
+      "size" : "512x512"
     },
     {
-      "filename": "1024 1.png",
-      "idiom": "mac",
-      "scale": "2x",
-      "size": "512x512"
+      "filename" : "1024.png",
+      "idiom" : "mac",
+      "scale" : "2x",
+      "size" : "512x512"
     },
     {
       "filename": "48.png",
@@ -227,18 +227,18 @@
       "subtype": "42mm"
     },
     {
-      "filename": "58 2.png",
-      "idiom": "watch",
-      "role": "companionSettings",
-      "scale": "2x",
-      "size": "29x29"
+      "filename" : "58.png",
+      "idiom" : "watch",
+      "role" : "companionSettings",
+      "scale" : "2x",
+      "size" : "29x29"
     },
     {
-      "filename": "87 1.png",
-      "idiom": "watch",
-      "role": "companionSettings",
-      "scale": "3x",
-      "size": "29x29"
+      "filename" : "87.png",
+      "idiom" : "watch",
+      "role" : "companionSettings",
+      "scale" : "3x",
+      "size" : "29x29"
     },
     {
       "filename": "66.png",
@@ -249,12 +249,12 @@
       "subtype": "45mm"
     },
     {
-      "filename": "80 2.png",
-      "idiom": "watch",
-      "role": "appLauncher",
-      "scale": "2x",
-      "size": "40x40",
-      "subtype": "38mm"
+      "filename" : "80.png",
+      "idiom" : "watch",
+      "role" : "appLauncher",
+      "scale" : "2x",
+      "size" : "40x40",
+      "subtype" : "38mm"
     },
     {
       "filename": "88.png",
@@ -273,20 +273,19 @@
       "subtype": "41mm"
     },
     {
-      "filename": "100 1.png",
-      "idiom": "watch",
-      "role": "appLauncher",
-      "scale": "2x",
-      "size": "50x50",
-      "subtype": "44mm"
+      "filename" : "100.png",
+      "idiom" : "watch",
+      "role" : "appLauncher",
+      "scale" : "2x",
+      "size" : "50x50",
+      "subtype" : "44mm"
     },
     {
-      "filename": "102.png",
-      "idiom": "watch",
-      "role": "appLauncher",
-      "scale": "2x",
-      "size": "51x51",
-      "subtype": "45mm"
+      "idiom" : "watch",
+      "role" : "appLauncher",
+      "scale" : "2x",
+      "size" : "51x51",
+      "subtype" : "45mm"
     },
     {
       "idiom": "watch",
@@ -334,10 +333,10 @@
       "subtype": "49mm"
     },
     {
-      "filename": "1024 2.png",
-      "idiom": "watch-marketing",
-      "scale": "1x",
-      "size": "1024x1024"
+      "filename" : "1024.png",
+      "idiom" : "watch-marketing",
+      "scale" : "1x",
+      "size" : "1024x1024"
     }
   ],
   "info": {
