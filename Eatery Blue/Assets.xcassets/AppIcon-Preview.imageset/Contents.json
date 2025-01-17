@@ -1,9 +1,9 @@
 {
   "images": [
     {
-      "filename": "appstore.png",
-      "idiom": "universal",
-      "scale": "1x"
+      "filename" : "1024.png",
+      "idiom" : "universal",
+      "scale" : "1x"
     },
     {
       "idiom": "universal",
