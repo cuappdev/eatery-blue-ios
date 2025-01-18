@@ -7,6 +7,7 @@
 
 import EateryModel
 import UIKit
+import Combine
 
 class EateryLargeCardContentView: UIView {
 
@@ -21,6 +22,9 @@ class EateryLargeCardContentView: UIView {
     private let subtitleLabels = [UILabel(), UILabel()]
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
+    
+    
+    private var cancellables = Set<AnyCancellable>()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -147,7 +151,18 @@ class EateryLargeCardContentView: UIView {
     
     private func configureSubtitleLabels(eatery: Eatery) {
         subtitleLabels[0].text = eatery.locationDescription
-        subtitleLabels[1].attributedText = EateryFormatter.default.eateryCardFormatter(eatery, date: Date())
+        LocationManager.shared.$userLocation
+            .sink { userLocation in
+                self.subtitleLabels[1].attributedText = EateryFormatter.default.formatEatery(
+                    eatery,
+                    style: .medium,
+                    font: .preferredFont(for: .footnote, weight: .medium),
+                    userLocation: userLocation,
+                    date: Date()
+                ).first
+            }
+            .store(in: &cancellables)
+        
     }
     
     private func configureAlerts(status: EateryStatus) {

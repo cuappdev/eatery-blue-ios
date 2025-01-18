@@ -27,6 +27,7 @@ indirect enum EateryPredicate {
     case isSelected([Eatery])
 
     func isSatisfied(by eatery: Eatery, metadata: EateryMetadata?) -> Bool {
+
         if let metadata = metadata, metadata.eateryId != eatery.id {
             logger.warning("\(#function): eatery.id (\(eatery.id)) does not match metadata.eateryId (\(metadata.eateryId))")
         }
@@ -56,10 +57,10 @@ indirect enum EateryPredicate {
             }
 
             return totalTime < TimeInterval(60 * n)
-
+        
         case .acceptsPaymentMethod(let paymentMethod):
             return eatery.paymentMethods.contains(paymentMethod)
-
+            
         case .campusArea(let campusArea):
             return eatery.campusArea == campusArea
 
@@ -77,5 +78,4 @@ indirect enum EateryPredicate {
             return eateries.contains(eatery)
         }
     }
-
 }

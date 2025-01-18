@@ -112,6 +112,7 @@ internal enum SchemaToModel {
 
     internal static func convert(_ schemaMenuItem: Schema.MenuItem) -> MenuItem {
         MenuItem(
+            id: schemaMenuItem.id,
             description: nil,
             healthy: schemaMenuItem.healthy ?? false,
             name: schemaMenuItem.name,

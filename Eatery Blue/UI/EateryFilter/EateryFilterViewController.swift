@@ -20,6 +20,8 @@ class EateryFilterViewController: UIViewController {
     private let west = PillFilterButtonView()
     private let central = PillFilterButtonView()
     private let under10Minutes = PillFilterButtonView()
+    private let brbs = PillFilterButtonView()
+    private let mealSwipes = PillFilterButtonView()
     private let paymentMethods = PillFilterButtonView()
     private let favorites = PillFilterButtonView()
 
@@ -54,15 +56,19 @@ class EateryFilterViewController: UIViewController {
 
         filtersView.addButton(central)
         setUpCentral()
+
+        filtersView.addButton(mealSwipes)
+        setUpSwipes()
+        
+        filtersView.addButton(brbs)
+        setUpBRBs()
+        
+        filtersView.addButton(favorites)
+        setUpFavorites()
         
         filtersView.addButton(under10Minutes)
         setUpUnder10Minutes()
-
-        filtersView.addButton(paymentMethods)
-        setUpPaymentMethods()
-
-        filtersView.addButton(favorites)
-        setUpFavorites()
+        
     }
 
     private func setUpNorth() {
@@ -109,7 +115,37 @@ class EateryFilterViewController: UIViewController {
             }
         }
     }
+    
+    private func setUpSwipes() {
+        mealSwipes.label.text = "Meal Swipes"
+        mealSwipes.tap { [weak self] _ in
+            guard let self else { return }
 
+            allFiltersCallback?()
+            filter.mealSwipesEnabled.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.mealSwipesEnabled {
+                AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            }
+        }
+    }
+    
+    private func setUpBRBs() {
+        brbs.label.text = "BRBs"
+        brbs.tap { [weak self] _ in
+            guard let self else { return }
+
+            allFiltersCallback?()
+            filter.brbsEnabled.toggle()
+            updateFilterButtonsFromState(animated: true)
+            delegate?.eateryFilterViewController(self, filterDidChange: filter)
+            if filter.brbsEnabled {
+                AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            }
+        }
+    }
+    
     private func setUpUnder10Minutes() {
         under10Minutes.label.text = "Under 10 min"
         under10Minutes.tap { [weak self] _ in
@@ -121,25 +157,6 @@ class EateryFilterViewController: UIViewController {
             delegate?.eateryFilterViewController(self, filterDidChange: filter)
             if filter.under10MinutesEnabled {
                 AppDevAnalytics.shared.logFirebase(NearestFilterPressPayload())
-            }
-        }
-    }
-
-    private func setUpPaymentMethods() {
-        paymentMethods.label.text = "Payment Methods"
-        paymentMethods.imageView.isHidden = false
-        paymentMethods.tap { [weak self] _ in
-            guard let self else { return }
-
-            allFiltersCallback?()
-            let viewController = PaymentMethodsFilterSheetViewController()
-            viewController.setUpSheetPresentation()
-            viewController.setSelectedPaymentMethods(filter.paymentMethods, animated: false)
-            viewController.delegate = self
-            if self.viewController != nil {
-                self.viewController?.present(viewController, animated: true)
-            } else {
-                tabBarController?.present(viewController, animated: true)
             }
         }
     }
@@ -186,6 +203,8 @@ class EateryFilterViewController: UIViewController {
         north.setHighlighted(filter.north)
         west.setHighlighted(filter.west)
         central.setHighlighted(filter.central)
+        mealSwipes.setHighlighted(filter.mealSwipesEnabled)
+        brbs.setHighlighted(filter.brbsEnabled)
 
         if filter.paymentMethods.isEmpty {
             paymentMethods.setHighlighted(false)
@@ -222,5 +241,5 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
         delegate?.eateryFilterViewController(self, filterDidChange: filter)
         viewController.dismiss(animated: true)
     }
-
+    
 }

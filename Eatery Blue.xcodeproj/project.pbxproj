@@ -19,8 +19,6 @@
 		41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */; };
 		413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413780502AC5DFD600EE43FE /* KeychainAccess.swift */; };
 		41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */; };
-		5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */; };
-		5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */; };
 		5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */; };
 		5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B9D78279F1DB1004B4AA1 /* SettingsPrivacyView.swift */; };
 		5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */; };
@@ -168,6 +166,7 @@
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor+Extension.swift */; };
+		C31EC93B2CF3DEBB00B2E99F /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */; };
 		D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */; };
 		D01D80772BC638C900253976 /* CompareMenusInternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */; };
 		D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */; };
@@ -176,8 +175,15 @@
 		D050633F2B93DC650022760B /* CompareMenusSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */; };
 		D05063412B9421F30022760B /* CompareMenusEaterySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */; };
 		D053AD132BA8A92F0001E770 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		D053BF602CCDA03B0060F82C /* FavoritesNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D053BF5F2CCDA03B0060F82C /* FavoritesNavigationView.swift */; };
+		D053BF622CCDAA250060F82C /* EateryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D053BF612CCDAA250060F82C /* EateryListView.swift */; };
 		D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0548AD62BB5201B0064489D /* ScrollHitView.swift */; };
+		D06230E82CB9D4A70092C04A /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06230E72CB9D4A70092C04A /* FavoritesViewController.swift */; };
 		D06364532B8834E700524757 /* EateryMediumCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */; };
+		D064656D2C8CE634001902A4 /* NotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064656C2C8CE634001902A4 /* NotificationButton.swift */; };
+		D06AE51C2CE1CC4500C0AFF5 /* TabButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06AE51B2CE1CC3700C0AFF5 /* TabButtonView.swift */; };
+		D07A73A12CDB20D1009E380C /* FavoritesItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07A73A02CDB20CC009E380C /* FavoritesItemsView.swift */; };
+		D07A73A32CDB223A009E380C /* FavoritesItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07A73A22CDB2231009E380C /* FavoritesItemsTableViewCell.swift */; };
 		D09D20A32B96D5D8004C72ED /* CompareMenusPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A22B96D5D8004C72ED /* CompareMenusPageViewController.swift */; };
 		D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A42B96DE19004C72ED /* CompareMenusNavigationView.swift */; };
 		D09D20A72B97A429004C72ED /* CompareMenusEateryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D20A62B97A429004C72ED /* CompareMenusEateryViewController.swift */; };
@@ -216,8 +222,6 @@
 		41240AD02ACA651A00D9E570 /* UpcomingMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuChoiceView.swift; sourceTree = "<group>"; };
 		413780502AC5DFD600EE43FE /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		41A8D4C92AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMenuPickerSheetViewController.swift; sourceTree = "<group>"; };
-		5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesViewController.swift; sourceTree = "<group>"; };
-		5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFavoritesModelController.swift; sourceTree = "<group>"; };
 		5D0B9D76279F1D73004B4AA1 /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
 		5D0B9D78279F1DB1004B4AA1 /* SettingsPrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyView.swift; sourceTree = "<group>"; };
 		5D0CDC422774E5F400AD0E27 /* PillButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButtonView.swift; sourceTree = "<group>"; };
@@ -357,6 +361,7 @@
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerView.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Eatery Blue.entitlements"; sourceTree = "<group>"; };
 		D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusTabsViewController.swift; sourceTree = "<group>"; };
 		D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusInternalOnboardingView.swift; sourceTree = "<group>"; };
 		D03A749A2B92BE9500C14083 /* CompareMenusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusButton.swift; sourceTree = "<group>"; };
@@ -364,8 +369,15 @@
 		D04FB87A2BCEE89B0058F732 /* SettingsAppIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAppIconCell.swift; sourceTree = "<group>"; };
 		D050633E2B93DC650022760B /* CompareMenusSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusSheetViewController.swift; sourceTree = "<group>"; };
 		D05063402B9421F30022760B /* CompareMenusEaterySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusEaterySelectionCell.swift; sourceTree = "<group>"; };
+		D053BF5F2CCDA03B0060F82C /* FavoritesNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesNavigationView.swift; sourceTree = "<group>"; };
+		D053BF612CCDAA250060F82C /* EateryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryListView.swift; sourceTree = "<group>"; };
 		D0548AD62BB5201B0064489D /* ScrollHitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollHitView.swift; sourceTree = "<group>"; };
+		D06230E72CB9D4A70092C04A /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		D06364522B8834E700524757 /* EateryMediumCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMediumCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		D064656C2C8CE634001902A4 /* NotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationButton.swift; sourceTree = "<group>"; };
+		D06AE51B2CE1CC3700C0AFF5 /* TabButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButtonView.swift; sourceTree = "<group>"; };
+		D07A73A02CDB20CC009E380C /* FavoritesItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesItemsView.swift; sourceTree = "<group>"; };
+		D07A73A22CDB2231009E380C /* FavoritesItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesItemsTableViewCell.swift; sourceTree = "<group>"; };
 		D09D20A22B96D5D8004C72ED /* CompareMenusPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusPageViewController.swift; sourceTree = "<group>"; };
 		D09D20A42B96DE19004C72ED /* CompareMenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusNavigationView.swift; sourceTree = "<group>"; };
 		D09D20A62B97A429004C72ED /* CompareMenusEateryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusEateryViewController.swift; sourceTree = "<group>"; };
@@ -383,6 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C31EC93B2CF3DEBB00B2E99F /* FirebaseMessaging in Frameworks */,
 				D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */,
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
 				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
@@ -420,15 +433,6 @@
 				2E856F682B67263A0043F350 /* EateryEnvironment.swift */,
 			);
 			path = Supporting;
-			sourceTree = "<group>";
-		};
-		5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */ = {
-			isa = PBXGroup;
-			children = (
-				5D0B9D73279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift */,
-				5D0B9D6F279F1657004B4AA1 /* SettingsFavoritesViewController.swift */,
-			);
-			path = SettingsFavorites;
 			sourceTree = "<group>";
 		};
 		5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */ = {
@@ -561,6 +565,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
 				5D8651802773CBFB000338D4 /* SceneDelegate.swift */,
@@ -692,6 +697,8 @@
 		5DF304B427797C3100E2C9A4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D06230E62CB9D4830092C04A /* Favoriting */,
+				D064656B2C8CE626001902A4 /* Notifications */,
 				D050633D2B93DC270022760B /* CompareMenus */,
 				5D698F932788ACDA0054E1AB /* Account */,
 				5D212AD627A44D49008B070D /* AlertMessage */,
@@ -720,7 +727,6 @@
 				5DBA89A52784D898002DCA6B /* Root */,
 				5D377CF327A20EE400F8DC37 /* SettingsAbout */,
 				D04FB8772BCEE74D0058F732 /* SettingsAppIcon */,
-				5D0B9D6E279F1614004B4AA1 /* SettingsFavorites */,
 				5DA434C4278CD0DF001337FD /* SettingsMain */,
 				5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */,
 				5D377CE627A1AB7200F8DC37 /* SettingsSupport */,
@@ -875,6 +881,7 @@
 				5D86EDA0277ED0A500C92A3B /* ListModelController.swift */,
 				5DF304D2277A6AF200E2C9A4 /* ListNavigationView.swift */,
 				5DF304D0277A69E000E2C9A4 /* ListViewController.swift */,
+				D053BF612CCDAA250060F82C /* EateryListView.swift */,
 			);
 			path = ListScreen;
 			sourceTree = "<group>";
@@ -973,6 +980,26 @@
 			path = CompareMenus;
 			sourceTree = "<group>";
 		};
+		D06230E62CB9D4830092C04A /* Favoriting */ = {
+			isa = PBXGroup;
+			children = (
+				D06AE51B2CE1CC3700C0AFF5 /* TabButtonView.swift */,
+				D07A73A22CDB2231009E380C /* FavoritesItemsTableViewCell.swift */,
+				D07A73A02CDB20CC009E380C /* FavoritesItemsView.swift */,
+				D06230E72CB9D4A70092C04A /* FavoritesViewController.swift */,
+				D053BF5F2CCDA03B0060F82C /* FavoritesNavigationView.swift */,
+			);
+			path = Favoriting;
+			sourceTree = "<group>";
+		};
+		D064656B2C8CE626001902A4 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				D064656C2C8CE634001902A4 /* NotificationButton.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1006,6 +1033,7 @@
 				2ED2FC122BA2D7AA00621028 /* Hero */,
 				2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */,
 				2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */,
+				C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -1112,6 +1140,7 @@
 				5D73C39127812C4F0020507C /* SearchResultsCountView.swift in Sources */,
 				5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */,
 				5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */,
+				D053BF602CCDA03B0060F82C /* FavoritesNavigationView.swift in Sources */,
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
@@ -1142,11 +1171,9 @@
 				5D34F090279B48CE000F9056 /* EateryCardAlertView.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
 				5DF304C6277A22AD00E2C9A4 /* ReportIssueButtonView.swift in Sources */,
-				5D0B9D70279F1657004B4AA1 /* SettingsFavoritesViewController.swift in Sources */,
 				D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */,
 				5D34F08E279AF9E1000F9056 /* ButtonView.swift in Sources */,
 				5DF5F7D427740182001ADCDC /* CarouselView.swift in Sources */,
-				5D0B9D74279F1C5A004B4AA1 /* SettingsFavoritesModelController.swift in Sources */,
 				5D377CEC27A1ABB500F8DC37 /* SettingsSupportView.swift in Sources */,
 				5DDAD4752773D70900CC98DD /* EateryMediumCardContentView.swift in Sources */,
 				5DA434AF278A01F1001337FD /* HomeNavigationView.swift in Sources */,
@@ -1158,10 +1185,12 @@
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
 				D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */,
 				5DCB86A427835EF900134066 /* DummyLocationManager.swift in Sources */,
+				D06230E82CB9D4A70092C04A /* FavoritesViewController.swift in Sources */,
 				D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */,
 				5D3A14A327A30A9200768E13 /* SettingsAboutModelController.swift in Sources */,
 				5D0CDC592775346600AD0E27 /* PillView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
+				D06AE51C2CE1CC4500C0AFF5 /* TabButtonView.swift in Sources */,
 				5DF5F7E72774C800001ADCDC /* EateryLargeCardContentView.swift in Sources */,
 				5DF304CD277A3ACA00E2C9A4 /* IssueDescriptionView.swift in Sources */,
 				5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */,
@@ -1169,6 +1198,7 @@
 				D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
+				D07A73A32CDB223A009E380C /* FavoritesItemsTableViewCell.swift in Sources */,
 				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
@@ -1189,6 +1219,7 @@
 				5DBA89962783CCAA002DCA6B /* LogoRefreshControl.swift in Sources */,
 				5D0CDC452774E7EA00AD0E27 /* EateryPillButtonStackView.swift in Sources */,
 				998F6D0C2ABF6E0D006B7F18 /* MenusFilterViewController.swift in Sources */,
+				D053BF622CCDAA250060F82C /* EateryListView.swift in Sources */,
 				BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */,
 				5D3A149B27A219B600768E13 /* SettingsAboutAppDevHeaderView.swift in Sources */,
 				5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */,
@@ -1244,6 +1275,7 @@
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				998F6D0A2ABF2C19006B7F18 /* EateryExpandableCardContentView.swift in Sources */,
 				5DA434BE278B6EC7001337FD /* UITableViewCell+Extension.swift in Sources */,
+				D064656D2C8CE634001902A4 /* NotificationButton.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,
 				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
@@ -1253,6 +1285,7 @@
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
 				5DBA899F2784CC03002DCA6B /* MainViewController.swift in Sources */,
 				5D8651932773CD5A000338D4 /* HomeViewController.swift in Sources */,
+				D07A73A12CDB20D1009E380C /* FavoritesItemsView.swift in Sources */,
 				5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */,
 				D050633F2B93DC650022760B /* CompareMenusSheetViewController.swift in Sources */,
 				5D75D6D1278CD59000832359 /* SettingsMainMenuViewController.swift in Sources */,
@@ -1407,9 +1440,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Eatery Blue/Eatery Blue.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 57;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1429,7 +1463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.1.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1450,9 +1484,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Eatery Blue/Eatery Blue.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1471,7 +1506,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.1.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1668,6 +1703,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF5F7D727740D26001ADCDC /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 

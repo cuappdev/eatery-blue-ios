@@ -17,16 +17,13 @@ class ListModelController: ListViewController {
     func setUp(
         _ eateries: [Eatery],
         title: String? = nil,
-        description: String? = nil,
-        allEateries: [Eatery]
+        description: String? = nil
     ) {
         filterController.delegate = self
         filterController.setFilter(filter, animated: false)
 
         super.setUp(title: title, description: description)
         self.listEateries = eateries
-        self.allEateries = allEateries
-
         updateEateriesFromState()
     }
 
