@@ -62,7 +62,6 @@ class CarouselView: UIView {
         }
     }
 
-
     // MARK: - Setup
     
     private func setUpSelf() {
@@ -162,8 +161,8 @@ class CarouselView: UIView {
             switch row {
             case .eatery(let eatery):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryMediumCardView.reuse, for: indexPath) as? EateryMediumCardView else { return UICollectionViewCell() }
-                cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
 
+                cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 UIView.animate(
                     withDuration: 0.6,
                     delay: 0,
@@ -179,6 +178,7 @@ class CarouselView: UIView {
                 return cell
             case .more:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse, for: indexPath) as? CarouselMoreEateriesCollectionViewCell else { return UICollectionViewCell() }
+
                 return cell
             }
         }
