@@ -29,7 +29,6 @@ class SettingsAppIconSheetViewController: SheetViewController {
         AppIcon(name: "Green", icon: UIImage(named: "AppIcon-Preview-WhiteGreen")),
         AppIcon(name: "Orange", icon: UIImage(named: "AppIcon-Preview-WhiteOrange")),
         AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow")),
-        AppIcon(name: "Secret", icon: UIImage(named: "AppIcon-Preview-Secret")),
     ]
 
     // MARK: - Properties (view)
