@@ -188,6 +188,9 @@ class EateryFilterViewController: UIViewController {
 
     override func viewLayoutMarginsDidChange() {
         filtersView.scrollView.contentInset = view.layoutMargins
+        filtersView.scrollView.layoutIfNeeded()
+
+        super.viewLayoutMarginsDidChange()
     }
 
     func updateFilterButtonsFromState(animated: Bool) {

@@ -15,5 +15,6 @@ enum UserDefaultsKeys {
     static let hasLoggedIn = "hasLoggedIn"
     static let isAnalyticsEnabled = "isAnalyticsEnabled"
     static let activeIcon = "activeIcon"
+    static let preferedDisplayStyle = "preferedDisplayStyle"
 
 }

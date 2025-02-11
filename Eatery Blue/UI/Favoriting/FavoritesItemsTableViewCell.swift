@@ -176,10 +176,10 @@ class FavoritesItemsTableViewCell: UITableViewCell {
 
             favoriteButtonImage.image = UIImage(named: menuItem.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
 
-
             NotificationCenter.default.post(
                 name: NSNotification.Name("favoriteEatery"),
-                object: nil
+                object: nil,
+                userInfo: ["favorited": menuItem.isFavorite]
             )
         }
     }

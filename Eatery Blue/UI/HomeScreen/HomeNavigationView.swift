@@ -9,10 +9,16 @@ import UIKit
 
 class HomeNavigationView: NavigationView {
 
+    // MARK: - Properties (View)
+
     let logoRefreshControl = LogoRefreshControl()
     let searchButton = NavigationImageButton()
 
+    // MARK: - Properties (Data)
+
     private(set) var fadeInProgress: Double = 0
+
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,6 +30,8 @@ class HomeNavigationView: NavigationView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     private func setUpSelf() {
         backgroundColor = UIColor.Eatery.blue
@@ -40,6 +48,7 @@ class HomeNavigationView: NavigationView {
         setRightButtons([searchButton])
 
         addSubview(logoRefreshControl)
+        setFadeInProgress(0)
     }
 
     private func setUpConstraints() {
@@ -49,6 +58,8 @@ class HomeNavigationView: NavigationView {
             make.leading.equalTo(layoutMarginsGuide)
         }
     }
+
+    // MARK: - Actions
 
     func setFadeInProgress(_ progress: Double) {
         titleLabel.alpha = progress

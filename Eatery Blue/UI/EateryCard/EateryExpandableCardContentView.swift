@@ -17,7 +17,7 @@ class EateryExpandableCardContentView: UIView {
     private let eateryNameLabel = UILabel()
     private let eateryStackView = UIStackView()
     private let eateryStatusLabel = UILabel()
-    private var expandedEatery: ExpandedEatery?
+    private var expandedEatery: MenusViewController.ExpandedEatery?
     private var allEateries: [Eatery] = []
 
     // MARK: - init
@@ -36,7 +36,7 @@ class EateryExpandableCardContentView: UIView {
     
     // MARK: - configure
     
-    func configure(expandedEatery: ExpandedEatery, allEateries: [Eatery]) {
+    func configure(expandedEatery: MenusViewController.ExpandedEatery, allEateries: [Eatery]) {
         self.expandedEatery = expandedEatery
         self.allEateries = allEateries
         eateryNameLabel.text = expandedEatery.eatery.name

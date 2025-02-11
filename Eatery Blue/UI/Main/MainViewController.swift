@@ -10,8 +10,8 @@ import UIKit
 class MainViewController: UIViewController {
 
     private let theTabBarController = UITabBarController()
-    private let home = HomeModelController()
-    private let menus = MenusModelController()
+    private let home = HomeViewController()
+    private let menus = MenusViewController()
     private let profile = ProfileViewController()
 
     override func viewDidLoad() {

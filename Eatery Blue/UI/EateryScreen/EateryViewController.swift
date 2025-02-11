@@ -110,18 +110,18 @@ class EateryViewController: UIViewController {
         }
     }
 
-
     func setCustomSpacing(_ spacing: CGFloat) {
         guard let last = stackView.arrangedSubviews.last else {
             return
         }
+
         stackView.setCustomSpacing(spacing, after: last)
     }
     
     func addSpinner() {
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
-                
+
         view.addSubview(spinner)
         
         spinner.snp.makeConstraints { make in

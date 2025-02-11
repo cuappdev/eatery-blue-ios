@@ -10,15 +10,20 @@ import SnapKit
 import UIKit
 
 class MenuCardTableViewCell: UITableViewCell {
-    
+
     // MARK: - Properties (view)
-    
+
+    private let containerView = UIView()
     private let expandableCardDetailView = EateryExpandableCardDetailView()
     private let expandableCardContentView = EateryExpandableCardContentView()
     private let stackView = UIStackView()
     
+    // MARK: - Properties (data)
+
+    static let reuse = "MenuCardCollectionViewCellReuseId"
+
     // MARK: - Constants
-    
+
     private struct Constants {
         static let cellPadding: CGFloat = 12
     }
@@ -27,16 +32,18 @@ class MenuCardTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        contentView.backgroundColor = UIColor.white
-        contentView.layer.cornerRadius = 8
-        contentView.layer.shadowRadius = 6
-        contentView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        contentView.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
-        contentView.layer.shadowOpacity = 0.25
-        selectionStyle = .none
-        
+
+        contentView.backgroundColor = .Eatery.offWhite
+
+        containerView.backgroundColor = UIColor.white
+        containerView.layer.cornerRadius = 8
+        containerView.layer.shadowRadius = 6
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+        containerView.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        containerView.layer.shadowOpacity = 0.25
+
         setupStackView()
+
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +52,7 @@ class MenuCardTableViewCell: UITableViewCell {
     
     // MARK: - configure
     
-    func configure(expandedEatery: ExpandedEatery, allEateries: [Eatery]) {
+    func configure(expandedEatery: MenusViewController.ExpandedEatery, allEateries: [Eatery]) {
         expandableCardContentView.configure(expandedEatery: expandedEatery, allEateries: allEateries)
 
         if let selectedMealType = expandedEatery.selectedMealType,
@@ -72,22 +79,26 @@ class MenuCardTableViewCell: UITableViewCell {
         stackView.distribution = .equalSpacing
         stackView.alignment = .fill
         stackView.spacing = 8
-        
-        contentView.addSubview(stackView)
-        
+        containerView.addSubview(stackView)
+
         stackView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(Constants.cellPadding)
             make.trailing.bottom.equalToSuperview().inset(Constants.cellPadding)
         }
+
+        contentView.addSubview(containerView)
+
+        containerView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().inset(16)
+            make.top.equalToSuperview().offset(8)
+            make.bottom.equalToSuperview().inset(8)
+        }
+
+
     }
     
     // MARK: - Helpers
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: Constants.cellPadding, bottom: 0, right: Constants.cellPadding))
-    }
     
     override func prepareForReuse() {
         expandableCardDetailView.reset()
