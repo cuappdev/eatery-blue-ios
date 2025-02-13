@@ -11,7 +11,7 @@ class MenuHeaderView: UIView {
 
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
-    let buttonImageView = UIImageView()
+    let buttonView = UIView()
     let menuInaccuracyLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -32,7 +32,7 @@ class MenuHeaderView: UIView {
         addSubview(subtitleLabel)
         setUpSubtitleLabel()
 
-        addSubview(buttonImageView)
+        addSubview(buttonView)
         setUpButtonImageView()
 
         addSubview(menuInaccuracyLabel)
@@ -50,8 +50,32 @@ class MenuHeaderView: UIView {
     }
 
     private func setUpButtonImageView() {
-        buttonImageView.image = UIImage(named: "EateryCalendar")
-        buttonImageView.isUserInteractionEnabled = true
+        buttonView.backgroundColor = UIColor.Eatery.gray00
+        buttonView.layer.cornerRadius = 21
+        buttonView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 16)
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Change Date"
+        titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.black
+
+        buttonView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(buttonView.layoutMarginsGuide)
+            make.centerY.equalTo(buttonView)
+        }
+
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "EateryCalendar")
+
+        buttonView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(40)
+            make.leading.equalTo(buttonView.layoutMarginsGuide)
+            make.centerY.equalTo(buttonView)
+        }
+
+        buttonView.isUserInteractionEnabled = true
     }
 
     private func setUpMenuInaccuracyLabel() {
@@ -70,12 +94,11 @@ class MenuHeaderView: UIView {
             make.leading.equalTo(layoutMarginsGuide)
         }
 
-        buttonImageView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
-            make.leading.equalTo(subtitleLabel.snp.trailing).offset(8)
-            make.width.height.equalTo(40)
+        buttonView.snp.makeConstraints { make in
             make.trailing.equalTo(layoutMarginsGuide)
-            make.centerY.equalTo(layoutMarginsGuide).offset(-8)
+            make.top.equalTo(layoutMarginsGuide).offset(8)
+            make.height.equalTo(42)
+            make.width.equalTo(156)
         }
 
         menuInaccuracyLabel.snp.makeConstraints { make in

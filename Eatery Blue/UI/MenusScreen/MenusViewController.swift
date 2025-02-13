@@ -63,6 +63,7 @@ class MenusViewController: UIViewController {
         Task {
             startLoading()
             await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+            print("eateries for DONE LOADING")
             stopLoading()
         }
     }
@@ -152,42 +153,39 @@ class MenusViewController: UIViewController {
 
     /// Updates the provided day's eateries from networking first, and loads the others in the background
     private func updateAllEateriesFromNetworking(withPriority day: Int = 0) async {
+        // Start the high-priority day first
+        async let highPriorityTask: Void = {
+            do {
+                try await updateAllEateriesByDayFromNetworking(day)
+            } catch {
+                logger.error("\(#function): \(error)")
+            }
+        }()
 
-        // Start Loading low priority days
-        Task.detached(priority: .low) { [weak self] in
-            guard let self else { return }
-
-            await withTaskGroup(of: Void.self) { [weak self] group in
+        // Start the low-priority days after
+        for i in 0...(daysToShow - 1) {
+            if i == day { continue }
+            Task(priority: .low) { [weak self] in
                 guard let self else { return }
 
-                for i in 0...(daysToShow - 1) {
-                    i != day ? group.addTask { [weak self] in
-                        guard let self else { return }
-
-                        do {
-                            try await updateAllEateriesByDayFromNetworking(i)
-                            let loading = await isLoading
-                            if await i == selectedIndex && loading { await stopLoading() }
-                        } catch {
-                            logger.error("\(#function): \(error)")
-                        }
-                    } : nil
+                do {
+                    try await updateAllEateriesByDayFromNetworking(i)
+                    if i == selectedIndex && isLoading { stopLoading() }
+                } catch {
+                    logger.error("\(#function): \(error)")
                 }
             }
         }
 
-        // Load the high priority day
-        do {
-            try await updateAllEateriesByDayFromNetworking(day)
-        } catch {
-            logger.error("\(#function): \(error)")
-        }
+        // Ensure the high-priority task completes before allowing function to return
+        await highPriorityTask
     }
 
     /// Load all of the eateries by the given index
     private func updateAllEateriesByDayFromNetworking(_ day: Int) async throws {
         let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: day)
         allEateries[day] = eateries
+        print("Loaded \(eateries.count) eateries for day \(day)")
     }
 
     private func startLoading() {
@@ -230,7 +228,7 @@ class MenusViewController: UIViewController {
         }
 
         for index in 0..<sortedCells.count {
-            UIView.animate(withDuration: 1.2, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
                 sortedCells[index].transform = CGAffineTransform.identity
                 sortedCells[index].alpha = 1
             }, completion: nil)
