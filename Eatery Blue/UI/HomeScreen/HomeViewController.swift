@@ -138,19 +138,13 @@ class HomeViewController: UIViewController {
     private func setUpNavigationView() {
         navigationView.logoRefreshControl.delegate = self
         navigationView.setFadeInProgress(0)
-        navigationView.notificationButton.onTap { [self] _ in
-            let notifHubViewController = NotificationsHubViewController()
-           
-            navigationController?.pushViewController(notifHubViewController, animated: true)
-
-        navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
-}
         navigationView.searchButton.tap { [self] _ in
             let searchViewController = HomeSearchModelController()
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
-                
+
+        navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
     }
 
     private func setUpCompareMenusButton() {
