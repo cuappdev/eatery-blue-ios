@@ -254,8 +254,11 @@ extension ListViewController: UITableViewDataSource {
         } else {
             let eatery = eateries[indexPath.row - 1]
             let largeCardContent = EateryLargeCardView()
-            
-            largeCardContent.configure(eatery: eatery)
+
+
+            let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
+
+            largeCardContent.configure(eatery: eatery, favorited: favorited)
             largeCardContent.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
             let cell = ClearTableViewCell(content: largeCardContent)

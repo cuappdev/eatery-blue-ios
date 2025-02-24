@@ -43,10 +43,10 @@ class EateryLargeCardView: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(eatery: Eatery) {
+    func configure(eatery: Eatery, favorited: Bool) {
         self.eatery = eatery
         titleLabel.text = eatery.name
-        setUpFavoriteButton(eatery: eatery)
+        configureFavoriteButton(eatery: eatery, favorited: favorited)
         configureImageView(imageUrl: eatery.imageUrl, isOpen: eatery.isOpen)
         configureSubtitleLabels(eatery: eatery)
         configureAlerts(status: eatery.status)
@@ -70,9 +70,7 @@ class EateryLargeCardView: UICollectionViewCell {
         setUpLabelStackView()
 
         contentView.addSubview(favoriteButton)
-        favoriteButton.addSubview(favoriteButtonImage)
-
-        setUpFavNotification()
+        setUpFavoriteButton()
     }
 
     private func setUpImageView() {
@@ -127,46 +125,28 @@ class EateryLargeCardView: UICollectionViewCell {
         subtitleLabel.lineBreakMode = .byWordWrapping
     }
 
-    private func setUpFavoriteButton(eatery: Eatery) {
+    private func setUpFavoriteButton() {
+        favoriteButton.addSubview(favoriteButtonImage)
         favoriteButton.content.contentMode = .scaleAspectFill
+    }
 
-        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-        if metadata.isFavorite {
-            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-        } else {
-            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-        }
-        
+    private func configureFavoriteButton(eatery: Eatery, favorited: Bool) {
+
+        favoriteButtonImage.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
             coreDataStack.save()
-            
-            if metadata.isFavorite {
-                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-            } else {
-                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-            }
 
             NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
+                name: UIViewController.notificationName,
                 object: nil,
-                userInfo: ["favorited": metadata.isFavorite]
+                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
             )
         }
     }
-
-    private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshFavorite(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
-    }
-
 
     private func configureImageView(imageUrl: URL?, isOpen: Bool) {
         imageView.image = UIImage()
@@ -192,6 +172,8 @@ class EateryLargeCardView: UICollectionViewCell {
     }
     
     private func configureAlerts(status: EateryStatus) {
+        alertsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
         let now = Date()
         switch status {
         case .closingSoon(let event):
@@ -253,12 +235,6 @@ class EateryLargeCardView: UICollectionViewCell {
 
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
-    }
-
-    @objc private func refreshFavorite(_ notification: Notification) {
-        guard let eatery else { return }
-
-        setUpFavoriteButton(eatery: eatery)
     }
 
 }

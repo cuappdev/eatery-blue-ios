@@ -6,18 +6,18 @@
 //  Originally Created by Antoinette Marie Torres on 9/13/23.
 //
 
+import Combine
 import EateryModel
 import UIKit
-import Combine
 
 class MenusViewController: UIViewController {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let tableView = UITableView()
     private let navigationView = MenusNavigationView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var allEateries: [Int: [Eatery]] = [:]
     private var currentMealType: String = .Eatery.mealFromTime()

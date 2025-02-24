@@ -12,14 +12,14 @@ import UIKit
 
 class EaterySmallCardView: UICollectionViewCell {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let imageView = UIImageView()
     private let favoriteButton = ContainerView(pillContent: UIImageView())
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var cancellables = Set<AnyCancellable>()
     private var eatery: Eatery?
@@ -37,13 +37,23 @@ class EaterySmallCardView: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(eatery: Eatery) {
+    // MARK: - Deinit
+
+    deinit {
+        cancellables.forEach { $0.cancel() }
+    }
+
+    // MARK: - Config
+
+    func configure(eatery: Eatery, favorited: Bool) {
         self.eatery = eatery
         titleLabel.text = eatery.name
         configureImageView()
-        setUpFavoriteButton()
+        configureFavoriteButton(eatery: eatery, favorited: favorited)
         configureSubtitleLabels()
     }
+
+    // MARK: - Setup
 
     private func setUpSelf() {
         contentView.backgroundColor = .white
@@ -61,11 +71,11 @@ class EaterySmallCardView: UICollectionViewCell {
         setUpTitleLabel()
 
         addSubview(favoriteButton)
+        setUpFavoriteButton()
 
         addSubview(stackView)
         setUpStackView()
 
-        setUpFavNotification()
         setUpConstraints()
     }
 
@@ -84,33 +94,22 @@ class EaterySmallCardView: UICollectionViewCell {
     }
 
     private func setUpFavoriteButton() {
-        guard let eatery else { return }
-
-        let coreDataStack = AppDelegate.shared.coreDataStack
-        let metadata = coreDataStack.metadata(eateryId: eatery.id)
-        if metadata.isFavorite {
-            self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-        } else {
-            self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
-        }
-
         favoriteButton.shadowColor = UIColor.Eatery.black
         favoriteButton.shadowOffset = CGSize(width: 0, height: 4)
         favoriteButton.backgroundColor = .white
         favoriteButton.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+    }
+
+    private func configureFavoriteButton(eatery: Eatery, favorited: Bool) {
+        self.favoriteButton.content.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
+
         favoriteButton.tap { [weak self] _ in
             guard let self else { return }
-            
+
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
             coreDataStack.save()
-            
-            if metadata.isFavorite {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
-            } else {
-                self.favoriteButton.content.image = UIImage(named: "FavoriteUnselected")
-            }
 
             NotificationCenter.default.post(
                 name: NSNotification.Name("favoriteEatery"),
@@ -147,7 +146,7 @@ class EaterySmallCardView: UICollectionViewCell {
         setUpSubtitleLabel(walkingTimeLabel)
 
         LocationManager.shared.$userLocation
-            .sink { userLocation in
+            .map { userLocation -> (NSAttributedString?, NSAttributedString?) in
                 let subtitle = EateryFormatter.default.formatEatery(
                     eatery,
                     style: .medium,
@@ -155,9 +154,13 @@ class EaterySmallCardView: UICollectionViewCell {
                     userLocation: userLocation,
                     date: Date()
                 ).first?.split(seperateBy: " · ")
-
-                openStatusLabel.attributedText = subtitle?.last
-                walkingTimeLabel.attributedText = subtitle?.first
+                return (subtitle?.first, subtitle?.last)
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] first, last in
+                guard self != nil else { return }
+                openStatusLabel.attributedText = last
+                walkingTimeLabel.attributedText = first
             }
             .store(in: &cancellables)
     }
@@ -172,15 +175,6 @@ class EaterySmallCardView: UICollectionViewCell {
         subtitleLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
-    }
-
-    private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshFavorite(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
     }
 
     private func setUpConstraints() {
@@ -207,10 +201,6 @@ class EaterySmallCardView: UICollectionViewCell {
             make.trailing.equalTo(titleLabel)
             make.bottom.equalToSuperview().inset(8)
         }
-    }
-
-    @objc private func refreshFavorite(_ notification: Notification) {
-        setUpFavoriteButton()
     }
 
 }

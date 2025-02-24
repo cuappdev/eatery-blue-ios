@@ -9,7 +9,7 @@ import UIKit
 
 class NavigationView: UICollectionReusableView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     let leftButtons = UIStackView()
     let largeTitleLabel = UILabel()

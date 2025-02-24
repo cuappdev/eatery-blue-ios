@@ -5,13 +5,13 @@
 //  Created by Peter Bidoshi on 1/5/25.
 //
 
+import Combine
 import EateryModel
 import UIKit
-import Combine
 
 class HomeViewController: UIViewController {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let collectionView: UICollectionView
     private let compareMenusButton = CompareMenusButton()
@@ -20,11 +20,12 @@ class HomeViewController: UIViewController {
     private let navigationView = HomeNavigationView()
 
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var allEateries: [Eatery] = []
     private var cancellables: Set<AnyCancellable> = []
     private lazy var dataSource = makeDataSource()
+    private var favoritesObserver: NSObjectProtocol?
     private var filter = EateryFilter()
     private let filterController = EateryFilterViewController()
     private var headerHeight: CGFloat = Constants.maxHeaderHeight
@@ -64,7 +65,13 @@ class HomeViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Deinit
+
+    deinit {
+        self.removeObserver(current: favoritesObserver)
+    }
+
     // MARK: - Setup
 
     override func viewDidLoad() {
@@ -164,12 +171,24 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateFavorites(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
+        self.addFavoriteObservation(current: &favoritesObserver) { [weak self] _ in
+            guard let self else { return }
+
+            let favoriteEateries = allEateries.filter {
+                AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
+            }.sorted { lhs, rhs in
+                if lhs.isOpen == rhs.isOpen {
+                    return lhs.name < rhs.name
+                } else {
+                    return lhs.isOpen && !rhs.isOpen
+                }
+            }
+
+            favoritesCarousel.eateries = favoriteEateries
+
+            let _ = updateFavoritesCarousel()
+            applySnapshot()
+        }
     }
 
     private func trySetUpCompareMenusOnboarding() {
@@ -217,20 +236,6 @@ class HomeViewController: UIViewController {
 
     func scrollToTop(animated: Bool) {
         collectionView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-    }
-
-    @objc private func updateFavorites(_ notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        guard let faved = userInfo["favorited"] as? Bool else { return }
-
-        let favoritesCarousel = updateFavoritesCarousel()
-
-        let firstIn = (faved && favoritesCarousel?.eateries.count == 1)
-        let lastOut = (!faved && favoritesCarousel == nil)
-
-        if firstIn || lastOut {
-            applySnapshot()
-        }
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
@@ -300,22 +305,6 @@ class HomeViewController: UIViewController {
 
         favoritesCarousel.backgroundColor = .clear
         favoritesCarousel.eateries = favoriteEateries
-        favoritesCarousel.setupObserver("favoriteEatery") { [weak self] in
-            guard let self else { return }
-
-            let favoriteEateries = allEateries.filter {
-                AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
-            }.sorted { lhs, rhs in
-                if lhs.isOpen == rhs.isOpen {
-                    return lhs.name < rhs.name
-                } else {
-                    return lhs.isOpen && !rhs.isOpen
-                }
-            }
-
-            favoritesCarousel.eateries = favoriteEateries
-        }
-
         return favoriteEateries.count > 0 ? favoritesCarousel: nil
     }
 
@@ -389,15 +378,15 @@ class HomeViewController: UIViewController {
             guard let self else { return UICollectionViewCell() }
 
             switch item {
-            case .largeEateryCard(eatery: let eatery):
+            case .largeEateryCard(eatery: let eatery, favorited: let favorited):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryLargeCardView.reuse, for: indexPath) as? EateryLargeCardView else { return UICollectionViewCell() }
-                cell.configure(eatery: eatery)
+                cell.configure(eatery: eatery, favorited: favorited)
                 return cell
-            case .smallEateryCard(eatery: let eatery):
+            case .smallEateryCard(eatery: let eatery, favorited: let favorited):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EaterySmallCardView.reuse, for: indexPath) as? EaterySmallCardView else { return UICollectionViewCell() }
-                cell.configure(eatery: eatery)
+                cell.configure(eatery: eatery, favorited: favorited)
                 return cell
-            case .loadingCard(isLarge: let isLarge, key: _):
+            case .loadingCard(isLarge: _, key: _):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse, for: indexPath) as? EateryCardShimmerCollectionViewCell else { return UICollectionViewCell() }
                 cell.configure()
                 return cell
@@ -574,13 +563,22 @@ class HomeViewController: UIViewController {
 
         snapshot.appendItems([.customView(view: container, height: 44, padding: 16)], toSection: .main)
 
+        // favorites
+        let favoriteEateries = allEateries.filter {
+            coreDataStack.metadata(eateryId: $0.id).isFavorite
+        }
+
         let openEateries = currentEateries.filter(\.isOpen)
         if !openEateries.isEmpty {
             switch selectedDisplayStyle {
             case .list:
-                snapshot.appendItems(openEateries.map({ .largeEateryCard(eatery: $0) }), toSection: .main)
+                snapshot.appendItems(openEateries.map({
+                    .largeEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
+                }), toSection: .main)
             case .grid:
-                snapshot.appendItems(openEateries.map({ .smallEateryCard(eatery: $0) }), toSection: .main)
+                snapshot.appendItems(openEateries.map({
+                    .smallEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
+                }), toSection: .main)
             }
         }
 
@@ -588,9 +586,13 @@ class HomeViewController: UIViewController {
         if !closedEateries.isEmpty {
             switch selectedDisplayStyle {
             case .list:
-                snapshot.appendItems(closedEateries.map({ .largeEateryCard(eatery: $0) }), toSection: .main)
+                snapshot.appendItems(closedEateries.map({
+                    .largeEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
+                }), toSection: .main)
             case .grid:
-                snapshot.appendItems(closedEateries.map({ .smallEateryCard(eatery: $0) }), toSection: .main)
+                snapshot.appendItems(closedEateries.map({
+                    .smallEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
+                }), toSection: .main)
             }
         }
 
@@ -619,8 +621,8 @@ extension HomeViewController {
         case customView(view: UIView, height: CGFloat, padding: CGFloat = 0)
         case carouselView(CarouselView)
         case titleLabel(title: String)
-        case smallEateryCard(eatery: Eatery)
-        case largeEateryCard(eatery: Eatery)
+        case smallEateryCard(eatery: Eatery, favorited: Bool)
+        case largeEateryCard(eatery: Eatery, favorited: Bool)
         case loadingCarousel
         case loadingLabel(title: String)
         case loadingCard(isLarge: Bool, key: Int)
@@ -695,7 +697,7 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
-        case .largeEateryCard(let eatery), .smallEateryCard(let eatery):
+        case .largeEateryCard(let eatery, let _), .smallEateryCard(let eatery, let _):
             for (index, element) in shownEateries.enumerated() {
                 if eatery.id == element.id {
                     pushViewController(eateryIndex: index)

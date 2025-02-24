@@ -10,11 +10,11 @@ import UIKit
 
 class EateryListView: UIView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let tableView = UITableView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     /// Eateries to display in the list view when no filter is applied
     var eateries: [Eatery] = [] {
@@ -104,9 +104,9 @@ class EateryListView: UIView {
             guard let cell = tableview.dequeueReusableCell(withIdentifier: ClearTableViewCell.reuse, for: indexPath) as? ClearTableViewCell else { return UITableViewCell() }
 
             switch row {
-            case .eatery(let eatery):
+            case .eatery(let eatery, let bool):
                 let largeCardContent = EateryLargeCardView()
-                largeCardContent.configure(eatery: eatery)
+                largeCardContent.configure(eatery: eatery, favorited: bool)
                 let cardView = EateryCardVisualEffectView(content: largeCardContent)
                 cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
                 cell.configure(content: cardView)
@@ -137,10 +137,19 @@ class EateryListView: UIView {
     private func applySnapshot(animated: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(
-            [.filter] +
-            (shownEateries.isEmpty ? [.label("No eateries found")] : shownEateries.map({ .eatery($0) }))
-        )
+        snapshot.appendItems([.filter])
+
+        let coreDataStack = AppDelegate.shared.coreDataStack
+
+        if shownEateries.isEmpty {
+            snapshot.appendItems([.label("No eateries found")])
+        } else {
+            for eatery in shownEateries {
+                let favorited = coreDataStack.metadata(eateryId: eatery.id).isFavorite
+                snapshot.appendItems([.eatery(eatery: eatery, favorited: favorited)], toSection: .main)
+            }
+
+        }
 
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
@@ -154,7 +163,7 @@ extension EateryListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = dataSource.itemIdentifier(for: indexPath) {
             switch cell {
-            case .eatery(let eatery):
+            case .eatery(let eatery, _):
                 let idx = shownEateries.firstIndex(of: eatery) ?? 0
                 let pageVC = EateryPageViewController(eateries: shownEateries, index: idx)
                 navigationController?.hero.isEnabled = true
@@ -206,7 +215,7 @@ extension EateryListView {
 
     enum Row: Hashable {
         case filter
-        case eatery(Eatery)
+        case eatery(eatery: Eatery, favorited: Bool)
         case label(String)
     }
 

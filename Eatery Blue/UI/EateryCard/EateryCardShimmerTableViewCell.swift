@@ -21,7 +21,7 @@ class EateryCardShimmerView: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        snp.makeConstraints{ make in
+        snp.makeConstraints { make in
             make.height.equalTo(76)
         }
     }

@@ -83,9 +83,9 @@ class EateryModelController: EateryViewController {
 
             updateNavigationViewFavoriteButtonFromCoreData()
             NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
+                name: UIViewController.notificationName,
                 object: nil,
-                userInfo: ["favorited": metadata.isFavorite]
+                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
             )
         }
 
