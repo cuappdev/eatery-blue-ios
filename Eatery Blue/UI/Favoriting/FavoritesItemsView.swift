@@ -10,11 +10,11 @@ import UIKit
 
 class FavoritesItemsView: UIView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     let tableView = UITableView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     /// All of the available eateries, used to find where favorite items are
     var allEateries: [Eatery] = [] {
@@ -35,7 +35,6 @@ class FavoritesItemsView: UIView {
 
     private lazy var dataSource = makeDataSource()
 
-
     // MARK: - Init
 
     init() {
@@ -48,7 +47,7 @@ class FavoritesItemsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Set Up
+    // MARK: - Setup
 
     private func setUpSelf() {
         setUpTableView()
@@ -124,12 +123,20 @@ class FavoritesItemsView: UIView {
 
             switch row {
             case .item(let item, let expanded):
-                guard let cell = tableview.dequeueReusableCell(withIdentifier: FavoritesItemsTableViewCell.reuse, for: indexPath) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
+                guard let cell = tableview.dequeueReusableCell(
+                    withIdentifier: FavoritesItemsTableViewCell.reuse,
+                    for: indexPath
+                ) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
+
                 cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
                 cell.selectionStyle = .none
                 return cell
             case .label(let text):
-                guard let cell = tableview.dequeueReusableCell(withIdentifier: ClearTableViewCell.reuse, for: indexPath) as? ClearTableViewCell else { return UITableViewCell() }
+                guard let cell = tableview.dequeueReusableCell(
+                    withIdentifier: ClearTableViewCell.reuse,
+                    for: indexPath
+                ) as? ClearTableViewCell else { return UITableViewCell() }
+
                 let label = UILabel()
                 label.text = text
                 label.font = .preferredFont(for: .title2, weight: .semibold)
@@ -149,7 +156,7 @@ class FavoritesItemsView: UIView {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(
-            (sortedFavorites.isEmpty ? [.label("No items found")] : sortedFavorites.map({ .item($0, expanded.contains(sortedFavorites.firstIndex(of: $0) ?? 0)) }))
+            sortedFavorites.isEmpty ? [.label("No items found")] : sortedFavorites.map({ .item($0, expanded.contains(sortedFavorites.firstIndex(of: $0) ?? 0)) })
         )
 
         dataSource.defaultRowAnimation = animation

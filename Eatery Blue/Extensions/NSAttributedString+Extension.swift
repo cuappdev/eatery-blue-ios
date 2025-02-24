@@ -14,7 +14,7 @@ extension NSAttributedString {
         let separatedInput = input.components(separatedBy: seperateBy)
         var output = [NSAttributedString]()
         var start = 0
-        for sub in separatedInput {
+        separatedInput.forEach { sub in
             let range = NSMakeRange(start, sub.utf16.count)
             let attribStr = self.attributedSubstring(from: range)
             output.append(attribStr)

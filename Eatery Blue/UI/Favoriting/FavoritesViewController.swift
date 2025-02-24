@@ -10,7 +10,7 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let favoriteEateriesView = EateryListView()
     private let favoriteItemsView = FavoritesItemsView()
@@ -18,11 +18,18 @@ class FavoritesViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var allEateries: [Eatery] = []
     private var favoriteEateries: [Eatery] = []
     private var favoriteItems: [ItemMetadata] = []
+    private var observer: NSObjectProtocol?
+
+    // MARK: - Deinit
+
+    deinit {
+        removeObserver(current: observer)
+    }
 
     // MARK: - Configure
 
@@ -68,7 +75,15 @@ class FavoritesViewController: UIViewController {
         setUpFavoriteItemsView()
         stackView.addArrangedSubview(favoriteItemsView)
 
-        setUpFavNotification()
+        self.addFavoriteObservation(current: &observer) {  [weak self] _ in
+            guard let self else { return }
+
+            Task { [weak self] in
+                guard let self else { return }
+
+                await updateFavoritesFromNetworking()
+            }
+        }
 
         setUpConstraints()
     }
@@ -106,15 +121,6 @@ class FavoritesViewController: UIViewController {
     private func setUpFavoriteItemsView() {
         favoriteItemsView.allEateries = allEateries
         favoriteItemsView.favoriteItems = favoriteItems
-    }
-
-    private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshFavorites(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
     }
 
     private func setUpConstraints() {
@@ -161,14 +167,6 @@ class FavoritesViewController: UIViewController {
             self.configure(allEateries: allEateries, favoriteItems: favoriteItems, favoriteEateries: favoriteEateries)
         } catch {
             logger.error("\(#function): \(error)")
-        }
-    }
-
-    // MARK: - Actions
-
-    @objc private func refreshFavorites(_ notification: Notification) {
-        Task {
-            await updateFavoritesFromNetworking()
         }
     }
 

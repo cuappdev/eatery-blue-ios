@@ -36,16 +36,15 @@ class EateryMediumCardView: UICollectionViewCell {
         super.init(frame: frame)
 
         setUpSelf()
-        setUpConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(eatery: Eatery) {
+    func configure(eatery: Eatery, favorited: Bool) {
         titleLabel.text = eatery.name
-        setupFavoriteButton(eatery: eatery)
+        configureFavoriteButton(eatery: eatery, favorited: favorited)
         configureImageView(imageUrl: eatery.imageUrl, isOpen: eatery.isOpen)
         configureSubtitleLabels(eatery: eatery)
         configureAlerts(status: eatery.status)
@@ -70,7 +69,10 @@ class EateryMediumCardView: UICollectionViewCell {
         setUpSubtitleLabel()
         
         contentView.addSubview(favoriteButton)
-        favoriteButton.addSubview(favoriteButtonImage)
+        setUpFavoriteButton()
+
+        setUpConstraints()
+
     }
 
     private func setUpImageView() {
@@ -109,43 +111,31 @@ class EateryMediumCardView: UICollectionViewCell {
         subtitleLabel.textColor = UIColor.Eatery.gray05
     }
 
-    private func setupFavoriteButton(eatery: Eatery) {
+    private func setUpFavoriteButton() {
         favoriteButton.content.contentMode = .scaleAspectFill
+        favoriteButton.addSubview(favoriteButtonImage)
+    }
 
-        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
-        if metadata.isFavorite {
-            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-        } else {
-            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-        }
-        
+    private func configureFavoriteButton(eatery: Eatery, favorited: Bool) {
+        favoriteButtonImage.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
+
         favoriteButton.buttonPress { [weak self] _ in
-            guard let self else { return }
+            guard self != nil else { return }
 
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
             coreDataStack.save()
             
-            if metadata.isFavorite {
-                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-            } else {
-                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-            }
-
             NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
+                name: UIViewController.notificationName,
                 object: nil,
-                userInfo: ["favorited": metadata.isFavorite]
+                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
             )
         }
     }
 
     private func setUpConstraints() {
-        snp.makeConstraints { make in
-            make.width.equalTo(snp.height).multipliedBy(295.0 / 186.0).priority(.required.advanced(by: -1))
-        }
-
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
@@ -191,36 +181,6 @@ class EateryMediumCardView: UICollectionViewCell {
             options: [.backgroundDecode]
         )
         imageTintView.alpha = isOpen ? 0 : 0.5
-    }
-    
-    private func configureFavoriteButton(id: Int64) {
-        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: id)
-        if metadata.isFavorite {
-            favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-        } else {
-            favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-        }
-        
-        favoriteButton.buttonPress { [weak self] _ in
-            guard let self else { return }
-            
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: id)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
-            
-            if metadata.isFavorite {
-                favoriteButtonImage.image = UIImage(named: "FavoriteSelected")
-            } else {
-                favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-            }
-
-            NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
-                object: nil,
-                userInfo: ["favorited": metadata.isFavorite]
-            )
-        }
     }
     
     private func configureSubtitleLabels(eatery: Eatery) {

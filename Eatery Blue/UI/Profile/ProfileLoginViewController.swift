@@ -9,14 +9,14 @@ import UIKit
 
 class ProfileLoginViewController: UIViewController {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let backButton = ButtonView(content: UIImageView())
     private let eateryLogo = UIImageView()
     private let loginView = LoginView()
     private let loginButton = ButtonView(pillContent: UILabel())
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var canGoBack = false
 
