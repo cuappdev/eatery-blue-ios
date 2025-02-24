@@ -55,7 +55,7 @@ class EateryLargeCardView: UICollectionViewCell {
     private func setUpSelf() {
         contentView.insetsLayoutMarginsFromSafeArea = false
         contentView.layoutMargins = .zero
-        contentView.backgroundColor = UIColor.Eatery.offWhite
+        contentView.backgroundColor = .white
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
         layer.shadowRadius = 4
@@ -172,7 +172,10 @@ class EateryLargeCardView: UICollectionViewCell {
     }
     
     private func configureAlerts(status: EateryStatus) {
-        alertsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        alertsStackView.arrangedSubviews.forEach { 
+          alertsStackView.removeArrangedSubview($0)
+          $0.removeFromSuperview() 
+        }
 
         let now = Date()
         switch status {

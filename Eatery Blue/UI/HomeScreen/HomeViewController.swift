@@ -348,7 +348,7 @@ class HomeViewController: UIViewController {
         }
 
         for index in 0..<sortedCells.count {
-            UIView.animate(withDuration: 1.2, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 1.3, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
                 sortedCells[index].transform = CGAffineTransform.identity
                 sortedCells[index].alpha = 1
             }, completion: nil)
