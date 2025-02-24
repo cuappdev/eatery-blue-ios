@@ -63,7 +63,6 @@ class MenusViewController: UIViewController {
         Task {
             startLoading()
             await updateAllEateriesFromNetworking(withPriority: selectedIndex)
-            print("eateries for DONE LOADING")
             stopLoading()
         }
     }
@@ -153,39 +152,41 @@ class MenusViewController: UIViewController {
 
     /// Updates the provided day's eateries from networking first, and loads the others in the background
     private func updateAllEateriesFromNetworking(withPriority day: Int = 0) async {
-        // Start the high-priority day first
-        async let highPriorityTask: Void = {
-            do {
-                try await updateAllEateriesByDayFromNetworking(day)
-            } catch {
-                logger.error("\(#function): \(error)")
-            }
-        }()
+        // Start Loading low priority days
+        Task.detached(priority: .low) { [weak self] in
+            guard let self else { return }
 
-        // Start the low-priority days after
-        for i in 0...(daysToShow - 1) {
-            if i == day { continue }
-            Task(priority: .low) { [weak self] in
+            await withTaskGroup(of: Void.self) { [weak self] group in
                 guard let self else { return }
 
-                do {
-                    try await updateAllEateriesByDayFromNetworking(i)
-                    if i == selectedIndex && isLoading { stopLoading() }
-                } catch {
-                    logger.error("\(#function): \(error)")
+                for i in 0...(daysToShow - 1) {
+                    i != day ? group.addTask { [weak self] in
+                        guard let self else { return }
+
+                        do {
+                            try await updateAllEateriesByDayFromNetworking(i)
+                            let loading = await isLoading
+                            if await i == selectedIndex && loading { await stopLoading() }
+                        } catch {
+                            logger.error("\(#function): \(error)")
+                        }
+                    } : nil
                 }
             }
         }
 
-        // Ensure the high-priority task completes before allowing function to return
-        await highPriorityTask
+        // Load the high priority day
+        do {
+            try await updateAllEateriesByDayFromNetworking(day)
+        } catch {
+            logger.error("\(#function): \(error)")
+        }
     }
 
     /// Load all of the eateries by the given index
     private func updateAllEateriesByDayFromNetworking(_ day: Int) async throws {
         let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: day)
         allEateries[day] = eateries
-        print("Loaded \(eateries.count) eateries for day \(day)")
     }
 
     private func startLoading() {
