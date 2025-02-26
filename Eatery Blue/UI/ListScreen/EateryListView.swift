@@ -10,16 +10,16 @@ import UIKit
 
 class EateryListView: UIView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let tableView = UITableView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     /// Eateries to display in the list view when no filter is applied
     var eateries: [Eatery] = [] {
         didSet {
-            updateEateriesFromState()
+            updateEateriesFromState(animated: !oldValue.isEmpty)
         }
     }
     /// The navigation controller that this view uses to pop on back button press
@@ -27,8 +27,9 @@ class EateryListView: UIView {
 
     private var filter = EateryFilter()
     private let filterController = EateryFilterViewController()
-    private var previousEateries: [Eatery] = []
     private var shownEateries: [Eatery] = []
+
+    private lazy var dataSource = makeDataSource()
 
     // MARK: - Init
 
@@ -50,13 +51,14 @@ class EateryListView: UIView {
         setUpEateriesFilterViewController()
 
         setUpConstraints()
+        applySnapshot(animated: true)
     }
 
     private func setUpTableView() {
+        tableView.register(ClearTableViewCell.self, forCellReuseIdentifier: ClearTableViewCell.reuse)
         tableView.showsVerticalScrollIndicator = false
         tableView.alwaysBounceVertical = true
         tableView.separatorStyle = .none
-        tableView.dataSource = self
         tableView.delegate = self
     }
 
@@ -70,39 +72,7 @@ class EateryListView: UIView {
         }
     }
 
-    private func reloadTableViewData(newEateries: [Eatery]) {
-        var rowsToInsert: [IndexPath] = []
-        var rowsToDelete: [IndexPath] = []
-        var rowsToReload: [IndexPath] = []
-
-        for i in 0..<max(newEateries.count, previousEateries.count) {
-            let path = IndexPath(row: i, section: 1)
-            if i >= newEateries.count {
-                i > 0 ? rowsToDelete.append(path) : rowsToReload.append(path)
-            }
-            else if i >= previousEateries.count {
-                i > 0 ? rowsToInsert.append(path) : rowsToReload.append(path)
-            }
-            else if previousEateries[i] != newEateries[i] {
-                rowsToReload.append(path)
-            }
-        }
-
-        tableView.beginUpdates()
-        shownEateries = newEateries
-
-        tableView.performBatchUpdates {
-            tableView.deleteRows(at: rowsToDelete, with: .fade)
-            tableView.insertRows(at: rowsToInsert, with: .fade)
-            tableView.reloadRows(at: rowsToReload, with: .fade)
-        }
-
-        tableView.endUpdates()
-    }
-
-    private func updateEateriesFromState() {
-        previousEateries = shownEateries
-
+    private func updateEateriesFromState(animated: Bool = true) {
         var updatedEateries: [Eatery] = []
 
         if filter.isEnabled {
@@ -121,83 +91,104 @@ class EateryListView: UIView {
             updatedEateries = eateries
         }
 
-        reloadTableViewData(newEateries: updatedEateries)
+        shownEateries = updatedEateries
+        applySnapshot(animated: animated)
+    }
+
+    // MARK: - Table View Data Source
+
+    /// Creates and returns the table view data source
+    private func makeDataSource() -> DataSource {
+        let dataSource = DataSource(tableView: tableView) { [weak self] (tableview, indexPath, row) in
+            guard let self else { return UITableViewCell() }
+            guard let cell = tableview.dequeueReusableCell(withIdentifier: ClearTableViewCell.reuse, for: indexPath) as? ClearTableViewCell else { return UITableViewCell() }
+
+            switch row {
+            case .eatery(let eatery, let bool):
+                let largeCardContent = EateryLargeCardView()
+                largeCardContent.configure(eatery: eatery, favorited: bool)
+                let cardView = EateryCardVisualEffectView(content: largeCardContent)
+                cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+                cell.configure(content: cardView)
+                break
+            case .filter:
+                let container = ContainerView(content: self.filterController.view)
+                container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+                cell.configure(content: container)
+                break
+            case .label(let text):
+                let label = UILabel()
+                label.text = text
+                label.font = .preferredFont(for: .title2, weight: .semibold)
+                let container = ContainerView(content: label)
+                container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+                cell.configure(content: container)
+                break
+            }
+
+            cell.selectionStyle = .none
+            return cell
+        }
+
+        return dataSource
+    }
+
+    /// Updates the table view data source, and animates if desired
+    private func applySnapshot(animated: Bool = true) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems([.filter])
+
+        let coreDataStack = AppDelegate.shared.coreDataStack
+
+        if shownEateries.isEmpty {
+            snapshot.appendItems([.label("No eateries found")])
+        } else {
+            for eatery in shownEateries {
+                let favorited = coreDataStack.metadata(eateryId: eatery.id).isFavorite
+                snapshot.appendItems([.eatery(eatery: eatery, favorited: favorited)], toSection: .main)
+            }
+
+        }
+
+        dataSource.apply(snapshot, animatingDifferences: animated)
     }
 
 }
 
 // MARK: - Extensions
 
-extension EateryListView: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let shownEateriesCount = max(shownEateries.count, 1)
-        return section == 1 ? shownEateriesCount: 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let container = ContainerView(content: filterController.view)
-            container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
-
-            let cell = ClearTableViewCell(content: container)
-            cell.selectionStyle = .none
-            return cell
-        }
-
-        if shownEateries.isEmpty {
-            let label = UILabel()
-            label.text = "No eateries found..."
-            label.font = .preferredFont(for: .title2, weight: .semibold)
-            let container = ContainerView(content: label)
-            container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
-
-            let cell = ClearTableViewCell(content: container)
-            cell.selectionStyle = .none
-            return cell
-        }
-
-        let eatery = shownEateries[indexPath.row]
-        let largeCardContent = EateryLargeCardContentView()
-
-        largeCardContent.configure(eatery: eatery)
-
-        let cardView = EateryCardVisualEffectView(content: largeCardContent)
-        cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-
-        let cell = ClearTableViewCell(content: cardView)
-        cell.selectionStyle = .none
-        return cell
-    }
-
-}
-
 extension EateryListView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 { return }
-
-        let pageVC = EateryPageViewController(eateries: shownEateries, index: indexPath.row)
-        navigationController?.hero.isEnabled = true
-        navigationController?.heroNavigationAnimationType = .fade
-        navigationController?.pushViewController(pageVC, animated: true)
+        if let cell = dataSource.itemIdentifier(for: indexPath) {
+            switch cell {
+            case .eatery(let eatery, _):
+                let idx = shownEateries.firstIndex(of: eatery) ?? 0
+                let pageVC = EateryPageViewController(eateries: shownEateries, index: idx)
+                navigationController?.hero.isEnabled = true
+                navigationController?.heroNavigationAnimationType = .fade
+                navigationController?.pushViewController(pageVC, animated: true)
+                break
+            default:
+                break
+            }
+        }
     }
 
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClearTableViewCell.reuse, for: indexPath) as? ClearTableViewCell else { return }
+        
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
-            cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         }
     }
 
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClearTableViewCell.reuse, for: indexPath) as? ClearTableViewCell else { return }
+
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
-            cell?.transform = .identity
+            cell.transform = .identity
         }
     }
 
@@ -208,6 +199,24 @@ extension EateryListView: EateryFilterViewControllerDelegate {
     func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
         updateEateriesFromState()
+    }
+
+}
+
+extension EateryListView {
+
+    typealias DataSource = UITableViewDiffableDataSource<Section, Row>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
+
+
+    enum Section {
+        case main
+    }
+
+    enum Row: Hashable {
+        case filter
+        case eatery(eatery: Eatery, favorited: Bool)
+        case label(String)
     }
 
 }

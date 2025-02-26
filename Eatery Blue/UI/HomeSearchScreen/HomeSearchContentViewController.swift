@@ -138,9 +138,11 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             return cell
 
         case .eatery(let eatery):
-            let largeCardContent = EateryLargeCardContentView()
-            
-            largeCardContent.configure(eatery: eatery)
+            let largeCardContent = EateryLargeCardView()
+
+            let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
+
+            largeCardContent.configure(eatery: eatery, favorited: favorited)
 
             let cardView = EateryCardVisualEffectView(content: largeCardContent)
             cardView.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

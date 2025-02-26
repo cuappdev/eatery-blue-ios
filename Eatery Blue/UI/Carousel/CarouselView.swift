@@ -15,7 +15,7 @@ class CarouselView: UIView {
     /// Eateries to show inside this carousel
     var eateries: [Eatery] = [] {
         didSet {
-            fullRefresh()
+            applySnapshot()
         }
     }
     /// Text to display on top of this carousel
@@ -29,21 +29,31 @@ class CarouselView: UIView {
     /// How many eateries should show in this carousel, -1 if showing all
     var truncateAfter: Int = -1 {
         didSet {
-            collectionView.reloadData()
+            applySnapshot()
         }
     }
     /// View controller to push when more button is pressed, nil if a ListViewController should be pushed
     var viewControllerToPush: UIViewController?
 
+    private lazy var dataSource = makeDataSource()
+
     // MARK: - Properties (view)
+
     private let buttonImageView = UIImageView()
-    private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private var collectionView: UICollectionView
     private let titleLabel = UILabel()
 
-    // MARK: - Initializers
-        
+    // MARK: - Init
+
     init() {
+
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 10
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+
         super.init(frame: .zero)
+
         setUpSelf()
         setUpConstraints()
     }
@@ -52,19 +62,11 @@ class CarouselView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func fullRefresh() {
-        buttonImageView.tap { [weak self] _ in
-            guard let self else { return }
-            pushViewController()
-        }
-        
-        collectionView.reloadData()
-    }
-
     // MARK: - Setup
     
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
+        layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
 
         addSubview(titleLabel)
         setUpTitleLabel()
@@ -74,10 +76,6 @@ class CarouselView: UIView {
 
         addSubview(collectionView)
         setUpCollectionView()
-
-        snp.makeConstraints { make in
-            make.height.equalTo(260)
-        }
     }
 
     private func setUpTitleLabel() {
@@ -95,16 +93,13 @@ class CarouselView: UIView {
     }
 
     private func setUpCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        collectionView.setCollectionViewLayout(layout, animated: true)
-        collectionView.register(EateryMediumCardCollectionViewCell.self, forCellWithReuseIdentifier: EateryMediumCardCollectionViewCell.reuse)
+        collectionView.register(EateryMediumCardView.self, forCellWithReuseIdentifier: EateryMediumCardView.reuse)
         collectionView.register(CarouselMoreEateriesCollectionViewCell.self, forCellWithReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse)
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.delegate = self
-        collectionView.dataSource = self
-        
         collectionView.alwaysBounceHorizontal = true
+        collectionView.backgroundColor = .clear
     }
 
     private func setUpConstraints() {
@@ -114,7 +109,7 @@ class CarouselView: UIView {
         }
 
         buttonImageView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.leading.equalTo(titleLabel.snp.trailing)
             make.width.height.equalTo(40)
             make.top.trailing.equalTo(layoutMarginsGuide)
         }
@@ -124,9 +119,9 @@ class CarouselView: UIView {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-    
-    // MARK: - OTHER
-    
+
+    // MARK: - Actions
+
     private func pushViewController() {
         navigationController?.hero.isEnabled = false
 
@@ -140,47 +135,54 @@ class CarouselView: UIView {
 
         navigationController?.pushViewController(viewController, animated: true)
     }
-}
 
-extension CarouselView: UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == min(truncateAfter, eateries.count) && truncateAfter > -1 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse, for: indexPath) as? CarouselMoreEateriesCollectionViewCell else { return UICollectionViewCell() }
-            return cell
-        }
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryMediumCardCollectionViewCell.reuse, for: indexPath) as? EateryMediumCardCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        
-        UIView.animate(
-            withDuration: 0.6,
-            delay: 0,
-            usingSpringWithDamping: 1,
-            initialSpringVelocity: 2,
-            options: .curveEaseInOut,
-            animations: {
-                cell.transform = .identity
+    // MARK: - Collection View Data Source
+
+    /// Creates and returns the table view data source
+    private func makeDataSource() -> DataSource {
+        let dataSource = DataSource(collectionView: collectionView) { [weak self] (tableview, indexPath, row) in
+            guard let self else { return UICollectionViewCell() }
+
+            switch row {
+            case .eatery(let eatery, let favorited):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: EateryMediumCardView.reuse,
+                    for: indexPath
+                ) as? EateryMediumCardView else { return UICollectionViewCell() }
+                cell.configure(eatery: eatery, favorited: favorited)
+                return cell
+            case .more:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse,
+                    for: indexPath
+                ) as? CarouselMoreEateriesCollectionViewCell else { return UICollectionViewCell() }
+
+                return cell
             }
-        )
-
-        let eatery = eateries[indexPath.section]
-        cell.configure(eatery: eatery)
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if truncateAfter > -1 {
-            return min(truncateAfter + 1, eateries.count)
         }
-        
-        return eateries.count
+
+        return dataSource
+    }
+
+    /// Updates the table view data source, and animates if desired
+    private func applySnapshot(animated: Bool = true) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+
+        let coreDataStack = AppDelegate.shared.coreDataStack
+
+        let eateryCells = eateries.map({ Item.eatery(eatery: $0, favorited: coreDataStack.metadata(eateryId: $0.id).isFavorite) })
+
+        if truncateAfter > -1 {
+            snapshot.appendItems(Array(eateryCells.prefix(truncateAfter)), toSection: .main)
+            if eateryCells.count > truncateAfter {
+                snapshot.appendItems([.more], toSection: .main)
+            }
+        } else {
+            snapshot.appendItems(eateryCells, toSection: .main)
+        }
+
+        dataSource.apply(snapshot, animatingDifferences: animated)
     }
 
 }
@@ -188,16 +190,18 @@ extension CarouselView: UICollectionViewDataSource {
 extension CarouselView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
 
-        if indexPath.section == min(truncateAfter, eateries.count) && truncateAfter > -1 {
+        switch item {
+        case .eatery:
+            let pageVC = EateryPageViewController(eateries: eateries, index: indexPath.item)
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(pageVC, animated: true)
+            break
+        case .more:
             pushViewController()
-            return
+            break
         }
-
-        let pageVC = EateryPageViewController(eateries: eateries, index: indexPath.section)
-        pageVC.modalPresentationStyle = .overCurrentContext
-        navigationController?.hero.isEnabled = false
-        navigationController?.pushViewController(pageVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
@@ -219,25 +223,34 @@ extension CarouselView: UICollectionViewDelegate {
 extension CarouselView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.section == min(truncateAfter, eateries.count) && truncateAfter > -1 {
-            return CGSize(width: 156, height: 196)
-        }
-        
-        return CGSize(width: 312, height: 196)
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return CGSize(width: 312, height: 196) }
+        return item.getSize()
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let inset = CGFloat(18)
-        
-        if section == min(truncateAfter, eateries.count) && truncateAfter > -1 {
-            return UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        }
-        
-        if section == eateries.count - 1 {
-            return UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        }
-        
-        return UIEdgeInsets(top: inset, left: inset, bottom: inset, right: 0)
+
+}
+
+extension CarouselView {
+
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+
+
+    enum Section {
+        case main
     }
-    
+
+    enum Item: Hashable {
+        case eatery(eatery: Eatery, favorited: Bool)
+        case more
+
+        func getSize() -> CGSize {
+            switch self {
+            case .eatery:
+                return CGSize(width: 312, height: 196)
+            case .more:
+                return CGSize(width: 156, height: 196)
+            }
+        }
+    }
+
 }

@@ -110,18 +110,18 @@ class EateryViewController: UIViewController {
         }
     }
 
-
     func setCustomSpacing(_ spacing: CGFloat) {
         guard let last = stackView.arrangedSubviews.last else {
             return
         }
+
         stackView.setCustomSpacing(spacing, after: last)
     }
     
     func addSpinner() {
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
-                
+
         view.addSubview(spinner)
         
         spinner.snp.makeConstraints { make in
@@ -430,10 +430,60 @@ class EateryViewController: UIViewController {
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        menuHeaderView.buttonImageView.tap { _ in
+        menuHeaderView.buttonView.tap { _ in
             dropDownButtonAction?()
         }
         stackView.addArrangedSubview(menuHeaderView)
+    }
+
+    func addTimeTabs(eatery: Eatery?, selectedEvent: Event, tapHandler: @escaping (Int) -> Void) {
+        guard let eatery else { return }
+        
+        let tabStackView = UIStackView()
+        tabStackView.axis = .horizontal
+        tabStackView.alignment = .fill
+        tabStackView.distribution = .fillEqually
+        tabStackView.spacing = 0
+        tabStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tabStackView.isLayoutMarginsRelativeArrangement = true
+
+        for i in 0..<eatery.events.count {
+            let event = eatery.events[i]
+            if event.canonicalDay != selectedEvent.canonicalDay { continue }
+            guard let menu = event.menu else { continue }
+            if menu.categories.isEmpty { continue }
+
+            let isSelectedEvent = eatery.events[i] == selectedEvent
+
+            let button = UIButton()
+            button.setTitle(event.description, for: .normal)
+            button.setTitleColor(isSelectedEvent ? .black : .Eatery.gray01, for: .normal)
+            button.titleLabel?.font = .preferredFont(for: .body, weight: isSelectedEvent ? .semibold : .medium)
+
+            button.tap { [weak self] _ in
+                guard self != nil else { return }
+
+                tapHandler(i)
+            }
+
+            let bottomBorder = UIView()
+            bottomBorder.backgroundColor = isSelectedEvent ? .black : .Eatery.gray01
+
+            button.addSubview(bottomBorder)
+            bottomBorder.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(button)
+                make.bottom.equalTo(button)
+                make.height.equalTo(1)
+            }
+
+            tabStackView.addArrangedSubview(button)
+
+            button.snp.makeConstraints { make in
+                make.height.equalTo(46)
+            }
+        }
+
+        stackView.addArrangedSubview(tabStackView)
     }
 
     func addSearchBar() {

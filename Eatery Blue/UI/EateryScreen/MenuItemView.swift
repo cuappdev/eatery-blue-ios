@@ -10,7 +10,7 @@ import UIKit
 
 class MenuItemView: UIView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let descriptionLabel = UILabel()
     private let favoriteButton = ButtonView(content: UIView())
@@ -19,7 +19,7 @@ class MenuItemView: UIView {
     private let stackView = UIStackView()
     private let titleLabel = UILabel()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     /// item to display
     var item: MenuItem? {
@@ -129,11 +129,6 @@ class MenuItemView: UIView {
             coreDataStack.save()
 
             favoriteButtonImage.image = UIImage(named: metadata.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
-
-            NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
-                object: nil
-            )
         }
     }
 

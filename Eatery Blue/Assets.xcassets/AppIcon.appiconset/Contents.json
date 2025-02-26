@@ -165,6 +165,12 @@
     {
       "filename" : "32.png",
       "idiom" : "mac",
+      "scale" : "2x",
+      "size" : "16x16"
+    },
+    {
+      "filename" : "32.png",
+      "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
@@ -185,6 +191,12 @@
       "idiom": "mac",
       "scale": "2x",
       "size": "128x128"
+    },
+    {
+      "filename" : "256.png",
+      "idiom" : "mac",
+      "scale" : "2x",
+      "size" : "128x128"
     },
     {
       "filename" : "256.png",
