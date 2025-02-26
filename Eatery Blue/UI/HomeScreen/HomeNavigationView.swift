@@ -9,12 +9,12 @@ import UIKit
 
 class HomeNavigationView: NavigationView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     let logoRefreshControl = LogoRefreshControl()
     let searchButton = NavigationImageButton()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private(set) var fadeInProgress: Double = 0
 

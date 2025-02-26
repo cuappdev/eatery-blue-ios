@@ -9,12 +9,12 @@ import UIKit
 
 class NotificationButton: ButtonView<UIView> {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let notificationBellImageView = UIImageView()
     private let notificationDotImageView = UIImageView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var completion: ((UIViewController) -> Void)?
 //    private var notifictions: [EateryNotification]

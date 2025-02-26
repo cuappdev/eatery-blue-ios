@@ -6,18 +6,18 @@
 //  Originally Created by Antoinette Marie Torres on 9/13/23.
 //
 
+import Combine
 import EateryModel
 import UIKit
-import Combine
 
 class MenusViewController: UIViewController {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let tableView = UITableView()
     private let navigationView = MenusNavigationView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private var allEateries: [Int: [Eatery]] = [:]
     private var currentMealType: String = .Eatery.mealFromTime()
@@ -152,7 +152,6 @@ class MenusViewController: UIViewController {
 
     /// Updates the provided day's eateries from networking first, and loads the others in the background
     private func updateAllEateriesFromNetworking(withPriority day: Int = 0) async {
-
         // Start Loading low priority days
         Task.detached(priority: .low) { [weak self] in
             guard let self else { return }
@@ -230,7 +229,7 @@ class MenusViewController: UIViewController {
         }
 
         for index in 0..<sortedCells.count {
-            UIView.animate(withDuration: 1.2, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
                 sortedCells[index].transform = CGAffineTransform.identity
                 sortedCells[index].alpha = 1
             }, completion: nil)

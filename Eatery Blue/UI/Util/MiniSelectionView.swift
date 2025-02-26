@@ -1,3 +1,4 @@
+
 //
 //  MiniSelectionView.swift
 //  Eatery Blue
@@ -9,7 +10,7 @@ import UIKit
 
 class MiniSelectionView: UIView {
 
-    // MARK: - Properties (view
+    // MARK: - Properties (view)
 
     private let stackView = UIStackView()
 

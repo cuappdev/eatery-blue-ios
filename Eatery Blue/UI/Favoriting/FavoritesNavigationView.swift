@@ -9,7 +9,7 @@ import UIKit
 
 class FavoritesNavigationView: UIView {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let backButton = ButtonView(content: UIImageView())
     private let eateriesTab = TabButtonView()
@@ -19,7 +19,7 @@ class FavoritesNavigationView: UIView {
     private let searchButton = ButtonView(content: UIImageView())
     private let titleLabel = UILabel()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     /// The controller that this view uses to pop on back button press
     var navigationController: UINavigationController?

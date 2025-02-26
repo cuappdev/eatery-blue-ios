@@ -184,6 +184,8 @@
 		D0A7A3082D3419C300D9B472 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7A3072D3419BA00D9B472 /* NSAttributedString+Extension.swift */; };
 		D0A7A30A2D342E1800D9B472 /* MenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7A3092D342E1800D9B472 /* MenusViewController.swift */; };
 		D0A7A30C2D3482B100D9B472 /* EateryCardShimmerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7A30B2D3482B100D9B472 /* EateryCardShimmerTableViewCell.swift */; };
+		D0B499122D6D10B10044C856 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B499112D6D10AD0044C856 /* UIViewController+Extension.swift */; };
+		D0B499142D6D174D0044C856 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B499132D6D17460044C856 /* UIView+Extension.swift */; };
 		D0B61E9B2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B61E9A2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift */; };
 		D0B72AE32D32C2180041C2BA /* MiniSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B72AE22D32C1FC0041C2BA /* MiniSelectionView.swift */; };
 		D0C770A82B9803A900A4828F /* CompareMenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */; };
@@ -381,6 +383,8 @@
 		D0A7A3072D3419BA00D9B472 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0A7A3092D342E1800D9B472 /* MenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusViewController.swift; sourceTree = "<group>"; };
 		D0A7A30B2D3482B100D9B472 /* EateryCardShimmerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerTableViewCell.swift; sourceTree = "<group>"; };
+		D0B499112D6D10AD0044C856 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		D0B499132D6D17460044C856 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		D0B61E9A2BAFEA6100ABAAAF /* MenuCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCategoryPickerView.swift; sourceTree = "<group>"; };
 		D0B72AE22D32C1FC0041C2BA /* MiniSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniSelectionView.swift; sourceTree = "<group>"; };
 		D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusViewController.swift; sourceTree = "<group>"; };
@@ -688,6 +692,8 @@
 		5DF304B327797BD200E2C9A4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D0B499132D6D17460044C856 /* UIView+Extension.swift */,
+				D0B499112D6D10AD0044C856 /* UIViewController+Extension.swift */,
 				D0A7A3072D3419BA00D9B472 /* NSAttributedString+Extension.swift */,
 				5D73C38927810F370020507C /* FuseFuture+Extension.swift */,
 				5DA434B9278B6779001337FD /* Locale+Extension.swift */,
@@ -1181,6 +1187,7 @@
 				5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */,
 				5D34F090279B48CE000F9056 /* EateryCardAlertView.swift in Sources */,
 				5DF304CB277A36DE00E2C9A4 /* IssueTypeButtonView.swift in Sources */,
+				D0B499122D6D10B10044C856 /* UIViewController+Extension.swift in Sources */,
 				5DF304C6277A22AD00E2C9A4 /* ReportIssueButtonView.swift in Sources */,
 				D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */,
 				5D34F08E279AF9E1000F9056 /* ButtonView.swift in Sources */,
@@ -1292,7 +1299,6 @@
 				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
 				5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */,
 				D0C770A82B9803A900A4828F /* CompareMenusViewController.swift in Sources */,
-				EEE0658D2D6AD497008DD681 /* NotificationsHubViewController.swift in Sources */,
 				D0730BBA2D2B55B500F9070A /* ClearCollectionViewCell.swift in Sources */,
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
 				5DBA899F2784CC03002DCA6B /* MainViewController.swift in Sources */,
@@ -1304,6 +1310,7 @@
 				5D0CDC432774E5F400AD0E27 /* PillButtonView.swift in Sources */,
 				5D0CDC55277505B400AD0E27 /* MenuItemView.swift in Sources */,
 				D04FB8792BCEE7820058F732 /* SettingsAppIconSheetViewController.swift in Sources */,
+				D0B499142D6D174D0044C856 /* UIView+Extension.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
 				5DAE72D5278FC12600284A72 /* NetIDKeychainManager.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
@@ -1475,7 +1482,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.1.2;
+				MARKETING_VERSION = 3.2.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1518,7 +1525,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.1.2;
+				MARKETING_VERSION = 3.2.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";

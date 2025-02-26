@@ -83,9 +83,9 @@ class EateryModelController: EateryViewController {
 
             updateNavigationViewFavoriteButtonFromCoreData()
             NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
+                name: UIViewController.notificationName,
                 object: nil,
-                userInfo: ["favorited": metadata.isFavorite]
+                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
             )
         }
 
@@ -216,7 +216,7 @@ class EateryModelController: EateryViewController {
         }
 
         addMenuHeaderView(
-            title: title,
+            title: event.canonicalDay.toWeekdayString(),
             subtitle: EateryFormatter.default.formatEventTime(event)
         ) { [self] in
             presentMenuPicker()
@@ -225,7 +225,20 @@ class EateryModelController: EateryViewController {
         // Search bar is currently unimplemented
         // addSearchBar()
 
-        addSpacer(height: 16)
+        let events = eatery?.events.filter { $0.canonicalDay == selectedEvent?.canonicalDay && $0.menu != nil && !($0.menu?.categories.isEmpty ?? true) } ?? []
+        if events.count <= 1 {
+            addSpacer(height: 16)
+        } else {
+            addTimeTabs(eatery: eatery, selectedEvent: event) { [weak self] index in
+                guard let self else { return }
+
+                selectedEventIndex = index
+
+                updateNavigationViewCategoriesFromState()
+                removeMenuFromStackView()
+                addMenuFromState()
+            }
+        }
 
         if let menu = event.menu {
             let sortedCategories = sortMenuCategories(categories: menu.categories)

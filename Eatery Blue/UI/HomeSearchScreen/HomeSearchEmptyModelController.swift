@@ -65,9 +65,11 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             navigationController?.pushViewController(viewController, animated: true)
         }
 
+        let coreDataStack = AppDelegate.shared.coreDataStack
+
         for favorite in favorites {
             let cardView = EaterySmallCardView()
-            cardView.configure(eatery: favorite)
+            cardView.configure(eatery: favorite, favorited: coreDataStack.metadata(eateryId: favorite.id).isFavorite)
             cardView.tap { [self] _ in
                 let viewController = EateryModelController()
                 viewController.setUp(eatery: favorite, isTracking: false)
