@@ -177,69 +177,6 @@ class EaterySmallCardView: UICollectionViewCell {
         }
     }
 
-    private func setUpStackView() {
-        stackView.axis = .vertical
-        stackView.spacing = 4
-    }
-
-    private func configureImageView() {
-        guard let eatery else { return }
-
-        imageView.kf.setImage(with: eatery.imageUrl)
-        imageView.hero.id = eatery.imageUrl?.absoluteString
-        imageView.alpha = eatery.isOpen ?  1 : 0.5
-    }
-
-    private func configureSubtitleLabels() {
-        guard let eatery else { return }
-
-        stackView.subviews.forEach { view in
-            view.removeFromSuperview()
-        }
-
-        let openStatusLabel = UILabel()
-        setUpSubtitleLabel(openStatusLabel)
-
-        let walkingTimeLabel = UILabel()
-        setUpSubtitleLabel(walkingTimeLabel)
-
-        LocationManager.shared.$userLocation
-            .sink { userLocation in
-                let subtitle = EateryFormatter.default.formatEatery(
-                    eatery,
-                    style: .medium,
-                    font: .preferredFont(for: .footnote, weight: .medium),
-                    userLocation: userLocation,
-                    date: Date()
-                ).first?.split(seperateBy: " · ")
-
-                openStatusLabel.attributedText = subtitle?.last
-                walkingTimeLabel.attributedText = subtitle?.first
-            }
-            .store(in: &cancellables)
-    }
-
-    private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
-        subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
-        subtitleLabel.numberOfLines = 0
-        subtitleLabel.lineBreakMode = .byWordWrapping
-
-        stackView.addArrangedSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-        }
-    }
-
-    private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshFavorite(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
-    }
-
     private func setUpConstraints() {
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()

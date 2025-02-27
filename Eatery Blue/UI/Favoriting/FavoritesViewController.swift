@@ -123,15 +123,6 @@ class FavoritesViewController: UIViewController {
         favoriteItemsView.favoriteItems = favoriteItems
     }
 
-    private func setUpFavNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshFavorites(_:)),
-            name: NSNotification.Name("favoriteEatery"),
-            object: nil
-        )
-    }
-
     private func setUpConstraints() {
         favoritesNavigationView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
@@ -210,4 +201,3 @@ extension FavoritesViewController: UISearchBarDelegate {
     }
 
 }
-
