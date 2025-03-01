@@ -22,6 +22,9 @@ class EateryLargeCardView: UICollectionViewCell {
     private let subtitleLabels = [UILabel(), UILabel()]
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
+    
+    
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Properties (data)
 

@@ -169,7 +169,6 @@ class FavoritesViewController: UIViewController {
             logger.error("\(#function): \(error)")
         }
     }
-
 }
 
 extension FavoritesViewController: TabButtonViewDelegate {
