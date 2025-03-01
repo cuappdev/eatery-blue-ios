@@ -10,7 +10,7 @@ import UIKit
 
 class FavoritesItemsTableViewCell: UITableViewCell {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let availableLabel = UILabel()
     private let chevronImageView = UIImageView()
@@ -21,7 +21,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     private let itemNameLabel = UILabel()
     private let stackView = UIStackView()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     private let headerHeight = 92
     static let reuse = "FavoritesItemsTableViewCellReuse"
@@ -175,12 +175,6 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             coreDataStack.save()
 
             favoriteButtonImage.image = UIImage(named: menuItem.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
-
-
-            NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
-                object: nil
-            )
         }
     }
 

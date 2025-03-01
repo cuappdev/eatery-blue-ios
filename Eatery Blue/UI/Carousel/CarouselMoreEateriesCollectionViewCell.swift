@@ -19,7 +19,6 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         setUpSelf()
-        setUpConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -27,7 +26,7 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColor.Eatery.offWhite
+        backgroundColor = .white
         
         layer.cornerRadius = 8
         layer.shadowRadius = 4
@@ -37,6 +36,8 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
         
         addSubview(stackView)
         setUpStackView()
+
+        setUpConstraints()
     }
 
     private func setUpStackView() {
@@ -65,8 +66,8 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
 
     private func setUpConstraints() {
         stackView.snp.makeConstraints { make in
-            make.leading.trailing.centerY.equalToSuperview()
-            make.top.greaterThanOrEqualToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
     }
     

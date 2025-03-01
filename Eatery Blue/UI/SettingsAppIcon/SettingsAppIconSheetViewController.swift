@@ -23,10 +23,12 @@ class SettingsAppIconSheetViewController: SheetViewController {
         AppIcon(name: "OG", icon: UIImage(named: "AppIcon-Preview-OG")),
         AppIcon(name: "StPaddy", icon: UIImage(named: "AppIcon-Preview-StPaddy")),
         AppIcon(name: "Valentine", icon: UIImage(named: "AppIcon-Preview-Valentine")),
+        AppIcon(name: "Spooky", icon: UIImage(named: "AppIcon-Preview-Spooky")),
+        AppIcon(name: "Hoco", icon: UIImage(named: "AppIcon-Preview-Hoco")),
         AppIcon(name: "Red", icon: UIImage(named: "AppIcon-Preview-WhiteRed")),
         AppIcon(name: "Green", icon: UIImage(named: "AppIcon-Preview-WhiteGreen")),
         AppIcon(name: "Orange", icon: UIImage(named: "AppIcon-Preview-WhiteOrange")),
-        AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow"))
+        AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow")),
     ]
 
     // MARK: - Properties (view)
@@ -70,12 +72,12 @@ class SettingsAppIconSheetViewController: SheetViewController {
         iconsCollectionView.dataSource = self
         iconsCollectionView.delegate = self
         iconsCollectionView.showsVerticalScrollIndicator = false
+        iconsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
     private func setUpConstraints() {
         iconsCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(256)
-            make.leading.trailing.equalTo(stackView).inset(16)
+            make.height.equalTo(372)
         }
     }
 
@@ -103,19 +105,15 @@ class SettingsAppIconSheetViewController: SheetViewController {
 extension SettingsAppIconSheetViewController: UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return icons.count
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if icons.count / 3 > section {
-            return 3
-        }
-
-        return icons.count % 3
+        return icons.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let icon = icons[indexPath.section * 3 + indexPath.row]
+        let icon = icons[indexPath.row]
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsAppIconCell.reuse, for: indexPath) as? SettingsAppIconCell else { return UICollectionViewCell() }
 
@@ -128,7 +126,7 @@ extension SettingsAppIconSheetViewController: UICollectionViewDataSource {
 extension SettingsAppIconSheetViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        setIcon(named: icons[indexPath.section * 3 + indexPath.row].name)
+        setIcon(named: icons[indexPath.row].name)
         collectionView.reloadData()
     }
 

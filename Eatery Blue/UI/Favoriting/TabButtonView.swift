@@ -9,12 +9,12 @@ import UIKit
 
 class TabButtonView: ButtonView<UIView> {
 
-    // MARK: - Properties (View)
+    // MARK: - Properties (view)
 
     private let container = UIView()
     private let label = UILabel()
 
-    // MARK: - Properties (Data)
+    // MARK: - Properties (data)
 
     /// Whether or not the button is selected
     var selected = false {

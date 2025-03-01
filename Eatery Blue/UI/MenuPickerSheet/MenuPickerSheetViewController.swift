@@ -138,7 +138,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
     private func filterMenuChoices(on day: Day) -> [MenuChoice] {
         menuChoices.filter {
-            $0.event.canonicalDay == day
+            $0.event.canonicalDay == day && $0.event.menu != nil && !($0.event.menu?.categories.isEmpty ?? true)
         }.sorted { lhs, rhs in
             lhs.event.startTimestamp < rhs.event.startTimestamp
         }
