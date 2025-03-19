@@ -191,12 +191,12 @@
 		D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */; };
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
-		EE2C69AA2D6FECE900838EEB /* NotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2C69A92D6FECE900838EEB /* NotificationButton.swift */; };
 		EE2C69B82D6FED1500838EEB /* NotificationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2C69B72D6FED1500838EEB /* NotificationViewCell.swift */; };
 		EE2C69BC2D6FED1900838EEB /* NotificationHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2C69BB2D6FED1900838EEB /* NotificationHubView.swift */; };
 		EE84023F2D8B8B1300AAF548 /* FavoriteItemNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE84023E2D8B8B1300AAF548 /* FavoriteItemNotif.swift */; };
 		EE8402412D8B8B3800AAF548 /* NotificationsHubNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8402402D8B8B3800AAF548 /* NotificationsHubNavigationView.swift */; };
 		EE8402432D8B8B6A00AAF548 /* NotificationsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8402422D8B8B6A00AAF548 /* NotificationsHubViewController.swift */; };
+		EE8402452D8B8F7700AAF548 /* NotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8402442D8B8F7700AAF548 /* NotificationButton.swift */; };
 		EEE0658F2D6AD4BA008DD681 /* NotificationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE0658E2D6AD4BA008DD681 /* NotificationViewCell.swift */; };
 		EEE065932D6ADD7A008DD681 /* NotificationHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE065922D6ADD7A008DD681 /* NotificationHubView.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
@@ -391,12 +391,12 @@
 		D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusViewController.swift; sourceTree = "<group>"; };
 		D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusFilterViewController.swift; sourceTree = "<group>"; };
 		D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusExternalOnboardingView.swift; sourceTree = "<group>"; };
-		EE2C69A92D6FECE900838EEB /* NotificationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationButton.swift; path = ../../../../../.Trash/NotificationButton.swift; sourceTree = "<group>"; };
 		EE2C69B72D6FED1500838EEB /* NotificationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewCell.swift; sourceTree = "<group>"; };
 		EE2C69BB2D6FED1900838EEB /* NotificationHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHubView.swift; sourceTree = "<group>"; };
 		EE84023E2D8B8B1300AAF548 /* FavoriteItemNotif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemNotif.swift; sourceTree = "<group>"; };
 		EE8402402D8B8B3800AAF548 /* NotificationsHubNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHubNavigationView.swift; sourceTree = "<group>"; };
 		EE8402422D8B8B6A00AAF548 /* NotificationsHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHubViewController.swift; sourceTree = "<group>"; };
+		EE8402442D8B8F7700AAF548 /* NotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationButton.swift; sourceTree = "<group>"; };
 		EEE0658E2D6AD4BA008DD681 /* NotificationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewCell.swift; sourceTree = "<group>"; };
 		EEE065922D6ADD7A008DD681 /* NotificationHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHubView.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -1009,7 +1009,6 @@
 		D064656B2C8CE626001902A4 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				EE2C69A92D6FECE900838EEB /* NotificationButton.swift */,
 				EE8402422D8B8B6A00AAF548 /* NotificationsHubViewController.swift */,
 				EE2C69BB2D6FED1900838EEB /* NotificationHubView.swift */,
 				EE2C69B72D6FED1500838EEB /* NotificationViewCell.swift */,
@@ -1017,6 +1016,7 @@
 				EE8402402D8B8B3800AAF548 /* NotificationsHubNavigationView.swift */,
 				EEE0658E2D6AD4BA008DD681 /* NotificationViewCell.swift */,
 				EEE065922D6ADD7A008DD681 /* NotificationHubView.swift */,
+				EE8402442D8B8F7700AAF548 /* NotificationButton.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -1161,7 +1161,6 @@
 				5DBA89A92784E243002DCA6B /* OnboardingFeatureView.swift in Sources */,
 				5DDAD47D2773E8BA00CC98DD /* PillFiltersView.swift in Sources */,
 				D053BF602CCDA03B0060F82C /* FavoritesNavigationView.swift in Sources */,
-				EE2C69AA2D6FECE900838EEB /* NotificationButton.swift in Sources */,
 				5D86517F2773CBFB000338D4 /* AppDelegate.swift in Sources */,
 				5D75D6D9278E1A2700832359 /* SettingsMainMenuModelController.swift in Sources */,
 				5D0CDC4D2774F37100AD0E27 /* VDivider.swift in Sources */,
@@ -1221,6 +1220,7 @@
 				5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */,
 				D0A7A3082D3419C300D9B472 /* NSAttributedString+Extension.swift in Sources */,
 				D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */,
+				EE8402452D8B8F7700AAF548 /* NotificationButton.swift in Sources */,
 				D0A7A30A2D342E1800D9B472 /* MenusViewController.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
