@@ -143,6 +143,7 @@ class HomeViewController: UIViewController {
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
+        
         navigationView.notificationButton.onTap { [self] _ in
             let notifHubViewController = NotificationsHubViewController()
             

@@ -55,6 +55,7 @@ class NotificationHubView: UIView {
         titleLabel.font = .eateryNavigationBarTitleFont
         titleLabel.textColor = UIColor.Eatery.black
     }
+    
     private func setUpTableView() {
         
         tableView.register(NotificationHubTableViewCell.self, forCellReuseIdentifier: NotificationHubTableViewCell.reuse)
@@ -120,12 +121,9 @@ extension NotificationHubView: UITableViewDataSource {
             cell.delegate = self
             cell.selectionStyle = .none
             return cell
-        }else{
+        } else {
             return UITableViewCell()
         }
-                
-        
     }
-    
 }
 

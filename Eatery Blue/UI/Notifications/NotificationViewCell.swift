@@ -20,7 +20,6 @@ class NotificationHubTableViewCell: UITableViewCell {
     private var favoriteItem = FavoriteItemNotif(name: "", date: "", eateries: "")
     weak var delegate: NotificationHubTableViewCellDelegate?
  
-
     // MARK: - Properties (Data)
 
     static let reuse = "NotificationHubTableViewCellReuse"
@@ -89,11 +88,8 @@ class NotificationHubTableViewCell: UITableViewCell {
         delegate?.cellDidRequestNavigation(self,favoriteItem:self.favoriteItem)
        
     }
-  
-    
 
     private func setUpConstraints() {
-
         favoriteImage.snp.makeConstraints { make in
             make.leading.equalTo(layoutMarginsGuide.snp.leading).inset(4)
             make.centerY.equalToSuperview()
@@ -119,7 +115,6 @@ class NotificationHubTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-16)
                 make.top.equalToSuperview().offset(8)
             make.bottom.equalToSuperview().offset(-8)
-                
         }
         
     }
