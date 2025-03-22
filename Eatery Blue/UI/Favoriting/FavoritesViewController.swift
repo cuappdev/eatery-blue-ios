@@ -201,4 +201,3 @@ extension FavoritesViewController: UISearchBarDelegate {
     }
 
 }
-

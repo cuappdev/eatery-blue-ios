@@ -41,7 +41,7 @@ class NavigationView: UICollectionReusableView {
         setUpLargeTitleLabel()
 
 //        TODO: - NOTIFICATIONS
-//        addSubview(notificationButton)
+        addSubview(notificationButton)
     }
 
     private func setUpNormalNavigationBar() {
@@ -108,10 +108,10 @@ class NavigationView: UICollectionReusableView {
         largeTitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
 //        TODO: - NOTIFICATIONS
-//        notificationButton.snp.makeConstraints { make in
-//            make.trailing.equalTo(layoutMarginsGuide)
-//            make.centerY.equalTo(largeTitleLabel.snp.centerY)
-//        }
+        notificationButton.snp.makeConstraints { make in
+            make.trailing.equalTo(layoutMarginsGuide)
+            make.centerY.equalTo(largeTitleLabel.snp.centerY)
+        }
     }
 
     func computeExpandedHeight() -> CGFloat {
