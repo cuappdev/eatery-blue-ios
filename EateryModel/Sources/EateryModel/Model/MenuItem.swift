@@ -19,12 +19,18 @@ public struct MenuItem: Codable, Hashable {
 
     public let price: Double?
 
-    public init(id: Int, description: String? = nil, healthy: Bool, name: String, price: Double? = nil) {
+    public let allergens: [String]
+
+    public let dietaryPreferences: [String]
+
+    public init(id: Int, description: String? = nil, healthy: Bool, name: String, price: Double? = nil, allergens: [String] = [], dietaryPreferences: [String] = []) {
         self.id = id
         self.description = description
         self.healthy = healthy
         self.name = name
         self.price = price
+        self.allergens = allergens
+        self.dietaryPreferences = dietaryPreferences
     }
 
 }
