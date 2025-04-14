@@ -104,6 +104,12 @@ class EateryModelController: EateryViewController {
         addButtons(eatery)
         addAlertsIfNeeded(eatery)
         addTimingView(eatery)
+
+        // if this is the free food fridge add the description
+        if eatery.id == 46 {
+            addFreedgeDescription()
+        }
+
         addSpacer(height: 16)
     }
 
