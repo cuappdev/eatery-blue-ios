@@ -155,11 +155,11 @@ class MenuItemView: UIView {
         allergensLabel.textColor = UIColor.Eatery.red
     }
 
-    private func setUpDietaryInfoStack(_ dietaryInfo: [String]) {
+    private func setUpDietaryInfoStack(_ dietaryInfos: [String]) {
         dietaryInfoStack.axis = .horizontal
         dietaryInfoStack.spacing = 8
 
-        if dietaryInfo.isEmpty {
+        if dietaryInfos.isEmpty {
             dietaryInfoStack.isHidden = true
             return
         } else {
@@ -171,12 +171,7 @@ class MenuItemView: UIView {
             view.removeFromSuperview()
         }
 
-        var newDietaryInfo = dietaryInfo
-        newDietaryInfo.append("Halal")
-        newDietaryInfo.append("Nut-free")
-        newDietaryInfo.append("Kosher")
-
-        newDietaryInfo.forEach { dietaryInfo in
+        dietaryInfos.forEach { dietaryInfo in
             let dietaryInfoView = UIImageView()
             // see if the dietaryInfo image exists
             if let image = UIImage(named: dietaryInfo) {
