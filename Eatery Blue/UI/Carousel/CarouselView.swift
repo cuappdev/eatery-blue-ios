@@ -76,6 +76,10 @@ class CarouselView: UIView {
 
         addSubview(collectionView)
         setUpCollectionView()
+
+        snp.makeConstraints { make in
+            make.height.equalTo(260)
+        }
     }
 
     private func setUpTitleLabel() {
