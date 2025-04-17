@@ -203,6 +203,7 @@ class EateryModelController: EateryViewController {
     private func addMenuFromState() {
         guard let event = selectedEvent else {
             addMenuHeaderView(
+                eateryId: eatery?.id,
                 title: "Closed Today",
                 subtitle: "Choose a different date to see menu"
             ) { [self] in
@@ -222,6 +223,7 @@ class EateryModelController: EateryViewController {
         }
 
         addMenuHeaderView(
+            eateryId: eatery?.id,
             title: event.canonicalDay.toWeekdayString(),
             subtitle: EateryFormatter.default.formatEventTime(event)
         ) { [self] in
