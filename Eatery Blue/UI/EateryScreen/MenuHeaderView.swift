@@ -9,10 +9,22 @@ import UIKit
 
 class MenuHeaderView: UIView {
 
+    // MARK: - Properties (View)
+
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let buttonView = UIView()
     let menuInaccuracyLabel = UILabel()
+
+    // MARK: - Properties (Data)
+
+    var notice: String? {
+        didSet {
+            setUpMenuInaccuracyLabel()
+        }
+    }
+
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -79,9 +91,12 @@ class MenuHeaderView: UIView {
     }
 
     private func setUpMenuInaccuracyLabel() {
-        menuInaccuracyLabel.text = "*Menus are based on Cornell Dining and are subject to change"
+        menuInaccuracyLabel.text = notice
         menuInaccuracyLabel.font = .preferredFont(for: .caption2, weight: .semibold)
         menuInaccuracyLabel.textColor = UIColor.Eatery.gray05
+        menuInaccuracyLabel.lineBreakMode = .byWordWrapping
+        menuInaccuracyLabel.numberOfLines = 0
+
     }
 
     private func setUpConstraints() {
@@ -103,7 +118,7 @@ class MenuHeaderView: UIView {
 
         menuInaccuracyLabel.snp.makeConstraints { make in
             make.top.equalTo(subtitleLabel.snp.bottom).offset(12)
-            make.leading.bottom.equalTo(layoutMarginsGuide)
+            make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
         }
     }
 

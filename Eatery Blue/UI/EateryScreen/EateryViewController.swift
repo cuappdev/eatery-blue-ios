@@ -437,8 +437,9 @@ class EateryViewController: UIViewController {
         }
     }
 
-    func addMenuHeaderView(title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
+    func addMenuHeaderView(eateryId: Int64?, title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
         let menuHeaderView = MenuHeaderView()
+        menuHeaderView.notice = eateryId == 46 ? "*Inventory are based on reported donations and are subject to hourly change and variability" : "*Menus are based on Cornell Dining and are subject to change"
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
