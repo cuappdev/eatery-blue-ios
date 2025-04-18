@@ -373,6 +373,18 @@ class EateryViewController: UIViewController {
         return cell
     }
 
+    func addFreedgeDescription() {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.text = "The Free Food Fridge is a place on campus where all are welcome to both donate and take food at no cost, as needed, reducing food waste while improving food access. The fridge is intended to provide a convenient place to drop off food that might otherwise be discarded––it should not be used to redirect food that is already being donated."
+        label.textColor = UIColor.Eatery.gray05
+        label.font = .preferredFont(for: .footnote, weight: .regular)
+
+        let container = ContainerView(content: label)
+        container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.addArrangedSubview(container)
+    }
+
     private func createWaitTimeCell(_ eatery: Eatery) -> TimingCellView {
         let cell = TimingCellView()
         cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
@@ -425,8 +437,9 @@ class EateryViewController: UIViewController {
         }
     }
 
-    func addMenuHeaderView(title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
+    func addMenuHeaderView(eateryId: Int64?, title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
         let menuHeaderView = MenuHeaderView()
+        menuHeaderView.notice = eateryId == 46 ? "*Inventory are based on reported donations and are subject to hourly change and variability" : "*Menus are based on Cornell Dining and are subject to change"
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

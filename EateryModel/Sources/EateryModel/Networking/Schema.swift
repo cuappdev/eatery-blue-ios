@@ -93,6 +93,10 @@ internal enum Schema {
 
         internal let name: String
 
+        internal let allergens: [String]
+
+        internal let dietaryPreferences: [String]
+
     }
 
     internal struct WaitTime: Codable {

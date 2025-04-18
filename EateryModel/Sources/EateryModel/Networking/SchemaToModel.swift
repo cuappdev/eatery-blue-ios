@@ -116,7 +116,9 @@ internal enum SchemaToModel {
             description: nil,
             healthy: schemaMenuItem.healthy ?? false,
             name: schemaMenuItem.name,
-            price: nil
+            price: nil,
+            allergens: schemaMenuItem.allergens,
+            dietaryPreferences: schemaMenuItem.dietaryPreferences
         )
     }
 

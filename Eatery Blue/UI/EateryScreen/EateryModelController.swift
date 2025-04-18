@@ -104,6 +104,12 @@ class EateryModelController: EateryViewController {
         addButtons(eatery)
         addAlertsIfNeeded(eatery)
         addTimingView(eatery)
+
+        // if this is the free food fridge add the description
+        if eatery.id == 46 {
+            addFreedgeDescription()
+        }
+
         addSpacer(height: 16)
     }
 
@@ -197,6 +203,7 @@ class EateryModelController: EateryViewController {
     private func addMenuFromState() {
         guard let event = selectedEvent else {
             addMenuHeaderView(
+                eateryId: eatery?.id,
                 title: "Closed Today",
                 subtitle: "Choose a different date to see menu"
             ) { [self] in
@@ -216,6 +223,7 @@ class EateryModelController: EateryViewController {
         }
 
         addMenuHeaderView(
+            eateryId: eatery?.id,
             title: event.canonicalDay.toWeekdayString(),
             subtitle: EateryFormatter.default.formatEventTime(event)
         ) { [self] in
