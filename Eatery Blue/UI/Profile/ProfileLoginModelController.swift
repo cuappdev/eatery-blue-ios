@@ -12,6 +12,8 @@ protocol ProfileLoginModelControllerDelegate: AnyObject {
 
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String)
 
+    func demoModeDidLogin(_ viewController: ProfileLoginModelController)
+
 }
 
 class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
@@ -40,7 +42,12 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
         super.didTapLoginButton()
         attemptLogin()
     }
-    
+
+    override func didLongPressLoginButton() {
+        super.didLongPressLoginButton()
+        delegate?.demoModeDidLogin(self)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let _ = KeychainAccess.shared.retrieveToken() {
