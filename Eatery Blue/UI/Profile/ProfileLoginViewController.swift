@@ -142,6 +142,19 @@ class ProfileLoginViewController: UIViewController {
         }
     }
 
+    private func setUpBackButton() {
+        backButton.content.image = UIImage(named: "ArrowLeft")
+        backButton.shadowColor = UIColor.Eatery.black
+        backButton.shadowOffset = CGSize(width: 0, height: 4)
+        backButton.backgroundColor = .white
+        backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        backButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
     private func setUpConstraints() {
         loginView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
