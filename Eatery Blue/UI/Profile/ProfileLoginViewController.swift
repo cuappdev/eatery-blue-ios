@@ -14,7 +14,7 @@ class ProfileLoginViewController: UIViewController {
     private let backButton = ButtonView(content: UIImageView())
     private let eateryLogo = UIImageView()
     private let loginView = LoginView()
-    private let loginButton = ButtonView(pillContent: UILabel())
+    private lazy var loginButton: ButtonView<UILabel> = ButtonView(pillContent: UILabel(), longPressDuration: 10)
 
     // MARK: - Properties (data)
 
@@ -123,6 +123,10 @@ class ProfileLoginViewController: UIViewController {
         loginButton.buttonPress { [self] _ in
             didTapLoginButton()
         }
+
+        loginButton.buttonLongPress { [self] _ in
+            didLongPressLoginButton()
+        }
     }
 
     private func setUpBackButton() {
@@ -167,6 +171,10 @@ class ProfileLoginViewController: UIViewController {
     }
 
     func didTapLoginButton() {
+        // Override point for a sublcass
+    }
+
+    func didLongPressLoginButton() {
         // Override point for a sublcass
     }
 

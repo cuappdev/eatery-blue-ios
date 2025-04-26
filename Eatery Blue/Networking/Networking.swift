@@ -32,7 +32,7 @@ class Networking {
     }
     
     func loadAllEatery() async throws-> [Eatery] {
-        return try await eateryCache.fetchAll(maxStaleness: endOfDay())
+        return try await eateryCache.fetchAll(maxStaleness: timeUntilFiveMinutesIntoNextHour())
     }
     
     func loadEatery(by id: Int) async -> Eatery? {
@@ -40,7 +40,7 @@ class Networking {
         if let url = URL(string: "\(self.baseUrl)\(id)/") {
             let eateryApi = EateryAPI(url: url)
             do {
-                eatery = try await eateryCache.fetchByID(maxStaleness: endOfDay(), id: id, fetchByID: eateryApi.eatery)
+                eatery = try await eateryCache.fetchByID(maxStaleness: timeUntilFiveMinutesIntoNextHour(), id: id, fetchByID: eateryApi.eatery)
             } catch {
                 logger.error("Failed to load eatery \(id)")
                 return nil
@@ -62,6 +62,7 @@ class Networking {
         return []
     }
 
+    // Computes the time until the end of the day previous cache policy
     private func endOfDay() -> TimeInterval {
         let calendar = Calendar.current
         let currentDate = Date()
@@ -71,6 +72,24 @@ class Networking {
             second: 0,
             of: Calendar.current.date(byAdding: .day, value: 1, to: Date())!
         )?.timeIntervalSince(Date()) ?? 0
+    }
+
+    // Computes the time until 5 minutes into the next hour
+    private func timeUntilFiveMinutesIntoNextHour() -> TimeInterval {
+        let calendar = Calendar.current
+        let now = Date()
+        // Grab the current Y/M/D/H and bump hour by 1
+        var comps = calendar.dateComponents([.year, .month, .day, .hour], from: now)
+        comps.hour! += 1
+        // Set minute to 5, second to 0
+        comps.minute = 5
+        comps.second = 0
+
+        // Construct the future date
+        guard let target = calendar.date(from: comps) else {
+            return 0
+        }
+        return target.timeIntervalSince(now)
     }
 
     func logOut() {

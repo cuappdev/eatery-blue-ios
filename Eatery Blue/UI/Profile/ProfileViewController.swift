@@ -11,6 +11,7 @@ class ProfileViewController: UIViewController {
 
     enum Mode {
         case account
+        case demo
         case login
     }
 
@@ -69,6 +70,10 @@ class ProfileViewController: UIViewController {
 
         case .account:
             viewController = AccountModelController()
+
+        case .demo:
+            viewController = DemoAccountModelController()
+            (viewController as? DemoAccountModelController)?.delegate = self
         }
 
         var viewControllers = profileNavigationController.viewControllers
@@ -95,6 +100,19 @@ extension ProfileViewController: ProfileLoginModelControllerDelegate {
 
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
         setMode(.account, animated: true)
+    }
+
+    func demoModeDidLogin(_ viewController: ProfileLoginModelController) {
+        setMode(.demo, animated: true)
+    }
+
+}
+
+extension ProfileViewController: DemoAccountViewControllerDelegate {
+
+    func demoModeDidLogout() {
+        self.profileNavigationController.popToRootViewController(animated: true)
+        self.setMode(.login, animated: true)
     }
 
 }
