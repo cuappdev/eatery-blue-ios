@@ -44,7 +44,7 @@ class AccountViewController: UIViewController {
         RootViewController.setStatusBarStyle(.lightContent)
     }
 
-    private func setUpNavigation() {
+    func setUpNavigation() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor.Eatery.blue
         appearance.titleTextAttributes = [
