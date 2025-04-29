@@ -172,7 +172,6 @@
 		D053BF622CCDAA250060F82C /* EateryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D053BF612CCDAA250060F82C /* EateryListView.swift */; };
 		D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0548AD62BB5201B0064489D /* ScrollHitView.swift */; };
 		D06230E82CB9D4A70092C04A /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06230E72CB9D4A70092C04A /* FavoritesViewController.swift */; };
-		D064656D2C8CE634001902A4 /* NotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064656C2C8CE634001902A4 /* NotificationButton.swift */; };
 		D06AE51C2CE1CC4500C0AFF5 /* TabButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06AE51B2CE1CC3700C0AFF5 /* TabButtonView.swift */; };
 		D0730BB82D2B49AB00F9070A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0730BB72D2B49A600F9070A /* HomeViewController.swift */; };
 		D0730BBA2D2B55B500F9070A /* ClearCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0730BB92D2B55B500F9070A /* ClearCollectionViewCell.swift */; };
@@ -192,6 +191,14 @@
 		D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */; };
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
+		EE2C69B82D6FED1500838EEB /* NotificationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2C69B72D6FED1500838EEB /* NotificationViewCell.swift */; };
+		EE2C69BC2D6FED1900838EEB /* NotificationHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2C69BB2D6FED1900838EEB /* NotificationHubView.swift */; };
+		EE84023F2D8B8B1300AAF548 /* FavoriteItemNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE84023E2D8B8B1300AAF548 /* FavoriteItemNotif.swift */; };
+		EE8402412D8B8B3800AAF548 /* NotificationsHubNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8402402D8B8B3800AAF548 /* NotificationsHubNavigationView.swift */; };
+		EE8402432D8B8B6A00AAF548 /* NotificationsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8402422D8B8B6A00AAF548 /* NotificationsHubViewController.swift */; };
+		EE8402452D8B8F7700AAF548 /* NotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8402442D8B8F7700AAF548 /* NotificationButton.swift */; };
+		EEE0658F2D6AD4BA008DD681 /* NotificationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE0658E2D6AD4BA008DD681 /* NotificationViewCell.swift */; };
+		EEE065932D6ADD7A008DD681 /* NotificationHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE065922D6ADD7A008DD681 /* NotificationHubView.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
@@ -367,7 +374,6 @@
 		D053BF612CCDAA250060F82C /* EateryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryListView.swift; sourceTree = "<group>"; };
 		D0548AD62BB5201B0064489D /* ScrollHitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollHitView.swift; sourceTree = "<group>"; };
 		D06230E72CB9D4A70092C04A /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
-		D064656C2C8CE634001902A4 /* NotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationButton.swift; sourceTree = "<group>"; };
 		D06AE51B2CE1CC3700C0AFF5 /* TabButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButtonView.swift; sourceTree = "<group>"; };
 		D0730BB72D2B49A600F9070A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D0730BB92D2B55B500F9070A /* ClearCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -386,6 +392,14 @@
 		D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusViewController.swift; sourceTree = "<group>"; };
 		D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusFilterViewController.swift; sourceTree = "<group>"; };
 		D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusExternalOnboardingView.swift; sourceTree = "<group>"; };
+		EE2C69B72D6FED1500838EEB /* NotificationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewCell.swift; sourceTree = "<group>"; };
+		EE2C69BB2D6FED1900838EEB /* NotificationHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHubView.swift; sourceTree = "<group>"; };
+		EE84023E2D8B8B1300AAF548 /* FavoriteItemNotif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemNotif.swift; sourceTree = "<group>"; };
+		EE8402402D8B8B3800AAF548 /* NotificationsHubNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHubNavigationView.swift; sourceTree = "<group>"; };
+		EE8402422D8B8B6A00AAF548 /* NotificationsHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHubViewController.swift; sourceTree = "<group>"; };
+		EE8402442D8B8F7700AAF548 /* NotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationButton.swift; sourceTree = "<group>"; };
+		EEE0658E2D6AD4BA008DD681 /* NotificationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewCell.swift; sourceTree = "<group>"; };
+		EEE065922D6ADD7A008DD681 /* NotificationHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHubView.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAccountViewController.swift; sourceTree = "<group>"; };
@@ -998,7 +1012,14 @@
 		D064656B2C8CE626001902A4 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				D064656C2C8CE634001902A4 /* NotificationButton.swift */,
+				EE8402422D8B8B6A00AAF548 /* NotificationsHubViewController.swift */,
+				EE2C69BB2D6FED1900838EEB /* NotificationHubView.swift */,
+				EE2C69B72D6FED1500838EEB /* NotificationViewCell.swift */,
+				EE84023E2D8B8B1300AAF548 /* FavoriteItemNotif.swift */,
+				EE8402402D8B8B3800AAF548 /* NotificationsHubNavigationView.swift */,
+				EEE0658E2D6AD4BA008DD681 /* NotificationViewCell.swift */,
+				EEE065922D6ADD7A008DD681 /* NotificationHubView.swift */,
+				EE8402442D8B8F7700AAF548 /* NotificationButton.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -1156,12 +1177,14 @@
 				5DF5F7EB2774D8FE001ADCDC /* EateryViewController.swift in Sources */,
 				5DF304A527791D2C00E2C9A4 /* EateryModelController.swift in Sources */,
 				5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */,
+				EEE0658F2D6AD4BA008DD681 /* NotificationViewCell.swift in Sources */,
 				5DDAD4732773D57A00CC98DD /* DummyData.swift in Sources */,
 				5D1F13B2277638D4001A21B9 /* SheetPresentationController.swift in Sources */,
 				5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */,
 				FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */,
 				5DA434B6278B5A17001337FD /* AccountTransactionTableViewCell.swift in Sources */,
 				5D73C3832780E9DD0020507C /* HomeSearchContentModelController.swift in Sources */,
+				EE2C69B82D6FED1500838EEB /* NotificationViewCell.swift in Sources */,
 				5DF304A727791E6300E2C9A4 /* MenuPickerSheetViewController.swift in Sources */,
 				D05063412B9421F30022760B /* CompareMenusEaterySelectionCell.swift in Sources */,
 				5D73C3BE27822AD30020507C /* EateryBlue.xcdatamodeld in Sources */,
@@ -1201,11 +1224,13 @@
 				5D468A00277D146500986AFF /* ClearTableViewCell.swift in Sources */,
 				D0A7A3082D3419C300D9B472 /* NSAttributedString+Extension.swift in Sources */,
 				D09D20A52B96DE19004C72ED /* CompareMenusNavigationView.swift in Sources */,
+				EE8402452D8B8F7700AAF548 /* NotificationButton.swift in Sources */,
 				D0A7A30A2D342E1800D9B472 /* MenusViewController.swift in Sources */,
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
 				D07A73A32CDB223A009E380C /* FavoritesItemsTableViewCell.swift in Sources */,
 				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
+				EE84023F2D8B8B1300AAF548 /* FavoriteItemNotif.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
@@ -1258,11 +1283,13 @@
 				5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
 				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
+				EE8402412D8B8B3800AAF548 /* NotificationsHubNavigationView.swift in Sources */,
 				9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */,
 				5D75D6E4278E2B9D00832359 /* EateryCardVisualEffectView.swift in Sources */,
 				D0B72AE32D32C2180041C2BA /* MiniSelectionView.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
+				EE8402432D8B8B6A00AAF548 /* NotificationsHubViewController.swift in Sources */,
 				5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */,
 				D09D20A72B97A429004C72ED /* CompareMenusEateryViewController.swift in Sources */,
 				5DF5F7D6277404C8001ADCDC /* UIFont+Extension.swift in Sources */,
@@ -1279,8 +1306,8 @@
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				998F6D0A2ABF2C19006B7F18 /* EateryExpandableCardContentView.swift in Sources */,
 				5DA434BE278B6EC7001337FD /* UITableViewCell+Extension.swift in Sources */,
-				D064656D2C8CE634001902A4 /* NotificationButton.swift in Sources */,
 				5DF5F7E127742280001ADCDC /* EaterySmallCardView.swift in Sources */,
+				EE2C69BC2D6FED1900838EEB /* NotificationHubView.swift in Sources */,
 				5DF5F7D227740140001ADCDC /* PillFilterButtonView.swift in Sources */,
 				413780512AC5DFD600EE43FE /* KeychainAccess.swift in Sources */,
 				5DBA899A2783ED23002DCA6B /* OnboardingViewController.swift in Sources */,
@@ -1300,6 +1327,7 @@
 				5DCB869C2782396000134066 /* main.swift in Sources */,
 				5DAE72D5278FC12600284A72 /* NetIDKeychainManager.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
+				EEE065932D6ADD7A008DD681 /* NotificationHubView.swift in Sources */,
 				5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */,
 				5D75D6D3278E084E00832359 /* SettingsMainMenuCell.swift in Sources */,
 			);
