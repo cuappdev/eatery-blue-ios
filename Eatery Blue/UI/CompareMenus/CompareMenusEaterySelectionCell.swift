@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusEaterySelectionCell: UITableViewCell {
-
     // MARK: - Properties (data)
 
     static let reuse = "CompareMenusEaterySelectionCellReuse"
@@ -28,7 +27,8 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -42,7 +42,7 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
             checkView.image = UIImage(named: "CheckboxUnfilled")
         }
 
-        self.layoutIfNeeded()
+        layoutIfNeeded()
         if draggable {
             nameView.snp.updateConstraints { make in
                 make.trailing.equalToSuperview().offset(32)
@@ -58,10 +58,10 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
             self.layoutIfNeeded()
         }
 
-        self.selectionStyle = .none
+        selectionStyle = .none
         let cellBackground = UIView()
         cellBackground.backgroundColor = .white
-        self.backgroundView = cellBackground
+        backgroundView = cellBackground
         cellBackground.snp.makeConstraints { make in
             make.edges.equalTo(self.snp.edges)
         }
@@ -95,5 +95,4 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
             }
         }
     }
-    
 }

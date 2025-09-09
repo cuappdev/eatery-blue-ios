@@ -8,7 +8,6 @@
 import UIKit
 
 class NavigationView: UICollectionReusableView {
-
     // MARK: - Properties (view)
 
     let leftButtons = UIStackView()
@@ -27,7 +26,8 @@ class NavigationView: UICollectionReusableView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -116,7 +116,7 @@ class NavigationView: UICollectionReusableView {
 
     func computeExpandedHeight() -> CGFloat {
         class Delegate: NSObject, UINavigationBarDelegate {
-            func position(for bar: UIBarPositioning) -> UIBarPosition {
+            func position(for _: UIBarPositioning) -> UIBarPosition {
                 .topAttached
             }
         }
@@ -180,5 +180,4 @@ class NavigationView: UICollectionReusableView {
             rightButtons.addArrangedSubview(button)
         }
     }
-
 }

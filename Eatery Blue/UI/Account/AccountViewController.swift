@@ -8,7 +8,6 @@
 import UIKit
 
 class AccountViewController: UIViewController {
-
     struct TransactionItem {
         let title: String
         let time: String
@@ -74,7 +73,7 @@ class AccountViewController: UIViewController {
 
         view.addSubview(tableView)
         setUpTableView()
-        
+
         view.addSubview(spinner)
         setUpSpinnerView()
     }
@@ -94,7 +93,7 @@ class AccountViewController: UIViewController {
         tableView.register(AccountBalanceTableViewCell.self, forCellReuseIdentifier: "balance")
         tableView.register(AccountTransactionTableViewCell.self, forCellReuseIdentifier: "transaction")
     }
-    
+
     private func setUpSpinnerView() {
         spinner.hidesWhenStopped = true
     }
@@ -103,7 +102,7 @@ class AccountViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         spinner.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
@@ -120,18 +119,15 @@ class AccountViewController: UIViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    @objc func didRefresh(_ sender: UIRefreshControl) {
-    }
-
+    @objc func didRefresh(_: UIRefreshControl) {}
 }
 
 extension AccountViewController: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in _: UITableView) -> Int {
         2
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: return 2 + balanceItems.count // First cell is the header, last cell is a large separator
         case 1: return 1 + transactionItems.count // First cell is the header
@@ -148,7 +144,7 @@ extension AccountViewController: UITableViewDataSource {
                 view.content.text = "Meal Plan"
                 view.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
                 return UITableViewCell(content: view)
-                
+
             } else if indexPath.row == balanceItems.count + 1 {
                 let view = UIView()
                 view.backgroundColor = UIColor.Eatery.gray00
@@ -159,7 +155,8 @@ extension AccountViewController: UITableViewDataSource {
 
             } else {
                 let balance = balanceItems[indexPath.row - 1]
-                let cell = tableView.dequeueReusableCell(withIdentifier: "balance", for: indexPath) as! AccountBalanceTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "balance", for: indexPath)
+                    as? AccountBalanceTableViewCell else { return UITableViewCell() }
                 cell.titleLabel.text = balance.title
                 cell.subtitleLabel.attributedText = balance.subtitle
                 return cell
@@ -171,7 +168,9 @@ extension AccountViewController: UITableViewDataSource {
 
             } else {
                 let transaction = transactionItems[indexPath.row - 1]
-                let cell = tableView.dequeueReusableCell(withIdentifier: "transaction", for: indexPath) as! AccountTransactionTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "transaction", for: indexPath)
+                    as? AccountTransactionTableViewCell else { return UITableViewCell() }
+
                 cell.titleLabel.text = transaction.title
                 cell.subtitleLabel.text = "\(transaction.time) · \(transaction.date)"
                 cell.amountLabel.attributedText = transaction.amount
@@ -182,9 +181,6 @@ extension AccountViewController: UITableViewDataSource {
             return UITableViewCell()
         }
     }
-
 }
 
-extension AccountViewController: UITableViewDelegate {
-
-}
+extension AccountViewController: UITableViewDelegate {}

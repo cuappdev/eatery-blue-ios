@@ -8,7 +8,6 @@
 import UIKit
 
 class MenuChoiceView: UIView {
-
     let descriptionLabel = UILabel()
     let timeLabel = UILabel()
     let imageView = UIImageView()
@@ -20,7 +19,8 @@ class MenuChoiceView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -45,8 +45,7 @@ class MenuChoiceView: UIView {
         timeLabel.textColor = UIColor.Eatery.gray05
     }
 
-    private func setUpImageView() {
-    }
+    private func setUpImageView() {}
 
     private func setUpConstraints() {
         descriptionLabel.snp.makeConstraints { make in
@@ -65,5 +64,4 @@ class MenuChoiceView: UIView {
             make.width.height.equalTo(24)
         }
     }
-
 }

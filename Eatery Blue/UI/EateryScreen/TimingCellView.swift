@@ -8,7 +8,6 @@
 import UIKit
 
 class TimingCellView: UIView {
-
     let titleLabel = UILabel()
     let statusLabel = UILabel()
 
@@ -19,7 +18,8 @@ class TimingCellView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -43,5 +43,4 @@ class TimingCellView: UIView {
             make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
         }
     }
-
 }

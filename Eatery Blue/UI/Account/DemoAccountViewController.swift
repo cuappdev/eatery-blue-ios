@@ -5,18 +5,15 @@
 //  Created by Jayson Hahn on 4/21/25.
 //
 
-import EateryModel
 import EateryGetAPI
+import EateryModel
 import UIKit
 
 protocol DemoAccountViewControllerDelegate: AnyObject {
-
     func demoModeDidLogout()
-
 }
 
 enum DemoEateryAccountType: Int, CustomStringConvertible, CaseIterable {
-
     case mealPlan
     case bigRedBucks
     case cityBucks
@@ -30,13 +27,10 @@ enum DemoEateryAccountType: Int, CustomStringConvertible, CaseIterable {
         case .laundry: return "Laundry"
         }
     }
-
 }
-
 
 @MainActor
 class DemoAccountModelController: AccountViewController {
-
     enum TimePeriod: CaseIterable {
         case past7Days
         case past30Days
@@ -47,10 +41,10 @@ class DemoAccountModelController: AccountViewController {
         BalanceItem(title: "Meal Swipes", subtitle: NSAttributedString(string: "Unlimited")),
         BalanceItem(title: "Big Red Bucks", subtitle: NSAttributedString(string: "$350.00")),
         BalanceItem(title: "City Bucks", subtitle: NSAttributedString(string: "$0.00")),
-        BalanceItem(title: "Laundry", subtitle: NSAttributedString(string: "")),
+        BalanceItem(title: "Laundry", subtitle: NSAttributedString(string: ""))
     ]
 
-    var delegate: DemoAccountViewControllerDelegate? = nil
+    var delegate: DemoAccountViewControllerDelegate?
 
     private var selectedAccount: DemoEateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
@@ -68,14 +62,13 @@ class DemoAccountModelController: AccountViewController {
 
         // Remove the loading spinner
         view.subviews
-            .compactMap({ $0 as? UIActivityIndicatorView })
+            .compactMap { $0 as? UIActivityIndicatorView }
             .forEach { $0.removeFromSuperview() }
 
         setUpTransactionsHeaderView()
 
         updateCellsFromState()
         updateTransactionsHeaderViewFromState()
-
     }
 
     override func setUpNavigation() {
@@ -94,7 +87,6 @@ class DemoAccountModelController: AccountViewController {
     @objc private func didTapBackButton() {
         delegate?.demoModeDidLogout()
     }
-
 
     private func setUpTransactionsHeaderView() {
         transactionsHeaderView.buttonImageView.tap { [self] _ in
@@ -125,12 +117,13 @@ class DemoAccountModelController: AccountViewController {
         case .past365Days: transactionsHeaderView.headerLabel.text = "Past Year"
         }
     }
-
 }
 
 extension DemoAccountModelController: AccountPickerSheetViewControllerDelegate {
-
-    func accountPickerSheetViewController(_ viewController: AccountPickerSheetViewController, didSelectAccountAt index: Int) {
+    func accountPickerSheetViewController(
+        _ viewController: AccountPickerSheetViewController,
+        didSelectAccountAt index: Int
+    ) {
         if let account = DemoEateryAccountType(rawValue: index) {
             selectedAccount = account
             updateCellsFromState()
@@ -139,11 +132,9 @@ extension DemoAccountModelController: AccountPickerSheetViewControllerDelegate {
 
         viewController.dismiss(animated: true)
     }
-
 }
 
 extension DemoEateryAccountType {
-
     /// A quick formatter for “yesterday”
     private var yesterdayString: String {
         let fmt = DateFormatter()
@@ -156,6 +147,7 @@ extension DemoEateryAccountType {
     private var semiboldFont: UIFont {
         .preferredFont(for: .footnote, weight: .semibold)
     }
+
     private var mediumFont: UIFont {
         .preferredFont(for: .footnote, weight: .medium)
     }
@@ -220,35 +212,29 @@ extension DemoEateryAccountType {
                     title: "Bear Necessities",
                     time: "9:45 PM",
                     date: yesterdayString,
-                    amount: {
-                        return NSMutableAttributedString(
-                            string: "$24.00",
-                            attributes: [.font: semiboldFont]
-                        )
-                    }()
+                    amount: NSMutableAttributedString(
+                        string: "$24.00",
+                        attributes: [.font: semiboldFont]
+                    )
                 ),
                 .init(
                     title: "Stadler Macs",
                     time: "1:00 PM",
                     date: yesterdayString,
-                    amount: {
-                        return NSMutableAttributedString(
-                            string: "$19.00",
-                            attributes: [.font: semiboldFont]
-                        )
-                    }()
+                    amount: NSMutableAttributedString(
+                        string: "$19.00",
+                        attributes: [.font: semiboldFont]
+                    )
                 ),
 
                 .init(
                     title: "College Town Bagels",
                     time: "10:30 AM",
                     date: yesterdayString,
-                    amount: {
-                        return NSMutableAttributedString(
-                            string: "$7.00",
-                            attributes: [.font: semiboldFont]
-                        )
-                    }()
+                    amount: NSMutableAttributedString(
+                        string: "$7.00",
+                        attributes: [.font: semiboldFont]
+                    )
                 )
             ]
 

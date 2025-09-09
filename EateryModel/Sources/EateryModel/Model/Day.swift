@@ -9,7 +9,6 @@ import Foundation
 
 // A day, specifically in New York timezone
 public struct Day: Codable, Hashable {
-
     public let year: Int
 
     public let month: Int
@@ -18,9 +17,9 @@ public struct Day: Codable, Hashable {
 
     public init(date: Date = Date()) {
         let components = Calendar.eatery.dateComponents([.year, .month, .day], from: date)
-        self.year = components.year ?? 0
-        self.month = components.month ?? 0
-        self.day = components.day ?? 0
+        year = components.year ?? 0
+        month = components.month ?? 0
+        day = components.day ?? 0
     }
 
     public init(year: Int, month: Int, day: Int) {
@@ -54,7 +53,7 @@ public struct Day: Codable, Hashable {
 
         return date
     }
-    
+
     public func startOfWeek() -> Day {
         let components = DateComponents(weekday: 0)
 
@@ -76,7 +75,7 @@ public struct Day: Codable, Hashable {
     }
 
     public func toWeekdayString() -> String {
-        switch self.weekday() {
+        switch weekday() {
         case 1:
             return "Sunday"
         case 2:
@@ -95,11 +94,9 @@ public struct Day: Codable, Hashable {
             return ""
         }
     }
-
 }
 
 extension Day: Strideable {
-
     public func advanced(by n: Int) -> Day {
         let currentDate = date()
 
@@ -119,11 +116,9 @@ extension Day: Strideable {
             return 0
         }
     }
-
 }
 
 extension Day: RawRepresentable {
-
     public init?(rawValue: String) {
         self.init(string: rawValue)
     }
@@ -131,5 +126,4 @@ extension Day: RawRepresentable {
     public var rawValue: String {
         String(format: "%04d-%02d-%02d", year, month, day)
     }
-
 }

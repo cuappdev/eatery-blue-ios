@@ -8,7 +8,6 @@
 import UIKit
 
 class LoginView: UIView {
-
     private let stackView = UIStackView()
 
     override init(frame: CGRect) {
@@ -18,7 +17,8 @@ class LoginView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -87,5 +87,4 @@ class LoginView: UIView {
             make.leading.trailing.equalToSuperview().inset(16)
         }
     }
-
 }

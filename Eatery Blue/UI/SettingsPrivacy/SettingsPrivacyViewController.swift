@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 class SettingsPrivacyViewController: UIViewController {
-
     private lazy var hostingController: UIHostingController<SettingsPrivacyView> = {
         let hostingController = UIHostingController(rootView: SettingsPrivacyView())
         return hostingController
@@ -102,5 +101,4 @@ class SettingsPrivacyViewController: UIViewController {
         let isAnalyticsEnabled = UserDefaults.standard.bool(forKey: UserDefaultsKeys.isAnalyticsEnabled)
         hostingController.rootView.viewModel.isAnalyticsEnabled = isAnalyticsEnabled
     }
-
 }

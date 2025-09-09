@@ -10,37 +10,37 @@ import SnapKit
 import UIKit
 
 class EateryExpandableCardDetailView: UIView {
-    
     // MARK: - Properties
-    
+
     private let menuCategoryStackView = UIStackView()
     private let viewEateryDetails = PillButtonView()
-    
+
     private var eatery: Eatery?
     private var allEateries: [Eatery] = []
 
     // MARK: - init
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupMenuCategoryStackView()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - configure
-    
+
     func configure(eatery: Eatery, selectedDay: Day, selectedMealType: String, allEateries: [Eatery]) {
         self.eatery = eatery
         self.allEateries = allEateries
 
         let selectedEvents = eatery.events.filter { $0.canonicalDay == selectedDay }
-        
+
         // TODO: Ideally this should be an enum but good for now
-        
+
         // Ignore late lunch
         var event: Event?
         if selectedMealType == "Breakfast" {
@@ -52,29 +52,29 @@ class EateryExpandableCardDetailView: UIView {
         } else if selectedMealType == "Late Dinner" {
             event = selectedEvents.first { $0.description == "Late Night" }
         }
-        
+
         if let event, event.endDate > Date() {
             menuCategoryStackView.addArrangedSubview(HDivider())
             addMenuCategories(event: event)
             setupViewEateryDetailsButton()
         }
     }
-    
+
     // MARK: - Set Up Views
-    
+
     private func setupMenuCategoryStackView() {
         menuCategoryStackView.axis = .vertical
         menuCategoryStackView.alignment = .fill
         menuCategoryStackView.distribution = .equalSpacing
         menuCategoryStackView.spacing = 12
-        
+
         addSubview(menuCategoryStackView)
-        
+
         menuCategoryStackView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
     }
-    
+
     private func setupViewEateryDetailsButton() {
         viewEateryDetails.backgroundColor = UIColor.Eatery.gray00
         viewEateryDetails.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
@@ -86,9 +86,9 @@ class EateryExpandableCardDetailView: UIView {
             target: self,
             action: #selector(didTapEateryDetails(_:))
         ))
-        
+
         addSubview(viewEateryDetails)
-        
+
         viewEateryDetails.snp.makeConstraints { make in
             make.height.equalTo(36)
             make.width.equalToSuperview().inset(12)
@@ -97,13 +97,13 @@ class EateryExpandableCardDetailView: UIView {
             make.bottom.equalToSuperview().inset(8)
         }
     }
-    
+
     // MARK: - Helpers
 
     private func addMenuCategories(event: Event) {
         if let categories = event.menu?.categories {
             var sortedCategories: [MenuCategory] = categories.reversed()
-            for i in 0..<sortedCategories.count {
+            for i in 0 ..< sortedCategories.count {
                 let menuCategory = sortedCategories[i]
                 if menuCategory.category == "Chef's Table" {
                     sortedCategories.swapAt(0, i)
@@ -116,26 +116,26 @@ class EateryExpandableCardDetailView: UIView {
                 }
             }
 
-            sortedCategories.forEach { category in
+            for category in sortedCategories {
                 let menuCategoryView = EateryExpandableCardMenuCategoryView()
                 menuCategoryView.configure(menuCategory: category)
                 menuCategoryStackView.addArrangedSubview(menuCategoryView)
             }
         }
     }
-    
+
     func reset() {
-        menuCategoryStackView.arrangedSubviews.forEach { subview in
+        for subview in menuCategoryStackView.arrangedSubviews {
             menuCategoryStackView.removeArrangedSubview(subview)
-            guard let categorySubView = subview as? EateryExpandableCardMenuCategoryView else { return }
-            
+            guard let categorySubView = subview as? EateryExpandableCardMenuCategoryView else { continue }
+
             categorySubView.reset()
         }
     }
-    
+
     // MARK: - Tap recognizer
-    
-    @objc private func didTapEateryDetails(_ sender: UITapGestureRecognizer) {
+
+    @objc private func didTapEateryDetails(_: UITapGestureRecognizer) {
         if let navigationController = findNavigationController() {
             if let eatery = eatery {
                 let eateryVC = EateryModelController()
@@ -145,7 +145,7 @@ class EateryExpandableCardDetailView: UIView {
             }
         }
     }
-    
+
     private func findNavigationController() -> UINavigationController? {
         var responder: UIResponder? = self
         while let currentResponder = responder {
@@ -156,5 +156,4 @@ class EateryExpandableCardDetailView: UIView {
         }
         return nil
     }
-    
 }

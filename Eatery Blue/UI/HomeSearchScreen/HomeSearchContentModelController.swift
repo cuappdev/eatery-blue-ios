@@ -12,26 +12,27 @@ import Fuse
 import UIKit
 
 class HomeSearchContentModelController: HomeSearchContentViewController {
-
     private static let searchMinCharacters = 3
     private static let searchMaxCharacters = 120
 
     private static let searchMaxResults = 100
 
     enum SearchItem: Fuseable {
-
         case eatery(Eatery)
         case menuItem(MenuItem, category: String, Eatery)
 
         var properties: [FuseProperty] {
             switch self {
-            case .eatery(let eatery):
+            case let .eatery(eatery):
                 return [
                     FuseProperty(name: eatery.name, weight: 1),
-                    FuseProperty(name: eatery.locationDescription ?? "", weight: eatery.locationDescription != nil ? 0.25 : 0),
+                    FuseProperty(
+                        name: eatery.locationDescription ?? "",
+                        weight: eatery.locationDescription != nil ? 0.25 : 0
+                    )
                 ]
 
-            case .menuItem(let item, let category, _):
+            case let .menuItem(item, category, _):
                 return [
                     FuseProperty(name: item.name, weight: 1),
                     FuseProperty(name: item.description ?? "", weight: item.description != nil ? 0.5 : 0),
@@ -39,7 +40,6 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                 ]
             }
         }
-
     }
 
     @Published private var allEateries: [Eatery] = []
@@ -56,23 +56,29 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
     private func setUpSearchTextSubscription() {
         $searchText
-            .filter({ searchText in
+            .filter { searchText in
                 HomeSearchContentModelController.searchMinCharacters <= searchText.count
-                && searchText.count <= HomeSearchContentModelController.searchMaxCharacters
-            })
+                    && searchText.count <= HomeSearchContentModelController.searchMaxCharacters
+            }
             // Assuming that users type at about 50 wpm...
             // 50 wpm * (5 cpm / wpm) * (1 min / 60 s) = 4.17 characters per second
             // Debounce interval should be 1 / 4.17 < 0.25 seconds per character
             .debounce(for: 0.25, scheduler: DispatchQueue.main)
             .combineLatest($filter, $allEateries)
-            .flatMap({ [self] (searchText, filter, allEateries) -> AnyPublisher<([SearchItem], [Fuse.FusableSearchResult]), Never> in
+            .flatMap { [self] searchText, filter, allEateries -> AnyPublisher<
+                ([SearchItem], [Fuse.FusableSearchResult]),
+                Never
+            > in
                 let eateries: [Eatery]
                 if filter.isEnabled {
                     let coreDataStack = AppDelegate.shared.coreDataStack
-                    let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-                    eateries = allEateries.filter({
+                    let predicate = filter.predicate(
+                        userLocation: LocationManager.shared.userLocation,
+                        departureDate: Date()
+                    )
+                    eateries = allEateries.filter {
                         predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
-                    })
+                    }
                 } else {
                     eateries = allEateries
                 }
@@ -84,7 +90,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                 ).searchPublisher(searchText, in: searchItems).map { results in
                     (searchItems, results)
                 }.eraseToAnyPublisher()
-            })
+            }
             .sink { [self] result in
                 updateCells(filtered: filter.isEnabled, searchItems: result.0, searchResults: result.1)
             }
@@ -103,7 +109,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
     }
 
     func setUp(_ eateries: [Eatery]) {
-        self.allEateries = eateries
+        allEateries = eateries
     }
 
     private func computeSearchItems(_ eateries: [Eatery]) -> [SearchItem] {
@@ -164,10 +170,10 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         for searchResult in displayed {
             let item = searchItems[searchResult.index]
             switch item {
-            case .eatery(let eatery):
+            case let .eatery(eatery):
                 cells.append(.eatery(eatery))
 
-            case .menuItem(let menuItem, _, let eatery):
+            case let .menuItem(menuItem, _, eatery):
                 cells.append(.item(menuItem, eatery))
             }
         }
@@ -234,13 +240,10 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         recentSearch.subtitle = subtitle
         coreDataStack.save()
     }
-
 }
 
 extension HomeSearchContentModelController: EateryFilterViewControllerDelegate {
-
-    func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
+    func eateryFilterViewController(_: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
     }
-
 }

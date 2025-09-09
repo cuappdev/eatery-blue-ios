@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class FavoritesViewController: UIViewController {
-
     // MARK: - Properties (view)
 
     private let favoriteEateriesView = EateryListView()
@@ -57,7 +56,7 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.viewRespectsSystemMinimumLayoutMargins = false
+        viewRespectsSystemMinimumLayoutMargins = false
         view.backgroundColor = .white
 
         setUpFavoritesNavigationView()
@@ -75,7 +74,7 @@ class FavoritesViewController: UIViewController {
         setUpFavoriteItemsView()
         stackView.addArrangedSubview(favoriteItemsView)
 
-        self.addFavoriteObservation(current: &observer) {  [weak self] _ in
+        addFavoriteObservation(current: &observer) { [weak self] _ in
             guard let self else { return }
 
             Task { [weak self] in
@@ -88,7 +87,7 @@ class FavoritesViewController: UIViewController {
         setUpConstraints()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
 
@@ -164,7 +163,7 @@ class FavoritesViewController: UIViewController {
 
             let favoriteItems = AppDelegate.shared.coreDataStack.fetchFavoriteItems()
 
-            self.configure(allEateries: allEateries, favoriteItems: favoriteItems, favoriteEateries: favoriteEateries)
+            configure(allEateries: allEateries, favoriteItems: favoriteItems, favoriteEateries: favoriteEateries)
         } catch {
             logger.error("\(#function): \(error)")
         }
@@ -172,32 +171,29 @@ class FavoritesViewController: UIViewController {
 }
 
 extension FavoritesViewController: TabButtonViewDelegate {
-
-    func tabButtonView(_ tabButtonView: TabButtonView, didSelect label: String) {
+    func tabButtonView(_: TabButtonView, didSelect label: String) {
         if label == "Items" {
             scrollView.scrollRectToVisible(favoriteItemsView.frame, animated: true)
         } else if label == "Eateries" {
             scrollView.scrollRectToVisible(favoriteEateriesView.frame, animated: true)
         }
     }
-
 }
 
 extension FavoritesViewController: UISearchBarDelegate {
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             favoriteEateriesView.eateries = favoriteEateries
             favoriteItemsView.favoriteItems = favoriteItems
         } else {
-            favoriteEateriesView.eateries = favoriteEateries.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-            favoriteItemsView.favoriteItems = favoriteItems.filter { $0.itemName?.lowercased().contains(searchText.lowercased()) ?? false }
+            favoriteEateriesView.eateries = favoriteEateries
+                .filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            favoriteItemsView.favoriteItems = favoriteItems
+                .filter { $0.itemName?.lowercased().contains(searchText.lowercased()) ?? false }
         }
     }
 
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_: UISearchBar) {
         favoritesNavigationView.searchShown = false
     }
-
 }
-

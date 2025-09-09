@@ -8,7 +8,6 @@
 import UIKit
 
 class PillFiltersView: UIView {
-
     let scrollView = UIScrollView()
     let stackView = UIStackView()
 
@@ -19,7 +18,8 @@ class PillFiltersView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -61,10 +61,10 @@ class PillFiltersView: UIView {
     func addButton(_ buttonView: PillFilterButtonView, at: Int) {
         stackView.insertArrangedSubview(buttonView, at: at)
     }
-    
+
     func moveButton(from: Int, to: Int) {
-        var boundedFrom = max(min(from, stackView.arrangedSubviews.count - 1), 0)
-        var boundedTo = max(min(to, stackView.arrangedSubviews.count - 1), 0)
+        let boundedFrom = max(min(from, stackView.arrangedSubviews.count - 1), 0)
+        let boundedTo = max(min(to, stackView.arrangedSubviews.count - 1), 0)
         let movedView = stackView.arrangedSubviews[boundedFrom]
         stackView.arrangedSubviews[boundedFrom].removeFromSuperview()
         if boundedTo >= stackView.arrangedSubviews.count {

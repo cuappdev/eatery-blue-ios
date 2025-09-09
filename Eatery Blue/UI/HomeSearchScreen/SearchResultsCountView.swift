@@ -8,7 +8,6 @@
 import UIKit
 
 class SearchResultsCountView: UIView {
-
     let titleLabel = UILabel()
     let resetButton = ContainerView(pillContent: UILabel())
 
@@ -19,7 +18,8 @@ class SearchResultsCountView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -61,5 +61,4 @@ class SearchResultsCountView: UIView {
             for: .horizontal
         )
     }
-
 }

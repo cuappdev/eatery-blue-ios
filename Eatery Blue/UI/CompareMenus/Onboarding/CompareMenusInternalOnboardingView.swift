@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusInternalOnboardingView: UIView {
-
     // MARK: - Properties (view)
 
     private let actionLabel = UILabel()
@@ -24,7 +23,8 @@ class CompareMenusInternalOnboardingView: UIView {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -32,7 +32,7 @@ class CompareMenusInternalOnboardingView: UIView {
 
     private func setUpSelf() {
         backgroundColor = .black.withAlphaComponent(0.75)
-        self.tap { [weak self] _ in
+        tap { [weak self] _ in
             guard let self else { return }
             dismiss()
         }
@@ -50,7 +50,7 @@ class CompareMenusInternalOnboardingView: UIView {
     }
 
     func dismiss() {
-        self.layer.opacity = 1
+        layer.opacity = 1
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didInternallyOnboardCompareMenus)
         UIView.animate(withDuration: 0.2) { [weak self] in
             guard let self else { return }
@@ -98,6 +98,4 @@ class CompareMenusInternalOnboardingView: UIView {
             make.bottom.equalTo(actionLabel.snp.top).inset(-8)
         }
     }
-
 }
-

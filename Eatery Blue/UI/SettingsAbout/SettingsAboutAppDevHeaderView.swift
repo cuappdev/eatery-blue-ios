@@ -1,5 +1,5 @@
 //
-//  SettingsAboutAppDevView.swift
+//  SettingsAboutAppDevHeaderView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 1/26/22.
@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsAboutAppDevHeaderView: UIView {
-
     private let stackView = UIStackView()
 
     private let logoView = UIImageView()
@@ -22,7 +21,8 @@ class SettingsAboutAppDevHeaderView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -79,5 +79,4 @@ class SettingsAboutAppDevHeaderView: UIView {
             make.width.height.equalTo(24)
         }
     }
-
 }

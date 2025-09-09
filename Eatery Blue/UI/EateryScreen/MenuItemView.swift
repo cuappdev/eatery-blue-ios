@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class MenuItemView: UIView {
-
     // MARK: - Properties (view)
 
     private let allergensLabel = UILabel()
@@ -44,7 +43,8 @@ class MenuItemView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -57,7 +57,7 @@ class MenuItemView: UIView {
     }
 
     private func setUpStackView() {
-        stackView.subviews.forEach { view in
+        for view in stackView.subviews {
             view.removeFromSuperview()
         }
 
@@ -166,12 +166,12 @@ class MenuItemView: UIView {
             dietaryInfoStack.isHidden = false
         }
 
-        dietaryInfoStack.subviews.forEach { view in
+        for view in dietaryInfoStack.subviews {
             dietaryInfoStack.removeArrangedSubview(view)
             view.removeFromSuperview()
         }
 
-        dietaryInfos.forEach { dietaryInfo in
+        for dietaryInfo in dietaryInfos {
             let dietaryInfoView = UIImageView()
             // see if the dietaryInfo image exists
             if let image = UIImage(named: dietaryInfo) {
@@ -182,8 +182,6 @@ class MenuItemView: UIView {
                 }
             }
         }
-
-
     }
 
     private func setUpConstraints() {
@@ -228,5 +226,4 @@ class MenuItemView: UIView {
             make.leading.trailing.equalToSuperview()
         }
     }
-
 }

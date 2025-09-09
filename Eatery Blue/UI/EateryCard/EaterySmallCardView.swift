@@ -11,7 +11,6 @@ import EateryModel
 import UIKit
 
 class EaterySmallCardView: UICollectionViewCell {
-
     // MARK: - Properties (view)
 
     private let imageView = UIImageView()
@@ -33,7 +32,8 @@ class EaterySmallCardView: UICollectionViewCell {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -101,10 +101,10 @@ class EaterySmallCardView: UICollectionViewCell {
     }
 
     private func configureFavoriteButton(eatery: Eatery, favorited: Bool) {
-        self.favoriteButton.content.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
+        favoriteButton.content.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
 
         favoriteButton.tap { [weak self] _ in
-            guard let self else { return }
+            guard self != nil else { return }
 
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
@@ -129,13 +129,13 @@ class EaterySmallCardView: UICollectionViewCell {
 
         imageView.kf.setImage(with: eatery.imageUrl)
         imageView.hero.id = eatery.imageUrl?.absoluteString
-        imageView.alpha = eatery.isOpen ?  1 : 0.5
+        imageView.alpha = eatery.isOpen ? 1 : 0.5
     }
 
     private func configureSubtitleLabels() {
         guard let eatery else { return }
 
-        stackView.subviews.forEach { view in
+        for view in stackView.subviews {
             view.removeFromSuperview()
         }
 
@@ -202,5 +202,4 @@ class EaterySmallCardView: UICollectionViewCell {
             make.bottom.equalToSuperview().inset(8)
         }
     }
-
 }

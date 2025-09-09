@@ -1,5 +1,5 @@
 //
-//  EateryCardShimmerView.swift
+//  EateryCardShimmerTableViewCell.swift
 //  Eatery Blue
 //
 //  Created by Jennifer Gu on 4/26/23.
@@ -8,15 +8,14 @@
 import UIKit
 
 class EateryCardShimmerView: UITableViewCell {
-
     enum EateryCardType {
-        case Medium
-        case Large
+        case medium
+        case large
     }
 
-    private(set) var cardType : EateryCardType?
-    private var gradientColorOne : CGColor = UIColor.Eatery.gray00.cgColor
-    private var gradientColorTwo : CGColor = UIColor.Eatery.gray01.cgColor
+    private(set) var cardType: EateryCardType?
+    private var gradientColorOne: CGColor = UIColor.Eatery.gray00.cgColor
+    private var gradientColorTwo: CGColor = UIColor.Eatery.gray01.cgColor
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,11 +24,12 @@ class EateryCardShimmerView: UITableViewCell {
             make.height.equalTo(76)
         }
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         configure()
@@ -43,7 +43,7 @@ class EateryCardShimmerView: UITableViewCell {
         gradientLayer.colors = [gradientColorOne, gradientColorTwo, gradientColorOne]
         gradientLayer.cornerRadius = 8
         gradientLayer.locations = [0.0, 0.5, 1.0]
-        self.contentView.layer.addSublayer(gradientLayer)
+        contentView.layer.addSublayer(gradientLayer)
 
         return gradientLayer
     }

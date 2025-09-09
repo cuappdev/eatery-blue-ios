@@ -9,7 +9,6 @@
 import UIKit
 
 class ButtonView<Content: UIView>: ContainerView<Content>, UIGestureRecognizerDelegate {
-
     private let button = UIButton(type: .custom)
 
     // Normal “short tap” callback
@@ -42,7 +41,8 @@ class ButtonView<Content: UIView>: ContainerView<Content>, UIGestureRecognizerDe
         setupLongPressGesture()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -55,7 +55,7 @@ class ButtonView<Content: UIView>: ContainerView<Content>, UIGestureRecognizerDe
 
     /// Set the long‑press callback
     func buttonLongPress(_ callback: ((UIButton) -> Void)?) {
-        self.longPressCallback = callback
+        longPressCallback = callback
     }
 
     // MARK: - Setup
@@ -84,7 +84,7 @@ class ButtonView<Content: UIView>: ContainerView<Content>, UIGestureRecognizerDe
 
     // MARK: - Touch Handlers
 
-    @objc private func buttonTouchDown(_ sender: UIButton) {
+    @objc private func buttonTouchDown(_: UIButton) {
         // shrink immediately
         UIView.animate(
             withDuration: 0.15,
@@ -113,7 +113,7 @@ class ButtonView<Content: UIView>: ContainerView<Content>, UIGestureRecognizerDe
         }
     }
 
-    @objc private func buttonTouchUpOutside(_ sender: UIButton) {
+    @objc private func buttonTouchUpOutside(_: UIButton) {
         UIView.animate(
             withDuration: 0.15,
             delay: 0.15,

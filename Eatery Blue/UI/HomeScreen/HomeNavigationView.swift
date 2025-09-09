@@ -8,7 +8,6 @@
 import UIKit
 
 class HomeNavigationView: NavigationView {
-
     // MARK: - Properties (view)
 
     let logoRefreshControl = LogoRefreshControl()
@@ -27,7 +26,8 @@ class HomeNavigationView: NavigationView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -72,7 +72,7 @@ class HomeNavigationView: NavigationView {
         }
 
         let progress = max(0, min(1, progress))
-        self.fadeInProgress = progress
+        fadeInProgress = progress
 
         if animated {
             UIView.animate(withDuration: 0.125) {
@@ -82,5 +82,4 @@ class HomeNavigationView: NavigationView {
             setFadeInProgress(progress)
         }
     }
-
 }

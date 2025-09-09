@@ -8,12 +8,11 @@
 import UIKit
 
 class EateryCardVisualEffectView<Content: UIView>: UIView {
-
     let content: Content
     private lazy var container = ContainerView(content: content)
 
     override init(frame: CGRect) {
-        self.content = Content()
+        content = Content()
 
         super.init(frame: frame)
 
@@ -30,7 +29,8 @@ class EateryCardVisualEffectView<Content: UIView>: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -51,5 +51,4 @@ class EateryCardVisualEffectView<Content: UIView>: UIView {
             make.edges.equalTo(layoutMarginsGuide)
         }
     }
-
 }

@@ -10,7 +10,6 @@ import EateryModel
 import UIKit
 
 class ListViewController: UIViewController {
-
     let navigationView = ListNavigationView()
 
     let filterController = EateryFilterViewController()
@@ -181,12 +180,16 @@ class ListViewController: UIViewController {
     }
 
     private func updateTableViewContentInset() {
-        let topOffset = view.convert(navigationView.normalNavigationBar.bounds, from: navigationView.normalNavigationBar).maxY
+        let topOffset = view
+            .convert(navigationView.normalNavigationBar.bounds, from: navigationView.normalNavigationBar).maxY
         tableView.contentInset = UIEdgeInsets(top: topOffset, left: 0, bottom: view.safeAreaInsets.bottom, right: 0)
     }
 
     private func updateFiltersViewTransform() {
-        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
+        let filterPosition = view.convert(
+            navigationView.filterPlaceholder.bounds,
+            from: navigationView.filterPlaceholder
+        ).minY
         let spacerPosition = view.convert(filterPlaceholder.bounds, from: filterPlaceholder).minY
 
         let transform = CGAffineTransform(
@@ -210,18 +213,19 @@ class ListViewController: UIViewController {
         self.eateries = eateries
         tableView.reloadData()
     }
-    
 }
 
 extension ListViewController: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_: UIScrollView) {
         updateFiltersViewTransform()
         updateNavigationViewFadeInProgress()
     }
 
     private func updateNavigationViewFadeInProgress() {
-        let filterPosition = view.convert(navigationView.filterPlaceholder.bounds, from: navigationView.filterPlaceholder).minY
+        let filterPosition = view.convert(
+            navigationView.filterPlaceholder.bounds,
+            from: navigationView.filterPlaceholder
+        ).minY
         let spacerPosition = view.convert(filterPlaceholder.bounds, from: filterPlaceholder).minY
 
         if spacerPosition < filterPosition {
@@ -230,16 +234,14 @@ extension ListViewController: UIScrollViewDelegate {
             navigationView.setFadeInProgress(0, animated: true)
         }
     }
-
 }
 
 extension ListViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         1 + eateries.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let container = ContainerView(content: UIView())
             headerStackView.layoutIfNeeded()
@@ -255,7 +257,6 @@ extension ListViewController: UITableViewDataSource {
             let eatery = eateries[indexPath.row - 1]
             let largeCardContent = EateryLargeCardView()
 
-
             let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
 
             largeCardContent.configure(eatery: eatery, favorited: favorited)
@@ -266,11 +267,9 @@ extension ListViewController: UITableViewDataSource {
             return cell
         }
     }
-
 }
 
 extension ListViewController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if indexPath.row != 0 {
             let cell = tableView.cellForRow(at: indexPath)
@@ -289,11 +288,10 @@ extension ListViewController: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row != 0 {
             let eatery = eateries[indexPath.row - 1]
             pushViewController(for: eatery)
         }
     }
-
 }

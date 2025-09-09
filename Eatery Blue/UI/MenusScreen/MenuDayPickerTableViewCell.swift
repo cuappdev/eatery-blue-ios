@@ -10,16 +10,14 @@ import SnapKit
 import UIKit
 
 class MenuDayPickerTableViewCell: UITableViewCell {
-
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = .eatery
         formatter.dateFormat = "EEE"
         return formatter
     }()
-    
-    class MenuChoice {
 
+    class MenuChoice {
         let description: String
         let event: Event
 
@@ -27,14 +25,13 @@ class MenuDayPickerTableViewCell: UITableViewCell {
             self.description = description
             self.event = event
         }
-
     }
-    
+
     private let dayPickerView = MenuDayPickerView()
-    
+
     private var days: [Day] = []
     private var selectedDayIndex: Int? = 0
-    
+
     private var menuChoices: [MenuChoice] = []
     private var selectedMenuIndex: Int?
 
@@ -50,25 +47,26 @@ class MenuDayPickerTableViewCell: UITableViewCell {
             make.edges.equalToSuperview()
         }
     }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configure(days: [Day]) {
         self.days = days
 
         // Reset data
         dayPickerView.resetCells()
-        
+
         // Set new data
         addDayPickerView()
         updateDayPickerCellsFromState()
     }
-    
+
     private func addDayPickerView() {
         dayPickerView.layoutMargins = .zero
-        
+
         for (i, day) in days.enumerated() {
             let cell = MenuDayPickerCell()
             cell.weekdayLabel.text = weekdayFormatter.string(from: day.date()).uppercased()
@@ -78,7 +76,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
             }
             dayPickerView.addCell(cell)
         }
-        
+
         contentView.addSubview(dayPickerView)
     }
 
@@ -108,7 +106,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
             }
         }
     }
-    
+
     private func didTapDayPickerCellAt(at index: Int) {
         if selectedDayIndex == index { return }
 
@@ -117,11 +115,8 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         updateDateDelegate?.updateMenuDay(index: index)
         updateDayPickerCellsFromState()
     }
-    
 }
 
 protocol UpdateDateDelegate: AnyObject {
-
     func updateMenuDay(index: Int)
-
 }

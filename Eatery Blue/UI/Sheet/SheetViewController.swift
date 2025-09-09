@@ -8,7 +8,6 @@
 import UIKit
 
 class SheetViewController: UIViewController {
-
     enum ButtonStyle {
         case regular
         case prominent
@@ -145,12 +144,16 @@ class SheetViewController: UIViewController {
         titleLabel.textColor = UIColor.Eatery.gray05
         titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         stack.addArrangedSubview(titleLabel)
-        
+
         let attributedString = NSMutableAttributedString(string: description ?? "")
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4
-        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
-        
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+
         let descriptionLabel = UILabel()
         descriptionLabel.attributedText = attributedString
         descriptionLabel.textColor = UIColor.Eatery.black
@@ -170,15 +173,13 @@ class SheetViewController: UIViewController {
     override func viewSafeAreaInsetsDidChange() {
         view.layoutMargins = UIEdgeInsets(top: 24, left: 16, bottom: view.safeAreaInsets.bottom, right: 16)
     }
-
 }
 
 extension SheetViewController: UIViewControllerTransitioningDelegate {
-
     func presentationController(
         forPresented presented: UIViewController,
         presenting: UIViewController?,
-        source: UIViewController
+        source _: UIViewController
     ) -> UIPresentationController? {
         let height = view.systemLayoutSizeFitting(
             CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height),
@@ -194,17 +195,16 @@ extension SheetViewController: UIViewControllerTransitioningDelegate {
     }
 
     func animationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController,
-        source: UIViewController
+        forPresented _: UIViewController,
+        presenting _: UIViewController,
+        source _: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
         SheetPresentationAnimationController(isPresenting: true)
     }
 
     func animationController(
-        forDismissed dismissed: UIViewController
+        forDismissed _: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
         SheetPresentationAnimationController(isPresenting: false)
     }
-
 }
