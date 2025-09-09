@@ -1,4 +1,4 @@
-name: Eater Blue Build
+name: Eatery Blue Build
 
 on:
   pull_request:
