@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# Get list of staged Swift files
+swift_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.swift$')
+
+# Exit early if no Swift files are staged
+if [ -z "$swift_files" ]; then
+    exit 0
+fi
+
+# Check if tools are installed
+if ! command -v swiftformat &> /dev/null; then
+    echo "❌ SwiftFormat not found. Run ./setup-dev-env.sh to install required tools"
+    exit 1
+fi
+
+if ! command -v swiftlint &> /dev/null; then
+    echo "❌ SwiftLint not found. Run ./setup-dev-env.sh to install required tools"
+    exit 1
+fi
+
+echo "🔍 Running code quality checks..."
+
+# Track if any files were formatted
+files_formatted=0
+
+# Run SwiftFormat on staged Swift files
+for file in $swift_files; do
+    if [ -f "$file" ]; then
+        # Check if file needs formatting by running in lint mode first
+        if ! swiftformat --lint "$file" &> /dev/null; then
+            echo "  📝 Formatting: $file"
+            swiftformat "$file" &> /dev/null
+            git add "$file"
+            files_formatted=$((files_formatted + 1))
+        fi
+    fi
+done
+
+if [ $files_formatted -gt 0 ]; then
+    echo "  📝 Formatted $files_formatted file(s)"
+fi
+
+# Run SwiftLint on staged Swift files
+swiftlint_issues=0
+files_fixed=0
+for file in $swift_files; do
+    if [ -f "$file" ]; then
+        # Check if file has changes after running SwiftLint fix
+        file_hash_before=$(git hash-object "$file")
+        lint_output=$(swiftlint lint "$file" --strict --fix --quiet 2>&1)
+        file_hash_after=$(git hash-object "$file")
+        
+        # If file was modified by SwiftLint, add it back to staging
+        if [ "$file_hash_before" != "$file_hash_after" ]; then
+            echo "  🔧 Fixed: $file"
+            git add "$file"
+            files_fixed=$((files_fixed + 1))
+        fi
+        
+        # Check if there are still issues after fixing
+        if [ $? -ne 0 ]; then
+            if [ $swiftlint_issues -eq 0 ]; then
+                echo "  ❌ SwiftLint found issues:"
+            fi
+            echo "$lint_output"
+            swiftlint_issues=$((swiftlint_issues + 1))
+        fi
+    fi
+done
+
+if [ $files_fixed -gt 0 ]; then
+    echo "  🔧 Fixed $files_fixed file(s)"
+fi
+
+if [ $swiftlint_issues -gt 0 ]; then
+    echo ""
+    echo "❌ SwiftLint found issues in $swiftlint_issues file(s)."
+    exit 1
+fi
+
+echo "✅ All checks passed!"
+exit 0
