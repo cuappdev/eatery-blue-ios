@@ -54,6 +54,10 @@ class NotificationButton: ButtonView<UIView> {
             let plvc = ProfileLoginModelController(canGoBack: true)
 //            let vc = NotificationViewController(loggedIn: loggedIn)
             completion?(loggedIn ? UIViewController(): plvc)
+            
+//            let notifHubViewController = NotificationHubViewController
+//
+//            navigationController?.pushViewController(notifHubViewController, animated: true)
         }
 
         checkforNotifications()

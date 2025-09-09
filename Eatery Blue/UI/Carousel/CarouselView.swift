@@ -26,6 +26,8 @@ class CarouselView: UIView {
     }
     /// Navigation controller to push from
     var navigationController: UINavigationController?
+    /// An observer to be attatched to this view
+    private var observer: NSObjectProtocol?
     /// How many eateries should show in this carousel, -1 if showing all
     var truncateAfter: Int = -1 {
         didSet {
