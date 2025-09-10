@@ -11,18 +11,38 @@ jobs:
   SwiftLint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: GitHub Action for SwiftLint
-        uses: norio-nomura/action-swiftlint@3.2.1
-      - name: GitHub Action for SwiftLint with --strict
-        uses: norio-nomura/action-swiftlint@3.2.1
+      - uses: actions/checkout@v4
         with:
-          args: --strict
-      - name: GitHub Action for SwiftLint (Only files changed in the PR)
-        uses: norio-nomura/action-swiftlint@3.2.1
-        env:
-          DIFF_BASE: ${{ github.base_ref }}
-      - name: GitHub Action for SwiftLint (Different working directory)
-        uses: norio-nomura/action-swiftlint@3.2.1
-        env:
-          WORKING_DIRECTORY: Source
+          fetch-depth: 0
+
+      - name: Install SwiftLint
+        run: |
+          # Download and install SwiftLint using the correct URL for Linux AMD64
+          SWIFTLINT_VERSION="0.61.0"
+          echo "Installing SwiftLint $SWIFTLINT_VERSION..."
+
+          curl -L -o swiftlint.zip "https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/swiftlint_linux_amd64.zip"
+          unzip swiftlint.zip
+          chmod +x swiftlint
+          sudo mv swiftlint /usr/local/bin/
+
+          # Verify installation
+          echo "SwiftLint installed successfully:"
+          swiftlint version
+
+      - name: Run SwiftLint
+        run: |
+          # Get list of changed Swift files in specific folders, properly handling spaces
+          echo "Getting list of changed Swift files in Eatery Blue, EateryGetAPI, and EateryModel folders..."
+
+          # Use git diff to get changed files, handling spaces with null-termination
+          # Filter for Swift files only in the specified directories
+          git diff --name-only --diff-filter=ACM origin/${{ github.base_ref }}...HEAD -z | \
+          grep -z '\.swift$' | \
+          grep -zE '^(Eatery Blue/|EateryGetAPI/|EateryModel/)' | \
+          while IFS= read -r -d '' file; do
+            if [ -f "$file" ]; then
+              echo "Linting: $file"
+              swiftlint lint --strict --config .swiftlint.yml "$file"
+            fi
+          done
