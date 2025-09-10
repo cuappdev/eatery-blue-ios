@@ -39,7 +39,7 @@ class EateryExpandableCardDetailView: UIView {
 
         let selectedEvents = eatery.events.filter { $0.canonicalDay == selectedDay }
 
-        // TODO: Ideally this should be an enum but good for now
+        // MARK: Ideally this should be an enum but good for now
 
         // Ignore late lunch
         var event: Event?

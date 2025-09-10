@@ -33,16 +33,33 @@ jobs:
       - name: Run SwiftLint
         run: |
           # Get list of changed Swift files in specific folders, properly handling spaces
-          echo "Getting list of changed Swift files in Eatery Blue, EateryGetAPI, and EateryModel folders..."
+          echo "🔍 Collecting Swift files to lint..."
+
+          # Collect all Swift files to lint
+          files_to_lint=""
+          file_count=0
 
           # Use git diff to get changed files, handling spaces with null-termination
           # Filter for Swift files only in the specified directories
-          git diff --name-only --diff-filter=ACM origin/${{ github.base_ref }}...HEAD -z | \
-          grep -z '\.swift$' | \
-          grep -zE '^(Eatery Blue/|EateryGetAPI/|EateryModel/)' | \
           while IFS= read -r -d '' file; do
             if [ -f "$file" ]; then
-              echo "Linting: $file"
-              swiftlint lint --strict --config .swiftlint.yml "$file"
+              files_to_lint="$files_to_lint\"$file\" "
+              file_count=$((file_count + 1))
             fi
-          done
+          done < <(git diff --name-only --diff-filter=ACM origin/${{ github.base_ref }}...HEAD -z | \
+                   grep -z '\.swift$' | \
+                   grep -zE '^(Eatery Blue/|EateryGetAPI/|EateryModel/)')
+
+          echo "📝 Found $file_count Swift files to lint"
+
+          if [ $file_count -eq 0 ]; then
+            echo "✅ No Swift files to lint in the specified directories"
+            exit 0
+          fi
+
+          echo ""
+          echo "🚀 Running SwiftLint on all files..."
+          echo ""
+
+          # Run SwiftLint on all files at once with clean output
+          eval "swiftlint lint --strict --quiet --config .swiftlint.yml $files_to_lint"
