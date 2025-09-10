@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIColor {
-    
     enum Eatery {
         static let blue = UIColor(named: "EateryBlue")!
         static let blueLight = UIColor(named: "EateryBlueLight")!
@@ -27,5 +26,4 @@ extension UIColor {
         static let offWhite = UIColor(named: "OffWhite")!
         static let shadowLight = UIColor(named: "ShadowLight")!
     }
-    
 }

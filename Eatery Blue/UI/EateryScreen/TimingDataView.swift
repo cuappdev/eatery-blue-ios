@@ -8,7 +8,6 @@
 import UIKit
 
 class TimingDataView: UIView {
-
     let stackView = UIStackView()
 
     override init(frame: CGRect) {
@@ -18,7 +17,8 @@ class TimingDataView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -60,5 +60,4 @@ class TimingDataView: UIView {
             make.width.equalTo(firstCell)
         }
     }
-
 }

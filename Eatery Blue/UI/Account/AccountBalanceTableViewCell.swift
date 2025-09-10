@@ -8,7 +8,6 @@
 import UIKit
 
 class AccountBalanceTableViewCell: UITableViewCell {
-
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let separator = HDivider()
@@ -20,7 +19,8 @@ class AccountBalanceTableViewCell: UITableViewCell {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -70,5 +70,4 @@ class AccountBalanceTableViewCell: UITableViewCell {
             make.leading.trailing.equalTo(contentView.layoutMarginsGuide)
         }
     }
-
 }

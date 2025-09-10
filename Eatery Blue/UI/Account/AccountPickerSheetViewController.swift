@@ -9,16 +9,13 @@ import UIKit
 
 @MainActor
 protocol AccountPickerSheetViewControllerDelegate: AnyObject {
-
     func accountPickerSheetViewController(
         _ viewController: AccountPickerSheetViewController,
         didSelectAccountAt index: Int
     )
-
 }
 
 class AccountPickerSheetViewController: SheetViewController {
-
     weak var delegate: AccountPickerSheetViewControllerDelegate?
 
     var selectedAccountIndex: Int?
@@ -26,7 +23,7 @@ class AccountPickerSheetViewController: SheetViewController {
 
     func setUp(_ accounts: [String]) {
         addHeader(title: "Payment Method")
-        
+
         for (i, account) in accounts.enumerated() {
             let cell = AccountPickerCell()
             cell.titleLabel.text = account
@@ -76,5 +73,4 @@ class AccountPickerSheetViewController: SheetViewController {
             }
         }
     }
-
 }

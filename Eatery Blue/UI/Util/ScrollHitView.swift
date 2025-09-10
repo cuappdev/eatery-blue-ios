@@ -8,7 +8,6 @@
 import UIKit
 
 class ScrollHitView: UIView {
-
     // MARK: - Properties (view)
 
     let scrollView: UIScrollView
@@ -19,30 +18,28 @@ class ScrollHitView: UIView {
         self.scrollView = scrollView
         super.init(frame: .zero)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Setup
 
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        
+    override func hitTest(_ point: CGPoint, with _: UIEvent?) -> UIView? {
         var answer = scrollView as UIView // if nothing is found we will do the expected
 
         // find the UIStackView inside, if there is none then we just return the scrollView
         guard let stackView = scrollView.subviews.first(where: { $0 is UIStackView }) else { return answer }
 
-        let adjustedPoint = point.applying(CGAffineTransform(translationX: scrollView.contentOffset.x - (self.frame.width / 2 - scrollView.frame.width / 2), y: 0))
+        let adjustedPoint = point.applying(CGAffineTransform(
+            translationX: scrollView.contentOffset.x - (frame.width / 2 - scrollView.frame.width / 2),
+            y: 0
+        ))
         // Go through the stackView's subviews. If one is within hit point, return that
-        stackView.subviews.forEach {
-            if $0.frame.contains(adjustedPoint) {
-                answer = $0
-            }
-        }
+        answer = stackView.subviews.first { $0.frame.contains(adjustedPoint) } ?? answer
 
         // return the answer
         return answer
     }
-
 }

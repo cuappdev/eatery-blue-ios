@@ -8,13 +8,10 @@
 import UIKit
 
 protocol AttemptLogin: AnyObject {
-    
     func attemptLogin()
-    
 }
 
 class StayLoggedInSheet: SheetViewController {
-    
     private let descriptionLabel = UILabel()
     private var delegate: AttemptLogin?
 
@@ -23,8 +20,10 @@ class StayLoggedInSheet: SheetViewController {
 
         setUpStackView()
     }
-    
-    private let desc = "Due to updated Cornell security policies users are automatically logged out of their account after 24 hours."
+
+    private let desc = """
+        Due to updated Cornell security policies users are automatically logged out of their account after 24 hours.
+        """
     private let instruction = "Log back in to see your current total BRBs, Meal Swipes, City Bucks and Laundry."
 
     private func setUpStackView() {
@@ -32,14 +31,18 @@ class StayLoggedInSheet: SheetViewController {
         addHeader(title: "Log Back In?")
         addText(text: desc, weight: .regular, color: .black)
         addText(text: instruction, weight: .bold, color: UIColor.Eatery.gray06)
-        addPillButton(title: "Log in", style: .prominent, action: { self.dismiss(animated: true, completion: {self.delegate?.attemptLogin()})})
+        addPillButton(
+            title: "Log in",
+            style: .prominent,
+            action: { self.dismiss(animated: true, completion: { self.delegate?.attemptLogin() }) }
+        )
         addTextButton(title: "Stay logged out", action: { self.dismiss(animated: true) })
     }
-    
+
     func setUp(delegate: AttemptLogin) {
         self.delegate = delegate
     }
-    
+
     private func addText(text: String, weight: UIFont.Weight, color: UIColor) {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: weight)
@@ -49,5 +52,4 @@ class StayLoggedInSheet: SheetViewController {
         label.textAlignment = .center
         stackView.addArrangedSubview(label)
     }
-
 }

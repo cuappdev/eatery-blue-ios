@@ -8,7 +8,6 @@
 import UIKit
 
 class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-
     private let isPresenting: Bool
 
     init(isPresenting: Bool) {
@@ -17,7 +16,7 @@ class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTr
         super.init()
     }
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
         0.35
     }
 
@@ -57,7 +56,8 @@ class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTr
         }
     }
 
-    private func presentingViewController(_ transitionContext: UIViewControllerContextTransitioning) -> UIViewController? {
+    private func presentingViewController(_ transitionContext: UIViewControllerContextTransitioning)
+        -> UIViewController? {
         transitionContext.viewController(forKey: isPresenting ? .from : .to)
     }
 
@@ -65,12 +65,12 @@ class SheetPresentationAnimationController: NSObject, UIViewControllerAnimatedTr
         transitionContext.view(forKey: isPresenting ? .from : .to)
     }
 
-    private func presentedViewController(_ transitionContext: UIViewControllerContextTransitioning) -> UIViewController? {
+    private func presentedViewController(_ transitionContext: UIViewControllerContextTransitioning)
+        -> UIViewController? {
         transitionContext.viewController(forKey: isPresenting ? .to : .from)
     }
 
     private func presentedView(_ transitionContext: UIViewControllerContextTransitioning) -> UIView? {
         transitionContext.view(forKey: isPresenting ? .to : .from)
     }
-
 }

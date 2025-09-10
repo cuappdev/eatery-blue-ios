@@ -8,7 +8,6 @@
 import UIKit
 
 extension NSTextAttachment {
-
     convenience init(image: UIImage?, scaledToMatch font: UIFont?, scale: CGFloat = 1.5) {
         guard let image = image, let font = font else {
             self.init()
@@ -19,12 +18,11 @@ extension NSTextAttachment {
 
         let scale1 = font.capHeight / image.size.height
         let scale2 = scale * scale1
-        self.bounds = CGRect(
+        bounds = CGRect(
             x: 0,
             y: (scale1 - scale2) * image.size.height / 2,
             width: scale2 * image.size.width,
             height: scale2 * image.size.height
         )
     }
-
 }

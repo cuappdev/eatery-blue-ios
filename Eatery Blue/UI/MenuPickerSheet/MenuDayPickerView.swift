@@ -8,7 +8,6 @@
 import UIKit
 
 class MenuDayPickerView: UIView {
-
     let stackView = UIStackView()
     private(set) var cells: [MenuDayPickerCell] = []
 
@@ -19,7 +18,8 @@ class MenuDayPickerView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -44,10 +44,9 @@ class MenuDayPickerView: UIView {
         stackView.addArrangedSubview(cell)
         cells.append(cell)
     }
-    
+
     func resetCells() {
         cells = []
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
-
 }

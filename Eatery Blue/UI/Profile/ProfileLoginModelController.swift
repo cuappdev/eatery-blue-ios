@@ -9,32 +9,30 @@ import EateryGetAPI
 import UIKit
 
 protocol ProfileLoginModelControllerDelegate: AnyObject {
-
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String)
 
     func demoModeDidLogin(_ viewController: ProfileLoginModelController)
-
 }
 
 class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
-
     private var firstView: Bool = true
     private var isLoggingIn: Bool = false
 
     weak var delegate: ProfileLoginModelControllerDelegate?
-    
+
     private lazy var loginOnLaunch: () = attemptLogin()
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        let _ = loginOnLaunch
+        _ = loginOnLaunch
     }
 
     override init(canGoBack: Bool) {
         super.init(canGoBack: canGoBack)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -50,9 +48,9 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let _ = KeychainAccess.shared.retrieveToken() {
+        if KeychainAccess.shared.retrieveToken() != nil {
             attemptLogin()
-        } else if firstView && UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn) {
+        } else if firstView, UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn) {
             firstView = false
             let stayloginSheet = StayLoggedInSheet()
             stayloginSheet.setUpSheetPresentation()
@@ -93,17 +91,14 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
         let viewController = SettingsMainMenuModelController()
         navigationController?.pushViewController(viewController, animated: true)
     }
-
 }
 
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
-
-    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
+    func setSessionId(_ sessionId: String, _ completion: () -> Void) {
         KeychainAccess.shared.saveToken(sessionId: sessionId)
         if !Networking.default.sessionId.isEmpty {
             delegate?.profileLoginModelController(self, didLogin: sessionId)
             completion()
         }
     }
-
 }

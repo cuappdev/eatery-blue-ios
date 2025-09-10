@@ -8,7 +8,6 @@
 import UIKit
 
 class AccountPickerCell: UIView {
-
     let titleLabel = UILabel()
     let imageView = UIImageView()
     let bottomSeparator = HDivider()
@@ -20,7 +19,8 @@ class AccountPickerCell: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -62,5 +62,4 @@ class AccountPickerCell: UIView {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-
 }

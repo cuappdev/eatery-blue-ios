@@ -9,16 +9,13 @@ import EateryModel
 import UIKit
 
 protocol PaymentMethodsFilterSheetViewControllerDelegate: AnyObject {
-
     func paymentMethodsFilterSheetViewController(
         _ viewController: PaymentMethodsFilterSheetViewController,
         didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
     )
-
 }
 
 class PaymentMethodsFilterSheetViewController: SheetViewController {
-
     private let mealSwipesView = PaymentMethodFilterView()
     private let brbsView = PaymentMethodFilterView()
     private let cashOrCreditView = PaymentMethodFilterView()
@@ -113,7 +110,10 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
 
     private func updatePaymentMethodViewsFromState(animated: Bool) {
         guard !animated else {
-            UIView.transition(with: view, duration: 0.1, options: [.allowUserInteraction, .transitionCrossDissolve]) { [self] in
+            UIView.transition(with: view, duration: 0.1, options: [
+                .allowUserInteraction,
+                .transitionCrossDissolve
+            ]) { [self] in
                 updatePaymentMethodViewsFromState(animated: false)
             }
             return
@@ -148,5 +148,4 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         selectedPaymentMethods = paymentMethods
         updatePaymentMethodViewsFromState(animated: animated)
     }
-
 }

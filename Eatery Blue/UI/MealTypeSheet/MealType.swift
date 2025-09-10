@@ -8,9 +8,7 @@
 import Foundation
 
 public enum MealType: Codable, Hashable {
-
     case breakfast
     case lunch
     case dinner
-
 }

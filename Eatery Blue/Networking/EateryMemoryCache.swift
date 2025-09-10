@@ -5,24 +5,23 @@
 //  Created by Jayson Hahn on 10/25/23.
 //
 
-import Foundation
 import EateryModel
+import Foundation
 
 actor EateryMemoryCache {
-    
     private var allLoaded: Bool = false
-    
+
     private var cachedValueDate: Date?
     private var cachedValue: [Eatery]?
-    
+
     private let fetchAll: () async throws -> [Eatery]
     private var fetchAllTask: Task<[Eatery], Error>?
     private var fetchByIDTaskDic: [Int: Task<Eatery, Error>] = [:]
-    
+
     init(fetchAll: @escaping () async throws -> [Eatery]) {
         self.fetchAll = fetchAll
     }
-    
+
     func fetchAll(maxStaleness: TimeInterval) async throws -> [Eatery] {
         if !isExpired(maxStaleness: maxStaleness), let cachedValue, allLoaded {
             logger.info("\(self): Returning cached value")
@@ -47,9 +46,12 @@ actor EateryMemoryCache {
             return try await alltask.value
         }
     }
-    
-    func fetchByID(maxStaleness: TimeInterval, id: Int, fetchByID: @escaping () async throws -> Eatery) async throws -> Eatery {
-        if !isExpired(maxStaleness: maxStaleness), let eateries = cachedValue, let eatery = (eateries.first { $0.id == id }) {
+
+    func fetchByID(maxStaleness: TimeInterval, id: Int,
+                   fetchByID: @escaping () async throws -> Eatery
+    ) async throws -> Eatery {
+        if !isExpired(maxStaleness: maxStaleness), let eateries = cachedValue,
+           let eatery = (eateries.first { $0.id == id }) {
             logger.info("\(self): Returning cached value")
             return eatery
         } else if let task = fetchByIDTaskDic[id] {
@@ -74,14 +76,14 @@ actor EateryMemoryCache {
             return try await task.value
         }
     }
-    
+
     func isExpired(date: Date = Date(), maxStaleness: TimeInterval) -> Bool {
         if cachedValue == nil {
             return true
         }
-        
+
         if let cachedValueDate = cachedValueDate {
-            if (date.timeIntervalSince(cachedValueDate) > maxStaleness) {
+            if date.timeIntervalSince(cachedValueDate) > maxStaleness {
                 invalidate()
                 return true
             } else {
@@ -91,11 +93,10 @@ actor EateryMemoryCache {
             return true
         }
     }
-    
+
     func invalidate() {
         allLoaded = false
         cachedValue = nil
         cachedValueDate = nil
     }
-    
 }

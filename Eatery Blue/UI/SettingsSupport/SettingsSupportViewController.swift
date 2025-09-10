@@ -10,7 +10,6 @@ import SwiftUI
 import UIKit
 
 class SettingsSupportViewController: UIViewController {
-
     private lazy var hostingController: UIHostingController<SettingsSupportView> = {
         let hostingController = UIHostingController(rootView: SettingsSupportView())
         return hostingController
@@ -80,11 +79,9 @@ class SettingsSupportViewController: UIViewController {
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
-
 }
 
 extension SettingsSupportViewController: SettingsSupportViewDelegate {
-
     func openReportIssue(preselectedIssueType: ReportIssueViewController.IssueType?) {
         let viewController = ReportIssueViewController(eateryId: 0)
         if let issueType = preselectedIssueType {
@@ -92,5 +89,4 @@ extension SettingsSupportViewController: SettingsSupportViewDelegate {
         }
         tabBarController?.present(viewController, animated: true)
     }
-
 }

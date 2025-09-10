@@ -9,8 +9,7 @@ import EateryModel
 import UIKit
 
 class CompareMenusViewController: UIViewController {
-    
-    // MARK: -  Properties (data)
+    // MARK: - Properties (data)
 
     private let allEateries: [Eatery]
     private let comparedEateries: [Eatery]
@@ -24,7 +23,7 @@ class CompareMenusViewController: UIViewController {
     // MARK: - Init
 
     init(allEateries: [Eatery], comparedEateries: [Eatery]) {
-        self.pageController = CompareMenusPageViewController(eateries: comparedEateries, allEateries: allEateries)
+        pageController = CompareMenusPageViewController(eateries: comparedEateries, allEateries: allEateries)
         self.allEateries = allEateries
         self.comparedEateries = comparedEateries
 
@@ -62,7 +61,8 @@ class CompareMenusViewController: UIViewController {
         }
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -76,7 +76,11 @@ class CompareMenusViewController: UIViewController {
         navigationView.editButton.buttonPress { [weak self] _ in
             guard let self else { return }
             navigationController?.popViewController(animated: true)
-            let selectionViewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: comparedEateries, selectedOn: true)
+            let selectionViewController = CompareMenusSheetViewController(
+                parentNavigationController: navigationController,
+                selectedEateries: comparedEateries,
+                selectedOn: true
+            )
             selectionViewController.setUpSheetPresentation()
             tabBarController?.present(selectionViewController, animated: true)
         }
@@ -94,5 +98,4 @@ class CompareMenusViewController: UIViewController {
             make.top.equalTo(navigationView.snp.bottom)
         }
     }
-    
 }

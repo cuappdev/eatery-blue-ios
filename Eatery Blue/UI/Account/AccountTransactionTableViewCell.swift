@@ -8,7 +8,6 @@
 import UIKit
 
 class AccountTransactionTableViewCell: UITableViewCell {
-
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let amountLabel = UILabel()
@@ -20,7 +19,8 @@ class AccountTransactionTableViewCell: UITableViewCell {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -68,5 +68,4 @@ class AccountTransactionTableViewCell: UITableViewCell {
         amountLabel.setContentHuggingPriority(.defaultLow + 1, for: .horizontal)
         amountLabel.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
     }
-
 }

@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CarouselView: UIView {
-    
     // MARK: - Properties (data)
 
     /// Eateries to show inside this carousel
@@ -18,12 +17,14 @@ class CarouselView: UIView {
             applySnapshot()
         }
     }
+
     /// Text to display on top of this carousel
     var title: String = "" {
         didSet {
             titleLabel.text = title
         }
     }
+
     /// Navigation controller to push from
     var navigationController: UINavigationController?
     /// How many eateries should show in this carousel, -1 if showing all
@@ -32,6 +33,7 @@ class CarouselView: UIView {
             applySnapshot()
         }
     }
+
     /// View controller to push when more button is pressed, nil if a ListViewController should be pushed
     var viewControllerToPush: UIViewController?
 
@@ -46,7 +48,6 @@ class CarouselView: UIView {
     // MARK: - Init
 
     init() {
-
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 10
@@ -58,12 +59,13 @@ class CarouselView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Setup
-    
+
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
         layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
@@ -98,7 +100,10 @@ class CarouselView: UIView {
 
     private func setUpCollectionView() {
         collectionView.register(EateryMediumCardView.self, forCellWithReuseIdentifier: EateryMediumCardView.reuse)
-        collectionView.register(CarouselMoreEateriesCollectionViewCell.self, forCellWithReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse)
+        collectionView.register(
+            CarouselMoreEateriesCollectionViewCell.self,
+            forCellWithReuseIdentifier: CarouselMoreEateriesCollectionViewCell.reuse
+        )
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.delegate = self
@@ -135,7 +140,7 @@ class CarouselView: UIView {
         }
 
         let viewController = ListModelController()
-        viewController.setUp(eateries, title: self.title, description: nil)
+        viewController.setUp(eateries, title: title, description: nil)
 
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -144,11 +149,11 @@ class CarouselView: UIView {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: collectionView) { [weak self] (tableview, indexPath, row) in
+        let dataSource = DataSource(collectionView: collectionView) { [weak self] _, indexPath, row in
             guard let self else { return UICollectionViewCell() }
 
             switch row {
-            case .eatery(let eatery, let favorited):
+            case let .eatery(eatery, favorited):
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: EateryMediumCardView.reuse,
                     for: indexPath
@@ -175,7 +180,10 @@ class CarouselView: UIView {
 
         let coreDataStack = AppDelegate.shared.coreDataStack
 
-        let eateryCells = eateries.map({ Item.eatery(eatery: $0, favorited: coreDataStack.metadata(eateryId: $0.id).isFavorite) })
+        let eateryCells = eateries.map { Item.eatery(
+            eatery: $0,
+            favorited: coreDataStack.metadata(eateryId: $0.id).isFavorite
+        ) }
 
         if truncateAfter > -1 {
             snapshot.appendItems(Array(eateryCells.prefix(truncateAfter)), toSection: .main)
@@ -188,12 +196,10 @@ class CarouselView: UIView {
 
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
-
 }
 
 extension CarouselView: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
 
         switch item {
@@ -201,43 +207,37 @@ extension CarouselView: UICollectionViewDelegate {
             let pageVC = EateryPageViewController(eateries: eateries, index: indexPath.item)
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(pageVC, animated: true)
-            break
         case .more:
             pushViewController()
-            break
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
             cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) {
             cell?.transform = .identity
         }
     }
-    
 }
 
 extension CarouselView: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return CGSize(width: 312, height: 196) }
         return item.getSize()
     }
-
 }
 
 extension CarouselView {
-
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-
 
     enum Section {
         case main
@@ -256,5 +256,4 @@ extension CarouselView {
             }
         }
     }
-
 }

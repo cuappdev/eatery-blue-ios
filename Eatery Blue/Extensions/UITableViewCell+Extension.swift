@@ -8,7 +8,6 @@
 import UIKit
 
 extension UITableViewCell {
-
     convenience init(content: UIView) {
         self.init(style: .default, reuseIdentifier: nil)
 
@@ -17,5 +16,4 @@ extension UITableViewCell {
             make.edges.equalToSuperview()
         }
     }
-
 }

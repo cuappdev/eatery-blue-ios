@@ -8,13 +8,10 @@
 import UIKit
 
 protocol MenuCategoryPickerDelegate: AnyObject {
-
     func menuCategoryPicker(buttonPressedAtIndex index: Int)
-
 }
 
 class MenuCategoryPickerView: UIView {
-
     // MARK: - Properties (data)
 
     weak var delegate: MenuCategoryPickerDelegate?
@@ -33,19 +30,20 @@ class MenuCategoryPickerView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setUpSelf()
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Setup
 
     private func setUpSelf() {
-        self.backgroundColor = .white
+        backgroundColor = .white
         addSubview(menuCategoryContainer)
         menuCategoryContainer.addSubview(menuCategoryScrollView)
         setUpMenuCategoryViews()
@@ -74,12 +72,12 @@ class MenuCategoryPickerView: UIView {
         menuCategoryScrollView.showsHorizontalScrollIndicator = false
 
         menuCategoryScrollView.addSubview(categoriesBackground)
-        self.setUpCategoriesStackView(categoriesBackground)
+        setUpCategoriesStackView(categoriesBackground)
         categoriesBackground.isUserInteractionEnabled = true
 
         menuCategoryScrollView.addSubview(categoriesForeground)
 
-        self.setUpCategoriesStackView(categoriesForeground)
+        setUpCategoriesStackView(categoriesForeground)
         categoriesForeground.isUserInteractionEnabled = false
         categoriesForeground.backgroundColor = UIColor.Eatery.black
 
@@ -152,5 +150,4 @@ class MenuCategoryPickerView: UIView {
 
         menuCategoryScrollView.scrollRectToVisible(foregroundMask.frame, animated: animateScrollView)
     }
-
 }

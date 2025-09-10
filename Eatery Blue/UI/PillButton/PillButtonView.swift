@@ -8,7 +8,6 @@
 import UIKit
 
 class PillButtonView: UIView {
-
     private let container = UIView()
     let imageView = UIImageView()
     let titleLabel = UILabel()
@@ -20,7 +19,8 @@ class PillButtonView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -74,5 +74,4 @@ class PillButtonView: UIView {
 
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
-
 }

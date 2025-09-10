@@ -8,7 +8,6 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
     private let theTabBarController = UITabBarController()
     private let home = HomeViewController()
     private let menus = MenusViewController()
@@ -36,7 +35,7 @@ class MainViewController: UIViewController {
             selectedImage: UIImage(named: "HomeSelected")
         )
         homeNavigationController.setNavigationBarHidden(true, animated: false)
-        
+
         let menusNavigationController = UINavigationController(rootViewController: menus)
         menusNavigationController.tabBarItem = UITabBarItem(
             title: "",
@@ -64,31 +63,27 @@ class MainViewController: UIViewController {
         theTabBarController.tabBar.standardAppearance = tabBarAppearance
         theTabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance
     }
-
 }
 
 extension MainViewController: UITabBarControllerDelegate {
-
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-
+    func tabBarController(_ tabBarController: UITabBarController,
+                          shouldSelect viewController: UIViewController) -> Bool {
         // If the home view controller is re-selected, scroll it to the top
         if tabBarController.selectedViewController == viewController,
            let navigationController = viewController as? UINavigationController,
            navigationController.viewControllers.count == 1,
            navigationController.viewControllers.first === home {
-
             home.scrollToTop(animated: true)
         }
 
         return true
     }
 
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
         if tabBarController.selectedIndex == 0 {
             AppDevAnalytics.shared.logFirebase(EateryPressPayload())
         } else if tabBarController.selectedIndex == 1 {
             AppDevAnalytics.shared.logFirebase(AccountPressPayload())
         }
     }
-
 }

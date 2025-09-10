@@ -8,7 +8,6 @@
 import Foundation
 
 enum UserDefaultsKeys {
-
     static let didOnboard = "didOnboard"
     static let didExternallyOnboardCompareMenus = "didExternallyOnboardCompareMenus"
     static let didInternallyOnboardCompareMenus = "didInternallyOnboardCompareMenus"
@@ -16,5 +15,4 @@ enum UserDefaultsKeys {
     static let isAnalyticsEnabled = "isAnalyticsEnabled"
     static let activeIcon = "activeIcon"
     static let preferedDisplayStyle = "preferedDisplayStyle"
-
 }

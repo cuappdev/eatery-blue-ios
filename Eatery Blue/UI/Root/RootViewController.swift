@@ -9,7 +9,6 @@ import Combine
 import UIKit
 
 class RootViewController: UIViewController {
-
     enum Mode {
         case splash
         case onboarding
@@ -65,7 +64,7 @@ class RootViewController: UIViewController {
         let previousMode = currentMode
         currentMode = mode
 
-        logger.info("\(#function): Transition from \(previousMode.map({ "\($0)" }) ?? "nil") to \(mode)")
+        logger.info("\(#function): Transition from \(previousMode.map { "\($0)" } ?? "nil") to \(mode)")
 
         switch (previousMode, mode) {
         case (nil, .splash):
@@ -104,8 +103,6 @@ class RootViewController: UIViewController {
         addChild(controller)
         view.addSubview(controller.view)
         controller.didMove(toParent: self)
-
-
     }
 
     private func addToBackground(_ controller: UIViewController) {
@@ -143,5 +140,4 @@ class RootViewController: UIViewController {
             }
             .store(in: &cancellables)
     }
-
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsAboutViewController: UIViewController {
-
     private let subtitleLabel = UILabel()
 
     private let headerView = SettingsAboutAppDevHeaderView()
@@ -91,8 +90,7 @@ class SettingsAboutViewController: UIViewController {
         subtitleLabel.font = .preferredFont(for: .body, weight: .medium)
     }
 
-    private func setUpHeaderView() {
-    }
+    private func setUpHeaderView() {}
 
     private func setUpScrollView() {
         scrollView.addSubview(stackView)
@@ -154,5 +152,4 @@ class SettingsAboutViewController: UIViewController {
         configure(carouselView)
         stackView.addArrangedSubview(carouselView)
     }
-    
 }

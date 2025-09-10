@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsMainMenuModelController: SettingsMainMenuViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,7 +41,7 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
             subtitle: "Select the Eatery app icon for your phone",
             action: { [weak self] in
                 guard let self else { return }
-                
+
                 let viewController = SettingsAppIconSheetViewController()
                 viewController.setUpSheetPresentation()
                 tabBarController?.present(viewController, animated: true)
@@ -57,7 +56,7 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
                 guard let self else { return }
 
                 let viewController = SettingsPrivacyViewController()
-                navigationController?.pushViewController(viewController, animated: true) 
+                navigationController?.pushViewController(viewController, animated: true)
             }
         ))
         addSeparator()

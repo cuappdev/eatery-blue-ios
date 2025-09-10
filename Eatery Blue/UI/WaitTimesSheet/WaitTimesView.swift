@@ -10,23 +10,22 @@ import UIKit
 
 @objc
 protocol WaitTimeViewDelegate: NSObjectProtocol {
+    @objc
+    optional func waitTimesView(_ sender: WaitTimesView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int)
+        -> String
 
     @objc
-    optional func waitTimesView(_ sender: WaitTimesView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String
-
-    @objc
-    optional func waitTimesView(_ sender: WaitTimesView, shouldHighlightCell cell: WaitTimeCell, atIndex index: Int) -> Bool
+    optional func waitTimesView(_ sender: WaitTimesView, shouldHighlightCell cell: WaitTimeCell, atIndex index: Int)
+        -> Bool
 
     @objc
     optional func waitTimesView(_ sender: WaitTimesView, didHighlightCell cell: WaitTimeCell, atIndex index: Int)
 
     @objc
     optional func waitTimesViewDidScroll(_ sender: WaitTimesView)
-
 }
 
 class WaitTimesView: UIView {
-
     let scrollView = UIScrollView()
     let stackView = UIStackView()
     private var cells: [WaitTimeCell] = []
@@ -46,7 +45,8 @@ class WaitTimesView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -159,7 +159,7 @@ class WaitTimesView: UIView {
     }
 
     func highlightCell(at index: Int, askDelegate: Bool = true, notifyDelegate: Bool = false) {
-        guard 0 <= index, index < cells.count else {
+        guard index >= 0, index < cells.count else {
             return
         }
 
@@ -176,7 +176,6 @@ class WaitTimesView: UIView {
             cells[previousIndex].bar.backgroundColor = UIColor.Eatery.blueMedium
         }
         highlightedIndex = index
-
 
         cell.bar.backgroundColor = UIColor.Eatery.blue
 
@@ -228,14 +227,14 @@ class WaitTimesView: UIView {
     }
 
     func visibleCellIndexes() -> [Int] {
-        cells.enumerated().filter { (i, cell) in
+        cells.enumerated().filter { _, cell in
             let cellRectInView = cell.convert(cell.bounds, to: self)
             return bounds.contains(cellRectInView)
         }.map { $0.offset }
     }
 
     func scrollCellToCenter(at index: Int, animated: Bool) {
-        guard 0 <= index, index < cells.count else {
+        guard index >= 0, index < cells.count else {
             return
         }
 
@@ -245,13 +244,10 @@ class WaitTimesView: UIView {
         let offset = cell.convert(cell.bounds, to: scrollView).minX
         scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: animated)
     }
-
 }
 
 extension WaitTimesView: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_: UIScrollView) {
         delegate?.waitTimesViewDidScroll?(self)
     }
-
 }

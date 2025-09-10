@@ -9,9 +9,7 @@ import EateryModel
 import UIKit
 
 class ReportIssueViewController: UIViewController {
-
     enum IssueType: CustomStringConvertible, CaseIterable {
-
         case inaccurateItem
         case differentPrice
         case incorrectHours
@@ -29,7 +27,6 @@ class ReportIssueViewController: UIViewController {
             case .other: return "Other"
             }
         }
-
     }
 
     private let stackView = UIStackView()
@@ -51,7 +48,8 @@ class ReportIssueViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -157,7 +155,8 @@ class ReportIssueViewController: UIViewController {
 
             // This constraint is *not* required because otherwise it would trigger an unsatisfiable constraints
             // exception when the view was dismissed
-            make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-16).priority(.required.advanced(by: -1))
+            make.bottom.lessThanOrEqualTo(view.keyboardLayoutGuide.snp.top).offset(-16)
+                .priority(.required.advanced(by: -1))
         }
     }
 
@@ -208,10 +207,12 @@ class ReportIssueViewController: UIViewController {
         view.endEditing(true)
 
         Task {
+            let content = "\(selectedIssueType?.description ?? "Unknown"): \(issueDescriptionView.textView.text ?? "")"
+
             await EateryAPI(url: URL(string: "\(EateryEnvironment.baseURL)/report/")!)
                 .reportError(
                     eatery: self.eateryId,
-                    content: "\(selectedIssueType?.description ?? "Unknown"): \(issueDescriptionView.textView.text ?? "")"
+                    content: content
                 )
             dismiss(animated: true)
         }
@@ -220,20 +221,18 @@ class ReportIssueViewController: UIViewController {
     func setSelectedIssueType(_ issueType: IssueType) {
         selectedIssueType = issueType
     }
-
 }
 
 extension ReportIssueViewController: UITextViewDelegate {
-
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    func textViewDidBeginEditing(_: UITextView) {
         issueDescriptionView.placeholderLabel.isHidden = true
     }
 
-    func textViewDidChange(_ textView: UITextView) {
+    func textViewDidChange(_: UITextView) {
         updateSubmitButtonFromState()
     }
 
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn _: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             return false
@@ -247,5 +246,4 @@ extension ReportIssueViewController: UITextViewDelegate {
             issueDescriptionView.placeholderLabel.isHidden = false
         }
     }
-
 }

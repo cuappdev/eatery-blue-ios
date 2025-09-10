@@ -1,5 +1,5 @@
 //
-//  EateryMediumCardContentView.swift
+//  EateryMediumCardView.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/22/21.
@@ -10,7 +10,6 @@ import EateryModel
 import UIKit
 
 class EateryMediumCardView: UICollectionViewCell {
-
     // MARK: - Properties (view)
 
     private let imageView = UIImageView()
@@ -38,7 +37,8 @@ class EateryMediumCardView: UICollectionViewCell {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -67,12 +67,11 @@ class EateryMediumCardView: UICollectionViewCell {
 
         contentView.addSubview(subtitleLabel)
         setUpSubtitleLabel()
-        
+
         contentView.addSubview(favoriteButton)
         setUpFavoriteButton()
 
         setUpConstraints()
-
     }
 
     private func setUpImageView() {
@@ -84,7 +83,7 @@ class EateryMediumCardView: UICollectionViewCell {
 
         contentView.addSubview(alertsStackView)
         setUpAlertsStackView()
-        
+
         alertsStackView.addArrangedSubview(alertView)
         alertView.isHidden = true
     }
@@ -126,11 +125,11 @@ class EateryMediumCardView: UICollectionViewCell {
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
             coreDataStack.save()
-            
+
             NotificationCenter.default.post(
                 name: UIViewController.notificationName,
                 object: nil,
-                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
+                userInfo: [UIViewController.notificationUserInfoKey: metadata.isFavorite]
             )
         }
     }
@@ -161,7 +160,7 @@ class EateryMediumCardView: UICollectionViewCell {
             make.bottom.equalToSuperview().inset(12)
         }
         subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        
+
         favoriteButton.snp.makeConstraints { make in
             make.leading.equalTo(subtitleLabel.snp.trailing).offset(4)
             make.trailing.equalTo(imageView.snp.trailing)
@@ -182,7 +181,7 @@ class EateryMediumCardView: UICollectionViewCell {
         )
         imageTintView.alpha = isOpen ? 0 : 0.5
     }
-    
+
     private func configureSubtitleLabels(eatery: Eatery) {
         LocationManager.shared.$userLocation
             .sink { userLocation in
@@ -196,28 +195,26 @@ class EateryMediumCardView: UICollectionViewCell {
             }
             .store(in: &cancellables)
     }
-    
+
     private func configureAlerts(status: EateryStatus) {
         let now = Date()
         switch status {
-        case .closingSoon(let event):
+        case let .closingSoon(event):
             let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
             alertView.titleLabel.text = "Closing in \(minutesUntilClosed) min"
             alertView.isHidden = false
 
-        case .openingSoon(let event):
+        case let .openingSoon(event):
             let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
             alertView.titleLabel.text = "Opening in \(minutesUntilOpen) min"
             alertView.isHidden = false
-            
+
         default:
             alertView.isHidden = true
-            break
         }
     }
-    
+
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
     }
-
 }

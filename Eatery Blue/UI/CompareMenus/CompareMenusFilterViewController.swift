@@ -8,7 +8,6 @@
 import EateryModel
 
 class CompareMenusFilterViewController: EateryFilterViewController {
-    
     // MARK: - Properties (view)
 
     private let selected = PillFilterButtonView()
@@ -17,7 +16,7 @@ class CompareMenusFilterViewController: EateryFilterViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setUpSelected()
         anyFilterTap { [weak self] in
             guard let self else { return }
@@ -32,8 +31,8 @@ class CompareMenusFilterViewController: EateryFilterViewController {
 
     private func setUpSelected() {
         filtersView.addButton(selected, at: 0)
-        self.selected.label.text = "Selected"
-        self.selected.tap { [weak self] _ in
+        selected.label.text = "Selected"
+        selected.tap { [weak self] _ in
             guard let self else { return }
 
             tapSelected()
@@ -56,9 +55,8 @@ class CompareMenusFilterViewController: EateryFilterViewController {
 
     func tapSelected() {
         filter.selected.toggle()
-        self.removeAllFilters()
+        removeAllFilters()
         updateFilterButtonsFromState(animated: true)
         delegate?.eateryFilterViewController(self, filterDidChange: filter)
     }
-
 }

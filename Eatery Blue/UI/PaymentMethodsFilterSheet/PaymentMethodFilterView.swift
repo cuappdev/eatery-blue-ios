@@ -8,7 +8,6 @@
 import UIKit
 
 class PaymentMethodFilterView: UIView {
-
     let imageView = UIImageView()
     let label = UILabel()
 
@@ -19,7 +18,8 @@ class PaymentMethodFilterView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -31,8 +31,7 @@ class PaymentMethodFilterView: UIView {
         setUpLabel()
     }
 
-    private func setUpImageView() {
-    }
+    private func setUpImageView() {}
 
     private func setUpLabel() {
         label.font = .preferredFont(for: .caption1, weight: .semibold)
@@ -51,5 +50,4 @@ class PaymentMethodFilterView: UIView {
             make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
         }
     }
-
 }

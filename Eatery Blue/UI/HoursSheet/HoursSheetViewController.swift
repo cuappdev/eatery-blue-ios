@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class HoursSheetViewController: SheetViewController {
-
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = .eatery
@@ -75,7 +74,7 @@ class HoursSheetViewController: SheetViewController {
                 let start = weekdayFormatter.string(from: start.date())
                 let end = weekdayFormatter.string(from: end.date())
 
-                if weekdays.count == 2 {    
+                if weekdays.count == 2 {
                     addTextSection(title: "\(start), \(end)", description: description)
                 } else {
                     addTextSection(title: "\(start) to \(end)", description: description)
@@ -90,5 +89,4 @@ class HoursSheetViewController: SheetViewController {
         label.font = .preferredFont(for: .body, weight: .semibold)
         stackView.addArrangedSubview(label)
     }
-
 }

@@ -20,23 +20,21 @@ extension Payload {
 }
 
 enum AnalyticsError: Error {
-    case UnnaccountedEvent(String)
+    case unnaccountedEvent(String)
 }
 
 class AppDevAnalytics {
-
     static let shared = AppDevAnalytics()
 
     private init() {}
 
     func logFirebase(_ payload: Payload) {
         #if DEBUG
-        print("[Debug]: Logged event: \(payload.eventName), parameters: \(payload.parameters?.description ?? "nil")")
+            logger.debug("Log Event: \(payload.eventName), parameters: \(payload.parameters?.description ?? "nil")")
         #else
-        Analytics.logEvent(payload.eventName, parameters: payload.parameters)
+            Analytics.logEvent(payload.eventName, parameters: payload.parameters)
         #endif
     }
-
 }
 
 // MARK: Event Payloads

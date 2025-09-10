@@ -10,7 +10,6 @@ import CoreLocation
 import Foundation
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
-
     private let locationManager: CLLocationManager
 
     @Published var userLocation: CLLocation?
@@ -40,18 +39,17 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.requestLocation()
     }
 
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    func locationManagerDidChangeAuthorization(_: CLLocationManager) {
         requestLocation()
     }
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations.last
         userLocationDidChange.send(userLocation)
         logger.debug("\(#function): Fetched location")
     }
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    func locationManager(_: CLLocationManager, didFailWithError error: Error) {
         logger.error("\(#function): \(error)")
     }
-
 }

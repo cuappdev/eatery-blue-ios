@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIFont {
-
     // Fix navigation bar fonts to ensure uniformity between custom navigation bars and UINavigationBars.
     static let eateryNavigationBarLargeTitleFont = UIFont.systemFont(ofSize: 34, weight: .bold)
     static let eateryNavigationBarTitleFont = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -19,5 +18,4 @@ extension UIFont {
         let font = UIFont.systemFont(ofSize: descriptor.pointSize, weight: weight)
         return metrics.scaledFont(for: font)
     }
-
 }

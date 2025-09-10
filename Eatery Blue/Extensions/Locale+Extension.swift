@@ -8,7 +8,5 @@
 import Foundation
 
 extension Locale {
-
     static let eatery = Locale(identifier: "en_US")
-
 }

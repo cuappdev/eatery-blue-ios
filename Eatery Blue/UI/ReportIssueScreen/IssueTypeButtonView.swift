@@ -8,7 +8,6 @@
 import UIKit
 
 class IssueTypeButtonView: UIView {
-
     let label = UILabel()
     let imageView = UIImageView()
 
@@ -19,7 +18,8 @@ class IssueTypeButtonView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -55,5 +55,4 @@ class IssueTypeButtonView: UIView {
             make.top.greaterThanOrEqualTo(layoutMarginsGuide)
         }
     }
-
 }

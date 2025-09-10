@@ -8,7 +8,6 @@
 import UIKit
 
 class EateryCardAlertView: UIView {
-
     let stackView = UIStackView()
     let imageView = UIImageView()
     let titleLabel = UILabel()
@@ -20,7 +19,8 @@ class EateryCardAlertView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -77,5 +77,4 @@ class EateryCardAlertView: UIView {
         imageView.tintColor = tintColor
         titleLabel.textColor = tintColor
     }
-
 }

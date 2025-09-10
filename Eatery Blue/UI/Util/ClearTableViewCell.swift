@@ -8,7 +8,6 @@
 import UIKit
 
 class ClearTableViewCell: UITableViewCell {
-
     static let reuse = "ClearTableViewCellReuseId"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -21,7 +20,8 @@ class ClearTableViewCell: UITableViewCell {
         backgroundView?.backgroundColor = nil
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -33,5 +33,4 @@ class ClearTableViewCell: UITableViewCell {
             make.edges.equalTo(contentView)
         }
     }
-
 }

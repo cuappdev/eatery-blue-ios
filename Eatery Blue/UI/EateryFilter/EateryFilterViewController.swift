@@ -9,13 +9,10 @@ import EateryModel
 import UIKit
 
 protocol EateryFilterViewControllerDelegate: AnyObject {
-
     func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter)
-
 }
 
 class EateryFilterViewController: UIViewController {
-
     private let north = PillFilterButtonView()
     private let west = PillFilterButtonView()
     private let central = PillFilterButtonView()
@@ -59,16 +56,15 @@ class EateryFilterViewController: UIViewController {
 
         filtersView.addButton(mealSwipes)
         setUpSwipes()
-        
+
         filtersView.addButton(brbs)
         setUpBRBs()
-        
+
         filtersView.addButton(favorites)
         setUpFavorites()
-        
+
         filtersView.addButton(under10Minutes)
         setUpUnder10Minutes()
-        
     }
 
     private func setUpNorth() {
@@ -115,7 +111,7 @@ class EateryFilterViewController: UIViewController {
             }
         }
     }
-    
+
     private func setUpSwipes() {
         mealSwipes.label.text = "Meal Swipes"
         mealSwipes.tap { [weak self] _ in
@@ -130,7 +126,7 @@ class EateryFilterViewController: UIViewController {
             }
         }
     }
-    
+
     private func setUpBRBs() {
         brbs.label.text = "BRBs"
         brbs.tap { [weak self] _ in
@@ -145,7 +141,7 @@ class EateryFilterViewController: UIViewController {
             }
         }
     }
-    
+
     private func setUpUnder10Minutes() {
         under10Minutes.label.text = "Under 10 min"
         under10Minutes.tap { [weak self] _ in
@@ -165,7 +161,7 @@ class EateryFilterViewController: UIViewController {
         favorites.label.text = "Favorites"
         favorites.tap { [weak self] _ in
             guard let self else { return }
-            
+
             allFiltersCallback?()
             filter.favoriteEnabled.toggle()
             updateFilterButtonsFromState(animated: true)
@@ -177,7 +173,7 @@ class EateryFilterViewController: UIViewController {
     }
 
     func anyFilterTap(_ callback: (() -> Void)?) {
-        self.allFiltersCallback = callback
+        allFiltersCallback = callback
     }
 
     private func setUpConstraints() {
@@ -222,21 +218,19 @@ class EateryFilterViewController: UIViewController {
         self.filter = filter
         updateFilterButtonsFromState(animated: animated)
     }
-
 }
 
 extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDelegate {
-
     func paymentMethodsFilterSheetViewController(
         _ viewController: PaymentMethodsFilterSheetViewController,
         didSelectPaymentMethods paymentMethods: Set<PaymentMethod>
     ) {
         filter.paymentMethods = paymentMethods
-        filter.paymentMethods.forEach { paymentMethod in
+        for paymentMethod in filter.paymentMethods {
             switch paymentMethod {
-                case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
-                case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
-                default: break
+            case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
+            case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            default: break
             }
         }
 
@@ -244,5 +238,4 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
         delegate?.eateryFilterViewController(self, filterDidChange: filter)
         viewController.dismiss(animated: true)
     }
-    
 }

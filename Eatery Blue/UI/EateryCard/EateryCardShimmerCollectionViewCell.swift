@@ -11,13 +11,13 @@ class EateryCardShimmerCollectionViewCell: UICollectionViewCell {
     static let reuse = "EateryCardShimmerCollectionViewCellReuseId"
 
     enum EateryCardType {
-        case Medium
-        case Large
+        case medium
+        case large
     }
 
-    private(set) var cardType : EateryCardType?
-    private var gradientColorOne : CGColor = UIColor.Eatery.gray00.cgColor
-    private var gradientColorTwo : CGColor = UIColor.Eatery.gray01.cgColor
+    private(set) var cardType: EateryCardType?
+    private var gradientColorOne: CGColor = UIColor.Eatery.gray00.cgColor
+    private var gradientColorTwo: CGColor = UIColor.Eatery.gray01.cgColor
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -32,7 +32,7 @@ class EateryCardShimmerCollectionViewCell: UICollectionViewCell {
         gradientLayer.colors = [gradientColorOne, gradientColorTwo, gradientColorOne]
         gradientLayer.cornerRadius = 8
         gradientLayer.locations = [0.0, 0.5, 1.0]
-        self.contentView.layer.addSublayer(gradientLayer)
+        contentView.layer.addSublayer(gradientLayer)
 
         return gradientLayer
     }

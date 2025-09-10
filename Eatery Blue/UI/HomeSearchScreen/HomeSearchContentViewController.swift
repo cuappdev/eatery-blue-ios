@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class HomeSearchContentViewController: UIViewController {
-
     private let priceNumberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -111,33 +110,29 @@ class HomeSearchContentViewController: UIViewController {
         scrollToTop()
     }
 
-    func didSelectEatery(_ eatery: Eatery, at indexPath: IndexPath) {
-    }
+    func didSelectEatery(_: Eatery, at _: IndexPath) {}
 
-    func didSelectItem(_ item: MenuItem, at indexPath: IndexPath, eatery: Eatery?) {
-    }
+    func didSelectItem(_: MenuItem, at _: IndexPath, eatery _: Eatery?) {}
 
     func updateCells(_ cells: [Cell]) {
         self.cells = cells
         tableView.reloadData()
     }
-
 }
 
 extension HomeSearchContentViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         cells.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch cells[indexPath.row] {
-        case .customView(view: let view):
+        case let .customView(view: view):
             let cell = ClearTableViewCell(content: view)
             cell.selectionStyle = .none
             return cell
 
-        case .eatery(let eatery):
+        case let .eatery(eatery):
             let largeCardContent = EateryLargeCardView()
 
             let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
@@ -151,7 +146,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
 
-        case .item(let item, let eatery):
+        case let .item(item, eatery):
             let view = SearchItemView()
             view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
             view.titleLabel.text = item.name
@@ -192,11 +187,9 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             return cell
         }
     }
-
 }
 
 extension HomeSearchContentViewController: UITableViewDelegate {
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y + scrollView.contentInset.top
         blurView.alpha = offset > 0 ? 1 : 0
@@ -217,17 +210,16 @@ extension HomeSearchContentViewController: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cells[indexPath.row] {
-        case .eatery(eatery: let eatery):
+        case let .eatery(eatery: eatery):
             didSelectEatery(eatery, at: indexPath)
 
-        case .item(let item, let eatery):
+        case let .item(item, eatery):
             didSelectItem(item, at: indexPath, eatery: eatery)
 
         case .customView:
             break
         }
     }
-
 }

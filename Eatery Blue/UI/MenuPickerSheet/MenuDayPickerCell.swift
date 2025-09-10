@@ -9,7 +9,6 @@ import UIKit
 
 /// Creates the picker cell that enables selection of a date.
 class MenuDayPickerCell: UIView {
-
     let weekdayLabel = UILabel()
     let dayLabel = ContainerView(pillContent: UILabel())
 
@@ -20,7 +19,8 @@ class MenuDayPickerCell: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -55,5 +55,4 @@ class MenuDayPickerCell: UIView {
             make.width.height.equalTo(34)
         }
     }
-
 }

@@ -9,7 +9,6 @@ import EateryModel
 import Foundation
 
 enum DummyData {
-    
     static let eateries = [macs, terrace, rose]
 
     static let macsBreakfastMenu = Menu(categories: [
@@ -27,7 +26,7 @@ enum DummyData {
                 healthy: false,
                 name: "Pork",
                 price: 525
-            ),
+            )
         ]),
         MenuCategory(category: "Egg", items: [
             MenuItem(
@@ -39,7 +38,7 @@ enum DummyData {
             )
         ])
     ])
-    
+
     static let macsLunchMenu = Menu(categories: [
         MenuCategory(category: "Enchiladas", items: [
             MenuItem(
@@ -55,7 +54,7 @@ enum DummyData {
                 healthy: false,
                 name: "Bean & Corn",
                 price: 525
-            ),
+            )
         ]),
         MenuCategory(category: "Salads", items: [
             MenuItem(
@@ -67,7 +66,7 @@ enum DummyData {
             )
         ])
     ])
-    
+
     static let macsDinnerMenu = Menu(categories: [
         MenuCategory(category: "Grill", items: [
             MenuItem(
@@ -83,7 +82,7 @@ enum DummyData {
                 healthy: false,
                 name: "Potatoes",
                 price: 525
-            ),
+            )
         ]),
         MenuCategory(category: "Chef's Table", items: [
             MenuItem(
@@ -130,21 +129,21 @@ enum DummyData {
         name: "Mac's Café",
         onlineOrderUrl: nil,
         paymentMethods: [.brbs, .cash, .credit, .mealSwipes],
-        waitTimesByDay:  [
+        waitTimesByDay: [
             Day(): WaitTimes(
-                samples: (0..<15).map({ (index: Int) -> WaitTimeSample in
+                samples: (0 ..< 15).map { (index: Int) -> WaitTimeSample in
                     WaitTimeSample(
                         timestamp: Date().timeIntervalSince1970 + TimeInterval(index) * 60 * 15,
                         low: TimeInterval(index + 1) * 60,
                         expected: TimeInterval(index + 2) * 60,
                         high: TimeInterval(index + 3) * 60
                     )
-                }),
+                },
                 samplingMethod: .nearestNeighbor
             )
         ]
     )
-    
+
     static let terraceBreakfastMenu = Menu(categories: [
         MenuCategory(category: "Potato", items: [
             MenuItem(
@@ -165,7 +164,7 @@ enum DummyData {
             )
         ])
     ])
-    
+
     static let terraceLunchMenu = Menu(categories: [
         MenuCategory(category: "Pho Bar", items: [
             MenuItem(
@@ -181,7 +180,7 @@ enum DummyData {
                 healthy: false,
                 name: "Rice Bowl",
                 price: 1025
-            ),
+            )
         ]),
         MenuCategory(category: "Salads", items: [
             MenuItem(
@@ -193,7 +192,7 @@ enum DummyData {
             )
         ])
     ])
-    
+
     static let terraceDinnerMenu = Menu(categories: [
         MenuCategory(category: "Chef's Table - Sides", items: [
             MenuItem(
@@ -209,7 +208,7 @@ enum DummyData {
                 healthy: false,
                 name: "Broccoli",
                 price: 1025
-            ),
+            )
         ]),
         MenuCategory(category: "Salads", items: [
             MenuItem(
@@ -256,21 +255,21 @@ enum DummyData {
         name: "The Terrace Restaurant",
         onlineOrderUrl: nil,
         paymentMethods: [.brbs, .cash, .credit, .mealSwipes],
-        waitTimesByDay:  [
+        waitTimesByDay: [
             Day(): WaitTimes(
-                samples: (0..<15).map({ (index: Int) -> WaitTimeSample in
+                samples: (0 ..< 15).map { (index: Int) -> WaitTimeSample in
                     WaitTimeSample(
                         timestamp: Date().timeIntervalSince1970 + TimeInterval(index) * 60 * 15,
                         low: TimeInterval(index + 1) * 60,
                         expected: TimeInterval(index + 2) * 60,
                         high: TimeInterval(index + 3) * 60
                     )
-                }),
+                },
                 samplingMethod: .nearestNeighbor
             )
         ]
     )
-    
+
     static let roseBreakfastMenu = Menu(categories: [
         MenuCategory(category: "Taco Breakfast", items: [
             MenuItem(
@@ -284,7 +283,7 @@ enum DummyData {
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Corn & Beans"
-            ),
+            )
         ]),
         MenuCategory(category: "Desserts Breakfast", items: [
             MenuItem(
@@ -295,7 +294,7 @@ enum DummyData {
             )
         ])
     ])
-    
+
     static let roseLunchMenu = Menu(categories: [
         MenuCategory(category: "Taco Lunch", items: [
             MenuItem(
@@ -309,7 +308,7 @@ enum DummyData {
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Corn & Beans"
-            ),
+            )
         ]),
         MenuCategory(category: "Dessert Lunch", items: [
             MenuItem(
@@ -320,7 +319,7 @@ enum DummyData {
             )
         ])
     ])
-    
+
     static let roseDinnerMenu = Menu(categories: [
         MenuCategory(category: "Taco Dinner", items: [
             MenuItem(
@@ -334,7 +333,7 @@ enum DummyData {
                 description: "Filling for your taco.",
                 healthy: false,
                 name: "Corn & Beans"
-            ),
+            )
         ]),
         MenuCategory(category: "Desserts Dinner", items: [
             MenuItem(
@@ -380,19 +379,18 @@ enum DummyData {
         name: "Rose Dining Hall",
         onlineOrderUrl: nil,
         paymentMethods: [.credit, .mealSwipes],
-        waitTimesByDay:  [
+        waitTimesByDay: [
             Day(): WaitTimes(
-                samples: (0..<15).map({ (index: Int) -> WaitTimeSample in
+                samples: (0 ..< 15).map { (index: Int) -> WaitTimeSample in
                     WaitTimeSample(
                         timestamp: Date().timeIntervalSince1970 + TimeInterval(index) * 60 * 15,
                         low: TimeInterval(index + 1) * 60,
                         expected: TimeInterval(index + 2) * 60,
                         high: TimeInterval(index + 3) * 60
                     )
-                }),
+                },
                 samplingMethod: .nearestNeighbor
             )
         ]
     )
-
 }

@@ -6,15 +6,14 @@
 //
 
 import ArgumentParser
-import EateryModel
 import EateryGetAPI
+import EateryModel
 import Foundation
 import Logging
 
 var logger = Logger(label: "com.appdev.Eatery-Blue")
 
 struct EateryBlue: ParsableCommand {
-
     @Option
     var logLevel: String?
 
@@ -62,24 +61,19 @@ struct EateryBlue: ParsableCommand {
 
         if forceDeleteCredentials {
             logger.info("\(#function): Deleting credentials")
-            try! NetIDKeychainManager.shared.delete()
+            try? NetIDKeychainManager.shared.delete()
         }
 
         AppDelegate.main()
     }
 }
 
-
 extension Networking {
-
     static var `default` = Networking(fetchUrl: URL(string: "\(EateryEnvironment.baseURL)/eatery/")!)
-
 }
 
 extension LocationManager {
-
     static var shared = LocationManager()
-
 }
 
 EateryBlue.main()

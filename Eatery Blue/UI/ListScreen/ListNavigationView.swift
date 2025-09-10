@@ -8,13 +8,10 @@
 import UIKit
 
 protocol ListNavigationViewDelegate: AnyObject {
-
     func listNavigationViewDidLayoutSubviews(_ view: ListNavigationView)
-
 }
 
 class ListNavigationView: UIView {
-
     let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
 
     let normalNavigationBar = UIView()
@@ -38,7 +35,8 @@ class ListNavigationView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -150,7 +148,7 @@ class ListNavigationView: UIView {
         }
 
         let progress = max(0, min(1, progress))
-        self.fadeInProgress = progress
+        fadeInProgress = progress
 
         if animated {
             UIView.animate(withDuration: 0.125) {
@@ -160,5 +158,4 @@ class ListNavigationView: UIView {
             setFadeInProgress(progress)
         }
     }
-
 }

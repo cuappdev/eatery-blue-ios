@@ -1,0 +1,238 @@
+#!/bin/sh
+
+# =============================================================================
+# PRE-COMMIT HOOK: Swift Code Quality Checks
+# =============================================================================
+# This script runs before each commit to ensure Swift code quality by:
+# 1. Formatting code with SwiftFormat (120 character line limit)
+# 2. Auto-fixing linting issues with SwiftLint
+# 3. Checking for remaining linting violations
+# 
+# Only processes Swift files in: Eatery Blue, EateryGetAPI, EateryModel
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# CONFIGURATION
+# -----------------------------------------------------------------------------
+
+# Color codes for terminal output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly NC='\033[0m'
+
+# Directories to check for Swift files
+readonly TARGET_DIRECTORIES="^(Eatery Blue|EateryGetAPI|EateryModel)/"
+
+# SwiftFormat settings
+readonly MAX_LINE_LENGTH=120
+
+# -----------------------------------------------------------------------------
+# HELPER FUNCTIONS
+# -----------------------------------------------------------------------------
+
+# Print error message and exit
+print_error_and_exit() {
+    local message="$1"
+    local exit_code="${2:-1}"
+    echo "${RED}❌ $message${NC}"
+    exit "$exit_code"
+}
+
+# Print success message
+print_success() {
+    local message="$1"
+    echo "${GREEN}✅ $message${NC}"
+}
+
+# Print warning message
+print_warning() {
+    local message="$1"
+    echo "${YELLOW}⚠️  $message${NC}"
+}
+
+# Print step header
+print_step() {
+    local step_number="$1"
+    local step_name="$2"
+    echo "${YELLOW}$step_number $step_name${NC}"
+}
+
+# Check if required tools are installed
+check_required_tools() {
+    if ! command -v swiftformat &> /dev/null; then
+        print_error_and_exit "SwiftFormat not found. Run ./setup-dev-env.sh to install required tools"
+    fi
+
+    if ! command -v swiftlint &> /dev/null; then
+        print_error_and_exit "SwiftLint not found. Run ./setup-dev-env.sh to install required tools"
+    fi
+}
+
+# Get list of staged Swift files in target directories
+get_staged_swift_files() {
+    # Use newline as separator to handle filenames with spaces
+    local old_ifs="$IFS"
+    IFS=$'\n'
+    local files=($(git diff --cached --name-only --diff-filter=ACM | grep '\.swift$' | grep -E "$TARGET_DIRECTORIES"))
+    IFS="$old_ifs"
+    
+    # Return the array by printing each element
+    for file in "${files[@]}"; do
+        echo "$file"
+    done
+}
+
+# Show which files will be processed
+show_files_to_process() {
+    local file_count=${#staged_files[@]}
+    
+    if [ $file_count -eq 0 ]; then
+        echo "No Swift files to check in target directories"
+        return
+    fi
+    
+    echo "Checking the following Swift files:"
+    for file in "${staged_files[@]}"; do
+        echo "  - $file"
+    done
+    echo ""
+}
+
+# Re-stage a file after modification
+restage_file() {
+    local file="$1"
+    git add "$file"
+}
+
+# Check if file was modified by comparing hashes
+file_was_modified() {
+    local file="$1"
+    local hash_before="$2"
+    local hash_after
+    hash_after=$(git hash-object "$file")
+    [ "$hash_before" != "$hash_after" ]
+}
+
+# Format Swift files using SwiftFormat
+run_swiftformat() {
+    print_step "📝 Step 1:" "Running SwiftFormat..."
+    local formatted_count=0
+
+    for file in "${staged_files[@]}"; do
+        if [ ! -f "$file" ]; then
+            continue
+        fi
+
+        # Check if file needs formatting (lint mode returns non-zero if formatting needed)
+        if ! swiftformat --lint --maxwidth "$MAX_LINE_LENGTH" "$file" &> /dev/null; then
+            echo "  📝 Formatting: $file"
+            swiftformat "$file" --maxwidth "$MAX_LINE_LENGTH"
+            restage_file "$file"
+            formatted_count=$((formatted_count + 1))
+        fi
+    done
+
+    if [ $formatted_count -gt 0 ]; then
+        print_success "Formatted $formatted_count file(s)"
+    fi
+}
+
+# Auto-fix linting issues using SwiftLint
+run_swiftlint_fix() {
+    print_step "🔧 Step 2:" "Running SwiftLint --fix..."
+    local fixed_count=0
+
+    for file in "${staged_files[@]}"; do
+        if [ ! -f "$file" ]; then
+            continue
+        fi
+
+        # Get file hash before running SwiftLint fix
+        local hash_before
+        hash_before=$(git hash-object "$file")
+        
+        # Run SwiftLint fix
+        swiftlint lint "$file" --fix &> /dev/null
+        
+        # Check if file was modified and restage if needed
+        if file_was_modified "$file" "$hash_before"; then
+            echo "  🔧 Fixed: $file"
+            restage_file "$file"
+            fixed_count=$((fixed_count + 1))
+        fi
+    done
+
+    if [ $fixed_count -gt 0 ]; then
+        print_success "Fixed $fixed_count file(s)"
+    fi
+}
+
+# Check for remaining linting issues
+check_remaining_linting_issues() {
+    print_step "🚨 Step 3:" "Checking for remaining linting errors..."
+    local issues_count=0
+    local first_issue=true
+
+    for file in "${staged_files[@]}"; do
+        if [ ! -f "$file" ]; then
+            continue
+        fi
+
+        # Run SwiftLint and capture output
+        local lint_output
+        lint_output=$(swiftlint lint "$file" 2>&1)
+        local lint_exit_code=$?
+        
+        # If there are linting issues, display them
+        if [ $lint_exit_code -ne 0 ]; then
+            if $first_issue; then
+                echo "  ${RED}❌ SwiftLint found remaining issues:${NC}"
+                first_issue=false
+            fi
+            echo "${RED}$lint_output${NC}"
+            issues_count=$((issues_count + 1))
+        fi
+    done
+
+    # Exit with error if issues found
+    if [ $issues_count -gt 0 ]; then
+        echo ""
+        print_error_and_exit "SwiftLint found issues in $issues_count file(s). Please fix these issues and try again."
+    fi
+}
+
+# -----------------------------------------------------------------------------
+# MAIN EXECUTION
+# -----------------------------------------------------------------------------
+
+main() {
+    # Get list of staged Swift files
+    local old_ifs="$IFS"
+    IFS=$'\n'
+    staged_files=($(get_staged_swift_files))
+    IFS="$old_ifs"
+
+    # Exit early if no Swift files are staged
+    if [ ${#staged_files[@]} -eq 0 ]; then
+        exit 0
+    fi
+
+    # Verify required tools are installed
+    check_required_tools
+
+    # Show what we're going to process
+    echo "${YELLOW}🔍 Running code quality checks...${NC}"
+    show_files_to_process
+
+    # Run the three-step process
+    run_swiftformat
+    run_swiftlint_fix
+    check_remaining_linting_issues
+
+    # All checks passed
+    print_success "All checks passed!"
+}
+
+# Run the main function
+main

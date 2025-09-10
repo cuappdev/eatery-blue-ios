@@ -8,7 +8,6 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
     enum Mode {
         case account
         case demo
@@ -24,7 +23,8 @@ class ProfileViewController: UIViewController {
         setMode(currentMode, animated: false)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -87,41 +87,38 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    @objc private func didLogOut(_ notification: Notification) {
+    @objc private func didLogOut(_: Notification) {
         DispatchQueue.main.async {
             self.profileNavigationController.popToRootViewController(animated: true)
             self.setMode(.login, animated: false)
         }
     }
-
 }
 
 extension ProfileViewController: ProfileLoginModelControllerDelegate {
-
-    func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
+    func profileLoginModelController(_: ProfileLoginModelController, didLogin _: String) {
         setMode(.account, animated: true)
     }
 
-    func demoModeDidLogin(_ viewController: ProfileLoginModelController) {
+    func demoModeDidLogin(_: ProfileLoginModelController) {
         setMode(.demo, animated: true)
     }
-
 }
 
 extension ProfileViewController: DemoAccountViewControllerDelegate {
-
     func demoModeDidLogout() {
-        self.profileNavigationController.popToRootViewController(animated: true)
-        self.setMode(.login, animated: true)
+        profileNavigationController.popToRootViewController(animated: true)
+        setMode(.login, animated: true)
     }
-
 }
 
 extension ProfileViewController: UINavigationControllerDelegate {
-
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
         let hideNavigationBar = viewController is EateryViewController
         navigationController.setNavigationBarHidden(hideNavigationBar, animated: animated)
     }
-
 }

@@ -10,7 +10,6 @@ import EateryModel
 import UIKit
 
 class HomeViewController: UIViewController {
-
     // MARK: - Properties (view)
 
     private let collectionView: UICollectionView
@@ -18,7 +17,6 @@ class HomeViewController: UIViewController {
     private let compareMenusOnboarding = CompareMenusExternalOnboardingView()
     private let favoritesCarousel = CarouselView()
     private let navigationView = HomeNavigationView()
-
 
     // MARK: - Properties (data)
 
@@ -31,14 +29,15 @@ class HomeViewController: UIViewController {
     private var headerHeight: CGFloat = Constants.maxHeaderHeight
     private var isLoading = true
     private var previousScrollOffset: CGFloat = 0
-    private var selectedDisplayStyle: DisplayStyle = {
-        DisplayStyle(rawValue: UserDefaults.standard.integer(forKey: UserDefaultsKeys.preferedDisplayStyle)) ?? .list
-    }()
+    private var selectedDisplayStyle: DisplayStyle = .init(
+        rawValue: UserDefaults.standard.integer(forKey: UserDefaultsKeys.preferedDisplayStyle)
+    ) ?? .list
+
     private var shownEateries: [Eatery] = []
 
     // MARK: - Constants
 
-    struct Constants {
+    enum Constants {
         static let carouselViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
         static let customViewLayoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
         static let minHeaderHeight: CGFloat = 44
@@ -61,8 +60,9 @@ class HomeViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -78,7 +78,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         RootViewController.setStatusBarStyle(.lightContent)
-
 
         view.addSubview(collectionView)
         setUpCollectionView()
@@ -126,7 +125,10 @@ class HomeViewController: UIViewController {
         collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0
         collectionView.showsVerticalScrollIndicator = false
 
-        collectionView.register(EateryCardShimmerCollectionViewCell.self, forCellWithReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse)
+        collectionView.register(
+            EateryCardShimmerCollectionViewCell.self,
+            forCellWithReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse
+        )
 
         collectionView.register(EateryLargeCardView.self, forCellWithReuseIdentifier: EateryLargeCardView.reuse)
         collectionView.register(EaterySmallCardView.self, forCellWithReuseIdentifier: EaterySmallCardView.reuse)
@@ -151,7 +153,11 @@ class HomeViewController: UIViewController {
         compareMenusButton.buttonPress { [weak self] _ in
             guard let self else { return }
 
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [])
+            let viewController = CompareMenusSheetViewController(
+                parentNavigationController: navigationController,
+                selectedEateries: []
+            )
+
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
             AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "HomeViewController"))
@@ -171,7 +177,7 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpFavNotification() {
-        self.addFavoriteObservation(current: &favoritesObserver) { [weak self] _ in
+        addFavoriteObservation(current: &favoritesObserver) { [weak self] _ in
             guard let self else { return }
 
             let favoriteEateries = allEateries.filter {
@@ -186,7 +192,7 @@ class HomeViewController: UIViewController {
 
             favoritesCarousel.eateries = favoriteEateries
 
-            let _ = updateFavoritesCarousel()
+            _ = updateFavoritesCarousel()
             applySnapshot()
         }
     }
@@ -209,12 +215,15 @@ class HomeViewController: UIViewController {
             guard let self else { return }
 
             compareMenusOnboarding.dismiss()
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [])
+            let viewController = CompareMenusSheetViewController(
+                parentNavigationController: navigationController,
+                selectedEateries: []
+            )
+
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
         }
     }
-
 
     private func setUpConstraints() {
         collectionView.snp.makeConstraints { make in
@@ -234,7 +243,7 @@ class HomeViewController: UIViewController {
 
     // MARK: - Actions
 
-    func scrollToTop(animated: Bool) {
+    func scrollToTop(animated _: Bool) {
         collectionView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
 
@@ -270,7 +279,7 @@ class HomeViewController: UIViewController {
     /// Start loading all eateries in the background, will be cached if needs to be refetched
     private func updateAllEateriesFromNetworking() async {
         do {
-            let _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
+            _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
         } catch {
             logger.error("\(error)")
         }
@@ -280,9 +289,9 @@ class HomeViewController: UIViewController {
     private func updateSimpleEateriesFromNetworking() async throws {
         let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
         allEateries = eateries.filter { eatery in
-            return !eatery.name.isEmpty
+            !eatery.name.isEmpty
         }.sorted(by: {
-            return $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
+            $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
         })
     }
 
@@ -305,9 +314,8 @@ class HomeViewController: UIViewController {
 
         favoritesCarousel.backgroundColor = .clear
         favoritesCarousel.eateries = favoriteEateries
-        return favoriteEateries.count > 0 ? favoritesCarousel: nil
+        return favoriteEateries.count > 0 ? favoritesCarousel : nil
     }
-
 
     // MARK: - Utils
 
@@ -336,16 +344,24 @@ class HomeViewController: UIViewController {
 
         var delayCounter = 0
 
-        sortedCells.forEach { cell in
+        for cell in sortedCells {
             cell.transform = CGAffineTransform(translationX: 0, y: 82)
             cell.alpha = 0
         }
 
-        for index in 0..<sortedCells.count {
-            UIView.animate(withDuration: 1.3, delay: 0.1 * Double(delayCounter), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
-                sortedCells[index].transform = CGAffineTransform.identity
-                sortedCells[index].alpha = 1
-            }, completion: nil)
+        for index in 0 ..< sortedCells.count {
+            UIView.animate(
+                withDuration: 1.3,
+                delay: 0.1 * Double(delayCounter),
+                usingSpringWithDamping: 1.0,
+                initialSpringVelocity: 0,
+                options: .curveEaseOut,
+                animations: {
+                    sortedCells[index].transform = CGAffineTransform.identity
+                    sortedCells[index].alpha = 1
+                },
+                completion: nil
+            )
             delayCounter += 1
         }
     }
@@ -374,27 +390,42 @@ class HomeViewController: UIViewController {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: collectionView) { [weak self] (tableview, indexPath, item) in
+        let dataSource = DataSource(collectionView: collectionView) { [weak self] tableview, indexPath, item in
             guard let self else { return UICollectionViewCell() }
 
             switch item {
-            case .largeEateryCard(eatery: let eatery, favorited: let favorited):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryLargeCardView.reuse, for: indexPath) as? EateryLargeCardView else { return UICollectionViewCell() }
+            case let .largeEateryCard(eatery: eatery, favorited: favorited):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: EateryLargeCardView.reuse,
+                    for: indexPath
+                ) as? EateryLargeCardView else { return UICollectionViewCell() }
+
                 cell.configure(eatery: eatery, favorited: favorited)
                 return cell
-            case .smallEateryCard(eatery: let eatery, favorited: let favorited):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EaterySmallCardView.reuse, for: indexPath) as? EaterySmallCardView else { return UICollectionViewCell() }
+            case let .smallEateryCard(eatery: eatery, favorited: favorited):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: EaterySmallCardView.reuse,
+                    for: indexPath
+                ) as? EaterySmallCardView else { return UICollectionViewCell() }
+
                 cell.configure(eatery: eatery, favorited: favorited)
                 return cell
-            case .loadingCard(isLarge: _, key: _):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse, for: indexPath) as? EateryCardShimmerCollectionViewCell else { return UICollectionViewCell() }
+            case .loadingCard:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse,
+                    for: indexPath
+                ) as? EateryCardShimmerCollectionViewCell else { return UICollectionViewCell() }
+
                 cell.configure()
                 return cell
             default:
                 break
             }
 
-            guard let cell = tableview.dequeueReusableCell(withReuseIdentifier: ClearCollectionViewCell.reuse, for: indexPath) as? ClearCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = tableview.dequeueReusableCell(
+                withReuseIdentifier: ClearCollectionViewCell.reuse,
+                for: indexPath
+            ) as? ClearCollectionViewCell else { return UICollectionViewCell() }
 
             switch item {
             case .searchBar:
@@ -404,24 +435,24 @@ class HomeViewController: UIViewController {
                 searchBar.backgroundImage = UIImage()
                 searchBar.hero.id = "searchBar"
                 cell.configure(content: searchBar)
-            case .customView(let view, _, _):
+            case let .customView(view, _, _):
                 let container = ContainerView(content: view)
                 container.layoutMargins = Constants.customViewLayoutMargins
                 cell.configure(content: container)
-            case .titleLabel(title: let title):
+            case let .titleLabel(title: title):
                 let label = UILabel()
                 label.text = title
                 label.font = .preferredFont(for: .title2, weight: .semibold)
                 let container = ContainerView(content: label)
                 cell.configure(content: container)
-            case .loadingLabel(title: let title):
+            case let .loadingLabel(title: title):
                 let label = UILabel()
                 label.text = title
                 label.textColor = UIColor.Eatery.gray02
                 label.font = .preferredFont(for: .title2, weight: .semibold)
                 let container = ContainerView(content: label)
                 cell.configure(content: container)
-            case .carouselView(let carouselView):
+            case let .carouselView(carouselView):
                 let container = ContainerView(content: carouselView)
                 cell.configure(content: container)
             case .loadingCarousel:
@@ -430,7 +461,7 @@ class HomeViewController: UIViewController {
                 stackView.spacing = 16
                 stackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 0)
                 stackView.isLayoutMarginsRelativeArrangement = true
-                for _ in 0...1 {
+                for _ in 0 ... 1 {
                     let view = EateryCardShimmerCollectionViewCell()
                     stackView.addArrangedSubview(view)
                     view.snp.makeConstraints { make in
@@ -489,7 +520,7 @@ class HomeViewController: UIViewController {
 
         if isLoading {
             snapshot.appendItems([.loadingLabel(title: "Checking for chow...")], toSection: .main)
-            for i in 0..<4 {
+            for i in 0 ..< 4 {
                 snapshot.appendItems([.loadingCard(isLarge: true, key: i)], toSection: .main)
             }
 
@@ -501,7 +532,7 @@ class HomeViewController: UIViewController {
             currentEateries = allEateries
         } else {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-            let filteredEateries = allEateries.filter{
+            let filteredEateries = allEateries.filter {
                 predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
             }
 
@@ -513,16 +544,16 @@ class HomeViewController: UIViewController {
         }
 
         LocationManager.shared.$userLocation
-        .sink { userLocation in
+            .sink { userLocation in
                 currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
-                let dist1 = eatery1.walkTime(userLocation: userLocation)
-                let dist2 = eatery2.walkTime(userLocation: userLocation)
-                guard let dist1, let dist2 else { return true }
+                    let dist1 = eatery1.walkTime(userLocation: userLocation)
+                    let dist2 = eatery2.walkTime(userLocation: userLocation)
+                    guard let dist1, let dist2 else { return true }
 
-                return dist1 < dist2
-            })
-        }
-        .store(in: &cancellables)
+                    return dist1 < dist2
+                })
+            }
+            .store(in: &cancellables)
 
         let label = UILabel()
         label.text = filter.isEnabled ? "Filtered Eateries" : "All Eateries"
@@ -530,7 +561,12 @@ class HomeViewController: UIViewController {
 
         let selectionButtons = MiniSelectionView()
         selectionButtons.addButton(DisplayStyle.list.rawValue, image: UIImage(named: "Burger")!, padding: 8)
-        selectionButtons.addButton(DisplayStyle.grid.rawValue, image: UIImage(systemName: "square.grid.2x2")!, padding: 4)
+        selectionButtons.addButton(
+            DisplayStyle.grid.rawValue,
+            image: UIImage(systemName: "square.grid.2x2")!,
+            padding: 4
+        )
+
         selectionButtons.onTap = { [weak self] selection in
             guard let self else { return }
 
@@ -558,7 +594,7 @@ class HomeViewController: UIViewController {
             make.top.bottom.trailing.equalToSuperview()
             make.leading.equalTo(label.snp.trailing)
         }
-        
+
         selectionButtons.layoutIfNeeded()
 
         snapshot.appendItems([.customView(view: container, height: 44, padding: 16)], toSection: .main)
@@ -572,13 +608,13 @@ class HomeViewController: UIViewController {
         if !openEateries.isEmpty {
             switch selectedDisplayStyle {
             case .list:
-                snapshot.appendItems(openEateries.map({
+                snapshot.appendItems(openEateries.map {
                     .largeEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
-                }), toSection: .main)
+                }, toSection: .main)
             case .grid:
-                snapshot.appendItems(openEateries.map({
+                snapshot.appendItems(openEateries.map {
                     .smallEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
-                }), toSection: .main)
+                }, toSection: .main)
             }
         }
 
@@ -586,29 +622,26 @@ class HomeViewController: UIViewController {
         if !closedEateries.isEmpty {
             switch selectedDisplayStyle {
             case .list:
-                snapshot.appendItems(closedEateries.map({
+                snapshot.appendItems(closedEateries.map {
                     .largeEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
-                }), toSection: .main)
+                }, toSection: .main)
             case .grid:
-                snapshot.appendItems(closedEateries.map({
+                snapshot.appendItems(closedEateries.map {
                     .smallEateryCard(eatery: $0, favorited: favoriteEateries.contains($0))
-                }), toSection: .main)
+                }, toSection: .main)
             }
         }
 
-        self.shownEateries = openEateries + closedEateries
+        shownEateries = openEateries + closedEateries
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
-
 }
 
 // MARK: - Collection View Extensions
 
 extension HomeViewController {
-
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-
 
     enum Section {
         case toolbar
@@ -633,37 +666,30 @@ extension HomeViewController {
             switch self {
             case .titleLabel, .loadingLabel:
                 height = 46
-                break
             case .searchBar:
-                width = width + 8 * 2
+                width += (8 * 2)
                 height = 46
-                break
             case .carouselView:
                 width = collectionView.contentSize.width
                 height = 268
-                break
             case .loadingCarousel:
                 width = collectionView.contentSize.width
                 height = 268 - 46
-            case .customView(_, let h, let padding):
+            case let .customView(_, h, padding):
                 width = collectionView.contentSize.width - 2 * padding
                 height = h
-                break
             case .largeEateryCard:
                 height = width * 15 / 24
-                break
             case .smallEateryCard:
                 width = (width - 12) / 2
                 height = width
-                break
-            case .loadingCard(let isLarge, _):
+            case let .loadingCard(isLarge, _):
                 if isLarge {
                     height = width * 15 / 24
                 } else {
                     width = collectionView.contentSize.width / 2
                     height = width
                 }
-                break
             }
 
             // Account for edge case where width or height is less than zero
@@ -689,52 +715,56 @@ extension HomeViewController {
             }
         }
     }
-
 }
 
 extension HomeViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
-        case .largeEateryCard(let eatery, let _), .smallEateryCard(let eatery, let _):
-            for (index, element) in shownEateries.enumerated() {
-                if eatery.id == element.id {
-                    pushViewController(eateryIndex: index)
-                    break
-                }
+        case let .largeEateryCard(eatery, _), let .smallEateryCard(eatery, _):
+            if let index = shownEateries.firstIndex(where: { $0.id == eatery.id }) {
+                pushViewController(eateryIndex: index)
             }
         default:
             break
         }
     }
-
 }
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout _: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return .zero }
         return item.getSize(collectionView: collectionView)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
         switch dataSource.sectionIdentifier(for: section) {
         case .main:
-            return UIEdgeInsets(top: Constants.collectionViewSectionPadding, left: Constants.collectionViewSectionPadding, bottom: 0, right: Constants.collectionViewSectionPadding)
+            return UIEdgeInsets(
+                top: Constants.collectionViewSectionPadding,
+                left: Constants.collectionViewSectionPadding,
+                bottom: 0,
+                right: Constants.collectionViewSectionPadding
+            )
         case .toolbar:
             return UIEdgeInsets(top: Constants.collectionViewTopPadding, left: 0, bottom: 0, right: 0)
         default:
             return .zero
         }
     }
-
 }
 
 // MARK: - UIScrollViewDelegate
 
 extension HomeViewController: UIScrollViewDelegate {
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         handleHeader(scrollView)
         handleCompareMenusButton(scrollView)
@@ -786,15 +816,24 @@ extension HomeViewController: UIScrollViewDelegate {
         }
     }
 
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
         handlePullToRefresh(scrollView)
         handleSnapping(scrollView, velocity: velocity, targetContentOffset: targetContentOffset)
     }
 
-    private func handleSnapping(_ scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    private func handleSnapping(
+        _ scrollView: UIScrollView,
+        velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
         let currentPosition = scrollView.contentOffset.y
         let decelerationRate = scrollView.decelerationRate.rawValue
-        var offset = currentPosition + velocity.y * decelerationRate / (1 - decelerationRate) + scrollView.contentInset.top
+        var offset = currentPosition + velocity.y * decelerationRate /
+            (1 - decelerationRate) + scrollView.contentInset.top
         if offset < 0 { return }
 
         if offset < (Constants.maxHeaderHeight - Constants.minHeaderHeight) / 2 {
@@ -814,18 +853,16 @@ extension HomeViewController: UIScrollViewDelegate {
             navigationView.logoRefreshControl.beginRefreshing()
         }
     }
-
 }
 
 // MARK: - LogoRefreshControlDelegate
 
 extension HomeViewController: LogoRefreshControlDelegate {
-
-    func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl) {
+    func logoRefreshControlDidBeginRefreshing(_: LogoRefreshControl) {
         collectionView.contentInset.top = Constants.loadingHeaderHeight + view.safeAreaInsets.top
     }
 
-    func logoRefreshControlDidEndRefreshing(_ sender: LogoRefreshControl) {
+    func logoRefreshControlDidEndRefreshing(_: LogoRefreshControl) {
         headerHeight = Constants.maxHeaderHeight
         updateNavHeaderViewHeight()
         UIView.animate(withDuration: 0.3) { [weak self] in
@@ -837,30 +874,25 @@ extension HomeViewController: LogoRefreshControlDelegate {
 
         navigationView.logoRefreshControl.setPullProgress(0)
     }
-
 }
 
 // MARK: - UISearchBarDelegate
 
 extension HomeViewController: UISearchBarDelegate {
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+    func searchBarShouldBeginEditing(_: UISearchBar) -> Bool {
         let viewController = HomeSearchModelController()
         navigationController?.hero.isEnabled = true
         navigationController?.hero.navigationAnimationType = .fade
         navigationController?.pushViewController(viewController, animated: true)
         return false
     }
-
 }
 
 // MARK: - EateryFilterViewControllerDelegate
 
 extension HomeViewController: EateryFilterViewControllerDelegate {
-
-    func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
+    func eateryFilterViewController(_: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
         applySnapshot()
     }
-    
 }

@@ -7,119 +7,107 @@
 
 import Foundation
 
-internal enum Schema {
+enum Schema {
+    struct Alert: Codable {
+        let description: String?
 
-    internal struct Alert: Codable {
+        let endTimestamp: Int
 
-        internal let description: String?
+        let id: Int64
 
-        internal let endTimestamp: Int
-
-        internal let id: Int64
-
-        internal let startTimestamp: Int
-
+        let startTimestamp: Int
     }
 
-    internal struct Eatery: Codable {
+    struct Eatery: Codable {
+        let alerts: [Alert]?
 
-        internal let alerts: [Alert]?
+        let campusArea: String?
 
-        internal let campusArea: String?
+        let events: [Schema.Event]?
 
-        internal let events: [Schema.Event]?
-        
-        internal let id: Int64
-        
-        internal let imageUrl: String?
+        let id: Int64
 
-        internal let latitude: Double?
+        let imageUrl: String?
 
-        internal let location: String?
+        let latitude: Double?
 
-        internal let longitude: Double?
+        let location: String?
 
-        internal let menuSummary: String?
+        let longitude: Double?
 
-        internal let name: String?
+        let menuSummary: String?
 
-        internal let onlineOrderUrl: URL?
+        let name: String?
 
-        internal let paymentAcceptsCash: Bool?
+        let onlineOrderUrl: URL?
 
-        internal let paymentAcceptsBrbs: Bool?
+        let paymentAcceptsCash: Bool?
 
-        internal let paymentAcceptsMealSwipes: Bool?
+        let paymentAcceptsBrbs: Bool?
 
-        internal let waitTime: [Schema.WaitTime]?
+        let paymentAcceptsMealSwipes: Bool?
 
+        let waitTime: [Schema.WaitTime]?
     }
 
-    internal struct Event: Codable {
-        
-        internal let eatery: Int? // Need to communicate with backend about purpose of this var
+    struct Event: Codable {
+        let eatery: Int? // Need to communicate with backend about purpose of this var
 
-        internal let end: Int?
+        let end: Int?
 
-        internal let eventDescription: String?
+        let eventDescription: String?
 
-        internal let id: Int?
+        let id: Int?
 
-        internal let start: Int?
+        let start: Int?
 
-        internal let menu: [Schema.MenuCategory]?
-
+        let menu: [Schema.MenuCategory]?
     }
 
-    internal struct MenuCategory: Codable {
+    struct MenuCategory: Codable {
+        let category: String
 
-        internal let category: String
+        let event: Int? // Need to communciate about purpose of this var
 
-        internal let event: Int? // Need to communciate about purpose of this var
+        let id: Int? // And this
 
-        internal let id: Int? // And this
-
-        internal let items: [Schema.MenuItem]
-
+        let items: [Schema.MenuItem]
     }
 
-    internal struct MenuItem: Codable {
+    struct MenuItem: Codable {
+        let category: Int?
 
-        internal let category: Int?
+        let healthy: Bool?
 
-        internal let healthy: Bool?
+        let id: Int
 
-        internal let id: Int
+        let name: String
 
-        internal let name: String
+        let allergens: [String]
 
-        internal let allergens: [String]
-
-        internal let dietaryPreferences: [String]
-
+        let dietaryPreferences: [String]
     }
 
-    internal struct WaitTime: Codable {
+    struct WaitTime: Codable {
+        let day: String
 
-        internal let day: String
+        let eatery: Int // Not sure why this is needed
 
-        internal let eatery: Int // Not sure why this is needed
+        let hour: Int
 
-        internal let hour: Int
+        let id: Int // Not sure why this is needed
 
-        internal let id: Int // Not sure why this is needed
+        let trials: Int // Not sure what this is for
 
-        internal let trials: Int // Not sure what this is for
+        let waitTimeExpected: Int
 
-        internal let waitTimeExpected: Int
+        let waitTimeHigh: Int
 
-        internal let waitTimeHigh: Int
-
-        internal let waitTimeLow: Int
-
+        let waitTimeLow: Int
     }
 
-// MARK: - WaitTimesByDay (uncomment and modify once implemented)
+    // MARK: - WaitTimesByDay (uncomment and modify once implemented)
+
 //    internal struct WaitTimesByDay: Codable {
 //
 //        internal let canonicalDate: String?
@@ -127,5 +115,4 @@ internal enum Schema {
 //        internal let data: [Schema.WaitTimes]?
 //
 //    }
-
 }

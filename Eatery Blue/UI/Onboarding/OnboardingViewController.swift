@@ -8,7 +8,6 @@
 import UIKit
 
 class OnboardingViewController: UIViewController {
-
     private let theNavigationController = UINavigationController()
 
     override func viewDidLoad() {
@@ -34,5 +33,4 @@ class OnboardingViewController: UIViewController {
         theNavigationController.viewControllers = [OnboardingStartViewController()]
         theNavigationController.setNavigationBarHidden(true, animated: false)
     }
-
 }

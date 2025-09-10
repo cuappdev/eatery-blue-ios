@@ -8,7 +8,6 @@
 import UIKit
 
 class NotificationButton: ButtonView<UIView> {
-
     // MARK: - Properties (view)
 
     private let notificationBellImageView = UIImageView()
@@ -27,10 +26,10 @@ class NotificationButton: ButtonView<UIView> {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
     // MARK: - Set Up
 
@@ -43,30 +42,29 @@ class NotificationButton: ButtonView<UIView> {
 
         setUpConstraints()
 
-        self.buttonPress { [weak self] _ in
+        buttonPress { [weak self] _ in
             guard let self else { return }
-            
+
             var loggedIn = false
-            if let sessionId = KeychainAccess.shared.retrieveToken() {
+            if KeychainAccess.shared.retrieveToken() != nil {
                 loggedIn = true
             }
 
             let plvc = ProfileLoginModelController(canGoBack: true)
 //            let vc = NotificationViewController(loggedIn: loggedIn)
-            completion?(loggedIn ? UIViewController(): plvc)
+            completion?(loggedIn ? UIViewController() : plvc)
         }
 
         checkforNotifications()
     }
 
     func checkforNotifications() {
-        guard let sessionId = KeychainAccess.shared.retrieveToken() else { return }
+        guard KeychainAccess.shared.retrieveToken() != nil else { return }
 
         // make networking call to see if there are any notis
 
         // if we have notis that are unread, we want to show the red dot
         notificationDotImageView.isHidden = false
-
     }
 
     func onTap(_ completion: @escaping (UIViewController) -> Void) {
@@ -99,5 +97,4 @@ class NotificationButton: ButtonView<UIView> {
             make.size.equalTo(11)
         }
     }
-
 }

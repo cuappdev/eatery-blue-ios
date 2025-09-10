@@ -8,7 +8,6 @@
 import UIKit
 
 class AccountTransactionsHeaderView: UIView {
-
     private let stackView = UIStackView()
 
     private let titleContainer = ContainerView(content: UIView())
@@ -34,7 +33,8 @@ class AccountTransactionsHeaderView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -114,5 +114,4 @@ class AccountTransactionsHeaderView: UIView {
             make.width.height.equalTo(40)
         }
     }
-
 }

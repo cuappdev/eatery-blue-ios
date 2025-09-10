@@ -11,7 +11,6 @@ import UIKit
 
 @MainActor
 class SettingsFavoritesViewController: UIViewController {
-
     private let tableView = UITableView()
 
     private var allEateries: [Eatery] = []
@@ -92,17 +91,15 @@ class SettingsFavoritesViewController: UIViewController {
         self.allEateries = allEateries
         tableView.reloadData()
     }
-
 }
 
 extension SettingsFavoritesViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         // First cell is the header
         1 + favoriteEateries.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let label = UILabel()
             label.text = "Manage your favorite eateries"
@@ -117,7 +114,7 @@ extension SettingsFavoritesViewController: UITableViewDataSource {
         } else {
             let eatery = favoriteEateries[indexPath.row - 1]
             let largeCardContent = EateryLargeCardContentView()
-            
+
             largeCardContent.configure(eatery: eatery)
 
             let cardView = EateryCardVisualEffectView(content: largeCardContent)
@@ -128,11 +125,9 @@ extension SettingsFavoritesViewController: UITableViewDataSource {
             return cell
         }
     }
-
 }
 
 extension SettingsFavoritesViewController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if indexPath.row != 0 {
             let cell = tableView.cellForRow(at: indexPath)
@@ -149,20 +144,17 @@ extension SettingsFavoritesViewController: UITableViewDelegate {
                 cell?.transform = .identity
             }
         }
-
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row != 0 {
             let eatery = favoriteEateries[indexPath.row - 1]
             let viewController = EateryModelController()
-            viewController.setUp(eatery: eatery, allEateries: self.allEateries, isTracking: true)
+            viewController.setUp(eatery: eatery, allEateries: allEateries, isTracking: true)
             navigationController?.hero.isEnabled = true
             navigationController?.heroNavigationAnimationType = .fade
             navigationController?.pushViewController(viewController, animated: true)
             viewController.setUpMenu(eatery: eatery)
         }
     }
-
 }
-

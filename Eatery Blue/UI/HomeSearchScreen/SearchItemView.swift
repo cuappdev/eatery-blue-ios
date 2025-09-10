@@ -8,7 +8,6 @@
 import UIKit
 
 class SearchItemView: UIView {
-
     let stackView = UIStackView()
     let titleLabel = UILabel()
     let priceLabel = UILabel()
@@ -22,7 +21,8 @@ class SearchItemView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -101,5 +101,4 @@ class SearchItemView: UIView {
             make.edges.equalTo(layoutMarginsGuide)
         }
     }
-
 }

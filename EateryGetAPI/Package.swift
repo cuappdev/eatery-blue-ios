@@ -9,7 +9,7 @@ let package = Package(
         .iOS(.v15)
     ],
     products: [
-        .library(name: "EateryGetAPI", targets: ["EateryGetAPI"]),
+        .library(name: "EateryGetAPI", targets: ["EateryGetAPI"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),

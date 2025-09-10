@@ -6,13 +6,12 @@
 //
 
 import Combine
-import EateryModel
 import EateryGetAPI
+import EateryModel
 import Foundation
 import Logging
 
 class Networking {
-
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
     let accounts: FetchAccounts
@@ -21,26 +20,31 @@ class Networking {
     var sessionId: String {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
+
     let simpleUrl: URL
 
     init(fetchUrl: URL) {
-        self.baseUrl = fetchUrl
+        baseUrl = fetchUrl
         let eateryApi = EateryAPI(url: fetchUrl)
-        self.eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
-        self.accounts = FetchAccounts()
-        self.simpleUrl = URL(string: "\(baseUrl)simple/") ?? baseUrl
+        eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
+        accounts = FetchAccounts()
+        simpleUrl = URL(string: "\(baseUrl)simple/") ?? baseUrl
     }
-    
-    func loadAllEatery() async throws-> [Eatery] {
+
+    func loadAllEatery() async throws -> [Eatery] {
         return try await eateryCache.fetchAll(maxStaleness: timeUntilFiveMinutesIntoNextHour())
     }
-    
+
     func loadEatery(by id: Int) async -> Eatery? {
         var eatery: Eatery?
-        if let url = URL(string: "\(self.baseUrl)\(id)/") {
+        if let url = URL(string: "\(baseUrl)\(id)/") {
             let eateryApi = EateryAPI(url: url)
             do {
-                eatery = try await eateryCache.fetchByID(maxStaleness: timeUntilFiveMinutesIntoNextHour(), id: id, fetchByID: eateryApi.eatery)
+                eatery = try await eateryCache.fetchByID(
+                    maxStaleness: timeUntilFiveMinutesIntoNextHour(),
+                    id: id,
+                    fetchByID: eateryApi.eatery
+                )
             } catch {
                 logger.error("Failed to load eatery \(id)")
                 return nil
@@ -48,14 +52,14 @@ class Networking {
         }
         return eatery
     }
-    
+
     func loadSimpleEateries() async throws -> [Eatery] {
         let eateryApi = EateryAPI(url: simpleUrl)
         return try await eateryApi.eateries()
     }
 
     func loadEateryByDay(day: Int) async throws -> [Eatery] {
-        if let url = URL(string: "\(self.baseUrl)day/\(day)/") {
+        if let url = URL(string: "\(baseUrl)day/\(day)/") {
             let eateryApi = EateryAPI(url: url)
             return try await eateryApi.eateries()
         }
@@ -64,8 +68,6 @@ class Networking {
 
     // Computes the time until the end of the day previous cache policy
     private func endOfDay() -> TimeInterval {
-        let calendar = Calendar.current
-        let currentDate = Date()
         return Calendar.current.date(
             bySettingHour: 0,
             minute: 0,
@@ -96,11 +98,9 @@ class Networking {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
-    
 }
 
 struct FetchAccounts {
-
     private let getApi = GetAPI()
 
     func fetch(start: Day, end: Day) async throws -> [Account] {
@@ -127,34 +127,76 @@ struct FetchAccounts {
                 )
                 KeychainAccess.shared.invalidateToken()
                 return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
-                
+
             } else {
                 throw error
             }
         }
     }
-
 }
 
 private enum AccountDummyData {
-
     static let accounts = [
         Account(accountType: .bearBasic, balance: 10, transactions: [
-            Transaction(accountType: .bearBasic, amount: 1, date: Day().date(hour: 12, minute: 0), location: "Okenshields"),
-            Transaction(accountType: .bearBasic, amount: 1, date: Day().advanced(by: -1).date(hour: 12, minute: 0), location: "North Star"),
-            Transaction(accountType: .bearBasic, amount: 1, date: Day().advanced(by: -2).date(hour: 12, minute: 0), location: "RPCC")
+            Transaction(
+                accountType: .bearBasic,
+                amount: 1,
+                date: Day().date(hour: 12, minute: 0),
+                location: "Okenshields"
+            ),
+            Transaction(
+                accountType: .bearBasic,
+                amount: 1,
+                date: Day().advanced(by: -1).date(hour: 12, minute: 0),
+                location: "North Star"
+            ),
+            Transaction(
+                accountType: .bearBasic,
+                amount: 1,
+                date: Day().advanced(by: -2).date(hour: 12, minute: 0),
+                location: "RPCC"
+            )
         ]),
         Account(accountType: .bigRedBucks, balance: 500, transactions: [
-            Transaction(accountType: .bigRedBucks, amount: 1, date: Day().date(hour: 12, minute: 0), location: "Mattin's Cafe"),
-            Transaction(accountType: .bigRedBucks, amount: 1, date: Day().advanced(by: -1).date(hour: 12, minute: 0), location: "Mac's Cafe"),
-            Transaction(accountType: .bigRedBucks, amount: 1, date: Day().advanced(by: -2).date(hour: 12, minute: 0), location: "Mac's Cafe")
+            Transaction(
+                accountType: .bigRedBucks,
+                amount: 1,
+                date: Day().date(hour: 12, minute: 0),
+                location: "Mattin's Cafe"
+            ),
+            Transaction(
+                accountType: .bigRedBucks,
+                amount: 1,
+                date: Day().advanced(by: -1).date(hour: 12, minute: 0),
+                location: "Mac's Cafe"
+            ),
+            Transaction(
+                accountType: .bigRedBucks,
+                amount: 1,
+                date: Day().advanced(by: -2).date(hour: 12, minute: 0),
+                location: "Mac's Cafe"
+            )
         ]),
         Account(accountType: .cityBucks, balance: 0, transactions: []),
         Account(accountType: .laundry, balance: 37.54, transactions: [
-            Transaction(accountType: .laundry, amount: 1, date: Day().date(hour: 12, minute: 0), location: "Donlon 32 Dryer"),
-            Transaction(accountType: .laundry, amount: 1, date: Day().advanced(by: -1).date(hour: 12, minute: 0), location: "Dolon 32 Washer"),
-            Transaction(accountType: .laundry, amount: 1, date: Day().advanced(by: -2).date(hour: 12, minute: 0), location: "Dolon 27 Dryer")
-        ]),
+            Transaction(
+                accountType: .laundry,
+                amount: 1,
+                date: Day().date(hour: 12, minute: 0),
+                location: "Donlon 32 Dryer"
+            ),
+            Transaction(
+                accountType: .laundry,
+                amount: 1,
+                date: Day().advanced(by: -1).date(hour: 12, minute: 0),
+                location: "Dolon 32 Washer"
+            ),
+            Transaction(
+                accountType: .laundry,
+                amount: 1,
+                date: Day().advanced(by: -2).date(hour: 12, minute: 0),
+                location: "Dolon 27 Dryer"
+            )
+        ])
     ]
-
 }

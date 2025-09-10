@@ -11,7 +11,6 @@ import MapKit
 import UIKit
 
 class EateryModelController: EateryViewController {
-
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
@@ -48,7 +47,7 @@ class EateryModelController: EateryViewController {
             compareMenusButton.isHidden = true
         }
     }
-    
+
     func setUpMenu(eatery: Eatery) {
         Task {
             self.eatery = await Networking.default.loadEatery(by: Int(eatery.id))
@@ -85,7 +84,7 @@ class EateryModelController: EateryViewController {
             NotificationCenter.default.post(
                 name: UIViewController.notificationName,
                 object: nil,
-                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
+                userInfo: [UIViewController.notificationUserInfoKey: metadata.isFavorite]
             )
         }
 
@@ -115,10 +114,8 @@ class EateryModelController: EateryViewController {
 
     func setUpAnalytics(_ eatery: Eatery) {
         if eatery.paymentMethods.contains(.mealSwipes) {
-
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
         } else {
-
             AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
         }
     }
@@ -127,7 +124,10 @@ class EateryModelController: EateryViewController {
         compareMenusButton.buttonPress { [weak self] _ in
             guard let self, let eatery else { return }
 
-            let viewController = CompareMenusSheetViewController(parentNavigationController: navigationController, selectedEateries: [eatery])
+            let viewController = CompareMenusSheetViewController(
+                parentNavigationController: navigationController,
+                selectedEateries: [eatery]
+            )
             viewController.setUpSheetPresentation()
             tabBarController?.present(viewController, animated: true)
             AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "EateryModelController"))
@@ -233,7 +233,11 @@ class EateryModelController: EateryViewController {
         // Search bar is currently unimplemented
         // addSearchBar()
 
-        let events = eatery?.events.filter { $0.canonicalDay == selectedEvent?.canonicalDay && $0.menu != nil && !($0.menu?.categories.isEmpty ?? true) } ?? []
+        let events = eatery?.events
+            .filter {
+                $0.canonicalDay == selectedEvent?.canonicalDay && $0
+                    .menu != nil && !($0.menu?.categories.isEmpty ?? true)
+            } ?? []
         if events.count <= 1 {
             addSpacer(height: 16)
         } else {
@@ -251,7 +255,7 @@ class EateryModelController: EateryViewController {
         if let menu = event.menu {
             let sortedCategories = sortMenuCategories(categories: menu.categories)
             if !sortedCategories.isEmpty {
-                sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
+                for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
                     addMenuCategory(menuCategory)
                     addSpacer(height: 8)
                 }
@@ -269,7 +273,7 @@ class EateryModelController: EateryViewController {
 
     private func sortMenuCategories(categories: [MenuCategory]) -> [MenuCategory] {
         var sortedCategories: [MenuCategory] = categories.reversed()
-        for i in 0..<sortedCategories.count {
+        for i in 0 ..< sortedCategories.count {
             let menuCategory = sortedCategories[i]
             if menuCategory.category == "Chef's Table" {
                 sortedCategories.swapAt(0, i)
@@ -324,11 +328,9 @@ class EateryModelController: EateryViewController {
             MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
         ])
     }
-
 }
 
 extension EateryModelController: MenuPickerSheetViewControllerDelegate {
-
     func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) {
         selectedEventIndex = index
 
@@ -348,5 +350,4 @@ extension EateryModelController: MenuPickerSheetViewControllerDelegate {
 
         vc.dismiss(animated: true)
     }
-
 }

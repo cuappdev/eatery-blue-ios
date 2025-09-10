@@ -1,5 +1,5 @@
 //
-//  CompareMenusViewController.swift
+//  CompareMenusPageViewController.swift
 //  Eatery Blue
 //
 //  Created by Peter Bidoshi on 3/4/24.
@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusPageViewController: UIViewController {
-
     // MARK: - Properties (data)
 
     private let allEateries: [Eatery]
@@ -27,12 +26,13 @@ class CompareMenusPageViewController: UIViewController {
     init(eateries: [Eatery], allEateries: [Eatery]) {
         self.eateries = eateries
         self.allEateries = allEateries
-        self.tabsViewController = CompareMenusTabsViewController(eateries: eateries)
+        tabsViewController = CompareMenusTabsViewController(eateries: eateries)
 
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -64,7 +64,7 @@ class CompareMenusPageViewController: UIViewController {
     }
 
     private func setUpTabsViewController() {
-        self.addChild(tabsViewController)
+        addChild(tabsViewController)
         tabsViewController.setUpScrollView(delegate: self)
     }
 
@@ -84,12 +84,12 @@ class CompareMenusPageViewController: UIViewController {
     }
 
     private func setUpPages() {
-        eateries.forEach { eatery in
+        for eatery in eateries {
             let vc = CompareMenusEateryViewController()
             vc.setUp(eatery: eatery, allEateries: allEateries)
             vc.setUpMenu(eatery: eatery)
             vc.view.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-            self.addChild(vc)
+            addChild(vc)
             stackView.addArrangedSubview(vc.view)
 
             vc.view.snp.makeConstraints { make in
@@ -122,34 +122,31 @@ class CompareMenusPageViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
-
 }
 
 extension CompareMenusPageViewController: UIScrollViewDelegate {
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // if user swiping through pages
-        if scrollView.superview == self.view {
+        if scrollView.superview == view {
             let percentage = scrollView.contentOffset.x / scrollView.contentSize.width
             if percentage.isNaN { return }
             tabsViewController.offsetScrollBy(percentage: percentage)
 
             // find tab index to highlight
-            self.tabsViewController.highlightFromScrollPercentage(percentage)
+            tabsViewController.highlightFromScrollPercentage(percentage)
         }
 
         // if user swiping through tabs
-        if scrollView.superview == self.tabsViewController.view {
+        if scrollView.superview == tabsViewController.view {
             let percentage = scrollView.contentOffset.x / scrollView.contentSize.width
             if percentage.isNaN { return }
             let trueOffsetX = self.scrollView.contentSize.width * percentage
-            var scrollBounds = self.scrollView.bounds;
-            scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollBounds.origin.y);
-            self.scrollView.bounds = scrollBounds;
+            var scrollBounds = self.scrollView.bounds
+            scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollBounds.origin.y)
+            self.scrollView.bounds = scrollBounds
 
             // find tab index to highlight
-            self.tabsViewController.highlightFromScrollPercentage(percentage)
+            tabsViewController.highlightFromScrollPercentage(percentage)
         }
     }
-
 }

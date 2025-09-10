@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class WaitTimesSheetViewController: SheetViewController {
-
     private let dayFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMMM d"
@@ -116,10 +115,10 @@ class WaitTimesSheetViewController: SheetViewController {
         return Int(timeSinceStartOfDay / samplePeriod)
     }
 
-    private func generateWaitTimeData(_ waitTimes: WaitTimes, events: [Event], day: Day) -> WaitTimeData {
+    private func generateWaitTimeData(_: WaitTimes, events: [Event], day: Day) -> WaitTimeData {
         var data: WaitTimeData = []
 
-        for i in 0..<1000 {
+        for i in 0 ..< 1000 {
             let sampleMidpoint = midpointDateOfSample(at: i)
             guard Day(date: sampleMidpoint) == day else {
                 break
@@ -133,7 +132,7 @@ class WaitTimesSheetViewController: SheetViewController {
                     startTime: tinyTimeFormatter.string(from: sampleStart),
                     fraction: 0
                 ))
-            
+
             } else if let sample = sample(at: i) {
                 // Otherwise, display the sample
                 data.append((
@@ -169,12 +168,10 @@ class WaitTimesSheetViewController: SheetViewController {
         let high = Int(round(sample.high / 60))
         waitTimeLabel.text = low < high ? "\(low)-\(high) minutes" : "\(low) minutes"
     }
-
 }
 
 extension WaitTimesSheetViewController: WaitTimeViewDelegate {
-
-    func waitTimesView(_ sender: WaitTimesView, waitTimeTextForCell cell: WaitTimeCell, atIndex index: Int) -> String {
+    func waitTimesView(_: WaitTimesView, waitTimeTextForCell _: WaitTimeCell, atIndex index: Int) -> String {
         guard let sample = sample(at: index) else {
             return "? min"
         }
@@ -192,16 +189,17 @@ extension WaitTimesSheetViewController: WaitTimeViewDelegate {
 
         let lowerDate = startDateOfSample(at: lower)
         let upperDate = startDateOfSample(at: upper + 1)
+        let lowerDateString = shortTimeFormatter.string(from: lowerDate)
+        let upperDateString = shortTimeFormatter.string(from: upperDate)
 
-        visibleTimesLabel.text = "\(shortTimeFormatter.string(from: lowerDate)) - \(shortTimeFormatter.string(from: upperDate))"
+        visibleTimesLabel.text = "\(lowerDateString) - \(upperDateString)"
     }
 
-    func waitTimesView(_ sender: WaitTimesView, shouldHighlightCell cell: WaitTimeCell, atIndex i: Int) -> Bool {
+    func waitTimesView(_: WaitTimesView, shouldHighlightCell _: WaitTimeCell, atIndex i: Int) -> Bool {
         EateryStatus(events, date: midpointDateOfSample(at: i)).isOpen
     }
 
-    func waitTimesView(_ sender: WaitTimesView, didHighlightCell cell: WaitTimeCell, atIndex index: Int) {
+    func waitTimesView(_: WaitTimesView, didHighlightCell _: WaitTimeCell, atIndex _: Int) {
         updateWaitTimeLabel()
     }
-
 }

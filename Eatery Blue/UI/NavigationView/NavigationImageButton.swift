@@ -8,7 +8,6 @@
 import UIKit
 
 class NavigationImageButton: UIView {
-
     let imageView = UIImageView()
 
     var image: UIImage? {
@@ -27,7 +26,8 @@ class NavigationImageButton: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -45,5 +45,4 @@ class NavigationImageButton: UIView {
             make.width.equalTo(imageView)
         }
     }
-
 }

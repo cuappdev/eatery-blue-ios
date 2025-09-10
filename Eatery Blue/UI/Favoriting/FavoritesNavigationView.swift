@@ -8,7 +8,6 @@
 import UIKit
 
 class FavoritesNavigationView: UIView {
-
     // MARK: - Properties (view)
 
     private let backButton = ButtonView(content: UIImageView())
@@ -29,6 +28,7 @@ class FavoritesNavigationView: UIView {
             searchBar.delegate = searchDelegate
         }
     }
+
     /// Whether or not the search bar should be shown
     var searchShown = false {
         didSet {
@@ -56,6 +56,7 @@ class FavoritesNavigationView: UIView {
             }
         }
     }
+
     /// Tab buttons delegate, called when tab buttons are pressed
     var tabButtonsDelegate: TabButtonViewDelegate? {
         didSet {
@@ -64,7 +65,6 @@ class FavoritesNavigationView: UIView {
         }
     }
 
-
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -72,19 +72,20 @@ class FavoritesNavigationView: UIView {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Set Up
 
     private func setUpSelf() {
-        self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 4, right: 16)
+        layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 4, right: 16)
         backgroundColor = .white
 
         addSubview(backButton)
         setUpBackButton()
-        
+
         addSubview(titleLabel)
         setUpTitleLabel()
 
@@ -214,21 +215,18 @@ class FavoritesNavigationView: UIView {
             make.height.equalTo(0)
         }
     }
-
 }
 
 extension FavoritesNavigationView: UIScrollViewDelegate {
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if !scrollView.isDragging { return }
 
         if scrollView.contentOffset.x > scrollView.contentSize.width / 4 {
-            self.eateriesTab.selected = false
-            self.itemsTab.selected = true
+            eateriesTab.selected = false
+            itemsTab.selected = true
         } else {
-            self.eateriesTab.selected = true
-            self.itemsTab.selected = false
+            eateriesTab.selected = true
+            itemsTab.selected = false
         }
     }
-
 }

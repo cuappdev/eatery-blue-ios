@@ -8,7 +8,6 @@
 import UIKit
 
 class AlertMessageView: UIView {
-
     private let stackView = UIStackView()
     let imageView = UIImageView()
     let messageLabel = UILabel()
@@ -22,7 +21,8 @@ class AlertMessageView: UIView {
         setStyleError()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -82,5 +82,4 @@ class AlertMessageView: UIView {
         imageView.tintColor = UIColor.Eatery.blue
         messageLabel.textColor = UIColor.Eatery.blue
     }
-
 }

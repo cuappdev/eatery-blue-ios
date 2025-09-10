@@ -1,5 +1,5 @@
 //
-//  CompareMenusTabsView.swift
+//  CompareMenusTabsViewController.swift
 //  Eatery Blue
 //
 //  Created by Peter Bidoshi  on 3/26/24.
@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusTabsViewController: UIViewController {
-
     // MARK: - Properties (data)
 
     private var categoryViews: [UIView] = []
@@ -26,14 +25,15 @@ class CompareMenusTabsViewController: UIViewController {
 
     init(eateries: [Eatery]) {
         self.eateries = eateries
-        self.hitView = ScrollHitView(scrollView: scrollView)
+        hitView = ScrollHitView(scrollView: scrollView)
 
         super.init(nibName: nil, bundle: nil)
 
         setUpView()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -140,7 +140,7 @@ class CompareMenusTabsViewController: UIViewController {
 
     private func highlightCategoryAtIndex(_ index: Int) {
         let boundedIndex = max(min(index, categoryViews.count - 1), 0)
-        categoryViews.indices.forEach { i in
+        for i in categoryViews.indices {
             let opacity: Float = i == boundedIndex ? 1 : 0.4
             categoryViews[i].layer.opacity = opacity
         }
@@ -149,13 +149,15 @@ class CompareMenusTabsViewController: UIViewController {
     func offsetScrollBy(percentage: CGFloat) {
         if percentage.isNaN { return }
         let trueOffsetX = scrollView.contentSize.width * percentage
-        var scrollBounds = scrollView.bounds;
-        scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollView.bounds.origin.y);
-        scrollView.bounds = scrollBounds;
+        var scrollBounds = scrollView.bounds
+        scrollBounds.origin = CGPoint(x: trueOffsetX, y: scrollView.bounds.origin.y)
+        scrollView.bounds = scrollBounds
     }
 
     func scrollToIndex(_ index: Int) {
-        scrollView.setContentOffset(.init(x: scrollView.contentSize.width * CGFloat(index) / CGFloat(eateries.count), y: 0), animated: true)
+        scrollView.setContentOffset(
+            .init(x: scrollView.contentSize.width * CGFloat(index) / CGFloat(eateries.count), y: 0),
+            animated: true
+        )
     }
-
 }

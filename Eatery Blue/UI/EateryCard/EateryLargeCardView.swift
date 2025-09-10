@@ -5,14 +5,13 @@
 //  Created by William Ma on 12/23/21.
 //
 
+import Combine
 import EateryModel
 import UIKit
-import Combine
 
 class EateryLargeCardView: UICollectionViewCell {
-
     // MARK: - Properties (view)
-    
+
     private let imageView = UIImageView()
     private let imageTintView = UIView()
     private let alertsStackView = UIStackView()
@@ -34,15 +33,16 @@ class EateryLargeCardView: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setUpSelf()
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configure(eatery: Eatery, favorited: Bool) {
         self.eatery = eatery
         titleLabel.text = eatery.name
@@ -101,7 +101,7 @@ class EateryLargeCardView: UICollectionViewCell {
         labelStackView.spacing = 4
         labelStackView.distribution = .fill
         labelStackView.alignment = .fill
-        
+
         labelStackView.addArrangedSubview(titleLabel)
         setUpTitleLabel()
 
@@ -131,10 +131,9 @@ class EateryLargeCardView: UICollectionViewCell {
     }
 
     private func configureFavoriteButton(eatery: Eatery, favorited: Bool) {
-
         favoriteButtonImage.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
         favoriteButton.buttonPress { [weak self] _ in
-            guard let self else { return }
+            guard self != nil else { return }
             let coreDataStack = AppDelegate.shared.coreDataStack
             let metadata = coreDataStack.metadata(eateryId: eatery.id)
             metadata.isFavorite.toggle()
@@ -143,7 +142,7 @@ class EateryLargeCardView: UICollectionViewCell {
             NotificationCenter.default.post(
                 name: UIViewController.notificationName,
                 object: nil,
-                userInfo: [ UIViewController.notificationUserInfoKey : metadata.isFavorite ]
+                userInfo: [UIViewController.notificationUserInfoKey: metadata.isFavorite]
             )
         }
     }
@@ -154,7 +153,7 @@ class EateryLargeCardView: UICollectionViewCell {
         imageTintView.alpha = isOpen ? 0 : 0.5
         imageView.hero.id = imageUrl?.absoluteString
     }
-    
+
     private func configureSubtitleLabels(eatery: Eatery) {
         subtitleLabels[0].text = eatery.locationDescription
         LocationManager.shared.$userLocation
@@ -168,24 +167,23 @@ class EateryLargeCardView: UICollectionViewCell {
                 ).first
             }
             .store(in: &cancellables)
-        
     }
-    
+
     private func configureAlerts(status: EateryStatus) {
-        alertsStackView.arrangedSubviews.forEach { 
-          alertsStackView.removeArrangedSubview($0)
-          $0.removeFromSuperview() 
+        for arrangedSubview in alertsStackView.arrangedSubviews {
+            alertsStackView.removeArrangedSubview(arrangedSubview)
+            arrangedSubview.removeFromSuperview()
         }
 
         let now = Date()
         switch status {
-        case .closingSoon(let event):
+        case let .closingSoon(event):
             let alert = EateryCardAlertView()
             let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
             alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
             addAlertView(alert)
 
-        case .openingSoon(let event):
+        case let .openingSoon(event):
             let alert = EateryCardAlertView()
             let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
             alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
@@ -204,7 +202,7 @@ class EateryLargeCardView: UICollectionViewCell {
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
-        
+
         imageView.setContentCompressionResistancePriority(
             titleLabel.contentCompressionResistancePriority(for: .vertical) - 1,
             for: .vertical
@@ -239,5 +237,4 @@ class EateryLargeCardView: UICollectionViewCell {
     func addAlertView(_ view: UIView) {
         alertsStackView.addArrangedSubview(view)
     }
-
 }

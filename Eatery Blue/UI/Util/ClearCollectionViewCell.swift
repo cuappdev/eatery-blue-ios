@@ -1,5 +1,5 @@
 //
-//  ClearTableViewCell.swift
+//  ClearCollectionViewCell.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/29/21.
@@ -8,7 +8,6 @@
 import UIKit
 
 class ClearCollectionViewCell: UICollectionViewCell {
-
     static let reuse = "ClearCollectionViewCellReuseId"
 
     override init(frame: CGRect) {
@@ -21,7 +20,8 @@ class ClearCollectionViewCell: UICollectionViewCell {
         backgroundView?.backgroundColor = nil
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -33,5 +33,4 @@ class ClearCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-
 }

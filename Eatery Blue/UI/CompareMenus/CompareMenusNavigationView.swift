@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusNavigationView: UIView {
-
     // MARK: - Properties (view)
 
     let backButton = ButtonView(content: UIImageView())
@@ -25,7 +24,8 @@ class CompareMenusNavigationView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -73,7 +73,7 @@ class CompareMenusNavigationView: UIView {
             make.top.equalTo(layoutMarginsGuide.snp.top)
             make.width.height.equalTo(40)
         }
-        
+
         editButton.snp.makeConstraints { make in
             make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
             make.centerY.equalTo(backButton.snp.centerY)
@@ -87,5 +87,4 @@ class CompareMenusNavigationView: UIView {
             make.trailing.lessThanOrEqualTo(editButton.snp.trailing).inset(40)
         }
     }
-
 }

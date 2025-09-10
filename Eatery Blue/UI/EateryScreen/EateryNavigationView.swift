@@ -8,7 +8,6 @@
 import UIKit
 
 class EateryNavigationView: UIView {
-
     let backgroundView = UIView()
 
     let stackView = UIStackView()
@@ -26,7 +25,7 @@ class EateryNavigationView: UIView {
     private let divider = HDivider()
 
     private(set) var fadeInProgress: Double = 0
-    private(set) var highlightedCategoryIndex: Int? = nil
+    private(set) var highlightedCategoryIndex: Int?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +36,8 @@ class EateryNavigationView: UIView {
         setFadeInProgress(fadeInProgress)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -187,7 +187,7 @@ class EateryNavigationView: UIView {
 
     func setFadeInProgress(_ progress: Double, animated: Bool) {
         let progress = max(0, min(1, progress))
-        self.fadeInProgress = progress
+        fadeInProgress = progress
 
         if animated {
             UIView.animate(withDuration: 0.125) {
@@ -264,5 +264,4 @@ class EateryNavigationView: UIView {
             highlightCategory(atIndex: i)
         }
     }
-
 }

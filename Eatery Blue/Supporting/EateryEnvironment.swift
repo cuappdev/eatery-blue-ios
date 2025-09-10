@@ -9,14 +9,13 @@ import Foundation
 
 /// Data from Info.plist stored as environment variables.
 enum EateryEnvironment {
-
     /// Keys from Info.plist.
     enum Keys {
-#if DEBUG
-        static let baseURL: String = "EATERY_DEV_URL"
-#else
-        static let baseURL: String = "EATERY_PROD_URL"
-#endif
+        #if DEBUG
+            static let baseURL: String = "EATERY_DEV_URL"
+        #else
+            static let baseURL: String = "EATERY_PROD_URL"
+        #endif
         static let announcementsCommonPath = "ANNOUNCEMENTS_COMMON_PATH"
         static let announcementsHost = "ANNOUNCEMENTS_HOST"
         static let announcementsPath = "ANNOUNCEMENTS_PATH"
@@ -39,11 +38,11 @@ enum EateryEnvironment {
      */
     static let baseURL: String = {
         guard let baseURLString = EateryEnvironment.infoDict[Keys.baseURL] as? String else {
-#if DEBUG
-            fatalError("EATERY_DEV_URL not found in Info.plist")
-#else
-            fatalError("EATERY_PROD_URL not found in Info.plist")
-#endif
+            #if DEBUG
+                fatalError("EATERY_DEV_URL not found in Info.plist")
+            #else
+                fatalError("EATERY_PROD_URL not found in Info.plist")
+            #endif
         }
         return baseURLString
     }()
@@ -79,5 +78,4 @@ enum EateryEnvironment {
         }
         return value
     }()
-
 }

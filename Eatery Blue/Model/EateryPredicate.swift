@@ -10,7 +10,6 @@ import EateryModel
 import Foundation
 
 indirect enum EateryPredicate {
-
     case bool(Bool)
     case `true`
     case `false`
@@ -27,13 +26,15 @@ indirect enum EateryPredicate {
     case isSelected([Eatery])
 
     func isSatisfied(by eatery: Eatery, metadata: EateryMetadata?) -> Bool {
-
         if let metadata = metadata, metadata.eateryId != eatery.id {
-            logger.warning("\(#function): eatery.id (\(eatery.id)) does not match metadata.eateryId (\(metadata.eateryId))")
+            logger
+                .warning(
+                    "\(#function): eatery.id (\(eatery.id)) does not match metadata.eateryId (\(metadata.eateryId))"
+                )
         }
 
         switch self {
-        case .bool(let bool):
+        case let .bool(bool):
             return bool
 
         case .true:
@@ -42,26 +43,27 @@ indirect enum EateryPredicate {
         case .false:
             return false
 
-        case .not(let predicate):
+        case let .not(predicate):
             return !predicate.isSatisfied(by: eatery, metadata: metadata)
 
-        case .and(let predicates):
+        case let .and(predicates):
             return predicates.allSatisfy { $0.isSatisfied(by: eatery, metadata: metadata) }
 
-        case .or(let predicates):
+        case let .or(predicates):
             return predicates.contains { $0.isSatisfied(by: eatery, metadata: metadata) }
 
-        case .underNMinutes(let n, let userLocation, let departureDate):
-            guard let totalTime = eatery.expectedTotalTime(userLocation: userLocation, departureDate: departureDate) else {
+        case let .underNMinutes(n, userLocation, departureDate):
+            guard let totalTime = eatery.expectedTotalTime(userLocation: userLocation, departureDate: departureDate)
+            else {
                 return false
             }
 
             return totalTime < TimeInterval(60 * n)
-        
-        case .acceptsPaymentMethod(let paymentMethod):
+
+        case let .acceptsPaymentMethod(paymentMethod):
             return eatery.paymentMethods.contains(paymentMethod)
-            
-        case .campusArea(let campusArea):
+
+        case let .campusArea(campusArea):
             return eatery.campusArea == campusArea
 
         case .isFavorite:
@@ -74,7 +76,7 @@ indirect enum EateryPredicate {
         case .isOpen:
             return eatery.isOpen
 
-        case .isSelected(let eateries):
+        case let .isSelected(eateries):
             return eateries.contains(eatery)
         }
     }

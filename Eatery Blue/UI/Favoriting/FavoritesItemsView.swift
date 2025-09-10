@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class FavoritesItemsView: UIView {
-
     // MARK: - Properties (view)
 
     let tableView = UITableView()
@@ -22,6 +21,7 @@ class FavoritesItemsView: UIView {
             findFavorites()
         }
     }
+
     /// A users favorite items, taken from Core Data
     var favoriteItems: [ItemMetadata] = [] {
         didSet {
@@ -42,8 +42,9 @@ class FavoritesItemsView: UIView {
 
         setUpSelf()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -51,7 +52,7 @@ class FavoritesItemsView: UIView {
 
     private func setUpSelf() {
         setUpTableView()
-        self.addSubview(tableView)
+        addSubview(tableView)
 
         setUpConstraints()
         findFavorites()
@@ -118,11 +119,11 @@ class FavoritesItemsView: UIView {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(tableView: tableView) { [weak self] (tableview, indexPath, row) in
+        let dataSource = DataSource(tableView: tableView) { [weak self] tableview, indexPath, row in
             guard let self else { return UITableViewCell() }
 
             switch row {
-            case .item(let item, let expanded):
+            case let .item(item, expanded):
                 guard let cell = tableview.dequeueReusableCell(
                     withIdentifier: FavoritesItemsTableViewCell.reuse,
                     for: indexPath
@@ -131,7 +132,7 @@ class FavoritesItemsView: UIView {
                 cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
                 cell.selectionStyle = .none
                 return cell
-            case .label(let text):
+            case let .label(text):
                 guard let cell = tableview.dequeueReusableCell(
                     withIdentifier: ClearTableViewCell.reuse,
                     for: indexPath
@@ -156,18 +157,19 @@ class FavoritesItemsView: UIView {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(
-            sortedFavorites.isEmpty ? [.label("No items found")] : sortedFavorites.map({ .item($0, expanded.contains(sortedFavorites.firstIndex(of: $0) ?? 0)) })
+            sortedFavorites.isEmpty ? [.label("No items found")] : sortedFavorites.map { .item(
+                $0,
+                expanded.contains(sortedFavorites.firstIndex(of: $0) ?? 0)
+            ) }
         )
 
         dataSource.defaultRowAnimation = animation
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
-
 }
 
 extension FavoritesItemsView: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         if itemData[sortedFavorites[indexPath.row].itemName ?? ""] == nil { return }
 
         if expanded.contains(indexPath.row) {
@@ -178,11 +180,9 @@ extension FavoritesItemsView: UITableViewDelegate {
 
         applySnapshot(animated: true)
     }
-
 }
 
 extension FavoritesItemsView {
-
     typealias DataSource = UITableViewDiffableDataSource<Section, Row>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
 
@@ -196,5 +196,4 @@ extension FavoritesItemsView {
         case item(ItemMetadata, Bool)
         case label(String)
     }
-
 }

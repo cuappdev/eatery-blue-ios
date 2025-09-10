@@ -11,17 +11,14 @@ import EateryModel
 import UIKit
 
 protocol HomeSearchEmptyModelControllerDelegate: AnyObject {
-
     func homeSearchEmptyModelController(
         _ viewController: HomeSearchEmptyModelController,
         didSelectRecentSearch recentSearch: RecentSearch
     )
-
 }
 
 @MainActor
 class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
-
     weak var delegate: HomeSearchEmptyModelControllerDelegate?
 
     private var cancellables: Set<AnyCancellable> = []
@@ -130,5 +127,4 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
             recentsView.addItem(itemView)
         }
     }
-
 }

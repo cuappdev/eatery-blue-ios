@@ -1,5 +1,5 @@
 //
-//  CompareMenusMenuViewController.swift
+//  CompareMenusEateryViewController.swift
 //  Eatery Blue
 //
 //  Created by Peter Bidoshi  on 3/5/24.
@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusEateryViewController: UIViewController {
-
     // MARK: - Properties (data)
 
     private var allEateries: [Eatery] = []
@@ -73,8 +72,8 @@ class CompareMenusEateryViewController: UIViewController {
         hoursView.titleLabel.textColor = UIColor.Eatery.gray05
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
-            attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: hoursView.titleLabel.font))
-        )
+            attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: hoursView.titleLabel.font)
+        ))
         text.append(NSAttributedString(string: " Hours"))
         hoursView.titleLabel.attributedText = text
 
@@ -112,7 +111,7 @@ class CompareMenusEateryViewController: UIViewController {
         spinnerView.hidesWhenStopped = true
         spinnerView.style = .medium
         spinnerView.backgroundColor = .white
-        spinnerView.startAnimating();
+        spinnerView.startAnimating()
     }
 
     private func setUpConstraints() {
@@ -201,7 +200,7 @@ class CompareMenusEateryViewController: UIViewController {
         if let menu = event.menu {
             let sortedCategories = sortMenuCategories(categories: menu.categories)
             if !sortedCategories.isEmpty {
-                sortedCategories[..<(sortedCategories.count - 1)].forEach { menuCategory in
+                for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
                     addMenuCategory(menuCategory, isLast: false)
                 }
 
@@ -293,7 +292,7 @@ class CompareMenusEateryViewController: UIViewController {
 
     private func sortMenuCategories(categories: [MenuCategory]) -> [MenuCategory] {
         var sortedCategories: [MenuCategory] = categories.reversed()
-        for i in 0..<sortedCategories.count {
+        for i in 0 ..< sortedCategories.count {
             let menuCategory = sortedCategories[i]
             if menuCategory.category == "Chef's Table" {
                 sortedCategories.swapAt(0, i)
@@ -323,7 +322,7 @@ class CompareMenusEateryViewController: UIViewController {
         categoryView.snp.makeConstraints { make in
             make.edges.equalTo(categoryContainer.layoutMargins)
         }
-        
+
         if categoryViews.isEmpty {
             categoryView.clipsToBounds = true
             categoryView.layer.cornerRadius = 10
@@ -355,11 +354,9 @@ class CompareMenusEateryViewController: UIViewController {
             make.height.equalTo(view).multipliedBy(multiplier)
         }
     }
-
 }
 
 extension CompareMenusEateryViewController: UIScrollViewDelegate {
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let cursorPosition = scrollView.contentOffset.y + scrollView.contentInset.top + 25
         // The selected category is the menu category view that is under the cursor position
@@ -381,15 +378,12 @@ extension CompareMenusEateryViewController: UIScrollViewDelegate {
             menuCategoryPicker.highlightCategory(atIndex: index, animated: true)
         }
     }
-
 }
 
 extension CompareMenusEateryViewController: MenuCategoryPickerDelegate {
-
     func menuCategoryPicker(buttonPressedAtIndex idx: Int) {
         let category = categoryViews[idx]
         let viewIdx = stackView.subviews.firstIndex { $0 == category } ?? 0
         scrollToCategoryView(at: viewIdx)
     }
-
 }

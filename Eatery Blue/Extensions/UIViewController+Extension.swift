@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIViewController {
-
     static let notificationName = NSNotification.Name("favoriteEatery")
     static let notificationUserInfoKey = "addedToFavorites"
 
@@ -27,5 +26,4 @@ extension UIViewController {
     func removeObserver(current: NSObjectProtocol?) {
         if let current { NotificationCenter.default.removeObserver(current) }
     }
-
 }

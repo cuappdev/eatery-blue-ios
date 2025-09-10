@@ -9,15 +9,12 @@ import EateryModel
 import UIKit
 
 protocol MenuPickerSheetViewControllerDelegate: AnyObject {
-
     func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int)
     func menuPickerSheetViewControllerDidResetMenuChoice(_ vc: MenuPickerSheetViewController)
-
 }
 
 /// Displays half-sheet for menu selection.
 class MenuPickerSheetViewController: SheetViewController {
-
     private let weekdayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = .eatery
@@ -26,7 +23,6 @@ class MenuPickerSheetViewController: SheetViewController {
     }()
 
     class MenuChoice {
-
         let description: String
         let event: Event
 
@@ -34,7 +30,6 @@ class MenuPickerSheetViewController: SheetViewController {
             self.description = description
             self.event = event
         }
-
     }
 
     private let dayPickerView = MenuDayPickerView()
@@ -86,7 +81,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
     private func setState(menuChoices: [MenuChoice], selectedMenuIndex: Int?) {
         days = []
-        for i in 0...6 {
+        for i in 0 ... 6 {
             days.append(Day().advanced(by: i))
         }
 
@@ -150,7 +145,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
     private func addMenuChoiceViews() {
         if maxMenuChoices() != 1 {
-            for i in 0..<maxMenuChoices() {
+            for i in 0 ..< maxMenuChoices() {
                 if i != 0 {
                     stackView.addArrangedSubview(HDivider())
                 }
@@ -225,7 +220,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
         let menuChoicesOnDay = filterMenuChoices(on: days[dayIndex])
 
-        guard 0 <= index, index < menuChoicesOnDay.count else {
+        guard index >= 0, index < menuChoicesOnDay.count else {
             return
         }
 
@@ -233,5 +228,4 @@ class MenuPickerSheetViewController: SheetViewController {
         selectedMenuIndex = menuChoices.firstIndex(where: { $0 === menuChoice })
         updateMenuChoiceViewsFromState()
     }
-
 }

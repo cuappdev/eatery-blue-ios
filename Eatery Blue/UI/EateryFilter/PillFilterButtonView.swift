@@ -8,7 +8,6 @@
 import UIKit
 
 class PillFilterButtonView: UIView {
-
     private let stackView = UIStackView()
     let label = UILabel()
     let imageView = UIImageView()
@@ -22,7 +21,8 @@ class PillFilterButtonView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -88,5 +88,4 @@ class PillFilterButtonView: UIView {
 
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
-
 }

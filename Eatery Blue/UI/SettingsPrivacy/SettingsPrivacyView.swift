@@ -8,16 +8,13 @@
 import SwiftUI
 
 class SettingsPrivacyViewModel: ObservableObject {
-
     @Published var isLocationAllowed: Bool = false
     @Published var isAnalyticsEnabled: Bool = false
-
 }
 
 struct SettingsPrivacyView: View {
-
     @ObservedObject var viewModel = SettingsPrivacyViewModel()
-    
+
     var body: some View {
         List {
             Section {
@@ -109,7 +106,6 @@ struct SettingsPrivacyView: View {
             .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
             .listRowSeparator(.hidden)
     }
-
 }
 
 struct SettingsPrivacyView_Previews: PreviewProvider {

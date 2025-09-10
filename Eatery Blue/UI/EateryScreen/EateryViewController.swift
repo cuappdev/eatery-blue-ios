@@ -13,7 +13,6 @@ import MapKit
 import UIKit
 
 class EateryViewController: UIViewController {
-
     private var previousScrollOffset: CGFloat = 0
 
     static let priceNumberFormatter: NumberFormatter = {
@@ -117,20 +116,20 @@ class EateryViewController: UIViewController {
 
         stackView.setCustomSpacing(spacing, after: last)
     }
-    
+
     func addSpinner() {
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
 
         view.addSubview(spinner)
-        
+
         spinner.snp.makeConstraints { make in
             make.top.equalTo(stackView.snp.bottom).offset(10)
             make.width.height.equalTo(stackView.snp.width).multipliedBy(0.25)
             make.centerX.equalTo(stackView.snp.centerX)
         }
     }
-    
+
     func deleteSpinner() {
         spinner.stopAnimating()
         spinner.removeFromSuperview()
@@ -145,7 +144,7 @@ class EateryViewController: UIViewController {
         imageView.snp.makeConstraints { make in
             make.width.equalTo(imageView.snp.height).multipliedBy(375.0 / 240.0)
         }
-        
+
         imageView.hero.id = imageUrl?.absoluteString
         imageView.heroModifiers = [.fade, .useGlobalCoordinateSpace]
         stackView.addArrangedSubview(imageView)
@@ -195,7 +194,7 @@ class EateryViewController: UIViewController {
             imageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor.Eatery.green
             imageView.contentMode = .scaleAspectFit
-            
+
             imageView.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
             }
@@ -342,7 +341,7 @@ class EateryViewController: UIViewController {
         timingView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
         timingView.addCellView(createHoursCell(eatery))
-        
+
         // TODO: Temporarily removed wait times.
 //        timingView.addCellView(createWaitTimeCell(eatery))
 
@@ -356,8 +355,8 @@ class EateryViewController: UIViewController {
         cell.titleLabel.textColor = UIColor.Eatery.gray05
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
-            attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: cell.titleLabel.font))
-        )
+            attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: cell.titleLabel.font)
+        ))
         text.append(NSAttributedString(string: " Hours"))
         cell.titleLabel.attributedText = text
 
@@ -376,7 +375,12 @@ class EateryViewController: UIViewController {
     func addFreedgeDescription() {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "The Free Food Fridge is a place on campus where all are welcome to both donate and take food at no cost, as needed, reducing food waste while improving food access. The fridge is intended to provide a convenient place to drop off food that might otherwise be discarded––it should not be used to redirect food that is already being donated."
+        label.text = """
+        The Free Food Fridge is a place on campus where all are welcome to both donate and take food at no cost, \
+        as needed, reducing food waste while improving food access. The fridge is intended to provide a \n
+        convenient  place to drop off food that might otherwise be discarded––it should not be used to redirect \
+        food that is already being donated.
+        """
         label.textColor = UIColor.Eatery.gray05
         label.font = .preferredFont(for: .footnote, weight: .regular)
 
@@ -392,8 +396,8 @@ class EateryViewController: UIViewController {
         cell.titleLabel.textColor = UIColor.Eatery.gray05
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
-            attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font))
-        )
+            attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font)
+        ))
         text.append(NSAttributedString(string: " Wait Time"))
         cell.titleLabel.attributedText = text
 
@@ -437,9 +441,16 @@ class EateryViewController: UIViewController {
         }
     }
 
-    func addMenuHeaderView(eateryId: Int64?, title: String, subtitle: String, dropDownButtonAction: (() -> Void)? = nil) {
+    func addMenuHeaderView(
+        eateryId: Int64?,
+        title: String,
+        subtitle: String,
+        dropDownButtonAction: (() -> Void)? = nil
+    ) {
         let menuHeaderView = MenuHeaderView()
-        menuHeaderView.notice = eateryId == 46 ? "*Inventory are based on reported donations and are subject to hourly change and variability" : "*Menus are based on Cornell Dining and are subject to change"
+        menuHeaderView.notice = eateryId == 46 ? """
+            *Inventory are based on reported donations and are subject to hourly change and variability
+        """ : "*Menus are based on Cornell Dining and are subject to change"
         menuHeaderView.titleLabel.text = title
         menuHeaderView.subtitleLabel.text = subtitle
         menuHeaderView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -451,7 +462,7 @@ class EateryViewController: UIViewController {
 
     func addTimeTabs(eatery: Eatery?, selectedEvent: Event, tapHandler: @escaping (Int) -> Void) {
         guard let eatery else { return }
-        
+
         let tabStackView = UIStackView()
         tabStackView.axis = .horizontal
         tabStackView.alignment = .fill
@@ -460,7 +471,7 @@ class EateryViewController: UIViewController {
         tabStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tabStackView.isLayoutMarginsRelativeArrangement = true
 
-        for i in 0..<eatery.events.count {
+        for i in 0 ..< eatery.events.count {
             let event = eatery.events[i]
             if event.canonicalDay != selectedEvent.canonicalDay { continue }
             guard let menu = event.menu else { continue }
@@ -558,16 +569,13 @@ class EateryViewController: UIViewController {
 }
 
 extension EateryViewController: UISearchBarDelegate {
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+    func searchBarShouldBeginEditing(_: UISearchBar) -> Bool {
         false
     }
-
 }
 
 extension EateryViewController: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_: UIScrollView) {
         handleHeaderImageScaling()
         handleNavigationViewTrigger()
         handleNavigationViewCategory()
@@ -633,7 +641,8 @@ extension EateryViewController: UIScrollViewDelegate {
             navigationView.highlightCategory(atIndex: index, animated: true)
         }
 
-        if scrollView.contentOffset.y < 0 || scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.height { return }
+        if scrollView.contentOffset.y < 0
+            || scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.height { return }
 
         if scrollView.contentOffset.y < previousScrollOffset - 150 {
             compareMenusButton.collapse()
@@ -643,5 +652,4 @@ extension EateryViewController: UIScrollViewDelegate {
             previousScrollOffset = scrollView.contentOffset.y
         }
     }
-
 }

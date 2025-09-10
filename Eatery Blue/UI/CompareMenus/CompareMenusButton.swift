@@ -8,7 +8,6 @@
 import UIKit
 
 class CompareMenusButton: UIButton {
-
     // MARK: - Properties (data)
 
     private var buttonCallback: ((UIButton) -> Void)?
@@ -27,8 +26,9 @@ class CompareMenusButton: UIButton {
         setUpSelf()
         setUpConstraints()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -48,9 +48,9 @@ class CompareMenusButton: UIButton {
         addSubview(textView)
         setUpTextView()
 
-        self.addTarget(self, action: #selector(buttonTouchUpInside), for: .touchUpInside)
-        self.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
-        self.addTarget(self, action: #selector(buttonTouchUpOutside), for: .touchUpOutside)
+        addTarget(self, action: #selector(buttonTouchUpInside), for: .touchUpInside)
+        addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        addTarget(self, action: #selector(buttonTouchUpOutside), for: .touchUpOutside)
     }
 
     private func setUpCompareImageView() {
@@ -85,7 +85,7 @@ class CompareMenusButton: UIButton {
     }
 
     func buttonPress(_ callback: ((UIButton) -> Void)?) {
-        self.buttonCallback = callback
+        buttonCallback = callback
     }
 
     @objc private func buttonTouchUpInside(_ sender: UIButton) {
@@ -100,7 +100,7 @@ class CompareMenusButton: UIButton {
         }
     }
 
-    @objc private func buttonTouchDown(_ sender: UIButton) {
+    @objc private func buttonTouchDown(_: UIButton) {
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
 
@@ -109,7 +109,7 @@ class CompareMenusButton: UIButton {
         }
     }
 
-    @objc private func buttonTouchUpOutside(_ sender: UIButton) {
+    @objc private func buttonTouchUpOutside(_: UIButton) {
         UIView.animate(withDuration: 0.15, delay: 0, options: .beginFromCurrentState) { [weak self] in
             guard let self else { return }
 
@@ -118,7 +118,7 @@ class CompareMenusButton: UIButton {
     }
 
     func toggle() {
-        isCollapsed ? expand(): collapse()
+        isCollapsed ? expand() : collapse()
     }
 
     func expand() {
@@ -129,7 +129,7 @@ class CompareMenusButton: UIButton {
 
         animate { [weak self] in
             guard let self else { return }
-            
+
             textView.layer.opacity = 1
             self.superview?.layoutIfNeeded()
         }
@@ -143,7 +143,7 @@ class CompareMenusButton: UIButton {
 
         animate { [weak self] in
             guard let self else { return }
-            
+
             textView.layer.opacity = 0
             self.superview?.layoutIfNeeded()
         }
@@ -151,7 +151,13 @@ class CompareMenusButton: UIButton {
 
     private func animate(_ uiUpdates: (() -> Void)?) {
         if #available(iOS 17.0, *) {
-            UIView.animate(springDuration: 0.3, bounce: 0.3, initialSpringVelocity: 0.3, delay: 0, options: .curveEaseInOut) {
+            UIView.animate(
+                springDuration: 0.3,
+                bounce: 0.3,
+                initialSpringVelocity: 0.3,
+                delay: 0,
+                options: .curveEaseInOut
+            ) {
                 uiUpdates?()
             }
         } else {
@@ -163,5 +169,4 @@ class CompareMenusButton: UIButton {
             }
         }
     }
-
 }

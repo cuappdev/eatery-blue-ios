@@ -8,7 +8,6 @@
 import UIKit
 
 class UpcomingMenuChoiceView: UIView {
-
     let descriptionLabel = UILabel()
     let imageView = UIImageView()
     let timeLabel = UILabel()
@@ -20,10 +19,11 @@ class UpcomingMenuChoiceView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setup(description: String, time: String) {
         descriptionLabel.text = description
         timeLabel.text = time
@@ -35,7 +35,7 @@ class UpcomingMenuChoiceView: UIView {
 
         addSubview(timeLabel)
         setUpTimeLabel()
-        
+
         addSubview(imageView)
     }
 
@@ -58,7 +58,7 @@ class UpcomingMenuChoiceView: UIView {
             make.top.equalTo(descriptionLabel.snp.bottom).offset(4)
             make.leading.bottom.equalTo(layoutMarginsGuide)
         }
-        
+
         imageView.snp.makeConstraints { make in
             make.leading.equalTo(descriptionLabel.snp.trailing)
             make.leading.equalTo(timeLabel.snp.trailing)
@@ -66,6 +66,4 @@ class UpcomingMenuChoiceView: UIView {
             make.width.height.equalTo(24)
         }
     }
-    
 }
-

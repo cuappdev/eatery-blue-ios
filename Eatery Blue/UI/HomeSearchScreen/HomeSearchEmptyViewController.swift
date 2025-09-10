@@ -8,7 +8,6 @@
 import UIKit
 
 class HomeSearchEmptyViewController: UIViewController {
-
     let blurView = UIVisualEffectView()
     let separator = HDivider()
 
@@ -98,15 +97,12 @@ class HomeSearchEmptyViewController: UIViewController {
 
         scrollView.contentInset = view.safeAreaInsets
     }
-
 }
 
 extension HomeSearchEmptyViewController: UIScrollViewDelegate {
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y + scrollView.contentInset.top
         separator.alpha = offset > 0 ? 1 : 0
         blurView.alpha = offset > 0 ? 1 : 0
     }
-
 }

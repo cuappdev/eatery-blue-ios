@@ -8,7 +8,6 @@
 import UIKit
 
 class SearchRecentItemView: UIView {
-
     let imageView = UIImageView()
     let stackView = UIStackView()
     let titleLabel = UILabel()
@@ -21,7 +20,8 @@ class SearchRecentItemView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -71,5 +71,4 @@ class SearchRecentItemView: UIView {
             make.top.trailing.bottom.equalToSuperview()
         }
     }
-
 }

@@ -9,8 +9,8 @@ import Combine
 import UIKit
 
 class RootModelController: RootViewController {
-
-    static let didFinishOnboardingNotification = Notification.Name("RootModelController.didFinishOnboardingNotification")
+    static let didFinishOnboardingNotification = Notification
+        .Name("RootModelController.didFinishOnboardingNotification")
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -34,9 +34,8 @@ class RootModelController: RootViewController {
             .store(in: &cancellables)
     }
 
-    @objc private func didFinishOnboarding(_ notification: Notification) {
+    @objc private func didFinishOnboarding(_: Notification) {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didOnboard)
         transitionTo(.main)
     }
-
 }
