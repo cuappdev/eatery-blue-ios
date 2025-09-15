@@ -47,7 +47,9 @@ struct SettingsSupportView: View {
             isReportIssueButtonShown: true,
             preselectedIssueType: .incorrectHours
         ),
-        // TODO: Temporarily remove wait time FAQ
+
+        // MARK: todo - Temporarily remove wait time FAQ
+
 //        FAQItem(
 //            title: "Why is the wait time longer?",
 //            body: Text("""
@@ -129,7 +131,7 @@ struct SettingsSupportView: View {
             Section {
                 sectionHeader(title: "Frequently Asked Questions")
 
-                ForEach(Array(faqItems.enumerated()), id: \.offset) { index, item in
+                ForEach(Array(faqItems.enumerated()), id: \.offset) { index, _ in
                     let item = faqItems[index]
 
                     VStack(spacing: 12) {

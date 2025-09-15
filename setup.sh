@@ -46,8 +46,8 @@ echo "🪝 Configuring git hooks..."
 
 # Ensure ci_scripts directory exists
 if [ ! -d "ci_scripts" ]; then
-    echo "❌ ci_scripts directory not found in repository"
-    echo "Please ensure the ci_scripts directory exists in your repo with the pre-commit hook"
+    echo "❌ .githooks directory not found in repository"
+    echo "Please ensure the .githooks directory exists in your repo with the pre-commit hook"
     exit 1
 fi
 

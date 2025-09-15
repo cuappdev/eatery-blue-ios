@@ -41,7 +41,8 @@ class MenusFilterViewController: UIViewController {
     }
 
     init(currentMealType: String) {
-        // TODO: This should be an enum
+        // MARK: todo - This should be an enum
+
         self.currentMealType = currentMealType
         if currentMealType == "Breakfast" {
             selectedMenuIndex = 0

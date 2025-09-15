@@ -260,7 +260,8 @@ class EateryFormatter {
             )))
             secondLine.append(NSAttributedString(string: " "))
 
-            // TODO: Temporarily removed wait times.
+            // MARK: todo - Temporarily removed wait times.
+
 //            secondLine.append(NSAttributedString(string: formatEateryWaitTime(
 //                eatery,
 //                font: font,

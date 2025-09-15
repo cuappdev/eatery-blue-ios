@@ -40,7 +40,8 @@ class NavigationView: UICollectionReusableView {
         addSubview(largeTitleLabel)
         setUpLargeTitleLabel()
 
-//        TODO: - NOTIFICATIONS
+        // MARK: todo - NOTIFICATIONS
+
 //        addSubview(notificationButton)
     }
 
@@ -107,7 +108,8 @@ class NavigationView: UICollectionReusableView {
 
         largeTitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
-//        TODO: - NOTIFICATIONS
+        // MARK: todo - NOTIFICATIONS
+
 //        notificationButton.snp.makeConstraints { make in
 //            make.trailing.equalTo(layoutMarginsGuide)
 //            make.centerY.equalTo(largeTitleLabel.snp.centerY)

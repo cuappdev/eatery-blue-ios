@@ -353,7 +353,8 @@ class MenusViewController: UIViewController {
 
             // Only display eateries based on selected meal type
 
-            // TODO: This should be an enum but good for now
+            // MARK: todo - This should be an enum but good for now
+
             filteredEateries = filteredEateries.filter { eatery in
                 if !eatery.paymentMethods.contains(.mealSwipes) { return false }
 

@@ -35,14 +35,14 @@ readonly MAX_LINE_LENGTH=120
 print_error_and_exit() {
     local message="$1"
     local exit_code="${2:-1}"
-    echo "${RED}❌ $message${NC}"
+    echo "${RED}❌ [Failed] $message${NC}"
     exit "$exit_code"
 }
 
 # Print success message
 print_success() {
     local message="$1"
-    echo "${GREEN}✅ $message${NC}"
+    echo "${GREEN}✅ [Passed] $message${NC}"
 }
 
 # Print warning message
@@ -127,7 +127,7 @@ run_swiftformat() {
         # Check if file needs formatting (lint mode returns non-zero if formatting needed)
         if ! swiftformat --lint --maxwidth "$MAX_LINE_LENGTH" "$file" &> /dev/null; then
             echo "  📝 Formatting: $file"
-            swiftformat "$file" --maxwidth "$MAX_LINE_LENGTH"
+            swiftformat "$file" --maxwidth "$MAX_LINE_LENGTH" &> /dev/null
             restage_file "$file"
             formatted_count=$((formatted_count + 1))
         fi
@@ -135,6 +135,8 @@ run_swiftformat() {
 
     if [ $formatted_count -gt 0 ]; then
         print_success "Formatted $formatted_count file(s)"
+    else
+        print_success "No formatting needed"
     fi
 }
 
@@ -157,7 +159,6 @@ run_swiftlint_fix() {
         
         # Check if file was modified and restage if needed
         if file_was_modified "$file" "$hash_before"; then
-            echo "  🔧 Fixed: $file"
             restage_file "$file"
             fixed_count=$((fixed_count + 1))
         fi
@@ -165,6 +166,8 @@ run_swiftlint_fix() {
 
     if [ $fixed_count -gt 0 ]; then
         print_success "Fixed $fixed_count file(s)"
+    else
+        print_success "No fixes needed"
     fi
 }
 
@@ -172,33 +175,33 @@ run_swiftlint_fix() {
 check_remaining_linting_issues() {
     print_step "🚨 Step 3:" "Checking for remaining linting errors..."
     local issues_count=0
-    local first_issue=true
+    local all_violations=""
 
+    # Collect all violations from all files
     for file in "${staged_files[@]}"; do
         if [ ! -f "$file" ]; then
             continue
         fi
 
-        # Run SwiftLint and capture output
+        # Run SwiftLint with --strict flag and capture output
         local lint_output
-        lint_output=$(swiftlint lint "$file" 2>&1)
+        lint_output=$(swiftlint lint --strict --quiet "$file" 2>&1)
         local lint_exit_code=$?
         
-        # If there are linting issues, display them
-        if [ $lint_exit_code -ne 0 ]; then
-            if $first_issue; then
-                echo "  ${RED}❌ SwiftLint found remaining issues:${NC}"
-                first_issue=false
-            fi
-            echo "${RED}$lint_output${NC}"
+        # If there are linting issues, collect them
+        if [ $lint_exit_code -ne 0 ] && [ -n "$lint_output" ]; then
+            all_violations="$all_violations$lint_output"$'\n'
             issues_count=$((issues_count + 1))
         fi
     done
 
-    # Exit with error if issues found
+    # Display all violations together if any found
     if [ $issues_count -gt 0 ]; then
         echo ""
+        echo "${RED}$all_violations${NC}"
         print_error_and_exit "SwiftLint found issues in $issues_count file(s). Please fix these issues and try again."
+    else
+        print_success "No remaining violations found"
     fi
 }
 

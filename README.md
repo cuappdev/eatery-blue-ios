@@ -17,8 +17,9 @@ This app uses Swift Package Manager for dependencies.
 ## Getting Started
 
 1. Clone the repository.
-2. Go to `Eatery Blue/Supporting/` and drag the following files into **FINDER (NOT Xcode).** For AppDev members, you can find these pinned in the `#eatery-ios` Slack channel.
+2. Run `./setup.sh` to install the necessary tools and set up the pre-commit hook.
+3. Go to `Eatery Blue/Supporting/` and drag the following files into **FINDER (NOT Xcode).** For AppDev members, you can find these pinned in the `#eatery-ios` Slack channel.
     - `GoogleService-Info.plist`
     - `Keys.xcconfig`
-3. Select the `Eatery Blue` schema to use our development server and `Eatery Blue-Prod` to use our production server.
-4. Build the project and you should be good to go.
+4. Select the `Eatery Blue` schema to use our development server and `Eatery Blue-Prod` to use our production server.
+5. Build the project and you should be good to go.

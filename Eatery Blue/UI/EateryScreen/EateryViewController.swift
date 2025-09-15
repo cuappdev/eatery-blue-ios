@@ -342,7 +342,8 @@ class EateryViewController: UIViewController {
 
         timingView.addCellView(createHoursCell(eatery))
 
-        // TODO: Temporarily removed wait times.
+        // MARK: todo - Temporarily removed wait times.
+
 //        timingView.addCellView(createWaitTimeCell(eatery))
 
         stackView.addArrangedSubview(timingView)
