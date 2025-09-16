@@ -1019,7 +1019,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D01366032E70C45800721192 /* PBXTargetDependency */,
 			);
 			name = "Eatery Blue";
 			packageProductDependencies = (
@@ -1308,13 +1307,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		D01366032E70C45800721192 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = D01366022E70C45800721192 /* SwiftLintBuildToolPlugin */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5D8651892773CBFB000338D4 /* LaunchScreen.storyboard */ = {
@@ -1652,7 +1644,7 @@
 			repositoryURL = "https://github.com/realm/SwiftLint";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.61.0;
+				minimumVersion = 0.63.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1730,11 +1722,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
-		};
-		D01366022E70C45800721192 /* SwiftLintBuildToolPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D01366012E70C2F800721192 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 
