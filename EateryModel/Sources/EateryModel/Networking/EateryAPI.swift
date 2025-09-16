@@ -70,7 +70,7 @@ public struct EateryAPI {
             }
             if let error = error {
                 logger.error("Error submitting report: \(error.localizedDescription)")
-            } else if let _ = data {
+            } else if data != nil {
                 logger.info("Successfully reported Eatery Blue issue")
             } else {
                 logger.error("Unknown error submitting report")
