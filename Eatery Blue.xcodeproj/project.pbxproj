@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -56,7 +56,6 @@
 		5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F912788A7FE0054E1AB /* AccountModelController.swift */; };
 		5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698F982788AE7E0054E1AB /* InMemoryCache.swift */; };
 		5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D5F278746B8000C518D /* SwiftSoup */; };
-		5D6C3D6727877980000C518D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5D6C3D6627877980000C518D /* Alamofire */; };
 		5D73C37B2780D0740020507C /* HomeSearchEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37A2780D0740020507C /* HomeSearchEmptyViewController.swift */; };
 		5D73C37D2780D0870020507C /* HomeSearchContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37C2780D0870020507C /* HomeSearchContentViewController.swift */; };
 		5D73C37F2780D5850020507C /* HomeSearchEmptyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D73C37E2780D5850020507C /* HomeSearchEmptyModelController.swift */; };
@@ -192,6 +191,9 @@
 		D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */; };
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
+		D86E8C5A2E7A31F0004A2448 /* AuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E8C592E7A31F0004A2448 /* AuthStorage.swift */; };
+		D86E8C5D2E7A3C01004A2448 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E8C5C2E7A3C01004A2448 /* NotificationManager.swift */; };
+		D8831CF42E70D797005B942E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D8831CF32E70D797005B942E /* Alamofire */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
@@ -386,6 +388,8 @@
 		D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusViewController.swift; sourceTree = "<group>"; };
 		D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusFilterViewController.swift; sourceTree = "<group>"; };
 		D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusExternalOnboardingView.swift; sourceTree = "<group>"; };
+		D86E8C592E7A31F0004A2448 /* AuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStorage.swift; sourceTree = "<group>"; };
+		D86E8C5C2E7A3C01004A2448 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAccountViewController.swift; sourceTree = "<group>"; };
@@ -400,13 +404,13 @@
 				C31EC93B2CF3DEBB00B2E99F /* FirebaseMessaging in Frameworks */,
 				D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */,
 				5DBB59E2278FA3AB0028FE59 /* EateryModel in Frameworks */,
-				5D6C3D6727877980000C518D /* Alamofire in Frameworks */,
 				5D73C38D278129100020507C /* Logging in Frameworks */,
 				2ED2FC182BA2DBEC00621028 /* FirebaseCrashlytics in Frameworks */,
 				5DF5F7D927740D26001ADCDC /* Kingfisher in Frameworks */,
 				2ED2FC162BA2DBEC00621028 /* FirebaseAnalytics in Frameworks */,
 				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
+				D8831CF42E70D797005B942E /* Alamofire in Frameworks */,
 				2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */,
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
@@ -568,6 +572,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				D86E8C5B2E7A3BF4004A2448 /* Notification */,
 				C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
@@ -678,6 +683,7 @@
 				5DBB59DE278FA3200028FE59 /* EateryFilter.swift */,
 				5DBB59DC278FA0080028FE59 /* EateryFormatter.swift */,
 				5DBB59E3278FA7F80028FE59 /* EateryPredicate.swift */,
+				D86E8C592E7A31F0004A2448 /* AuthStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1003,6 +1009,14 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		D86E8C5B2E7A3BF4004A2448 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				D86E8C5C2E7A3C01004A2448 /* NotificationManager.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1028,7 +1042,6 @@
 				5D73C38C278129100020507C /* Logging */,
 				5D73C3C4278237240020507C /* ArgumentParser */,
 				5D6C3D5F278746B8000C518D /* SwiftSoup */,
-				5D6C3D6627877980000C518D /* Alamofire */,
 				5D75D6DE278E1DF500832359 /* SnapKit */,
 				5DBB59E1278FA3AB0028FE59 /* EateryModel */,
 				5DAE72D6278FC2F600284A72 /* EateryGetAPI */,
@@ -1037,6 +1050,7 @@
 				2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */,
 				2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */,
 				C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */,
+				D8831CF32E70D797005B942E /* Alamofire */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -1073,11 +1087,13 @@
 				5D73C38B278129100020507C /* XCRemoteSwiftPackageReference "swift-log" */,
 				5D73C3C3278237230020507C /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */,
-				5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */,
 				5D75D6DD278E1DF400832359 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */,
 				2ED2FC112BA2D7AA00621028 /* XCRemoteSwiftPackageReference "Hero" */,
 				2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				D8831CF22E70D797005B942E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D87F70D12E70DBBF00F103A9 /* XCLocalSwiftPackageReference "EateryGetAPI" */,
+				D87F70D22E7113CA00F103A9 /* XCLocalSwiftPackageReference "EateryModel" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -1254,6 +1270,7 @@
 				41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */,
 				5D73C3852780F0060020507C /* SearchItemView.swift in Sources */,
 				2E9D09E52AC3EA35005A7F61 /* EateryExpandableCardDetailView.swift in Sources */,
+				D86E8C5A2E7A31F0004A2448 /* AuthStorage.swift in Sources */,
 				41A8D4CA2AC71B25006DA242 /* UpcomingMenuPickerSheetViewController.swift in Sources */,
 				5D0B9D79279F1DB1004B4AA1 /* SettingsPrivacyView.swift in Sources */,
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
@@ -1261,6 +1278,7 @@
 				9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */,
 				5D75D6E4278E2B9D00832359 /* EateryCardVisualEffectView.swift in Sources */,
 				D0B72AE32D32C2180041C2BA /* MiniSelectionView.swift in Sources */,
+				D86E8C5D2E7A3C01004A2448 /* NotificationManager.swift in Sources */,
 				5D0CDC492774F15E00AD0E27 /* TimingDataView.swift in Sources */,
 				5D86EDA1277ED0A500C92A3B /* ListModelController.swift in Sources */,
 				5DBB59DD278FA0080028FE59 /* EateryFormatter.swift in Sources */,
@@ -1548,6 +1566,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		D87F70D12E70DBBF00F103A9 /* XCLocalSwiftPackageReference "EateryGetAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = EateryGetAPI;
+		};
+		D87F70D22E7113CA00F103A9 /* XCLocalSwiftPackageReference "EateryModel" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = EateryModel;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1579,14 +1608,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.0;
-			};
-		};
-		5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
 			};
 		};
 		5D73C38627810B160020507C /* XCRemoteSwiftPackageReference "fuse-swift" */ = {
@@ -1637,6 +1658,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		D8831CF22E70D797005B942E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1664,11 +1693,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5D6C3D5E278746B8000C518D /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
-		};
-		5D6C3D6627877980000C518D /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5D6C3D6527877980000C518D /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 		5D73C38727810B160020507C /* Fuse */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1712,6 +1736,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		D8831CF32E70D797005B942E /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8831CF22E70D797005B942E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 

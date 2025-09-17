@@ -77,8 +77,10 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
         Task {
             if let sessionId = KeychainAccess.shared.retrieveToken() {
+                // if the session id exists, log in directly
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
             } else {
+                // otherwise, prompt user to log in through Cornell
                 let vc = GetLoginWebViewController()
                 vc.delegate = self
                 self.tabBarController?.present(vc, animated: true)
@@ -98,11 +100,22 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
 
-    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
+    func setSessionId(_ sessionId: String, _ completion: @escaping (() -> Void)) {
         KeychainAccess.shared.saveToken(sessionId: sessionId)
+        
         if !Networking.default.sessionId.isEmpty {
-            delegate?.profileLoginModelController(self, didLogin: sessionId)
-            completion()
+            Task {
+                do {
+                    print("Setting session id")
+                    try await Networking.default.authorize(sessionId: sessionId)
+                    delegate?.profileLoginModelController(self, didLogin: sessionId)
+                    completion()
+                } catch {
+                    print("Authorization failed: \(error)")
+                }
+            }
+//            delegate?.profileLoginModelController(self, didLogin: sessionId)
+//            completion()
         }
     }
 

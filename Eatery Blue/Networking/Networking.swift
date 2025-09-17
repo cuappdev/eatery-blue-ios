@@ -10,11 +10,12 @@ import EateryModel
 import EateryGetAPI
 import Foundation
 import Logging
+import Alamofire
 
 class Networking {
-
+    
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
-
+    
     let accounts: FetchAccounts
     let baseUrl: URL
     let eateryCache: EateryMemoryCache
@@ -22,7 +23,7 @@ class Networking {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
     let simpleUrl: URL
-
+    
     init(fetchUrl: URL) {
         self.baseUrl = fetchUrl
         let eateryApi = EateryAPI(url: fetchUrl)
@@ -53,7 +54,7 @@ class Networking {
         let eateryApi = EateryAPI(url: simpleUrl)
         return try await eateryApi.eateries()
     }
-
+    
     func loadEateryByDay(day: Int) async throws -> [Eatery] {
         if let url = URL(string: "\(self.baseUrl)day/\(day)/") {
             let eateryApi = EateryAPI(url: url)
@@ -61,7 +62,7 @@ class Networking {
         }
         return []
     }
-
+    
     // Computes the time until the end of the day previous cache policy
     private func endOfDay() -> TimeInterval {
         let calendar = Calendar.current
@@ -73,7 +74,7 @@ class Networking {
             of: Calendar.current.date(byAdding: .day, value: 1, to: Date())!
         )?.timeIntervalSince(Date()) ?? 0
     }
-
+    
     // Computes the time until 5 minutes into the next hour
     private func timeUntilFiveMinutesIntoNextHour() -> TimeInterval {
         let calendar = Calendar.current
@@ -84,19 +85,57 @@ class Networking {
         // Set minute to 5, second to 0
         comps.minute = 5
         comps.second = 0
-
+        
         // Construct the future date
         guard let target = calendar.date(from: comps) else {
             return 0
         }
         return target.timeIntervalSince(now)
     }
-
+    
     func logOut() {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
     
+    // Sends session id, device id, and pin back to backend to log in
+    func authorize(sessionId: String) async throws {
+        print("Attempting to authorize user")
+        let url = "\(baseUrl)/user/authorize"
+        
+        print("Bearer \(sessionId)")
+        print("deviceId: \(AuthStorage.deviceId)")
+        print("pin: \(AuthStorage.pin)")
+        print("fcmToken: \(PushNotificationManager.shared.fcmToken)")
+        let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(sessionId)",
+                "Content-Type": "application/json"
+            ]
+        
+        let parameters: [String: Any] = [
+                "deviceId": AuthStorage.deviceId,
+                "pin": AuthStorage.pin,
+                "fcmToken": PushNotificationManager.shared.fcmToken ?? ""
+            ]
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.request(url,
+                       method: .post,
+                       parameters: parameters,
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    continuation.resume()
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
 }
 
 struct FetchAccounts {

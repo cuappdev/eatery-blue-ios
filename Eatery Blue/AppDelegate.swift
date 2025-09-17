@@ -52,6 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             announcementPath: EateryEnvironment.announcementsPath
         )
 
+        // restore saved fcm token
+        PushNotificationManager.shared.loadSavedToken()
+        
         return true
     }
 
@@ -67,6 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Logger.notifications.error("Error fetching FCM token: \(error.localizedDescription)")
             } else if let token = token {
                 Logger.notifications.info("FCM registration token: \(token)")
+                PushNotificationManager.shared.updateFCMToken(token)
             }
         }
     }
