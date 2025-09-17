@@ -108,15 +108,23 @@ class Networking {
         print("pin: \(AuthStorage.pin)")
         print("fcmToken: \(PushNotificationManager.shared.fcmToken)")
         let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(sessionId)",
-                "Content-Type": "application/json"
+                "Authorization": "Bearer \(sessionId)"
             ]
         
-        let parameters: [String: Any] = [
+        let parameters: [String: Any]
+        
+        if let fcmToken = PushNotificationManager.shared.fcmToken {
+            parameters = [
                 "deviceId": AuthStorage.deviceId,
                 "pin": AuthStorage.pin,
-                "fcmToken": PushNotificationManager.shared.fcmToken ?? ""
+                "fcmToken": "1234" // dummy value for now until backend gets rid of the length limit
             ]
+        } else {
+            parameters = [
+                "deviceId": AuthStorage.deviceId,
+                "pin": AuthStorage.pin,
+            ]
+        }
         
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url,

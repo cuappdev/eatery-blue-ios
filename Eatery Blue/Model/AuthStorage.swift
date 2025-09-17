@@ -22,12 +22,12 @@ enum AuthStorage {
     }
     
     static var pin: String {
-        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKeys.pin) {
-            // pin has been created already
-            return existing
-        }
+//        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKeys.pin) {
+//            // pin has been created already
+//            return existing
+//        }
         
-        let newPin = UUID().uuidString
+        let newPin = "1234" // just a dummy value for now, backend will generate this later
         UserDefaults.standard.set(newPin, forKey: UserDefaultsKeys.pin)
         
         return newPin
