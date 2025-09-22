@@ -8,13 +8,10 @@
 import SwiftUI
 
 protocol SettingsSupportViewDelegate: AnyObject {
-
     func openReportIssue(preselectedIssueType: ReportIssueViewController.IssueType?)
-
 }
 
 struct SettingsSupportView: View {
-
     struct FAQItem {
         let title: String
         let body: Text
@@ -30,7 +27,9 @@ struct SettingsSupportView: View {
         FAQItem(
             title: "Why do I see wrong or empty menus?",
             body: Text("""
-            We work with Cornell Dining to get the most accurate menus to students. Sometimes, eateries change menus on the fly or run out of a certain item and have to serve something different.
+            We work with Cornell Dining to get the most accurate menus to students. \
+            Sometimes, eateries change menus on the fly or run out of a certain item \
+            and have to serve something different.
 
             If you see inaccurate menus, help us improve Eatery by letting us know what’s wrong.
             """),
@@ -40,18 +39,22 @@ struct SettingsSupportView: View {
         FAQItem(
             title: "Why is an eatery closed when it says it should be open?",
             body: Text("""
-            We work with Cornell Dining to get the most accurate hours to students. However, sometimes hours change suddenly because of special events or weather.
+            We work with Cornell Dining to get the most accurate hours to students. \
+            However, sometimes hours change suddenly because of special events or weather.
 
             If you see incorrect hours, help us improve Eatery by letting us know the correct hours.
             """),
             isReportIssueButtonShown: true,
             preselectedIssueType: .incorrectHours
         ),
-        // TODO: Temporarily remove wait time FAQ
+
+        // MARK: todo - Temporarily remove wait time FAQ
+
 //        FAQItem(
 //            title: "Why is the wait time longer?",
 //            body: Text("""
-//            We work with Cornell Dining to get the most accurate wait times to students. Sometimes, wait times can grow when classes or events end around meal times.
+//            We work with Cornell Dining to get the most accurate wait times to students. Sometimes, wait times can
+//            grow when classes or events end around meal times.
 //
 //            If you see inaccurate wait times, help us improve Eatery by letting us know how long you waited.
 //            """),
@@ -61,7 +64,8 @@ struct SettingsSupportView: View {
         FAQItem(
             title: "Why can’t I order food on Eatery?",
             body: Text("""
-            We would love to develop an ordering app for Cornell. Unfortunately, Cornell works with GET™ App instead of us.
+            We would love to develop an ordering app for Cornell. \
+            Unfortunately, Cornell works with GET™ App instead of us.
 
             If you’d like them to change their mind, you can [send them an email](mailto:dining@cornell.edu) :-)
             """),
@@ -127,7 +131,7 @@ struct SettingsSupportView: View {
             Section {
                 sectionHeader(title: "Frequently Asked Questions")
 
-                ForEach(0..<faqItems.count) { index in
+                ForEach(Array(faqItems.enumerated()), id: \.offset) { index, _ in
                     let item = faqItems[index]
 
                     VStack(spacing: 12) {
@@ -203,8 +207,8 @@ struct SettingsSupportView: View {
     }
 }
 
-//struct SettingsSupportView_Previews: PreviewProvider {
+// struct SettingsSupportView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SettingsSupportView()
 //    }
-//}
+// }

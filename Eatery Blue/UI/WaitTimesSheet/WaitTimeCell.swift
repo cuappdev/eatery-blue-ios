@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class WaitTimeCell: UIView {
-
     let startTimeLabel = UILabel()
     let separator = VDivider()
 
@@ -25,7 +24,8 @@ class WaitTimeCell: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -95,8 +95,8 @@ class WaitTimeCell: UIView {
 
         barHeightConstraint?.deactivate()
         bar.snp.makeConstraints { make in
-            barHeightConstraint = make.height.equalTo(barHeightLayoutGuide).multipliedBy(max(0, min(1, fraction))).constraint
+            barHeightConstraint = make.height.equalTo(barHeightLayoutGuide).multipliedBy(max(0, min(1, fraction)))
+                .constraint
         }
     }
-
 }

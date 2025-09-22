@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsMainMenuLoginStatusView: UIView {
-
     let label = UILabel()
     let logoutButton = SettingsLogoutPillButton()
 
@@ -18,15 +17,16 @@ class SettingsMainMenuLoginStatusView: UIView {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     private func setUpSelf() {
         addSubview(label)
         setUpLabel()
-        
-        if let _ = KeychainAccess.shared.retrieveToken() {
+
+        if KeychainAccess.shared.retrieveToken() != nil {
             addSubview(logoutButton)
             setUpLogoutButton()
         }
@@ -46,5 +46,4 @@ class SettingsMainMenuLoginStatusView: UIView {
             make.top.trailing.bottom.equalTo(layoutMarginsGuide)
         }
     }
-
 }

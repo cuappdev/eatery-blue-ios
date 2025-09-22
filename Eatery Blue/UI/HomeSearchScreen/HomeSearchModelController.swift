@@ -10,7 +10,6 @@ import EateryModel
 import UIKit
 
 class HomeSearchModelController: HomeSearchViewController {
-
     private var cancellables: Set<AnyCancellable> = []
     private var allEateries: [Eatery] = []
 
@@ -43,32 +42,28 @@ class HomeSearchModelController: HomeSearchViewController {
             logger.error("\(error)")
         }
     }
-
 }
 
 extension HomeSearchModelController: UISearchBarDelegate {
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_: UISearchBar, textDidChange searchText: String) {
         emptyController.view.alpha = searchText.isEmpty ? 1 : 0
         contentController.view.alpha = searchText.isEmpty ? 0 : 1
 
         contentController.searchTextDidChange(searchText)
     }
 
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_: UISearchBar) {
         navigationController?.popViewController(animated: true)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
-
 }
 
 extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
-
     func homeSearchEmptyModelController(
-        _ viewController: HomeSearchEmptyModelController,
+        _: HomeSearchEmptyModelController,
         didSelectRecentSearch recentSearch: RecentSearch
     ) {
         Task {
@@ -85,6 +80,4 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
             }
         }
     }
-
 }
-

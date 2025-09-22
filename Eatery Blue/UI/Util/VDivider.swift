@@ -8,18 +8,17 @@
 import UIKit
 
 class VDivider: UIView {
-
     init(width: CGFloat = 1) {
         super.init(frame: .zero)
 
-        self.backgroundColor = UIColor.Eatery.gray00
+        backgroundColor = UIColor.Eatery.gray00
         snp.makeConstraints { make in
             make.width.equalTo(width)
         }
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }

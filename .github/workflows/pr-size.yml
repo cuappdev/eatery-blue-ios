@@ -1,0 +1,31 @@
+name: PR Line Limit Check
+permissions:
+  contents: read
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-line-limit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Check line changes
+        run: |
+          # Get the diff excluding whitespace and scope delimiters
+          LINES_CHANGED=$(git diff --ignore-all-space --ignore-blank-lines origin/main...HEAD | \
+            grep -E '^[+-]' | \
+            grep -v -E '^[+-]\s*[{}()[\]]\s*$' | \
+            wc -l)
+          
+          echo "Lines changed (excluding whitespace/delimiters): $LINES_CHANGED"
+          
+          if [ $LINES_CHANGED -gt 500 ]; then
+            echo "❌ PR exceeds 500 line limit ($LINES_CHANGED lines changed)"
+            exit 1
+          else
+            echo "✅ PR within 500 line limit ($LINES_CHANGED lines changed)"
+          fi

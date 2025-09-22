@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsLogoutPillButton: UIView {
-
     let imageView = UIImageView()
     let titleLabel = UILabel()
 
@@ -19,7 +18,8 @@ class SettingsLogoutPillButton: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -71,5 +71,4 @@ class SettingsLogoutPillButton: UIView {
 
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
-
 }

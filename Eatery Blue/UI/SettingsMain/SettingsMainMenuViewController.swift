@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsMainMenuViewController: UIViewController {
-
     struct SettingsItem {
         let image: UIImage?
         let title: String
@@ -136,5 +135,4 @@ class SettingsMainMenuViewController: UIViewController {
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
-
 }

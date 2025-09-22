@@ -8,7 +8,6 @@
 import UIKit
 
 class OnboardingFeaturesViewController: UIViewController {
-
     struct OnboardingPage {
         let title: String
         let subtitle: String
@@ -29,7 +28,7 @@ class OnboardingFeaturesViewController: UIViewController {
 
         setUpView()
         setUpConstraints()
-        
+
         setUpPages([
             OnboardingPage(
                 title: "Home",
@@ -83,7 +82,7 @@ class OnboardingFeaturesViewController: UIViewController {
 
         view.addSubview(nextButton)
         setUpNextButton()
-        
+
         view.addSubview(skipButton)
         setUpSkipButton()
     }
@@ -108,7 +107,7 @@ class OnboardingFeaturesViewController: UIViewController {
             didTapSkipButton()
         }
     }
-    
+
     private func setUpScrollView() {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
@@ -159,7 +158,7 @@ class OnboardingFeaturesViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(12)
         }
         nextButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
-        
+
         skipButton.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.top)
             make.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
@@ -197,7 +196,7 @@ class OnboardingFeaturesViewController: UIViewController {
         let currentIndex = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
         let clampedIndex = max(0, min(pages.count - 1, currentIndex))
         let nextIndex = clampedIndex + 1
-        
+
         if nextIndex == pages.count - 1 {
             skipButton.isHidden = false
             nextButton.content.text = "Log in"
@@ -206,7 +205,7 @@ class OnboardingFeaturesViewController: UIViewController {
             nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
             nextButton.content.textColor = .white
             nextButton.backgroundColor = UIColor.Eatery.blue
-            nextButton.buttonPress({ [self] _ in
+            nextButton.buttonPress { [self] _ in
                 AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
                 Task {
                     let vc = GetLoginWebViewController()
@@ -214,12 +213,12 @@ class OnboardingFeaturesViewController: UIViewController {
                     navigationController?.present(vc, animated: true)
                     finishOnboarding()
                 }
-            })
+            }
         }
 
         if nextIndex == pages.count {
             // We've reached the last page
-            
+
             navigationController?.pushViewController(HomeViewController(), animated: true)
 
         } else {
@@ -234,11 +233,11 @@ class OnboardingFeaturesViewController: UIViewController {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didOnboard)
         NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
     }
-    
+
     private func didTapSkipButton() {
         NotificationCenter.default.post(name: RootModelController.didFinishOnboardingNotification, object: nil)
     }
-    
+
     private func updatePageTransforms() {
         let contentOffset = scrollView.contentOffset.x
         let pageWidth = scrollView.bounds.width
@@ -260,12 +259,12 @@ class OnboardingFeaturesViewController: UIViewController {
             // the width of the image view to be left with just the margins, and divide by 2 to get the margins on just
             // one side. We make sure to use the bounds of the image view since we'll be applying a transform to the
             // view itself.
-            let distanceFromImageViewLeadingToPageLeading = (pageWidth - pageView.imageView.bounds.width) / 2
+            let distanceFromImageLeadingToPageLeading = (pageWidth - pageView.imageView.bounds.width) / 2
 
             let fixedMargin: CGFloat = 48
 
             let parallaxTransform = CGAffineTransform(
-                translationX: pageProgress * (distanceFromImageViewLeadingToPageLeading + fixedMargin),
+                translationX: pageProgress * (distanceFromImageLeadingToPageLeading + fixedMargin),
                 y: 0
             )
 
@@ -285,24 +284,19 @@ class OnboardingFeaturesViewController: UIViewController {
                 .concatenating(scaleTransform)
         }
     }
-
 }
 
 extension OnboardingFeaturesViewController: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_: UIScrollView) {
         updatePageTransforms()
     }
-
 }
 
 extension OnboardingFeaturesViewController: GetLoginWebViewControllerDelegate {
-
-    func setSessionId(_ sessionId: String, _ completion: (() -> Void)) {
+    func setSessionId(_ sessionId: String, _ completion: () -> Void) {
         KeychainAccess.shared.saveToken(sessionId: sessionId)
         if !Networking.default.sessionId.isEmpty {
             completion()
         }
     }
-
 }

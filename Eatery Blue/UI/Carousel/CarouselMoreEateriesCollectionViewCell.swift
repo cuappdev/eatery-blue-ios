@@ -1,5 +1,5 @@
 //
-//  CarouselMoreEateriesView.swift
+//  CarouselMoreEateriesCollectionViewCell.swift
 //  Eatery Blue
 //
 //  Created by William Ma on 12/30/21.
@@ -8,11 +8,10 @@
 import UIKit
 
 class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
-
     let stackView = UIStackView()
     let imageView = UIImageView()
     let titleLabel = UILabel()
-    
+
     static let reuse = "CarouselMoreEateriesCollectionViewCellReuse"
 
     override init(frame: CGRect) {
@@ -21,19 +20,20 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     private func setUpSelf() {
         backgroundColor = .white
-        
+
         layer.cornerRadius = 8
         layer.shadowRadius = 4
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         layer.shadowOpacity = 0.25
-        
+
         addSubview(stackView)
         setUpStackView()
 
@@ -70,5 +70,4 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
             make.centerY.equalToSuperview()
         }
     }
-    
 }

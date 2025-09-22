@@ -5,40 +5,39 @@
 //  Created by William Ma on 1/7/22.
 //
 
-import EateryModel
 import EateryGetAPI
+import EateryModel
 import UIKit
 
 // The accounts which are displayed on the profile page in Eatery.
 private struct EateryAccounts {
-
     let mealPlan: Account?
     let bigRedBucks: Account?
     let cityBucks: Account?
     let laundry: Account?
 
     init(_ accounts: [Account]) {
-        mealPlan = accounts.filter({
+        mealPlan = accounts.filter {
             $0.accountType.isMealPlan
-        }).min(by: { lhs, rhs in
+        }.min(by: { lhs, rhs in
             (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
         })
 
-        bigRedBucks = accounts.filter({
+        bigRedBucks = accounts.filter {
             $0.accountType == .bigRedBucks
-        }).min(by: { lhs, rhs in
+        }.min(by: { lhs, rhs in
             (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
         })
 
-        cityBucks = accounts.filter({
+        cityBucks = accounts.filter {
             $0.accountType == .cityBucks
-        }).min(by: { lhs, rhs in
+        }.min(by: { lhs, rhs in
             (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
         })
 
-        laundry = accounts.filter({
+        laundry = accounts.filter {
             $0.accountType == .laundry
-        }).min(by: { lhs, rhs in
+        }.min(by: { lhs, rhs in
             (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
         })
     }
@@ -51,11 +50,9 @@ private struct EateryAccounts {
         case .laundry: return laundry
         }
     }
-
 }
 
 private enum EateryAccountType: Int, CustomStringConvertible, CaseIterable {
-
     case mealPlan
     case bigRedBucks
     case cityBucks
@@ -69,12 +66,10 @@ private enum EateryAccountType: Int, CustomStringConvertible, CaseIterable {
         case .laundry: return "Laundry"
         }
     }
-
 }
 
 @MainActor
 class AccountModelController: AccountViewController {
-
     enum TimePeriod: CaseIterable {
         case past7Days
         case past30Days
@@ -148,7 +143,7 @@ class AccountModelController: AccountViewController {
             let accounts = try await Networking.default.accounts.fetch(start: start, end: end)
             let eateryAccounts = EateryAccounts(accounts)
             self.accounts = eateryAccounts
-            
+
             spinner.stopAnimating()
         } catch {
             logger.error("\(#function): \(error)")
@@ -209,7 +204,8 @@ class AccountModelController: AccountViewController {
         }
 
         if let cityBucksBalance = accounts.cityBucks?.balance {
-            let subtitle = NSAttributedString(string: priceFormatter.string(from: NSNumber(value: cityBucksBalance)) ?? "")
+            let subtitle = NSAttributedString(string: priceFormatter
+                .string(from: NSNumber(value: cityBucksBalance)) ?? "")
             items.append(BalanceItem(title: "City Bucks", subtitle: subtitle))
         } else {
             items.append(BalanceItem(title: "City Bucks", subtitle: NSAttributedString()))
@@ -278,12 +274,13 @@ class AccountModelController: AccountViewController {
             sender.endRefreshing()
         }
     }
-
 }
 
 extension AccountModelController: AccountPickerSheetViewControllerDelegate {
-
-    func accountPickerSheetViewController(_ viewController: AccountPickerSheetViewController, didSelectAccountAt index: Int) {
+    func accountPickerSheetViewController(
+        _ viewController: AccountPickerSheetViewController,
+        didSelectAccountAt index: Int
+    ) {
         if let account = EateryAccountType(rawValue: index) {
             selectedAccount = account
             updateCellsFromState()
@@ -292,5 +289,4 @@ extension AccountModelController: AccountPickerSheetViewControllerDelegate {
 
         viewController.dismiss(animated: true)
     }
-
 }

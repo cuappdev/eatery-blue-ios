@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsAppIconCell: UICollectionViewCell {
-
     // MARK: - Properties (data)
 
     static let reuse = "SettingsAppIconCellReuse"
@@ -29,7 +28,8 @@ class SettingsAppIconCell: UICollectionViewCell {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -109,6 +109,4 @@ class SettingsAppIconCell: UICollectionViewCell {
             make.center.equalTo(overlayView)
         }
     }
-
 }
-

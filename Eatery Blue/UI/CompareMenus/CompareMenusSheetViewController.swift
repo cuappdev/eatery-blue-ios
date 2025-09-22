@@ -1,5 +1,5 @@
 //
-//  CompareMenusViewController.swift
+//  CompareMenusSheetViewController.swift
 //  Eatery Blue
 //
 //  Created by Peter Bidoshi  on 3/2/24.
@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class CompareMenusSheetViewController: SheetViewController {
-
     // MARK: - Properties (data)
 
     private var allEateries: [Eatery] = []
@@ -27,7 +26,11 @@ class CompareMenusSheetViewController: SheetViewController {
 
     // MARK: - Init
 
-    init(parentNavigationController: UINavigationController?, selectedEateries: [Eatery] = [], selectedOn: Bool = false) {
+    init(
+        parentNavigationController: UINavigationController?,
+        selectedEateries: [Eatery] = [],
+        selectedOn: Bool = false
+    ) {
         self.parentNavigationController = parentNavigationController
         self.selectedEateries = selectedEateries
 
@@ -43,7 +46,8 @@ class CompareMenusSheetViewController: SheetViewController {
         }
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -73,7 +77,10 @@ class CompareMenusSheetViewController: SheetViewController {
     }
 
     private func setUpSelectionView() {
-        selectionTableView.register(CompareMenusEaterySelectionCell.self, forCellReuseIdentifier: CompareMenusEaterySelectionCell.reuse)
+        selectionTableView.register(
+            CompareMenusEaterySelectionCell.self,
+            forCellReuseIdentifier: CompareMenusEaterySelectionCell.reuse
+        )
         selectionTableView.dataSource = self
         selectionTableView.delegate = self
         selectionTableView.allowsSelectionDuringEditing = true
@@ -122,7 +129,7 @@ class CompareMenusSheetViewController: SheetViewController {
 
         let viewController = CompareMenusViewController(allEateries: allEateries, comparedEateries: selectedEateries)
         parentNavigationController?.pushViewController(viewController, animated: true)
-        self.dismiss(animated: true)
+        dismiss(animated: true)
         let eateryNames = selectedEateries.map { $0.name }
         AppDevAnalytics.shared.logFirebase(CompareMenusStartComparingPayload(eateries: eateryNames))
     }
@@ -156,11 +163,8 @@ class CompareMenusSheetViewController: SheetViewController {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let coreDataStack = AppDelegate.shared.coreDataStack
 
-            var filteredEateries: [Eatery] = []
-            for eatery in allEateries {
-                if predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id)) {
-                    filteredEateries.append(eatery)
-                }
+            let filteredEateries = allEateries.filter { eatery in
+                predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id))
             }
 
             shownEateries = filteredEateries
@@ -193,33 +197,32 @@ class CompareMenusSheetViewController: SheetViewController {
         do {
             let allEateries = try await Networking.default.loadAllEatery()
             self.allEateries = allEateries
-            self.shownEateries = allEateries
+            shownEateries = allEateries
         } catch {
             logger.error("\(#function): \(error)")
         }
     }
-
 }
 
 extension CompareMenusSheetViewController: EateryFilterViewControllerDelegate {
-
-    func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
+    func eateryFilterViewController(_: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
         filter.selected ? enableDragging() : disableDragging()
 
         updateEateriesFromState()
     }
-
 }
 
 extension CompareMenusSheetViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         return shownEateries.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CompareMenusEaterySelectionCell.reuse, for: indexPath) as? CompareMenusEaterySelectionCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CompareMenusEaterySelectionCell.reuse,
+            for: indexPath
+        ) as? CompareMenusEaterySelectionCell else { return UITableViewCell() }
         let cellEatery = shownEateries[indexPath.row]
         let filled = selectedEateries.contains { $0.id == cellEatery.id }
         let draggable = tableView.isEditing
@@ -228,11 +231,11 @@ extension CompareMenusSheetViewController: UITableViewDataSource {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    func tableView(_: UITableView, editingStyleForRowAt _: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
 
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    func tableView(_: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let moved = shownEateries[sourceIndexPath.row]
         if !selectedEateries.contains(moved) { return }
 
@@ -244,11 +247,9 @@ extension CompareMenusSheetViewController: UITableViewDataSource {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
     }
-
 }
 
 extension CompareMenusSheetViewController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedEatery = shownEateries[indexPath.row]
         if selectedEateries.contains(where: { $0.id == selectedEatery.id }) {
@@ -261,12 +262,11 @@ extension CompareMenusSheetViewController: UITableViewDelegate {
         tableView.reloadRows(at: [indexPath], with: .none)
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         return 64
     }
 
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_: UITableView, shouldIndentWhileEditingRowAt _: IndexPath) -> Bool {
         return false
     }
-
 }

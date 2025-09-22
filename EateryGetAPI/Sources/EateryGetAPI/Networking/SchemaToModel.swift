@@ -7,8 +7,7 @@
 
 import Foundation
 
-internal enum SchemaToModel {
-
+enum SchemaToModel {
     private static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
@@ -16,11 +15,11 @@ internal enum SchemaToModel {
         return dateFormatter
     }()
 
-    internal static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> [Account] {
+    static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> [Account] {
         let transactions = convert(getTransactions)
 
         var accounts: [Account] = []
-        
+
         for getAccount in getAccounts {
             guard let accountType = parseAccountType(from: getAccount.accountDisplayName) else {
                 continue
@@ -36,7 +35,7 @@ internal enum SchemaToModel {
         return accounts
     }
 
-    internal static func convert(_ getTransactions: [Schema.RawTransaction]) -> [Transaction] {
+    static func convert(_ getTransactions: [Schema.RawTransaction]) -> [Transaction] {
         var transactions: [Transaction] = []
 
         for getTransaction in getTransactions {
@@ -60,7 +59,7 @@ internal enum SchemaToModel {
         return transactions
     }
 
-    internal static func parseAccountType(from getAccountDisplayName: String?) -> AccountType? {
+    static func parseAccountType(from getAccountDisplayName: String?) -> AccountType? {
         guard let name = getAccountDisplayName else {
             return nil
         }
@@ -95,5 +94,4 @@ internal enum SchemaToModel {
 
         return nil
     }
-
 }

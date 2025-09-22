@@ -14,7 +14,6 @@ struct AppIcon {
 }
 
 class SettingsAppIconSheetViewController: SheetViewController {
-    
     // MARK: - Properties (data)
 
     private var icons = [
@@ -28,7 +27,7 @@ class SettingsAppIconSheetViewController: SheetViewController {
         AppIcon(name: "Red", icon: UIImage(named: "AppIcon-Preview-WhiteRed")),
         AppIcon(name: "Green", icon: UIImage(named: "AppIcon-Preview-WhiteGreen")),
         AppIcon(name: "Orange", icon: UIImage(named: "AppIcon-Preview-WhiteOrange")),
-        AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow")),
+        AppIcon(name: "Yellow", icon: UIImage(named: "AppIcon-Preview-WhiteYellow"))
     ]
 
     // MARK: - Properties (view)
@@ -39,11 +38,12 @@ class SettingsAppIconSheetViewController: SheetViewController {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        
+
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -52,16 +52,10 @@ class SettingsAppIconSheetViewController: SheetViewController {
     private func setUpSelf() {
         addHeader(title: "Change App Icon")
 
-        setUpSelectedIcon()
-
         stackView.addArrangedSubview(iconsCollectionView)
         setUpIconCollectionView()
 
         setUpConstraints()
-    }
-
-    private func setUpSelectedIcon() {
-        let iconName = UserDefaults.standard.string(forKey: UserDefaultsKeys.activeIcon) ?? "Default"
     }
 
     private func setUpIconCollectionView() {
@@ -92,51 +86,47 @@ class SettingsAppIconSheetViewController: SheetViewController {
             }
 
             UserDefaults.standard.set(named, forKey: UserDefaultsKeys.activeIcon)
-            for i in 0..<icons.count {
+            for i in 0 ..< icons.count {
                 icons[i].selected = false
             }
 
             icons[index].selected = true
         }
     }
-
 }
 
 extension SettingsAppIconSheetViewController: UICollectionViewDataSource {
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in _: UICollectionView) -> Int {
         return 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         return icons.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let icon = icons[indexPath.row]
 
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsAppIconCell.reuse, for: indexPath) as? SettingsAppIconCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SettingsAppIconCell.reuse,
+            for: indexPath
+        ) as? SettingsAppIconCell else { return UICollectionViewCell() }
 
         cell.configure(appIcon: icon)
         return cell
     }
-
 }
 
 extension SettingsAppIconSheetViewController: UICollectionViewDelegate {
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setIcon(named: icons[indexPath.row].name)
         collectionView.reloadData()
     }
-
 }
 
 extension SettingsAppIconSheetViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
         return CGSize(width: 84, height: 84)
     }
-
 }
-

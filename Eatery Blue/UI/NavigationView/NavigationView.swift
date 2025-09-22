@@ -8,7 +8,6 @@
 import UIKit
 
 class NavigationView: UICollectionReusableView {
-
     // MARK: - Properties (view)
 
     let leftButtons = UIStackView()
@@ -27,7 +26,8 @@ class NavigationView: UICollectionReusableView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -40,7 +40,8 @@ class NavigationView: UICollectionReusableView {
         addSubview(largeTitleLabel)
         setUpLargeTitleLabel()
 
-//        TODO: - NOTIFICATIONS
+        // MARK: todo - NOTIFICATIONS
+
 //        addSubview(notificationButton)
     }
 
@@ -107,7 +108,8 @@ class NavigationView: UICollectionReusableView {
 
         largeTitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
-//        TODO: - NOTIFICATIONS
+        // MARK: todo - NOTIFICATIONS
+
 //        notificationButton.snp.makeConstraints { make in
 //            make.trailing.equalTo(layoutMarginsGuide)
 //            make.centerY.equalTo(largeTitleLabel.snp.centerY)
@@ -116,7 +118,7 @@ class NavigationView: UICollectionReusableView {
 
     func computeExpandedHeight() -> CGFloat {
         class Delegate: NSObject, UINavigationBarDelegate {
-            func position(for bar: UIBarPositioning) -> UIBarPosition {
+            func position(for _: UIBarPositioning) -> UIBarPosition {
                 .topAttached
             }
         }
@@ -180,5 +182,4 @@ class NavigationView: UICollectionReusableView {
             rightButtons.addArrangedSubview(button)
         }
     }
-
 }

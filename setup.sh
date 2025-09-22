@@ -44,24 +44,28 @@ fi
 echo ""
 echo "🪝 Configuring git hooks..."
 
-# Ensure .githooks directory exists
-if [ ! -d ".githooks" ]; then
+# Ensure ci_scripts directory exists
+if [ ! -d "ci_scripts" ]; then
     echo "❌ .githooks directory not found in repository"
     echo "Please ensure the .githooks directory exists in your repo with the pre-commit hook"
     exit 1
 fi
 
-# Make all hooks in .githooks executable
-chmod +x .githooks/* 2>/dev/null || true
+# Make all hooks in ci_scripts executable
+chmod +x ci_scripts/* 2>/dev/null || true
 
-# Check current git hooks path configuration
-current_hooks_path=$(git config --local core.hooksPath 2>/dev/null || echo "")
+# Ensure .git/hooks directory exists
+mkdir -p .git/hooks
 
-if [ "$current_hooks_path" = ".githooks" ]; then
-    echo "  ✅ Git hooks path already configured correctly"
+# Copy pre-commit hook from ci_scripts to .git/hooks and make it executable
+if [ -f "ci_scripts/pre-commit" ]; then
+    echo "  🔧 Copying pre-commit hook to .git/hooks/"
+    cp ci_scripts/pre-commit .git/hooks/pre-commit
+    chmod +x .git/hooks/pre-commit
+    echo "  ✅ Pre-commit hook installed successfully"
 else
-    echo "  🔧 Setting git hooks path to .githooks"
-    git config --local core.hooksPath .githooks
+    echo "  ❌ ci_scripts/pre-commit not found"
+    exit 1
 fi
 
 echo ""
@@ -84,11 +88,11 @@ else
     exit 1
 fi
 
-# Check if pre-commit hook exists
-if [ -f ".githooks/pre-commit" ]; then
-    echo "  ✅ Pre-commit hook found and configured"
+# Check if pre-commit hook exists in .git/hooks
+if [ -f ".git/hooks/pre-commit" ] && [ -x ".git/hooks/pre-commit" ]; then
+    echo "  ✅ Pre-commit hook installed and executable"
 else
-    echo "  ❌ Pre-commit hook not found in .githooks/"
+    echo "  ❌ Pre-commit hook not found or not executable in .git/hooks/"
     exit 1
 fi
 

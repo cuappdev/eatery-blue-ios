@@ -8,7 +8,6 @@
 import Foundation
 
 actor InMemoryCache<Value> {
-
     private var cachedValueDate: Date?
     private var cachedValue: Value?
 
@@ -60,5 +59,4 @@ actor InMemoryCache<Value> {
         cachedValueDate = nil
         fetchTask?.cancel()
     }
-
 }

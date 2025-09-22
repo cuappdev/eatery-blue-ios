@@ -8,7 +8,6 @@
 import UIKit
 
 class OnboardingFeatureView: UIView {
-
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let imageView = UIImageView()
@@ -20,7 +19,8 @@ class OnboardingFeatureView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -66,5 +66,4 @@ class OnboardingFeatureView: UIView {
             make.width.equalTo(imageView.snp.height).multipliedBy(9 / 19.5)
         }
     }
-
 }

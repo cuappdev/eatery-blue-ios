@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsMainMenuCell: UIView {
-
     let imageView = UIImageView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
@@ -21,7 +20,8 @@ class SettingsMainMenuCell: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -85,5 +85,4 @@ class SettingsMainMenuCell: UIView {
             make.width.height.equalTo(16)
         }
     }
-
 }

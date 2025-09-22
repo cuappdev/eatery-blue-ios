@@ -8,7 +8,6 @@
 import UIKit
 
 class SheetPresentationController: UIPresentationController {
-
     lazy var dimmingView: UIView = {
         let view = UIView()
         view.backgroundColor = .black.withAlphaComponent(0.5)
@@ -78,14 +77,13 @@ class SheetPresentationController: UIPresentationController {
     }
 
     override func size(
-        forChildContentContainer container: UIContentContainer,
+        forChildContentContainer _: UIContentContainer,
         withParentContainerSize parentSize: CGSize
     ) -> CGSize {
         CGSize(width: parentSize.width, height: height)
     }
 
-    @objc private func didTapDimmingView(_ sender: UITapGestureRecognizer) {
+    @objc private func didTapDimmingView(_: UITapGestureRecognizer) {
         presentedViewController.dismiss(animated: true)
     }
-
 }

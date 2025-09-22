@@ -8,7 +8,6 @@
 import UIKit
 
 class OnboardingStartViewController: UIViewController {
-
     private let eateryLogoView = UIImageView()
     private let titleLabel = UILabel()
     private let nextButton = ButtonView(pillContent: UILabel())
@@ -97,5 +96,4 @@ class OnboardingStartViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
     }
-
 }

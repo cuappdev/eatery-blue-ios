@@ -8,7 +8,6 @@
 import UIKit
 
 class LogoView: UIView {
-
     let pin = UIImageView()
     let pizza = UIImageView()
 
@@ -20,7 +19,8 @@ class LogoView: UIView {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -54,7 +54,7 @@ class LogoView: UIView {
         }
     }
 
-    override func draw(_ rect: CGRect) {
+    override func draw(_: CGRect) {
         let lineWidth: CGFloat = 2
         let startAngle: CGFloat = .pi * (0.5 - sweepFraction)
 
@@ -71,5 +71,4 @@ class LogoView: UIView {
         bezierPath.lineCapStyle = .round
         bezierPath.stroke()
     }
-
 }

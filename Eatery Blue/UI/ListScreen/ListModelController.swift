@@ -10,7 +10,6 @@ import EateryModel
 import Foundation
 
 class ListModelController: ListViewController {
-
     private var filter = EateryFilter()
     private var listEateries: [Eatery] = []
 
@@ -23,7 +22,7 @@ class ListModelController: ListViewController {
         filterController.setFilter(filter, animated: false)
 
         super.setUp(title: title, description: description)
-        self.listEateries = eateries
+        listEateries = eateries
         updateEateriesFromState()
     }
 
@@ -32,11 +31,8 @@ class ListModelController: ListViewController {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let coreDataStack = AppDelegate.shared.coreDataStack
 
-            var filteredEateries: [Eatery] = []
-            for eatery in listEateries {
-                if predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id)) {
-                    filteredEateries.append(eatery)
-                }
+            let filteredEateries = listEateries.filter {
+                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
             }
 
             updateEateries(eateries: filteredEateries)
@@ -44,14 +40,11 @@ class ListModelController: ListViewController {
             updateEateries(eateries: listEateries)
         }
     }
-
 }
 
 extension ListModelController: EateryFilterViewControllerDelegate {
-
-    func eateryFilterViewController(_ viewController: EateryFilterViewController, filterDidChange filter: EateryFilter) {
+    func eateryFilterViewController(_: EateryFilterViewController, filterDidChange filter: EateryFilter) {
         self.filter = filter
         updateEateriesFromState()
     }
-
 }

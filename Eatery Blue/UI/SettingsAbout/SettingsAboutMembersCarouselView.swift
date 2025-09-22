@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsAboutMembersCarouselView: UIView {
-
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
@@ -19,7 +18,8 @@ class SettingsAboutMembersCarouselView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -92,5 +92,4 @@ class SettingsAboutMembersCarouselView: UIView {
 
         scrollView.contentInset = layoutMargins
     }
-
 }

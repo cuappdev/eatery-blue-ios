@@ -8,7 +8,6 @@
 import UIKit
 
 class MenuHeaderView: UIView {
-
     // MARK: - Properties (View)
 
     let titleLabel = UILabel()
@@ -33,7 +32,8 @@ class MenuHeaderView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -96,7 +96,6 @@ class MenuHeaderView: UIView {
         menuInaccuracyLabel.textColor = UIColor.Eatery.gray05
         menuInaccuracyLabel.lineBreakMode = .byWordWrapping
         menuInaccuracyLabel.numberOfLines = 0
-
     }
 
     private func setUpConstraints() {
@@ -121,5 +120,4 @@ class MenuHeaderView: UIView {
             make.leading.trailing.bottom.equalTo(layoutMarginsGuide)
         }
     }
-
 }

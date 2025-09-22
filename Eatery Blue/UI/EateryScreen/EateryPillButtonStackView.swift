@@ -8,7 +8,6 @@
 import UIKit
 
 class EateryPillButtonStackView: UIView {
-
     let stackView = UIStackView()
 
     override init(frame: CGRect) {
@@ -18,7 +17,8 @@ class EateryPillButtonStackView: UIView {
         setUpConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -43,5 +43,4 @@ class EateryPillButtonStackView: UIView {
     func addPillButton(_ view: UIView) {
         stackView.addArrangedSubview(view)
     }
-
 }

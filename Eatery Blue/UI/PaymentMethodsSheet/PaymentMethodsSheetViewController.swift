@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class PaymentMethodsSheetViewController: SheetViewController {
-
     private let mealSwipesImageView = UIImageView()
     private let brbsImageView = UIImageView()
     private let cashOrCardImageView = UIImageView()
@@ -173,5 +172,4 @@ class PaymentMethodsSheetViewController: SheetViewController {
 
         return result
     }
-
 }

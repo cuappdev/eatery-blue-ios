@@ -10,7 +10,6 @@ import EateryModel
 import Foundation
 
 struct EateryFilter: Codable {
-
     var under10MinutesEnabled: Bool = false
     var paymentMethods: Set<PaymentMethod> = []
     var favoriteEnabled: Bool = false
@@ -23,7 +22,8 @@ struct EateryFilter: Codable {
     var selected: Bool = false
 
     var isEnabled: Bool {
-        under10MinutesEnabled || favoriteEnabled || north || west || central || selected || mealSwipesEnabled || brbsEnabled
+        under10MinutesEnabled || favoriteEnabled || north || west || central
+            || selected || mealSwipesEnabled || brbsEnabled
     }
 
     func predicate(userLocation: CLLocation?, departureDate: Date) -> EateryPredicate {
@@ -51,7 +51,7 @@ struct EateryFilter: Codable {
         if brbsEnabled || mealSwipesEnabled {
             return .or([
                 brbsEnabled ? .acceptsPaymentMethod(.brbs) : .false,
-                mealSwipesEnabled ? .acceptsPaymentMethod(.mealSwipes) : .false,
+                mealSwipesEnabled ? .acceptsPaymentMethod(.mealSwipes) : .false
             ])
         } else {
             return .true
@@ -77,9 +77,8 @@ struct EateryFilter: Codable {
             return .true
         }
     }
-    
+
     func isSelectedPredicate(selected: [Eatery]) -> EateryPredicate {
         return .isSelected(selected)
     }
-    
 }

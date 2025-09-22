@@ -8,7 +8,6 @@
 import UIKit
 
 class ProfileLoginViewController: UIViewController {
-
     // MARK: - Properties (view)
 
     private let backButton = ButtonView(content: UIImageView())
@@ -31,10 +30,11 @@ class ProfileLoginViewController: UIViewController {
         super.init(nibName: nibName, bundle: bundle)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -88,7 +88,7 @@ class ProfileLoginViewController: UIViewController {
 
         view.addSubview(loginButton)
         setUpLoginButton()
-        
+
         view.addSubview(eateryLogo)
         setUpLogo()
 
@@ -97,11 +97,11 @@ class ProfileLoginViewController: UIViewController {
             setUpBackButton()
         }
     }
-    
+
     private func setUpLogo() {
         eateryLogo.image = UIImage(named: "Eatery")
         eateryLogo.alpha = 0.4
-        
+
         view.addSubview(eateryLogo)
     }
 
@@ -155,7 +155,7 @@ class ProfileLoginViewController: UIViewController {
             make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).inset(12)
         }
         loginButton.content.setContentCompressionResistancePriority(.required, for: .vertical)
-        
+
         eateryLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(view.frame.width - 124)
@@ -185,5 +185,4 @@ class ProfileLoginViewController: UIViewController {
     func setLoginButtonTitle(_ title: String) {
         loginButton.content.text = title
     }
-
 }

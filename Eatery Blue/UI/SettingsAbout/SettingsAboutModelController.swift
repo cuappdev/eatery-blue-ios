@@ -8,7 +8,6 @@
 import Foundation
 
 class SettingsAboutModelController: SettingsAboutViewController {
-
     private struct Section {
         let title: String
         let members: [String]
@@ -132,5 +131,4 @@ class SettingsAboutModelController: SettingsAboutViewController {
             }
         }
     }
-
 }

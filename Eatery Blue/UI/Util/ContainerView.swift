@@ -11,9 +11,8 @@ import UIKit
 //  1. content inset based on layoutMargins
 //  2. corner radius crop (if cornerRadius is non-zero)
 //  3. shadow
-// 
+//
 class ContainerView<Content: UIView>: UIView {
-
     let cornerRadiusView = UIView()
 
     override var backgroundColor: UIColor? {
@@ -90,10 +89,11 @@ class ContainerView<Content: UIView>: UIView {
 
     convenience init(pillContent: Content) {
         self.init(content: pillContent)
-        self.isPill = true
+        isPill = true
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -112,5 +112,4 @@ class ContainerView<Content: UIView>: UIView {
 
         return super.hitTest(point, with: event)
     }
-
 }

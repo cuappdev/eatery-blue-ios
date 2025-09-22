@@ -8,7 +8,6 @@
 import Foundation
 
 struct NetIDKeychainManager {
-
     struct Credentials {
         var netId: String
         var password: String
@@ -85,5 +84,4 @@ struct NetIDKeychainManager {
             throw KeychainError.unhandledError(status: status)
         }
     }
-
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 class HomeSearchViewController: UIViewController {
-
     let contentController = HomeSearchContentModelController()
     let emptyController = HomeSearchEmptyModelController()
     let searchBar = UISearchBar()
@@ -46,7 +45,7 @@ class HomeSearchViewController: UIViewController {
 
         view.addSubview(searchBar)
         setUpSearchBar()
-        
+
         view.addSubview(spinner)
         spinner.hidesWhenStopped = true
     }
@@ -86,7 +85,7 @@ class HomeSearchViewController: UIViewController {
         contentController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         spinner.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
@@ -102,5 +101,4 @@ class HomeSearchViewController: UIViewController {
         view.layoutIfNeeded()
         updateChildSafeAreaInsets()
     }
-
 }

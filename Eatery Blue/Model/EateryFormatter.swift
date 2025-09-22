@@ -10,7 +10,6 @@ import EateryModel
 import UIKit
 
 class EateryFormatter {
-
     enum Style {
         case medium
         case long
@@ -33,8 +32,8 @@ class EateryFormatter {
     }
 
     func formatStatusSimple(_ status: EateryStatus, followedBy: String) -> NSMutableAttributedString {
-        var statusText: String = ""
-        var statusColor: UIColor = UIColor.Eatery.gray03
+        var statusText = ""
+        var statusColor = UIColor.Eatery.gray03
 
         switch status {
         case .open:
@@ -53,14 +52,14 @@ class EateryFormatter {
 
         let mainString = "\(statusText) · \(followedBy)"
         let range = (mainString as NSString).range(of: statusText)
-        let mutableAttributedString = NSMutableAttributedString.init(string: mainString)
+        let mutableAttributedString = NSMutableAttributedString(string: mainString)
         mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: statusColor, range: range)
         return mutableAttributedString
     }
 
     func formatStatus(_ status: EateryStatus) -> NSAttributedString {
         switch status {
-        case .open(let event):
+        case let .open(event):
             let timeString = timeFormatter.string(from: event.endDate)
             return NSAttributedString(
                 string: "Open until \(timeString)",
@@ -73,20 +72,19 @@ class EateryFormatter {
                 attributes: [.foregroundColor: UIColor.Eatery.red as Any]
             )
 
-        case .openingSoon(let event):
+        case let .openingSoon(event):
             let timeString = timeFormatter.string(from: event.startDate)
             return NSAttributedString(
                 string: "Opening at \(timeString)",
                 attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
             )
 
-        case .closingSoon(let event):
+        case let .closingSoon(event):
             let timeString = timeFormatter.string(from: event.endDate)
             return NSAttributedString(
                 string: "Closing at \(timeString)",
                 attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
             )
-
         }
     }
 
@@ -105,17 +103,17 @@ class EateryFormatter {
             return events.map(formatEventTime(_:)).joined(separator: "\n")
         }
     }
-    
+
     func eateryCardFormatter(_ eatery: Eatery, date: Date) -> NSAttributedString? {
         let day = Day(date: date)
         if eatery.isOpen {
             switch eatery.status {
-            case .closingSoon(let event):
+            case let .closingSoon(event):
                 return NSAttributedString(
                     string: "Open until \(timeFormatter.string(from: event.endDate))",
                     attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
                 )
-            case .open(let event):
+            case let .open(event):
                 return NSAttributedString(
                     string: "Open until \(timeFormatter.string(from: event.endDate))",
                     attributes: [.foregroundColor: UIColor.Eatery.green as Any]
@@ -128,7 +126,7 @@ class EateryFormatter {
             }
         } else {
             if let nextEventOfDay = EateryStatus.nextEvent(eatery.events, date: date, on: day) {
-                if let _ = EateryStatus.previousEvent(eatery.events, date: date, on: day) {
+                if EateryStatus.previousEvent(eatery.events, date: date, on: day) != nil {
                     return NSAttributedString(
                         string: "Re-opens at \(timeFormatter.string(from: nextEventOfDay.startDate))",
                         attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
@@ -139,7 +137,9 @@ class EateryFormatter {
                         attributes: [.foregroundColor: UIColor.Eatery.orange as Any]
                     )
                 }
-            } else if let nextEventOfNextDay = EateryStatus.nextEvent(eatery.events, date: date, on: day.advanced(by: 1)) {
+            } else if let nextEventOfNextDay = EateryStatus.nextEvent(eatery.events,
+                                                                      date: date,
+                                                                      on: day.advanced(by: 1)) {
                 return NSAttributedString(
                     string: "Closed until \(timeFormatter.string(from: nextEventOfNextDay.startDate))",
                     attributes: [.foregroundColor: UIColor.Eatery.red as Any]
@@ -209,7 +209,11 @@ class EateryFormatter {
                 scaledToMatch: font
             )))
             text.append(NSAttributedString(string: " "))
-            text.append(NSAttributedString(string: formatEateryWalkTime(eatery, userLocation: userLocation, isLong: false)))
+            text.append(NSAttributedString(string: formatEateryWalkTime(
+                eatery,
+                userLocation: userLocation,
+                isLong: false
+            )))
 
             if let secondComponent = eateryCardFormatter(eatery, date: date) {
                 text.append(NSAttributedString(string: " · "))
@@ -255,8 +259,9 @@ class EateryFormatter {
                 scaledToMatch: font
             )))
             secondLine.append(NSAttributedString(string: " "))
-            
-            // TODO: Temporarily removed wait times.
+
+            // MARK: todo - Temporarily removed wait times.
+
 //            secondLine.append(NSAttributedString(string: formatEateryWaitTime(
 //                eatery,
 //                font: font,
@@ -266,7 +271,6 @@ class EateryFormatter {
 //            lines.append(secondLine)
 
             return lines
-
         }
     }
 
@@ -278,7 +282,7 @@ class EateryFormatter {
         let (walkTime, waitTime) = eatery.timingInfo(userLocation: userLocation, departureDate: departureDate)
 
         if let waitTime = waitTime {
-            let minutesLow = Int(round((((walkTime ?? 0) + waitTime.low) / 60)))
+            let minutesLow = Int(round(((walkTime ?? 0) + waitTime.low) / 60))
             let minutesHigh = Int(round(((walkTime ?? 0) + waitTime.high) / 60))
 
             if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
@@ -315,13 +319,14 @@ class EateryFormatter {
         }
     }
 
-    func formatEateryWaitTime(_ eatery: Eatery, font: UIFont, userLocation: CLLocation?, departureDate: Date) -> String {
+    func formatEateryWaitTime(_ eatery: Eatery, font _: UIFont, userLocation: CLLocation?,
+                              departureDate: Date) -> String {
         let (_, waitTime) = eatery.timingInfo(userLocation: userLocation, departureDate: departureDate)
 
         if let waitTime = waitTime {
             let minutesLow = Int(round(waitTime.low / 60))
             let minutesHigh = Int(round(waitTime.high / 60))
-            let avgMinutes = Int((minutesLow+minutesHigh) / 2)
+            let avgMinutes = Int((minutesLow + minutesHigh) / 2)
 
             if minutesLow > walkTimeMinutesCap + waitTimeMinutesCap {
                 return ">\(walkTimeMinutesCap + waitTimeMinutesCap) min wait"
@@ -361,5 +366,4 @@ class EateryFormatter {
 
         return components.joined(separator: ", ")
     }
-
 }

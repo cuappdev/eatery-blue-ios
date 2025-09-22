@@ -9,7 +9,6 @@ import EateryModel
 import UIKit
 
 class FavoritesItemsTableViewCell: UITableViewCell {
-
     // MARK: - Properties (view)
 
     private let availableLabel = UILabel()
@@ -34,7 +33,8 @@ class FavoritesItemsTableViewCell: UITableViewCell {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -47,7 +47,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
         chevronImageView.isHidden = itemData == nil
         setUpFavoriteButton(item)
 
-        stackView.subviews.forEach { subview in
+        for subview in stackView.subviews {
             subview.removeFromSuperview()
         }
 
@@ -122,6 +122,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     }
 
     // MARK: - Set Up
+
     private func setUpSelf() {
         setUpContainer()
         contentView.addSubview(container)
@@ -236,5 +237,4 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             make.leading.trailing.equalTo(container.layoutMarginsGuide)
         }
     }
-
 }

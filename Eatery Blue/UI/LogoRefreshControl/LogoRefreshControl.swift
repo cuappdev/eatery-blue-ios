@@ -8,19 +8,16 @@
 import UIKit
 
 protocol LogoRefreshControlDelegate: AnyObject {
-
     func logoRefreshControlDidBeginRefreshing(_ sender: LogoRefreshControl)
     func logoRefreshControlDidEndRefreshing(_ sender: LogoRefreshControl)
-
 }
 
 class LogoRefreshControl: UIControl {
-
     let logoView = LogoView()
 
     private(set) var isRefreshing: Bool = false
 
-    weak var delegate: LogoRefreshControlDelegate? = nil
+    weak var delegate: LogoRefreshControlDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +28,8 @@ class LogoRefreshControl: UIControl {
         }
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -71,8 +69,7 @@ class LogoRefreshControl: UIControl {
     func endRefreshing() {
         logoView.pizza.layer.removeAnimation(forKey: "refreshAnimation")
         isRefreshing = false
-        
+
         delegate?.logoRefreshControlDidEndRefreshing(self)
     }
-
 }

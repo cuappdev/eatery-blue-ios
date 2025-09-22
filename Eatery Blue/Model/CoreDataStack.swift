@@ -9,7 +9,6 @@ import Combine
 import CoreData
 
 class CoreDataStack {
-
     private let persistentContainer: NSPersistentContainer
     var context: NSManagedObjectContext {
         persistentContainer.viewContext
@@ -18,7 +17,7 @@ class CoreDataStack {
     init() {
         persistentContainer = NSPersistentContainer(name: "EateryBlue")
 
-        persistentContainer.loadPersistentStores() { (description, error) in
+        persistentContainer.loadPersistentStores { _, error in
             if let error = error {
                 logger.critical("\(#function): Failed to load Core Data stack: \(error)")
             } else {
@@ -86,5 +85,4 @@ class CoreDataStack {
             return []
         }
     }
-
 }

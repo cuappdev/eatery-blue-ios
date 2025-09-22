@@ -8,18 +8,17 @@
 import UIKit
 
 class MiniSelectionView: UIView {
-
     // MARK: - Properties (view)
 
     private let stackView = UIStackView()
 
     // MARK: - Properties (data)
 
-    private var buttons: [Int:(container: UIView, image: UIImageView)] = [:]
+    private var buttons: [Int: (container: UIView, image: UIImageView)] = [:]
     /// Called when a button is tapped
     var onTap: ((Int) -> Void)? {
         didSet {
-            buttons.forEach { button in
+            for button in buttons {
                 button.value.container.tap { [weak self] _ in
                     guard let self else { return }
 
@@ -38,7 +37,8 @@ class MiniSelectionView: UIView {
         setUpSelf()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -51,7 +51,7 @@ class MiniSelectionView: UIView {
     }
 
     private func setUpSelf() {
-        self.addSubview(stackView)
+        addSubview(stackView)
         setUpStackView()
 
         setUpConstraints()
@@ -117,5 +117,4 @@ class MiniSelectionView: UIView {
         button.container.backgroundColor = .Eatery.blueLight
         button.image.tintColor = .Eatery.blue
     }
-
 }
