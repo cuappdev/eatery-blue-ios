@@ -102,7 +102,8 @@ class EateryExpandableCardDetailView: UIView {
 
     private func addMenuCategories(event: Event) {
         if let categories = event.menu?.categories {
-            var sortedCategories: [MenuCategory] = categories.reversed()
+            var sortedCategories: [MenuCategory] = eatery?.name == "Morrison Dining" ? categories : categories
+                .reversed()
             for i in 0 ..< sortedCategories.count {
                 let menuCategory = sortedCategories[i]
                 if menuCategory.category == "Chef's Table" {
