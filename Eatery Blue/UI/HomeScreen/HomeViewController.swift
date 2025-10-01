@@ -107,9 +107,9 @@ class HomeViewController: UIViewController {
         }
 
         // For caching purposes. Although we might not need it now we will likely need it in a bit
-        Task {
-            await updateAllEateriesFromNetworking()
-        }
+//        Task {
+//            await updateAllEateriesFromNetworking()
+//        }
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -249,9 +249,8 @@ class HomeViewController: UIViewController {
                     guard let self else { return }
 
                     do {
+                        await refreshEateries()
                         try await updateSimpleEateriesFromNetworking()
-                    } catch {
-                        logger.error("\(#function): \(error)")
                     }
                 }
                 // Create a task to let the logo view do one complete animation cycle
@@ -267,17 +266,23 @@ class HomeViewController: UIViewController {
         }
     }
 
-    /// Start loading all eateries in the background, will be cached if needs to be refetched
-    private func updateAllEateriesFromNetworking() async {
-        do {
-            let _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
-        } catch {
-            logger.error("\(error)")
-        }
-    }
+    /// Start loading all eateries in the background, will be cached
+//    private func updateAllEateriesFromNetworking() async {
+//        do {
+//            let _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.refreshEateries()
+//        } catch {
+//            logger.error("\(error)")
+//        }
+//    }
 
+    private func refreshEateries() async {
+        print("refreshing eateries")
+        await Networking.default.invalidateCache()
+    }
+    
     /// Request the simple eateries from the networking layer.
     private func updateSimpleEateriesFromNetworking() async throws {
+        print("loading simple eateries")
         let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
         allEateries = eateries.filter { eatery in
             return !eatery.name.isEmpty

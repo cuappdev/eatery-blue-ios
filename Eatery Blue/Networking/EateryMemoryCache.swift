@@ -8,6 +8,11 @@
 import Foundation
 import EateryModel
 
+// Caching strategy starting from Oct 2025
+// Only load simple eateries when user opens the app, specific menu will be fetched using loadEatery(id) when an eatery is clicked on
+// The data loaded will be cached with TTL 1hr 5 min
+// Cache should be cleared whenever 1. app goes to background 2. manual refresh is triggered
+
 actor EateryMemoryCache {
     
     private var allLoaded: Bool = false
@@ -28,6 +33,7 @@ actor EateryMemoryCache {
             logger.info("\(self): Returning cached value")
             return cachedValue
         } else if let alltask = fetchAllTask {
+            // if some other caller is fetching eateries already, do not duplicate reequest. wait for that request to complete
             logger.info("\(self): Awaiting existing fetchAll task")
             return try await alltask.value
         } else {

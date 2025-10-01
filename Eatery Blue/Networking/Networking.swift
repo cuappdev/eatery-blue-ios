@@ -11,6 +11,7 @@ import EateryGetAPI
 import Foundation
 import Logging
 import Alamofire
+import UIKit
 
 class Networking {
     
@@ -30,12 +31,21 @@ class Networking {
         self.eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         self.accounts = FetchAccounts()
         self.simpleUrl = URL(string: "\(baseUrl)simple/") ?? baseUrl
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidEnterBackground),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil
+        )
     }
     
+    /// Not used anymore
     func loadAllEatery() async throws-> [Eatery] {
         return try await eateryCache.fetchAll(maxStaleness: timeUntilFiveMinutesIntoNextHour())
     }
     
+    /// Load single eatery
     func loadEatery(by id: Int) async -> Eatery? {
         var eatery: Eatery?
         if let url = URL(string: "\(self.baseUrl)\(id)/") {
@@ -61,6 +71,10 @@ class Networking {
             return try await eateryApi.eateries()
         }
         return []
+    }
+    
+    func invalidateCache() async {
+        await eateryCache.invalidate()
     }
     
     // Computes the time until the end of the day previous cache policy
@@ -141,6 +155,14 @@ class Networking {
                     continuation.resume(throwing: error)
                 }
             }
+        }
+    }
+    
+    @objc private func appDidEnterBackground() {
+        logger.info("App entered background – invalidating cache")
+        // clear all cache as app goes to background
+        Task {
+            await eateryCache.invalidate()
         }
     }
 

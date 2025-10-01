@@ -25,6 +25,7 @@ public struct EateryAPI {
         var schemaApiResponse: [Schema.Eatery] = []
 
         do {
+            print(schemaApiResponse)
             schemaApiResponse = try decoder.decode([Schema.Eatery].self, from: data)
         }
         catch {
