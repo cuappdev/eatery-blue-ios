@@ -291,7 +291,7 @@ class CompareMenusEateryViewController: UIViewController {
     }
 
     private func sortMenuCategories(categories: [MenuCategory]) -> [MenuCategory] {
-        var sortedCategories: [MenuCategory] = categories.reversed()
+        var sortedCategories: [MenuCategory] = eatery?.name == "Morrison Dining" ? categories : categories.reversed()
         for i in 0 ..< sortedCategories.count {
             let menuCategory = sortedCategories[i]
             if menuCategory.category == "Chef's Table" {
@@ -299,6 +299,9 @@ class CompareMenusEateryViewController: UIViewController {
             }
             if menuCategory.category == "Chef's Table - Sides" {
                 sortedCategories.swapAt(1, i)
+            }
+            if menuCategory.category == "Grill" {
+                sortedCategories.swapAt(2, i)
             }
         }
         return sortedCategories
