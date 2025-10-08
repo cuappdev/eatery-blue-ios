@@ -105,11 +105,6 @@ class HomeViewController: UIViewController {
                 logger.error("\(#function): \(error)")
             }
         }
-
-        // For caching purposes. Although we might not need it now we will likely need it in a bit
-//        Task {
-//            await updateAllEateriesFromNetworking()
-//        }
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -266,23 +261,23 @@ class HomeViewController: UIViewController {
         }
     }
 
+    /// Not used anymore starting Oct 2025.
     /// Start loading all eateries in the background, will be cached
-//    private func updateAllEateriesFromNetworking() async {
-//        do {
-//            let _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.refreshEateries()
-//        } catch {
-//            logger.error("\(error)")
-//        }
-//    }
+    private func updateAllEateriesFromNetworking() async {
+        do {
+            let _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
+        } catch {
+            logger.error("\(error)")
+        }
+    }
 
+    /// Invalidate the cache completely
     private func refreshEateries() async {
-        print("refreshing eateries")
         await Networking.default.invalidateCache()
     }
     
     /// Request the simple eateries from the networking layer.
     private func updateSimpleEateriesFromNetworking() async throws {
-        print("loading simple eateries")
         let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
         allEateries = eateries.filter { eatery in
             return !eatery.name.isEmpty

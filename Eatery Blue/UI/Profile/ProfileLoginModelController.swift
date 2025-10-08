@@ -105,6 +105,11 @@ extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
         
         if !Networking.default.sessionId.isEmpty {
             Task {
+                defer {
+                    // Always dismiss the WebView at the end of this async block
+                    self.tabBarController?.dismiss(animated: true)
+                }
+                
                 do {
                     print("Setting session id")
                     try await Networking.default.authorize(sessionId: sessionId)

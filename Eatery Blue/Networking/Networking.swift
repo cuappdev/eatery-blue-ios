@@ -53,7 +53,8 @@ class Networking {
             do {
                 eatery = try await eateryCache.fetchByID(maxStaleness: timeUntilFiveMinutesIntoNextHour(), id: id, fetchByID: eateryApi.eatery)
             } catch {
-                logger.error("Failed to load eatery \(id)")
+                // TODO: Handle error state
+                logger.error("Failed to load eatery \(id). \(error.localizedDescription)")
                 return nil
             }
         }
@@ -169,7 +170,7 @@ class Networking {
 }
 
 struct FetchAccounts {
-
+    
     private let getApi = GetAPI()
 
     func fetch(start: Day, end: Day) async throws -> [Account] {
@@ -202,7 +203,6 @@ struct FetchAccounts {
             }
         }
     }
-
 }
 
 private enum AccountDummyData {
