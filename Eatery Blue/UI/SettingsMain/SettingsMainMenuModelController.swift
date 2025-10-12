@@ -49,6 +49,20 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
         ))
         addSeparator()
         addSettingsItem(SettingsItem(
+            image: UIImage(named: "Sun") ?? UIImage(systemName: "sun.max"),
+            title: "Display",
+            subtitle: "Choose a light or dark theme",
+            action: { [weak self] in
+                guard let self else { return }
+
+                let viewController = SettingsDisplaySheetViewController()
+
+                viewController.setUpSheetPresentation()
+                tabBarController?.present(viewController, animated: true)
+            }
+        ))
+        addSeparator()
+        addSettingsItem(SettingsItem(
             image: UIImage(named: "Lock"),
             title: "Privacy",
             subtitle: "Manage permissions and analytics",
