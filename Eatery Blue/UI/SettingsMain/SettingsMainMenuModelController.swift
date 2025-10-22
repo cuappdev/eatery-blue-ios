@@ -36,6 +36,19 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
         ))
         addSeparator()
         addSettingsItem(SettingsItem(
+            image: UIImage(named: "Bell")?.withRenderingMode(.alwaysTemplate)
+                .withTintColor(UIColor.Eatery.secondaryText),
+            title: "Notifications",
+            subtitle: "Manage item and promotional notifications",
+            action: { [weak self] in
+                guard let self else { return }
+
+                let viewController = SettingsNotificationsViewController()
+                navigationController?.pushViewController(viewController, animated: true)
+            }
+        ))
+        addSeparator()
+        addSettingsItem(SettingsItem(
             image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate)
                 .withTintColor(UIColor.Eatery.secondaryText),
             title: "App Icon",
