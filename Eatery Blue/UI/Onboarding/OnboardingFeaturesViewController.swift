@@ -304,5 +304,5 @@ extension OnboardingFeaturesViewController: GetLoginWebViewControllerDelegate {
             completion()
         }
     }
-
+    
 }

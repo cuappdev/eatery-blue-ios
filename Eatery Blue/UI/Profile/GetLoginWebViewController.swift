@@ -58,5 +58,5 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
 protocol GetLoginWebViewControllerDelegate: AnyObject {
 
      func setSessionId(_ sessionId: String, _ completion: @escaping (() -> Void))
-
+     
 }

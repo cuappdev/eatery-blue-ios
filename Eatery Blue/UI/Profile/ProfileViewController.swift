@@ -99,6 +99,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileLoginModelControllerDelegate {
 
     func profileLoginModelController(_ viewController: ProfileLoginModelController, didLogin sessionId: String) {
+        print("user did log in, setting mode to .account")
         setMode(.account, animated: true)
     }
 

@@ -115,13 +115,7 @@ class Networking {
     
     // Sends session id, device id, and pin back to backend to log in
     func authorize(sessionId: String) async throws {
-        print("Attempting to authorize user")
-        let url = "\(baseUrl)/user/authorize"
-        
-        print("Bearer \(sessionId)")
-        print("deviceId: \(AuthStorage.deviceId)")
-        print("pin: \(AuthStorage.pin)")
-        print("fcmToken: \(PushNotificationManager.shared.fcmToken)")
+        let url = "\(EateryEnvironment.baseURL)/user/authorize/"
         let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(sessionId)"
             ]
@@ -130,17 +124,17 @@ class Networking {
         
         if let fcmToken = PushNotificationManager.shared.fcmToken {
             parameters = [
-                "deviceId": AuthStorage.deviceId,
+                "device_id": AuthStorage.deviceId,
                 "pin": AuthStorage.pin,
-                "fcmToken": "1234" // dummy value for now until backend gets rid of the length limit
+                "fcm_token": fcmToken
             ]
         } else {
             parameters = [
-                "deviceId": AuthStorage.deviceId,
+                "device_id": AuthStorage.deviceId,
                 "pin": AuthStorage.pin,
             ]
         }
-        
+                
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url,
                        method: .post,
@@ -149,10 +143,17 @@ class Networking {
                        headers: headers)
             .validate()
             .response { response in
+                if let data = response.data {
+                    print("Response data:", String(data: data, encoding: .utf8) ?? "<nil>")
+                }
+                if let httpResponse = response.response {
+                    print("Status code:", httpResponse.statusCode)
+                }
                 switch response.result {
                 case .success:
                     continuation.resume()
                 case .failure(let error):
+            
                     continuation.resume(throwing: error)
                 }
             }

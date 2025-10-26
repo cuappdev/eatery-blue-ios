@@ -108,6 +108,7 @@ extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
                 defer {
                     // Always dismiss the WebView at the end of this async block
                     self.tabBarController?.dismiss(animated: true)
+                    
                 }
                 
                 do {
@@ -119,8 +120,6 @@ extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
                     print("Authorization failed: \(error)")
                 }
             }
-//            delegate?.profileLoginModelController(self, didLogin: sessionId)
-//            completion()
         }
     }
 
