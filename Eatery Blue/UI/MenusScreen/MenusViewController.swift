@@ -251,6 +251,73 @@ class MenusViewController: UIViewController {
         }
     }
 
+    // MARK: - Empty State Helper
+
+    private func buildEmptyStateView() -> UIView {
+        let container = UIView()
+
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+
+        let imageView = UIImageView(image: UIImage(systemName: "xmark.octagon"))
+        imageView.tintColor = UIColor.Eatery.red
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(72)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Hmm, no chow here (yet)."
+        titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let messageLabel = UILabel()
+        messageLabel.text = "We ran into an issue loading this page. Check your connection or try reloading the page."
+        messageLabel.font = .preferredFont(for: .body, weight: .regular)
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+
+        let button = UIButton(type: .system)
+        button.setTitle("Try Again", for: .normal)
+        button.titleLabel?.font = .preferredFont(for: .headline, weight: .semibold)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.Eatery.blue
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        button.layer.cornerRadius = 22
+        button.layer.masksToBounds = true
+        button.addAction(UIAction(handler: { [weak self] _ in
+            guard let self else { return }
+            self.startLoading()
+            Task {
+                await self.updateAllEateriesFromNetworking(withPriority: self.selectedIndex)
+                self.stopLoading()
+            }
+        }), for: .touchUpInside)
+
+        stack.addArrangedSubview(imageView)
+        stack.setCustomSpacing(12, after: imageView)
+        stack.addArrangedSubview(titleLabel)
+        stack.setCustomSpacing(4, after: titleLabel)
+        stack.addArrangedSubview(messageLabel)
+        stack.setCustomSpacing(16, after: messageLabel)
+        stack.addArrangedSubview(button)
+
+        let paddingContainer = ContainerView(content: stack)
+        paddingContainer.layoutMargins = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
+
+        container.addSubview(paddingContainer)
+        paddingContainer.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview().inset(16)
+            make.trailing.lessThanOrEqualToSuperview().inset(16)
+        }
+
+        return container
+    }
+
     // MARK: - Collection View Data Source
 
     /// Creates and returns the table view data source
@@ -310,6 +377,8 @@ class MenusViewController: UIViewController {
                 let container = ContainerView(content: shimmerView)
                 container.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
                 cell.configure(content: container)
+            case .emptyState:
+                cell.configure(content: buildEmptyStateView())
             default:
                 break
             }
@@ -446,7 +515,7 @@ class MenusViewController: UIViewController {
             }
 
             if north.isEmpty, west.isEmpty, central.isEmpty {
-                snapshot.appendItems([.titleLabel(title: "No eateries found...")], toSection: .main)
+                snapshot.appendItems([.emptyState], toSection: .main)
             }
         }
 
@@ -473,6 +542,7 @@ extension MenusViewController {
         case loadingLabel(title: String)
         case expandableCard(expandedEatery: ExpandedEatery, allEateries: [Eatery])
         case loadingCard(index: Int)
+        case emptyState
     }
 
     struct ExpandedEatery: Hashable {
@@ -491,6 +561,9 @@ extension MenusViewController: UITableViewDelegate {
         switch item {
         case .dayPicker:
             return 80
+        case .emptyState:
+            let height = max(tableView.bounds.height * 0.6, 220)
+            return height
         default:
             break
         }
