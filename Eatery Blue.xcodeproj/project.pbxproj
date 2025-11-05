@@ -1465,7 +1465,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Eatery Blue/Eatery Blue.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1485,7 +1485,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1509,7 +1509,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Eatery Blue/Eatery Blue.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZGMCXU7X3U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
@@ -1528,7 +1528,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cuappdev.eatery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
