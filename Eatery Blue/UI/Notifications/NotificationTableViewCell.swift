@@ -32,7 +32,7 @@ class NotificationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(notification: Notification) {
+    func configure(notification: NotificationData) {
         itemNameLabel.text = notification.itemName
         
         setupLocationLabelText(notification.eateries)
@@ -43,9 +43,8 @@ class NotificationTableViewCell: UITableViewCell {
     // MARK: setup helpers
     private func setupSelf() {
         setupItemNameLabel()
-
         contentView.addSubview(locationLabel)
-        
+
         setupTimeLabel()
         setupStarImage()
         setupArrowButton()
@@ -92,7 +91,8 @@ class NotificationTableViewCell: UITableViewCell {
            }
         }
         
-        contentView.addSubview(locationLabel)
+        locationLabel.attributedText = attributedText
+        locationLabel.textColor = .Eatery.gray05
     }
     
     private func setupTimeLabel() {
@@ -113,7 +113,7 @@ class NotificationTableViewCell: UITableViewCell {
         
         let circleSize: CGFloat = 40
         let circle = UIView(frame: CGRect(x: 0, y: 0, width: circleSize, height: circleSize))
-        circle.backgroundColor = .Eatery.gray03
+        circle.backgroundColor = .Eatery.gray01
         circle.layer.cornerRadius = circleSize / 2
 
         let imageView = UIImageView(image: arrowImage)
@@ -129,32 +129,36 @@ class NotificationTableViewCell: UITableViewCell {
         arrowButton.addSubview(circle)
         
         // TODO: push detailed page
-        // arrowButton.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
-        
         contentView.addSubview(arrowButton)
     }
 
     private func setupConstraints() {
         starImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview();
-            make.top.equalToSuperview();
-            make.height.equalTo(22);
+            make.leading.equalToSuperview().offset(23)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(22)
             make.width.equalTo(22)
         }
         
         itemNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(starImageView.snp.trailing);
-            make.top.equalToSuperview();
+            make.leading.equalTo(starImageView.snp.trailing).offset(20)
+            make.centerY.equalToSuperview()
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(itemNameLabel.snp.trailing);
-            make.centerY.equalTo(itemNameLabel.snp.centerY);
+            make.leading.equalTo(itemNameLabel.snp.trailing).offset(10)
+            make.centerY.equalTo(itemNameLabel.snp.centerY)
         }
         
         locationLabel.snp.makeConstraints { make in
-            make.top.equalTo(itemNameLabel.snp.bottom);
-            make.leading.equalTo(itemNameLabel.snp.leading);
+            make.top.equalTo(itemNameLabel.snp.bottom).offset(2)
+            make.leading.equalTo(itemNameLabel.snp.leading)
+        }
+        
+        arrowButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-23)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(40)
         }
     }
 }

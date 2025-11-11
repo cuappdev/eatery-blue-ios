@@ -146,6 +146,12 @@ class HomeViewController: UIViewController {
             navigationController?.hero.isEnabled = false
             navigationController?.pushViewController(searchViewController, animated: true)
         }
+        
+        navigationView.onNotificationTap { [weak self] in
+            guard let self = self else { return }
+            let vc = NotificationViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
 
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
     }
