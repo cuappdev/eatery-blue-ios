@@ -193,6 +193,7 @@
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
 		D8026F7A2EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */; };
+		D8563EE92EC1A38100C2F045 /* NotificationNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */; };
 		D8B191E72EC176E6004E3E97 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E62EC176E6004E3E97 /* NotificationData.swift */; };
 		D8B191E92EC179E9004E3E97 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
@@ -390,6 +391,9 @@
 		D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusFilterViewController.swift; sourceTree = "<group>"; };
 		D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusExternalOnboardingView.swift; sourceTree = "<group>"; };
 		D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		D8563EE62EC19BC700C2F045 /* EateryGetAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EateryGetAPI; sourceTree = "<group>"; };
+		D8563EE72EC19BC700C2F045 /* EateryModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EateryModel; sourceTree = "<group>"; };
+		D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNavigationView.swift; sourceTree = "<group>"; };
 		D8B191E62EC176E6004E3E97 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
 		D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -556,6 +560,8 @@
 		5D8651722773CBFB000338D4 = {
 			isa = PBXGroup;
 			children = (
+				D8563EE62EC19BC700C2F045 /* EateryGetAPI */,
+				D8563EE72EC19BC700C2F045 /* EateryModel */,
 				2E2DF2DF2AD3D3A0007A1724 /* ci_scripts */,
 				5D86517D2773CBFB000338D4 /* Eatery Blue */,
 				5D86517C2773CBFB000338D4 /* Products */,
@@ -1008,6 +1014,7 @@
 				D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */,
 				D8B191E62EC176E6004E3E97 /* NotificationData.swift */,
 				D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */,
+				D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -1289,6 +1296,7 @@
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
+				D8563EE92EC1A38100C2F045 /* NotificationNavigationView.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				998F6D0A2ABF2C19006B7F18 /* EateryExpandableCardContentView.swift in Sources */,
 				5DA434BE278B6EC7001337FD /* UITableViewCell+Extension.swift in Sources */,

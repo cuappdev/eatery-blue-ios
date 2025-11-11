@@ -182,4 +182,8 @@ class NavigationView: UICollectionReusableView {
             rightButtons.addArrangedSubview(button)
         }
     }
+    
+    func onNotificationTap(_ handler: @escaping () -> Void) {
+        notificationButton.completion = handler
+    }
 }
