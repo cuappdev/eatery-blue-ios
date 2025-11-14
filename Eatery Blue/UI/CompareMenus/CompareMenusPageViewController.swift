@@ -8,12 +8,18 @@
 import EateryModel
 import UIKit
 
+protocol CompareMenusPageViewControllerDelegate: AnyObject {
+    func compareMenusPageViewControllerDidFailToLoadMenus(_ vc: CompareMenusPageViewController)
+}
+
 class CompareMenusPageViewController: UIViewController {
     // MARK: - Properties (data)
 
     private let allEateries: [Eatery]
     private let eateries: [Eatery]
     private let tabsViewController: CompareMenusTabsViewController
+    weak var delegate: CompareMenusPageViewControllerDelegate?
+    private var didReportFailure = false
 
     // MARK: - Properties (view)
 
@@ -86,6 +92,7 @@ class CompareMenusPageViewController: UIViewController {
     private func setUpPages() {
         for eatery in eateries {
             let vc = CompareMenusEateryViewController()
+            vc.delegate = self
             vc.setUp(eatery: eatery, allEateries: allEateries)
             vc.setUpMenu(eatery: eatery)
             vc.view.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -148,5 +155,13 @@ extension CompareMenusPageViewController: UIScrollViewDelegate {
             // find tab index to highlight
             tabsViewController.highlightFromScrollPercentage(percentage)
         }
+    }
+}
+
+extension CompareMenusPageViewController: CompareMenusEateryViewControllerDelegate {
+    func compareMenusEateryViewControllerDidFailToLoadMenu(_: CompareMenusEateryViewController) {
+        if didReportFailure { return }
+        didReportFailure = true
+        delegate?.compareMenusPageViewControllerDidFailToLoadMenus(self)
     }
 }

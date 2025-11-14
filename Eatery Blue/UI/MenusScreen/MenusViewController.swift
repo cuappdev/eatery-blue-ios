@@ -251,6 +251,53 @@ class MenusViewController: UIViewController {
         }
     }
 
+    // MARK: - Empty State Helper
+
+    private func buildEmptyStateView() -> UIView {
+        let container = UIView()
+
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+
+        let imageView = UIImageView(image: UIImage(systemName: "xmark.octagon"))
+        imageView.tintColor = UIColor.Eatery.red
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(41)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Hmm, no chow here (yet)."
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let messageLabel = UILabel()
+        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+
+        stack.addArrangedSubview(imageView)
+        stack.setCustomSpacing(12, after: imageView)
+        stack.addArrangedSubview(titleLabel)
+        stack.setCustomSpacing(4, after: titleLabel)
+        stack.addArrangedSubview(messageLabel)
+
+        container.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-29)
+            make.leading.greaterThanOrEqualToSuperview().inset(41)
+            make.trailing.lessThanOrEqualToSuperview().inset(41)
+        }
+
+        return container
+    }
+
     // MARK: - Collection View Data Source
 
     /// Creates and returns the table view data source
@@ -310,6 +357,8 @@ class MenusViewController: UIViewController {
                 let container = ContainerView(content: shimmerView)
                 container.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
                 cell.configure(content: container)
+            case .emptyState:
+                cell.configure(content: buildEmptyStateView())
             default:
                 break
             }
@@ -446,7 +495,7 @@ class MenusViewController: UIViewController {
             }
 
             if north.isEmpty, west.isEmpty, central.isEmpty {
-                snapshot.appendItems([.titleLabel(title: "No eateries found...")], toSection: .main)
+                snapshot.appendItems([.emptyState], toSection: .main)
             }
         }
 
@@ -473,6 +522,7 @@ extension MenusViewController {
         case loadingLabel(title: String)
         case expandableCard(expandedEatery: ExpandedEatery, allEateries: [Eatery])
         case loadingCard(index: Int)
+        case emptyState
     }
 
     struct ExpandedEatery: Hashable {
@@ -491,6 +541,9 @@ extension MenusViewController: UITableViewDelegate {
         switch item {
         case .dayPicker:
             return 80
+        case .emptyState:
+            let height = max(tableView.bounds.height * 0.6, 220)
+            return height
         default:
             break
         }
@@ -638,12 +691,28 @@ extension MenusViewController: LogoRefreshControlDelegate {
 extension MenusViewController: MenusFilterViewControllerDelegate {
     func menusFilterViewController(_: MenusFilterViewController, didChangeLocation filter: EateryFilter) {
         self.filter = filter
-        applySnapshot()
+        if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
+            applySnapshot()
+        } else {
+            Task {
+                startLoading()
+                await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+                stopLoading()
+            }
+        }
     }
 
     func menusFilterViewController(_: MenusFilterViewController, didChangeMenuType string: String) {
         currentMealType = string
-        applySnapshot()
+        if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
+            applySnapshot()
+        } else {
+            Task {
+                startLoading()
+                await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+                stopLoading()
+            }
+        }
 
         if currentMealType == "Breakfast" {
             filterController.selectedMenuIndex = 0
@@ -663,11 +732,16 @@ extension MenusViewController: UpdateDateDelegate {
     func updateMenuDay(index: Int) {
         selectedIndex = index
         expandedEateryIds = []
-
-        if allEateries[selectedIndex] == nil {
-            startLoading()
-        } else {
+        if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
+            // Data already available for this day
             stopLoading()
+        } else {
+            // No data cached for this day so fetch it now
+            startLoading()
+            Task {
+                await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+                stopLoading()
+            }
         }
     }
 }

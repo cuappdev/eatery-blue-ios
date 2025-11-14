@@ -29,7 +29,7 @@ class EateryModelController: EateryViewController {
         }
     }
 
-    func setUp(eatery: Eatery, isTracking: Bool, shouldShowCompareMenus: Bool = true) {
+    func setUp(eatery: Eatery, isTracking: Bool, shouldShowCompareMenus _: Bool = true) {
         self.eatery = eatery
 
         resetSelectedEventIndex()
@@ -41,11 +41,7 @@ class EateryModelController: EateryViewController {
             setUpAnalytics(eatery)
         }
 
-        if shouldShowCompareMenus {
-            setUpCompareMenusButton()
-        } else {
-            compareMenusButton.isHidden = true
-        }
+        setUpCompareMenusButton()
     }
 
     func setUpMenu(eatery: Eatery) {
@@ -57,6 +53,37 @@ class EateryModelController: EateryViewController {
                 setUpNavigationView(eatery)
                 addMenuFromState()
                 menuHasLoaded = true
+            } else {
+                // Failure: Networking returned nil eatery
+                deleteSpinner()
+                removeMenuFromStackView()
+
+                // If a specific event is selected, show its info in the header
+                if let event = selectedEvent {
+                    addMenuHeaderView(
+                        eateryId: eatery.id,
+                        title: event.canonicalDay.toWeekdayString(),
+                        subtitle: EateryFormatter.default.formatEventTime(event)
+                    ) { [self] in
+                        presentMenuPicker()
+                    }
+                }
+                // Otherwise, default to today's day in the header
+                else {
+                    addMenuHeaderView(
+                        eateryId: eatery.id,
+                        title: Day().toWeekdayString(),
+                        subtitle: ""
+                    ) { [self] in
+                        presentMenuPicker()
+                    }
+                }
+                addSpacer(height: 16)
+                addInlineErrorBlock(reportIssueEateryId: nil)
+                // Keep header above any overlapping subviews added later
+                if let header = stackView.arrangedSubviews.first(where: { $0 is MenuHeaderView }) {
+                    stackView.bringSubviewToFront(header)
+                }
             }
         }
     }
@@ -121,16 +148,31 @@ class EateryModelController: EateryViewController {
     }
 
     private func setUpCompareMenusButton() {
-        compareMenusButton.buttonPress { [weak self] _ in
-            guard let self, let eatery else { return }
+        // Save the current eatery at setup time
+        let preselectedEatery = eatery
 
-            let viewController = CompareMenusSheetViewController(
-                parentNavigationController: navigationController,
-                selectedEateries: [eatery]
-            )
-            viewController.setUpSheetPresentation()
-            tabBarController?.present(viewController, animated: true)
-            AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "EateryModelController"))
+        compareMenusButton.buttonPress { [weak self, preselectedEatery] _ in
+            guard let self else { return }
+
+            guard let selectedEatery = self.eatery ?? preselectedEatery else { return }
+
+            self.view.bringSubviewToFront(self.compareMenusButton)
+
+            Task { @MainActor in
+                let viewController = CompareMenusSheetViewController(
+                    parentNavigationController: self.navigationController,
+                    selectedEateries: [selectedEatery]
+                )
+                viewController.setUpSheetPresentation()
+
+                if let presenter = self.tabBarController {
+                    presenter.present(viewController, animated: true)
+                } else {
+                    self.present(viewController, animated: true)
+                }
+
+                AppDevAnalytics.shared.logFirebase(CompareMenusButtonPressPayload(entryPage: "EateryModelController"))
+            }
         }
     }
 
@@ -202,6 +244,29 @@ class EateryModelController: EateryViewController {
 
     private func addMenuFromState() {
         guard let event = selectedEvent else {
+            // Error state
+            guard let eat = eatery else {
+                // Determine which day to display
+                let selectedDay: Day
+                if let picker = presentedViewController as? MenuPickerSheetViewController,
+                   let day = picker.selectedCanonicalDay {
+                    selectedDay = day
+                } else {
+                    selectedDay = Day()
+                }
+                addMenuHeaderView(
+                    eateryId: eatery?.id,
+                    title: selectedDay.toWeekdayString(),
+                    subtitle: ""
+                ) { [self] in
+                    presentMenuPicker()
+                }
+                addSpacer(height: 16)
+                addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
+                addViewProportionalSpacer(multiplier: 0.5)
+                return
+            }
+            // Closed for the day state
             addMenuHeaderView(
                 eateryId: eatery?.id,
                 title: "Closed Today",
@@ -252,23 +317,32 @@ class EateryModelController: EateryViewController {
             }
         }
 
+        // Treat categories with no items as absent
+        // If all categories are empty, show the inline error state
         if let menu = event.menu {
-            let sortedCategories = sortMenuCategories(categories: menu.categories)
-            if !sortedCategories.isEmpty {
-                for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
-                    addMenuCategory(menuCategory)
-                    addSpacer(height: 8)
-                }
+            // Filter out categories whose items are empty
+            let nonEmptyCategories = menu.categories.filter { !$0.items.isEmpty }
 
-                if let last = sortedCategories.last {
-                    addMenuCategory(last)
+            if nonEmptyCategories.isEmpty {
+                addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
+            } else {
+                let sortedCategories = sortMenuCategories(categories: nonEmptyCategories)
+                if !sortedCategories.isEmpty {
+                    for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
+                        addMenuCategory(menuCategory)
+                        addSpacer(height: 8)
+                    }
+
+                    if let last = sortedCategories.last {
+                        addMenuCategory(last)
+                    }
+                } else {
+                    addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
                 }
             }
+        } else {
+            addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
         }
-
-        addSpacer(height: 8)
-        addReportIssueView(eateryId: eatery?.id)
-        addViewProportionalSpacer(multiplier: 0.5)
     }
 
     private func sortMenuCategories(categories: [MenuCategory]) -> [MenuCategory] {
@@ -289,25 +363,27 @@ class EateryModelController: EateryViewController {
     }
 
     private func presentMenuPicker() {
-        guard let eatery = eatery else {
-            return
-        }
-
         let viewController = MenuPickerSheetViewController()
         viewController.setUpSheetPresentation()
         viewController.delegate = self
 
         var menuChoices: [MenuPickerSheetViewController.MenuChoice] = []
-        for event in eatery.events {
-            menuChoices.append(MenuPickerSheetViewController.MenuChoice(
-                description: event.description ?? "Event",
-                event: event
-            ))
+        if let eatery = eatery {
+            for event in eatery.events {
+                menuChoices.append(MenuPickerSheetViewController.MenuChoice(
+                    description: event.description ?? "Event",
+                    event: event
+                ))
+            }
         }
 
         viewController.setUp(menuChoices: menuChoices, selectedMenuIndex: selectedEventIndex)
 
-        tabBarController?.present(viewController, animated: true)
+        if let presenter = tabBarController {
+            presenter.present(viewController, animated: true)
+        } else {
+            present(viewController, animated: true)
+        }
     }
 
     private func didPressOrderOnlineButton() {
@@ -328,10 +404,59 @@ class EateryModelController: EateryViewController {
             MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
         ])
     }
+
+    private func addInlineErrorBlock(reportIssueEateryId: Int64?) {
+        let container = UIView()
+        container.isUserInteractionEnabled = false
+
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+
+        let imageView = UIImageView(image: UIImage(systemName: "xmark.octagon"))
+        imageView.tintColor = UIColor.Eatery.red
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(41)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Hmm, no chow here (yet)."
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let messageLabel = UILabel()
+        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+
+        stack.addArrangedSubview(imageView)
+        stack.setCustomSpacing(12, after: imageView)
+        stack.addArrangedSubview(titleLabel)
+        stack.setCustomSpacing(4, after: titleLabel)
+        stack.addArrangedSubview(messageLabel)
+
+        container.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(41)
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(32)
+            make.bottom.equalToSuperview().inset(155)
+        }
+
+        stackView.addArrangedSubview(container)
+        addSpacer(height: 16)
+        addReportIssueView(eateryId: reportIssueEateryId)
+        addViewProportionalSpacer(multiplier: 0.5)
+    }
 }
 
 extension EateryModelController: MenuPickerSheetViewControllerDelegate {
-    func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int) {
+    func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int?) {
         selectedEventIndex = index
 
         updateNavigationViewCategoriesFromState()

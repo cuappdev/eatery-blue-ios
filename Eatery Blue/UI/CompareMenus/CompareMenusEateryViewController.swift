@@ -8,6 +8,10 @@
 import EateryModel
 import UIKit
 
+protocol CompareMenusEateryViewControllerDelegate: AnyObject {
+    func compareMenusEateryViewControllerDidFailToLoadMenu(_ vc: CompareMenusEateryViewController)
+}
+
 class CompareMenusEateryViewController: UIViewController {
     // MARK: - Properties (data)
 
@@ -20,6 +24,8 @@ class CompareMenusEateryViewController: UIViewController {
         guard let selectedEventIndex else { return nil }
         return eatery?.events[selectedEventIndex]
     }
+
+    weak var delegate: CompareMenusEateryViewControllerDelegate?
 
     // MARK: - Properties (view)
 
@@ -169,6 +175,16 @@ class CompareMenusEateryViewController: UIViewController {
                 addMenuFromState()
                 spinnerView.stopAnimating()
                 menuHasLoaded = true
+
+                // Determine if this eatery has no retrievable menu
+                let hasMenu = (selectedEvent?.menu?.categories.isEmpty == false)
+                if !hasMenu {
+                    delegate?.compareMenusEateryViewControllerDidFailToLoadMenu(self)
+                }
+            } else {
+                // Networking returned nil
+                spinnerView.stopAnimating()
+                delegate?.compareMenusEateryViewControllerDidFailToLoadMenu(self)
             }
         }
     }

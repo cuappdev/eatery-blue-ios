@@ -9,7 +9,7 @@ import EateryModel
 import UIKit
 
 protocol MenuPickerSheetViewControllerDelegate: AnyObject {
-    func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int)
+    func menuPickerSheetViewController(_ vc: MenuPickerSheetViewController, didSelectMenuChoiceAt index: Int?)
     func menuPickerSheetViewControllerDidResetMenuChoice(_ vc: MenuPickerSheetViewController)
 }
 
@@ -44,6 +44,16 @@ class MenuPickerSheetViewController: SheetViewController {
 
     private var menuChoiceViews: [MenuChoiceView] = []
 
+    // MARK: - Public helpers (for EateryModelController)
+
+    // Used for the case when eatery has no events but you still want the selected day to appear
+    var selectedCanonicalDay: Day? {
+        guard let index = selectedDayIndex, index >= 0, index < days.count else {
+            return nil
+        }
+        return days[index]
+    }
+
     func setUp(menuChoices: [MenuChoice], selectedMenuIndex: Int? = nil) {
         setState(menuChoices: menuChoices, selectedMenuIndex: selectedMenuIndex)
 
@@ -51,8 +61,19 @@ class MenuPickerSheetViewController: SheetViewController {
         addDayPickerView()
         addMenuChoiceViews()
         addPillButton(title: "Show menu", style: .prominent) { [self] in
+            // If there's a selected menu, use that index
             if let selectedIndex = self.selectedMenuIndex {
                 delegate?.menuPickerSheetViewController(self, didSelectMenuChoiceAt: selectedIndex)
+            }
+            // Otherwise, use the selected day even if no menus exist
+            else if let dayIndex = self.selectedDayIndex {
+                // Find the first matching event for that day, if any
+                if let eventIndex = menuChoices.firstIndex(where: { $0.event.canonicalDay == days[dayIndex] }) {
+                    delegate?.menuPickerSheetViewController(self, didSelectMenuChoiceAt: eventIndex)
+                } else {
+                    // fallback for no events (error state and closed for the day state)
+                    delegate?.menuPickerSheetViewController(self, didSelectMenuChoiceAt: nil)
+                }
             }
         }
         addTextButton(title: "Reset") { [self] in
@@ -85,16 +106,19 @@ class MenuPickerSheetViewController: SheetViewController {
             days.append(Day().advanced(by: i))
         }
 
-        if let selectedMenuIndex = selectedMenuIndex {
+        if let selectedMenuIndex = selectedMenuIndex,
+           selectedMenuIndex >= 0,
+           selectedMenuIndex < menuChoices.count {
             let selectedDay = menuChoices[selectedMenuIndex].event.canonicalDay
-
-            selectedDayIndex = days.firstIndex(where: { day in
-                day == selectedDay
-            })
+            // Keeps the day picker selection in sync with the preselected menu
+            selectedDayIndex = days.firstIndex(where: { $0 == selectedDay })
+            self.selectedMenuIndex = selectedMenuIndex
+        } else {
+            selectedDayIndex = nil
+            self.selectedMenuIndex = nil
         }
 
         self.menuChoices = menuChoices
-        self.selectedMenuIndex = selectedMenuIndex
     }
 
     private func updateDayPickerCellsFromState() {
@@ -103,15 +127,11 @@ class MenuPickerSheetViewController: SheetViewController {
 
             let isSelected = i == selectedDayIndex
             let isToday = day == Day()
-            let isDisabled = filterMenuChoices(on: day).isEmpty
 
             if isToday {
                 if isSelected {
                     cell.dayLabel.content.textColor = .white
                     cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
-                } else if isDisabled {
-                    cell.dayLabel.content.textColor = UIColor.Eatery.blueMedium
-                    cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 } else {
                     cell.dayLabel.content.textColor = UIColor.Eatery.blue
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
@@ -120,9 +140,6 @@ class MenuPickerSheetViewController: SheetViewController {
                 if isSelected {
                     cell.dayLabel.content.textColor = .white
                     cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.black
-                } else if isDisabled {
-                    cell.dayLabel.content.textColor = UIColor.Eatery.gray03
-                    cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 } else {
                     cell.dayLabel.content.textColor = UIColor.Eatery.black
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
@@ -195,18 +212,17 @@ class MenuPickerSheetViewController: SheetViewController {
     private func didTapDayPickerCellAt(at index: Int) {
         let menuChoicesOnDay = filterMenuChoices(on: days[index])
 
-        if menuChoicesOnDay.isEmpty {
-            return
-        }
-
         if selectedDayIndex == index {
             return
         }
 
         selectedDayIndex = index
-
-        if let menuChoice = menuChoicesOnDay.first {
-            selectedMenuIndex = menuChoices.firstIndex { $0 === menuChoice }
+        // Looks at the first available menu for the tapped day
+        if let menuChoice = menuChoicesOnDay.first,
+           let idx = menuChoices.firstIndex(where: { $0 === menuChoice }) {
+            selectedMenuIndex = idx
+        } else {
+            selectedMenuIndex = nil
         }
 
         updateDayPickerCellsFromState()
