@@ -265,54 +265,34 @@ class MenusViewController: UIViewController {
         imageView.tintColor = UIColor.Eatery.red
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(72)
+            make.width.height.equalTo(41)
         }
 
         let titleLabel = UILabel()
         titleLabel.text = "Hmm, no chow here (yet)."
-        titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
         let messageLabel = UILabel()
-        messageLabel.text = "We ran into an issue loading this page. Check your connection or try reloading the page."
-        messageLabel.font = .preferredFont(for: .body, weight: .regular)
+        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
-
-        let button = UIButton(type: .system)
-        button.setTitle("Try Again", for: .normal)
-        button.titleLabel?.font = .preferredFont(for: .headline, weight: .semibold)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.Eatery.blue
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-        button.layer.cornerRadius = 22
-        button.layer.masksToBounds = true
-        button.addAction(UIAction(handler: { [weak self] _ in
-            guard let self else { return }
-            self.startLoading()
-            Task {
-                await self.updateAllEateriesFromNetworking(withPriority: self.selectedIndex)
-                self.stopLoading()
-            }
-        }), for: .touchUpInside)
 
         stack.addArrangedSubview(imageView)
         stack.setCustomSpacing(12, after: imageView)
         stack.addArrangedSubview(titleLabel)
         stack.setCustomSpacing(4, after: titleLabel)
         stack.addArrangedSubview(messageLabel)
-        stack.setCustomSpacing(16, after: messageLabel)
-        stack.addArrangedSubview(button)
 
-        let paddingContainer = ContainerView(content: stack)
-        paddingContainer.layoutMargins = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
-
-        container.addSubview(paddingContainer)
-        paddingContainer.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.leading.greaterThanOrEqualToSuperview().inset(16)
-            make.trailing.lessThanOrEqualToSuperview().inset(16)
+        container.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-29)
+            make.leading.greaterThanOrEqualToSuperview().inset(41)
+            make.trailing.lessThanOrEqualToSuperview().inset(41)
         }
 
         return container
@@ -711,12 +691,28 @@ extension MenusViewController: LogoRefreshControlDelegate {
 extension MenusViewController: MenusFilterViewControllerDelegate {
     func menusFilterViewController(_: MenusFilterViewController, didChangeLocation filter: EateryFilter) {
         self.filter = filter
-        applySnapshot()
+        if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
+            applySnapshot()
+        } else {
+            Task {
+                startLoading()
+                await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+                stopLoading()
+            }
+        }
     }
 
     func menusFilterViewController(_: MenusFilterViewController, didChangeMenuType string: String) {
         currentMealType = string
-        applySnapshot()
+        if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
+            applySnapshot()
+        } else {
+            Task {
+                startLoading()
+                await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+                stopLoading()
+            }
+        }
 
         if currentMealType == "Breakfast" {
             filterController.selectedMenuIndex = 0
@@ -736,11 +732,16 @@ extension MenusViewController: UpdateDateDelegate {
     func updateMenuDay(index: Int) {
         selectedIndex = index
         expandedEateryIds = []
-
-        if allEateries[selectedIndex] == nil {
-            startLoading()
-        } else {
+        if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
+            // Data already available for this day
             stopLoading()
+        } else {
+            // No data cached for this day so fetch it now
+            startLoading()
+            Task {
+                await updateAllEateriesFromNetworking(withPriority: selectedIndex)
+                stopLoading()
+            }
         }
     }
 }

@@ -36,12 +36,29 @@ class CompareMenusSheetViewController: SheetViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        Task {
-            await updateAllEateriesFromNetworking()
+        // Build UI immediately so the sheet is interactive while data loads
+        setUpSelf()
+        if selectedOn {
+            filterController.tapSelected()
+        }
 
-            setUpSelf()
-            if selectedOn {
-                filterController.tapSelected()
+        selectionTableView.reloadData()
+        updateSelected()
+
+        // Load data asynchronously and update UI when done
+        Task { [weak self] in
+            guard let self else { return }
+            await updateAllEateriesFromNetworking()
+            await MainActor.run {
+                // Refresh table with loaded data
+                self.updateEateriesFromState()
+                self.selectionTableView.reloadData()
+                self.updateSelected()
+                if !self.allEateries.isEmpty {
+                    self.backgroundView.text = ""
+                } else {
+                    self.backgroundView.text = "No eateries to show..."
+                }
             }
         }
     }
@@ -55,6 +72,12 @@ class CompareMenusSheetViewController: SheetViewController {
 
     private func setUpSelf() {
         addHeader(title: "Compare Menus")
+
+        // Seed from HomeViewController cache so list appears immediately
+        if allEateries.isEmpty {
+            allEateries = HomeViewController.cachedAllEateries
+            shownEateries = allEateries
+        }
 
         addChild(filterController)
         stackView.addArrangedSubview(filterController.view)
@@ -86,7 +109,7 @@ class CompareMenusSheetViewController: SheetViewController {
         selectionTableView.allowsSelectionDuringEditing = true
         selectionTableView.showsVerticalScrollIndicator = false
 
-        backgroundView.text = "No eateries to show..."
+        backgroundView.text = ""
         backgroundView.font = .systemFont(ofSize: 20, weight: .semibold)
         selectionTableView.backgroundView = backgroundView
         selectionTableView.backgroundView?.snp.makeConstraints { make in
@@ -159,21 +182,30 @@ class CompareMenusSheetViewController: SheetViewController {
     }
 
     private func updateEateriesFromState() {
+        // Start from all eateries by default
+        var nextShown: [Eatery] = allEateries
+
         if filter.isEnabled {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let coreDataStack = AppDelegate.shared.coreDataStack
 
-            let filteredEateries = allEateries.filter { eatery in
+            nextShown = allEateries.filter { eatery in
                 predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id))
             }
 
-            shownEateries = filteredEateries
-
             if filter.selected {
-                shownEateries = selectedEateries
+                // Show the user's current selections — even if empty
+                nextShown = selectedEateries
             }
+        }
+
+        shownEateries = nextShown
+
+        // Show when there truly are no eateries available at all
+        if allEateries.isEmpty {
+            backgroundView.text = "No eateries to show..."
         } else {
-            shownEateries = allEateries
+            backgroundView.text = ""
         }
 
         selectionTableView.reloadData()
@@ -198,6 +230,7 @@ class CompareMenusSheetViewController: SheetViewController {
             let allEateries = try await Networking.default.loadAllEatery()
             self.allEateries = allEateries
             shownEateries = allEateries
+            HomeViewController.cachedAllEateries = allEateries
         } catch {
             logger.error("\(#function): \(error)")
         }

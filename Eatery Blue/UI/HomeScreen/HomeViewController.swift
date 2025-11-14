@@ -21,6 +21,7 @@ class HomeViewController: UIViewController {
     // MARK: - Properties (data)
 
     private var allEateries: [Eatery] = []
+    static var cachedAllEateries: [Eatery] = []
     private var cancellables: Set<AnyCancellable> = []
     private lazy var dataSource = makeDataSource()
     private var favoritesObserver: NSObjectProtocol?
@@ -293,6 +294,7 @@ class HomeViewController: UIViewController {
         }.sorted(by: {
             $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
         })
+        HomeViewController.cachedAllEateries = allEateries
     }
 
     /// Returns the favorites carousel using the core data stack. Returns nil if the carousel is empty.
@@ -660,60 +662,34 @@ class HomeViewController: UIViewController {
         imageView.tintColor = UIColor.Eatery.red
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(72)
+            make.width.height.equalTo(41)
         }
 
         let titleLabel = UILabel()
         titleLabel.text = "Hmm, no chow here (yet)."
-        titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
         let messageLabel = UILabel()
-        messageLabel.text = "We ran into an issue loading this page. Check your connection or try reloading the page."
-        messageLabel.font = .preferredFont(for: .body, weight: .regular)
+        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
-
-        let button = UIButton(type: .system)
-        button.setTitle("Try Again", for: .normal)
-        button.titleLabel?.font = .preferredFont(for: .headline, weight: .semibold)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.Eatery.blue
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-        button.layer.cornerRadius = 22
-        button.layer.masksToBounds = true
-
-        button.addAction(UIAction { [weak self] _ in
-            guard let self else { return }
-            startLoading()
-            Task {
-                do {
-                    try await self.updateSimpleEateriesFromNetworking()
-                } catch {
-                    logger.error("\(error)")
-                }
-                self.stopLoading()
-            }
-        }, for: .touchUpInside)
 
         stack.addArrangedSubview(imageView)
         stack.setCustomSpacing(12, after: imageView)
         stack.addArrangedSubview(titleLabel)
         stack.setCustomSpacing(4, after: titleLabel)
         stack.addArrangedSubview(messageLabel)
-        stack.setCustomSpacing(16, after: messageLabel)
-        stack.addArrangedSubview(button)
 
-        let paddingContainer = ContainerView(content: stack)
-        paddingContainer.layoutMargins = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
-
-        container.addSubview(paddingContainer)
-        paddingContainer.snp.makeConstraints { make in
+        container.addSubview(stack)
+        stack.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-24)
-            make.leading.greaterThanOrEqualToSuperview().inset(16)
-            make.trailing.lessThanOrEqualToSuperview().inset(16)
+            make.centerY.equalToSuperview().offset(-34)
+            make.leading.greaterThanOrEqualToSuperview().inset(41)
+            make.trailing.lessThanOrEqualToSuperview().inset(41)
         }
 
         return container
