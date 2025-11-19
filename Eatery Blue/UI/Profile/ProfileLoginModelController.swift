@@ -114,6 +114,7 @@ extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
                 do {
                     print("Setting session id")
                     try await Networking.default.authorize(sessionId: sessionId)
+                    try await Networking.default.updateUserAccount(sessionId: sessionId)
                     delegate?.profileLoginModelController(self, didLogin: sessionId)
                     completion()
                 } catch {

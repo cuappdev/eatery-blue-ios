@@ -113,7 +113,7 @@ class Networking {
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
     
-    // Sends session id, device id, and pin back to backend to log in
+    /// Sends session id, device id, and pin back to backend to log in
     func authorize(sessionId: String) async throws {
         let url = "\(EateryEnvironment.baseURL)/user/authorize/"
         let headers: HTTPHeaders = [
@@ -143,17 +143,49 @@ class Networking {
                        headers: headers)
             .validate()
             .response { response in
-                if let data = response.data {
-                    print("Response data:", String(data: data, encoding: .utf8) ?? "<nil>")
-                }
-                if let httpResponse = response.response {
-                    print("Status code:", httpResponse.statusCode)
-                }
                 switch response.result {
                 case .success:
                     continuation.resume()
                 case .failure(let error):
-            
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    /// Called after /authorize succeeded. Updates user account info.
+    func updateUserAccount(sessionId: String) async throws {
+        print("Authorized, updating user account")
+        let url = "\(EateryEnvironment.baseURL)/user/accounts/"
+        let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(sessionId)"
+            ]
+        
+        let parameters: [String: Any]
+        
+        if let fcmToken = PushNotificationManager.shared.fcmToken {
+            parameters = [
+                "device_id": AuthStorage.deviceId,
+                "fcm_token": fcmToken
+            ]
+        } else {
+            parameters = [
+                "device_id": AuthStorage.deviceId
+            ]
+        }
+                
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.request(url,
+                       method: .post,
+                       parameters: parameters,
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    continuation.resume()
+                case .failure(let error):
                     continuation.resume(throwing: error)
                 }
             }
