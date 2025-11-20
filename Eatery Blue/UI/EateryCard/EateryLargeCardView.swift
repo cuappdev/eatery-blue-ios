@@ -134,16 +134,19 @@ class EateryLargeCardView: UICollectionViewCell {
         favoriteButtonImage.image = UIImage(named: "Favorite\(favorited ? "Selected" : "Unselected")")
         favoriteButton.buttonPress { [weak self] _ in
             guard self != nil else { return }
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: eatery.id)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
 
-            NotificationCenter.default.post(
-                name: UIViewController.notificationName,
-                object: nil,
-                userInfo: [UIViewController.notificationUserInfoKey: metadata.isFavorite]
-            )
+            UIView.performWithoutAnimation {
+                let coreDataStack = AppDelegate.shared.coreDataStack
+                let metadata = coreDataStack.metadata(eateryId: eatery.id)
+                metadata.isFavorite.toggle()
+                coreDataStack.save()
+
+                NotificationCenter.default.post(
+                    name: UIViewController.notificationName,
+                    object: nil,
+                    userInfo: [UIViewController.notificationUserInfoKey: metadata.isFavorite]
+                )
+            }
         }
     }
 

@@ -106,16 +106,18 @@ class EaterySmallCardView: UICollectionViewCell {
         favoriteButton.tap { [weak self] _ in
             guard self != nil else { return }
 
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: eatery.id)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
+            UIView.performWithoutAnimation {
+                let coreDataStack = AppDelegate.shared.coreDataStack
+                let metadata = coreDataStack.metadata(eateryId: eatery.id)
+                metadata.isFavorite.toggle()
+                coreDataStack.save()
 
-            NotificationCenter.default.post(
-                name: NSNotification.Name("favoriteEatery"),
-                object: nil,
-                userInfo: ["favorited": metadata.isFavorite]
-            )
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("favoriteEatery"),
+                    object: nil,
+                    userInfo: ["favorited": metadata.isFavorite]
+                )
+            }
         }
     }
 
