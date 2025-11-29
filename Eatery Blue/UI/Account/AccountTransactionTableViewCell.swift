@@ -37,17 +37,17 @@ class AccountTransactionTableViewCell: UITableViewCell {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .footnote, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .caption1, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpAmountLabel() {
         amountLabel.font = .preferredFont(for: .footnote, weight: .semibold)
-        amountLabel.textColor = UIColor.Eatery.black
+        amountLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpConstraints() {

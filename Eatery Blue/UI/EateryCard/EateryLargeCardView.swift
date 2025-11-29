@@ -55,7 +55,7 @@ class EateryLargeCardView: UICollectionViewCell {
     private func setUpSelf() {
         contentView.insetsLayoutMarginsFromSafeArea = false
         contentView.layoutMargins = .zero
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UIColor.systemBackground
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
         layer.shadowRadius = 4
@@ -85,7 +85,7 @@ class EateryLargeCardView: UICollectionViewCell {
     }
 
     private func setUpImageTintView() {
-        imageTintView.backgroundColor = .white
+        imageTintView.backgroundColor = UIColor.systemBackground
         imageTintView.alpha = 0
     }
 
@@ -115,12 +115,12 @@ class EateryLargeCardView: UICollectionViewCell {
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
         subtitleLabel.numberOfLines = 0
         subtitleLabel.lineBreakMode = .byWordWrapping
     }

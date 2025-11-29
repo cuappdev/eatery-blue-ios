@@ -80,7 +80,7 @@ class DemoAccountModelController: AccountViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
-        backButtonItem.tintColor = .white
+        backButtonItem.tintColor = UIColor.Eatery.default00
         navigationItem.leftBarButtonItem = backButtonItem
     }
 
@@ -167,7 +167,7 @@ extension DemoEateryAccountType {
                         )
                         ms.append(.init(
                             string: " swipe",
-                            attributes: [.font: mediumFont, .foregroundColor: UIColor.Eatery.gray05]
+                            attributes: [.font: mediumFont, .foregroundColor: UIColor.Eatery.secondaryText]
                         ))
                         return ms
                     }()
@@ -183,7 +183,7 @@ extension DemoEateryAccountType {
                         )
                         ms.append(.init(
                             string: " swipe",
-                            attributes: [.font: mediumFont, .foregroundColor: UIColor.Eatery.gray05]
+                            attributes: [.font: mediumFont, .foregroundColor: UIColor.Eatery.secondaryText]
                         ))
                         return ms
                     }()
@@ -199,7 +199,7 @@ extension DemoEateryAccountType {
                         )
                         ms.append(.init(
                             string: " swipe",
-                            attributes: [.font: mediumFont, .foregroundColor: UIColor.Eatery.gray05]
+                            attributes: [.font: mediumFont, .foregroundColor: UIColor.Eatery.secondaryText]
                         ))
                         return ms
                     }()

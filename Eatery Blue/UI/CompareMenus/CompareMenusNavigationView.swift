@@ -32,7 +32,7 @@ class CompareMenusNavigationView: UIView {
     // MARK: - Setup
 
     private func setUpSelf() {
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         addSubview(backButton)
         setUpBackButton()
@@ -46,24 +46,24 @@ class CompareMenusNavigationView: UIView {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")
-        backButton.shadowColor = UIColor.Eatery.black
+        backButton.shadowColor = UIColor.Eatery.primaryText
         backButton.shadowOffset = CGSize(width: 0, height: 4)
-        backButton.backgroundColor = .white
+        backButton.backgroundColor = UIColor.Eatery.default00
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 
     private func setUpTitleLabel() {
         titleLabel.text = "Compare Menus"
         titleLabel.font = .eateryNavigationBarTitleFont
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .center
     }
 
     private func setUpEditButton() {
         editButton.content.image = UIImage(named: "Pencil")
-        editButton.shadowColor = UIColor.Eatery.black
+        editButton.shadowColor = UIColor.Eatery.primaryText
         editButton.shadowOffset = CGSize(width: 0, height: 4)
-        editButton.backgroundColor = .white
+        editButton.backgroundColor = UIColor.Eatery.default00
         editButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 

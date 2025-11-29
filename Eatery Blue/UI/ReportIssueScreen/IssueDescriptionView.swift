@@ -36,7 +36,7 @@ class IssueDescriptionView: UIView {
 
     private func setUpTextView() {
         textView.backgroundColor = .clear
-        textView.textColor = UIColor.Eatery.black
+        textView.textColor = UIColor.Eatery.primaryText
         textView.font = .preferredFont(for: .subheadline, weight: .medium)
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         textView.textContainer.lineFragmentPadding = 0
@@ -44,7 +44,7 @@ class IssueDescriptionView: UIView {
 
     private func setUpPlaceholderLabel() {
         placeholderLabel.text = "Tell us what's wrong..."
-        placeholderLabel.textColor = UIColor.Eatery.gray05
+        placeholderLabel.textColor = UIColor.Eatery.secondaryText
         placeholderLabel.font = .preferredFont(for: .subheadline, weight: .medium)
     }
 

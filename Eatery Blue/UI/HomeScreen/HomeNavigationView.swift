@@ -38,13 +38,13 @@ class HomeNavigationView: NavigationView {
         layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         titleLabel.text = "Eatery"
-        titleLabel.textColor = .white
+        titleLabel.textColor = UIColor.Eatery.default00
 
         largeTitleLabel.text = "Eatery"
-        largeTitleLabel.textColor = .white
+        largeTitleLabel.textColor = UIColor.Eatery.default00
 
         searchButton.image = UIImage(named: "Search")?.withRenderingMode(.alwaysTemplate)
-        searchButton.tintColor = .white
+        searchButton.tintColor = UIColor.Eatery.default00
         setRightButtons([searchButton])
 
         addSubview(logoRefreshControl)

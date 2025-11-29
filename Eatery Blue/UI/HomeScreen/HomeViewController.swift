@@ -120,7 +120,7 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpCollectionView() {
-        collectionView.backgroundColor = .Eatery.offWhite
+        collectionView.backgroundColor = UIColor.Eatery.surface
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.delegate = self
         collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0

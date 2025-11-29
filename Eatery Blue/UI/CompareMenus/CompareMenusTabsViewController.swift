@@ -89,8 +89,8 @@ class CompareMenusTabsViewController: UIViewController {
         container.isUserInteractionEnabled = true
 
         let background = UIView()
-        background.backgroundColor = .white
-        background.layer.shadowColor = UIColor.Eatery.black.cgColor
+        background.backgroundColor = UIColor.Eatery.default00
+        background.layer.shadowColor = UIColor.Eatery.primaryText.cgColor
         background.layer.shadowOpacity = 0.25
         background.layer.shadowOffset = .zero
         background.layer.shadowRadius = 2

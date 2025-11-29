@@ -56,7 +56,7 @@ class EaterySmallCardView: UICollectionViewCell {
     // MARK: - Setup
 
     private func setUpSelf() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UIColor.systemBackground
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
         layer.shadowRadius = 4
@@ -88,15 +88,15 @@ class EaterySmallCardView: UICollectionViewCell {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .headline, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.numberOfLines = 1
         titleLabel.textAlignment = .left
     }
 
     private func setUpFavoriteButton() {
-        favoriteButton.shadowColor = UIColor.Eatery.black
+        favoriteButton.shadowColor = UIColor.Eatery.primaryText
         favoriteButton.shadowOffset = CGSize(width: 0, height: 4)
-        favoriteButton.backgroundColor = .white
+        favoriteButton.backgroundColor = UIColor.systemBackground
         favoriteButton.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
     }
 
@@ -169,7 +169,7 @@ class EaterySmallCardView: UICollectionViewCell {
 
     private func setUpSubtitleLabel(_ subtitleLabel: UILabel) {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
         subtitleLabel.numberOfLines = 0
         subtitleLabel.lineBreakMode = .byWordWrapping
 

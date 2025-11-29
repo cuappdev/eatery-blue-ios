@@ -124,7 +124,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             mealSwipesView.label.textColor = UIColor.Eatery.blue
         } else {
             mealSwipesView.imageView.image = UIImage(named: "MealSwipesUnselected")
-            mealSwipesView.label.textColor = UIColor.Eatery.gray05
+            mealSwipesView.label.textColor = UIColor.Eatery.secondaryText
         }
 
         if selectedPaymentMethods.contains(.brbs) {
@@ -132,7 +132,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             brbsView.label.textColor = UIColor.Eatery.red
         } else {
             brbsView.imageView.image = UIImage(named: "BRBsUnselected")
-            brbsView.label.textColor = UIColor.Eatery.gray05
+            brbsView.label.textColor = UIColor.Eatery.secondaryText
         }
 
         if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
@@ -140,7 +140,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             cashOrCreditView.label.textColor = UIColor.Eatery.green
         } else {
             cashOrCreditView.imageView.image = UIImage(named: "CashUnselected")
-            cashOrCreditView.label.textColor = UIColor.Eatery.gray05
+            cashOrCreditView.label.textColor = UIColor.Eatery.secondaryText
         }
     }
 

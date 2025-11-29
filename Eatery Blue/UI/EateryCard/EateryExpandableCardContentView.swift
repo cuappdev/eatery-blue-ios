@@ -90,7 +90,7 @@ class EateryExpandableCardContentView: UIView {
 
     private func setupChevronArrow() {
         chevronArrow.image = UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate)
-        chevronArrow.tintColor = .black
+        chevronArrow.tintColor = UIColor.Eatery.primaryText
         chevronArrow.contentMode = .scaleAspectFit
 
         addSubview(chevronArrow)
@@ -102,14 +102,14 @@ class EateryExpandableCardContentView: UIView {
     }
 
     private func setupEateryNameLabel() {
-        eateryNameLabel.textColor = UIColor.Eatery.black
+        eateryNameLabel.textColor = UIColor.Eatery.primaryText
         eateryNameLabel.font = UIFont.preferredFont(for: .title3, weight: .semibold)
 
         eateryStackView.addArrangedSubview(eateryNameLabel)
     }
 
     private func setupEateryStatusLabel() {
-        eateryStatusLabel.textColor = UIColor.Eatery.gray03
+        eateryStatusLabel.textColor = UIColor.Eatery.secondaryText
         eateryStatusLabel.font = UIFont.preferredFont(for: .footnote, weight: .medium)
 
         eateryStackView.addArrangedSubview(eateryStatusLabel)

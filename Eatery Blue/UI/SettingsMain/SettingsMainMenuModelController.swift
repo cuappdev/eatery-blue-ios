@@ -36,7 +36,8 @@ class SettingsMainMenuModelController: SettingsMainMenuViewController {
         ))
         addSeparator()
         addSettingsItem(SettingsItem(
-            image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate).withTintColor(UIColor.Eatery.gray05),
+            image: UIImage(named: "Eatery")?.withRenderingMode(.alwaysTemplate)
+                .withTintColor(UIColor.Eatery.secondaryText),
             title: "App Icon",
             subtitle: "Select the Eatery app icon for your phone",
             action: { [weak self] in

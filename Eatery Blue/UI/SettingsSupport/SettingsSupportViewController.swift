@@ -34,12 +34,12 @@ class SettingsSupportViewController: UIViewController {
     private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Eatery.black as Any,
-            .font: UIFont.eateryNavigationBarTitleFont
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
+            .font: UIFont.eateryNavigationBarTitleFont,
         ]
         appearance.largeTitleTextAttributes = [
             .foregroundColor: UIColor.Eatery.blue as Any,
-            .font: UIFont.eateryNavigationBarLargeTitleFont
+            .font: UIFont.eateryNavigationBarLargeTitleFont,
         ]
 
         navigationItem.title = "Support"
@@ -58,7 +58,7 @@ class SettingsSupportViewController: UIViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
-        backButton.tintColor = UIColor.Eatery.black
+        backButton.tintColor = UIColor.Eatery.primaryText
         navigationItem.leftBarButtonItem = backButton
     }
 

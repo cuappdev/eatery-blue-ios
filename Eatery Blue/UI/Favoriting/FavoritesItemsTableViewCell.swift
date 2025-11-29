@@ -113,7 +113,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             let eateryLabel = UILabel()
             eateryLabel.text = eatery
             eateryLabel.font = .systemFont(ofSize: 13, weight: .light)
-            eateryLabel.textColor = .Eatery.gray05
+            eateryLabel.textColor = .Eatery.secondaryText
             eateriesStackView.addArrangedSubview(eateryLabel)
         }
 
@@ -156,11 +156,11 @@ class FavoritesItemsTableViewCell: UITableViewCell {
         container.layer.cornerRadius = 9
         container.layer.borderWidth = 1
         container.layer.borderColor = UIColor.Eatery.gray01.cgColor
-        container.layer.shadowColor = UIColor.lightGray.cgColor
+        container.layer.shadowColor = UIColor.Eatery.gray02.cgColor
         container.layer.shadowRadius = 6
         container.layer.shadowOpacity = 0.4
         container.layer.shadowOffset = CGSize(width: 0, height: 0)
-        container.layer.backgroundColor = UIColor.white.cgColor
+        container.layer.backgroundColor = UIColor.Eatery.default00.cgColor
         container.layoutMargins = UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14)
     }
 
@@ -181,7 +181,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
 
     private func setUpChevronImageView() {
         chevronImageView.image = UIImage(systemName: "chevron.down")
-        chevronImageView.tintColor = .Eatery.black
+        chevronImageView.tintColor = UIColor.Eatery.primaryText
     }
 
     private func setUpStackView() {

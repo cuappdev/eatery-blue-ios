@@ -40,7 +40,7 @@ class IssueTypeButtonView: UIView {
 
     private func setUpImageView() {
         imageView.image = UIImage(named: "ChevronDown")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor.Eatery.gray05
+        imageView.tintColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpConstraints() {

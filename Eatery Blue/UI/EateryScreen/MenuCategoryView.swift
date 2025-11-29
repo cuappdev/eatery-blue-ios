@@ -32,7 +32,7 @@ class MenuCategoryView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
     }
 

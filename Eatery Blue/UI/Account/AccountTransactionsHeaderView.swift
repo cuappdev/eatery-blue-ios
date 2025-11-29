@@ -74,7 +74,7 @@ class AccountTransactionsHeaderView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpButtonImageView() {
@@ -95,7 +95,7 @@ class AccountTransactionsHeaderView: UIView {
 
     private func setUpHeaderLabel() {
         headerLabel.font = .preferredFont(for: .body, weight: .semibold)
-        headerLabel.textColor = UIColor.Eatery.black
+        headerLabel.textColor = UIColor.Eatery.primaryText
 
         headerLabelContainer.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
     }

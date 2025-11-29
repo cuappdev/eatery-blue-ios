@@ -37,12 +37,12 @@ class MenuChoiceView: UIView {
 
     private func setUpDescriptionLabel() {
         descriptionLabel.font = .preferredFont(for: .body, weight: .semibold)
-        descriptionLabel.textColor = UIColor.Eatery.black
+        descriptionLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpTimeLabel() {
         timeLabel.font = .preferredFont(for: .caption1, weight: .semibold)
-        timeLabel.textColor = UIColor.Eatery.gray05
+        timeLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpImageView() {}

@@ -43,13 +43,13 @@ class ReportIssueButtonView: UIView {
     private func setUpImageView() {
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "Report")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor.Eatery.black
+        imageView.tintColor = UIColor.Eatery.primaryText
     }
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .footnote, weight: .semibold)
         titleLabel.text = "Report an issue"
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpConstraints() {

@@ -94,14 +94,22 @@ final class SettingsDisplaySheetViewController: SheetViewController {
         // Persist choice
         DisplayTheme.set(selected)
 
+        // Determine the interface style to apply
+        let style: UIUserInterfaceStyle
         switch selected {
         case .light:
-            overrideUserInterfaceStyle = .light
+            style = .light
         case .dark:
-            overrideUserInterfaceStyle = .dark
+            style = .dark
         case .device:
-            overrideUserInterfaceStyle = .unspecified
+            style = .unspecified
         }
+
+        // Apply to all windows so the whole app updates immediately
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .forEach { $0.overrideUserInterfaceStyle = style }
     }
 
     private func separatorView() -> UIView {
@@ -134,12 +142,12 @@ private final class OptionRow: UIControl {
         // Icon
         iconView.image = icon
         iconView.contentMode = .scaleAspectFit
-        iconView.tintColor = UIColor.Eatery.gray05
+        iconView.tintColor = UIColor.Eatery.secondaryText
 
         // Title
         titleLabel.text = title
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.numberOfLines = 1
 
         // Layout container
@@ -197,7 +205,7 @@ private final class Radio: UIView {
         let outer = CAShapeLayer()
         outer.path = UIBezierPath(ovalIn: bounds.insetBy(dx: 2.5, dy: 2.5)).cgPath
         outer.fillColor = UIColor.clear.cgColor
-        outer.strokeColor = UIColor.Eatery.gray05.cgColor
+        outer.strokeColor = UIColor.Eatery.secondaryText.cgColor
         outer.lineWidth = 2
         layer.addSublayer(outer)
 
@@ -205,9 +213,9 @@ private final class Radio: UIView {
             let innerRect = bounds.insetBy(dx: bounds.width * 0.22, dy: bounds.height * 0.22)
             let inner = CAShapeLayer()
             inner.path = UIBezierPath(ovalIn: innerRect).cgPath
-            inner.fillColor = UIColor.Eatery.black.cgColor
+            inner.fillColor = UIColor.Eatery.primaryText.cgColor
             layer.addSublayer(inner)
-            outer.strokeColor = UIColor.Eatery.black.cgColor
+            outer.strokeColor = UIColor.Eatery.primaryText.cgColor
         }
     }
 }

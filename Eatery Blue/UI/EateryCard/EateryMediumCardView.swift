@@ -53,7 +53,7 @@ class EateryMediumCardView: UICollectionViewCell {
     private func setUpSelf() {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UIColor.systemBackground
         layer.shadowRadius = 4
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
@@ -89,7 +89,7 @@ class EateryMediumCardView: UICollectionViewCell {
     }
 
     private func setUpImageTintView() {
-        imageTintView.backgroundColor = .white
+        imageTintView.backgroundColor = UIColor.systemBackground
         imageTintView.alpha = 0
     }
 
@@ -102,12 +102,12 @@ class EateryMediumCardView: UICollectionViewCell {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpFavoriteButton() {

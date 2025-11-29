@@ -72,7 +72,7 @@ class OnboardingFeaturesViewController: UIViewController {
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(backButton)
         setUpBackButton()
@@ -89,7 +89,7 @@ class OnboardingFeaturesViewController: UIViewController {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
-        backButton.content.tintColor = UIColor.Eatery.black
+        backButton.content.tintColor = UIColor.Eatery.primaryText
         backButton.content.contentMode = .scaleAspectFit
         backButton.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
 
@@ -124,7 +124,7 @@ class OnboardingFeaturesViewController: UIViewController {
 
     private func setUpNextButton() {
         nextButton.content.text = "Next"
-        nextButton.content.textColor = UIColor.Eatery.black
+        nextButton.content.textColor = UIColor.Eatery.primaryText
         nextButton.content.font = .preferredFont(for: .body, weight: .semibold)
         nextButton.content.textAlignment = .center
         nextButton.backgroundColor = UIColor.Eatery.gray00
@@ -203,7 +203,7 @@ class OnboardingFeaturesViewController: UIViewController {
             nextButton.content.font = .preferredFont(for: .body, weight: .semibold)
             nextButton.content.textAlignment = .center
             nextButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
-            nextButton.content.textColor = .white
+            nextButton.content.textColor = UIColor.Eatery.default00
             nextButton.backgroundColor = UIColor.Eatery.blue
             nextButton.buttonPress { [self] _ in
                 AppDevAnalytics.shared.logFirebase(AccountLoginPayload())

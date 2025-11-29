@@ -82,7 +82,7 @@ class WaitTimesView: UIView {
 
     private func setUpWaitTimeLabel() {
         waitTimeLabel.content.font = .preferredFont(for: .caption2, weight: .semibold)
-        waitTimeLabel.content.textColor = .white
+        waitTimeLabel.content.textColor = UIColor.Eatery.default00
         waitTimeLabel.cornerRadius = 4
         waitTimeLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
         waitTimeLabel.layoutMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)

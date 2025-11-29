@@ -32,9 +32,9 @@ class MenuCardTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        contentView.backgroundColor = .Eatery.offWhite
+        contentView.backgroundColor = UIColor.Eatery.surface
 
-        containerView.backgroundColor = UIColor.white
+        containerView.backgroundColor = UIColor.Eatery.default00
         containerView.layer.cornerRadius = 8
         containerView.layer.shadowRadius = 6
         containerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)

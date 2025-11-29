@@ -53,12 +53,12 @@ class MenuHeaderView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .largeTitle, weight: .bold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpButtonImageView() {
@@ -69,7 +69,7 @@ class MenuHeaderView: UIView {
         let titleLabel = UILabel()
         titleLabel.text = "Change Date"
         titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
 
         buttonView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -79,6 +79,7 @@ class MenuHeaderView: UIView {
 
         let imageView = UIImageView()
         imageView.image = UIImage(named: "EateryCalendar")
+        imageView.contentMode = .center
 
         buttonView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
@@ -93,7 +94,7 @@ class MenuHeaderView: UIView {
     private func setUpMenuInaccuracyLabel() {
         menuInaccuracyLabel.text = notice
         menuInaccuracyLabel.font = .preferredFont(for: .caption2, weight: .semibold)
-        menuInaccuracyLabel.textColor = UIColor.Eatery.gray05
+        menuInaccuracyLabel.textColor = UIColor.Eatery.secondaryText
         menuInaccuracyLabel.lineBreakMode = .byWordWrapping
         menuInaccuracyLabel.numberOfLines = 0
     }

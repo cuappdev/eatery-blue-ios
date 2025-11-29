@@ -21,7 +21,7 @@ class OnboardingStartViewController: UIViewController {
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(eateryLogoView)
         setUpEateryLogoView()
@@ -52,7 +52,7 @@ class OnboardingStartViewController: UIViewController {
         nextButton.content.font = .preferredFont(for: .body, weight: .semibold)
         nextButton.content.textAlignment = .center
 
-        nextButton.backgroundColor = .white
+        nextButton.backgroundColor = UIColor.Eatery.default00
         nextButton.shadowOffset = CGSize(width: 0, height: 4)
         nextButton.cornerRadius = 8
         nextButton.shadowRadius = 4
