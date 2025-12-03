@@ -29,5 +29,6 @@ extension UIColor {
         static let default01 = UIColor(named: "Default01")!
         static let primaryText = UIColor(named: "PrimaryText")!
         static let secondaryText = UIColor(named: "SecondaryText")!
+        static let card = UIColor(named: "Card")!
     }
 }

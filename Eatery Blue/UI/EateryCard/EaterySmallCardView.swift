@@ -56,7 +56,7 @@ class EaterySmallCardView: UICollectionViewCell {
     // MARK: - Setup
 
     private func setUpSelf() {
-        contentView.backgroundColor = UIColor.systemBackground
+        contentView.backgroundColor = UIColor.Eatery.card
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
         layer.shadowRadius = 4

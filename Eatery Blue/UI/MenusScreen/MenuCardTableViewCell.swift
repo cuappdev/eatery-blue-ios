@@ -34,7 +34,7 @@ class MenuCardTableViewCell: UITableViewCell {
 
         contentView.backgroundColor = UIColor.Eatery.surface
 
-        containerView.backgroundColor = UIColor.Eatery.default00
+        containerView.backgroundColor = UIColor.Eatery.card
         containerView.layer.cornerRadius = 8
         containerView.layer.shadowRadius = 6
         containerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)

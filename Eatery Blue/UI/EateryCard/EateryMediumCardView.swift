@@ -53,7 +53,7 @@ class EateryMediumCardView: UICollectionViewCell {
     private func setUpSelf() {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = UIColor.systemBackground
+        contentView.backgroundColor = UIColor.Eatery.card
         layer.shadowRadius = 4
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
