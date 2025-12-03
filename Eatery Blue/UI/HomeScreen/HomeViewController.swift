@@ -21,6 +21,7 @@ class HomeViewController: UIViewController {
     // MARK: - Properties (data)
 
     private var allEateries: [Eatery] = []
+    static var cachedAllEateries: [Eatery] = []
     private var cancellables: Set<AnyCancellable> = []
     private lazy var dataSource = makeDataSource()
     private var favoritesObserver: NSObjectProtocol?
@@ -293,6 +294,7 @@ class HomeViewController: UIViewController {
         }.sorted(by: {
             $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
         })
+        HomeViewController.cachedAllEateries = allEateries
     }
 
     /// Returns the favorites carousel using the core data stack. Returns nil if the carousel is empty.
@@ -471,6 +473,8 @@ class HomeViewController: UIViewController {
 
                 let container = ContainerView(content: stackView)
                 cell.configure(content: container)
+            case .emptyState:
+                cell.configure(content: buildEmptyStateView())
             default:
                 break
             }
@@ -539,8 +543,16 @@ class HomeViewController: UIViewController {
             currentEateries = filteredEateries
 
             if filteredEateries.isEmpty {
-                snapshot.appendItems([.titleLabel(title: "No eateries found...")], toSection: .main)
+                snapshot.appendItems([.emptyState], toSection: .main)
+                dataSource.apply(snapshot, animatingDifferences: animated)
+                return
             }
+        }
+
+        if currentEateries.isEmpty {
+            snapshot.appendItems([.emptyState], toSection: .main)
+            dataSource.apply(snapshot, animatingDifferences: animated)
+            return
         }
 
         LocationManager.shared.$userLocation
@@ -635,6 +647,53 @@ class HomeViewController: UIViewController {
         shownEateries = openEateries + closedEateries
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
+
+    // MARK: - Empty State Helper
+
+    private func buildEmptyStateView() -> UIView {
+        let container = UIView()
+
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+
+        let imageView = UIImageView(image: UIImage(systemName: "xmark.octagon"))
+        imageView.tintColor = UIColor.Eatery.red
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(41)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Hmm, no chow here (yet)."
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let messageLabel = UILabel()
+        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+
+        stack.addArrangedSubview(imageView)
+        stack.setCustomSpacing(12, after: imageView)
+        stack.addArrangedSubview(titleLabel)
+        stack.setCustomSpacing(4, after: titleLabel)
+        stack.addArrangedSubview(messageLabel)
+
+        container.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-34)
+            make.leading.greaterThanOrEqualToSuperview().inset(41)
+            make.trailing.lessThanOrEqualToSuperview().inset(41)
+        }
+
+        return container
+    }
 }
 
 // MARK: - Collection View Extensions
@@ -659,6 +718,7 @@ extension HomeViewController {
         case loadingCarousel
         case loadingLabel(title: String)
         case loadingCard(isLarge: Bool, key: Int)
+        case emptyState
 
         func getSize(collectionView: UICollectionView) -> CGSize {
             var width = collectionView.contentSize.width - Constants.collectionViewSectionPadding * 2
@@ -690,6 +750,9 @@ extension HomeViewController {
                     width = collectionView.contentSize.width / 2
                     height = width
                 }
+            case .emptyState:
+                width = collectionView.contentSize.width
+                height = max(collectionView.bounds.height * 0.6, 220)
             }
 
             // Account for edge case where width or height is less than zero
