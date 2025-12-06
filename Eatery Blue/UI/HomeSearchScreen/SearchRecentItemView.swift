@@ -56,7 +56,7 @@ class SearchRecentItemView: UIView {
     }
 
     private func setUpSubtitleLabel() {
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
         subtitleLabel.font = .preferredFont(for: .caption1, weight: .medium)
     }
 

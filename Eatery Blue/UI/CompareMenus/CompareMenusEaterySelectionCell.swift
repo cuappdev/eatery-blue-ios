@@ -60,7 +60,7 @@ class CompareMenusEaterySelectionCell: UITableViewCell {
 
         selectionStyle = .none
         let cellBackground = UIView()
-        cellBackground.backgroundColor = .white
+        cellBackground.backgroundColor = UIColor.Eatery.default00
         backgroundView = cellBackground
         cellBackground.snp.makeConstraints { make in
             make.edges.equalTo(self.snp.edges)

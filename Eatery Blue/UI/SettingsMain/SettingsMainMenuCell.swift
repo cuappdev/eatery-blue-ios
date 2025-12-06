@@ -42,18 +42,18 @@ class SettingsMainMenuCell: UIView {
     }
 
     private func setUpImageView() {
-        imageView.tintColor = UIColor.Eatery.gray05
+        imageView.tintColor = UIColor.Eatery.secondaryText
         imageView.contentMode = .scaleAspectFit
     }
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.font = .preferredFont(for: .caption1, weight: .semibold)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpChevronImageView() {

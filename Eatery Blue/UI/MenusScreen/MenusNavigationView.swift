@@ -30,10 +30,10 @@ class MenusNavigationView: NavigationView {
         layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         titleLabel.text = "Upcoming Menus"
-        titleLabel.textColor = .white
+        titleLabel.textColor = UIColor.Eatery.default00
 
         largeTitleLabel.text = "Upcoming Menus"
-        largeTitleLabel.textColor = .white
+        largeTitleLabel.textColor = UIColor.Eatery.default00
 
         addSubview(logoRefreshControl)
         logoRefreshControl.isHidden = false

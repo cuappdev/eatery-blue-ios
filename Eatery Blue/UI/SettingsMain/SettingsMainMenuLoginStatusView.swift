@@ -33,7 +33,7 @@ class SettingsMainMenuLoginStatusView: UIView {
     }
 
     private func setUpLabel() {
-        label.textColor = UIColor.Eatery.gray05
+        label.textColor = UIColor.Eatery.secondaryText
         label.font = .preferredFont(for: .body, weight: .semibold)
         label.snp.makeConstraints { make in
             make.centerY.leading.equalTo(layoutMarginsGuide)

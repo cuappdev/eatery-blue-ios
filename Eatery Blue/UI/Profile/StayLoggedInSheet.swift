@@ -22,14 +22,14 @@ class StayLoggedInSheet: SheetViewController {
     }
 
     private let desc = """
-        Due to updated Cornell security policies users are automatically logged out of their account after 24 hours.
-        """
+    Due to updated Cornell security policies users are automatically logged out of their account after 24 hours.
+    """
     private let instruction = "Log back in to see your current total BRBs, Meal Swipes, City Bucks and Laundry."
 
     private func setUpStackView() {
         stackView.spacing = 16
         addHeader(title: "Log Back In?")
-        addText(text: desc, weight: .regular, color: .black)
+        addText(text: desc, weight: .regular, color: UIColor.Eatery.primaryText)
         addText(text: instruction, weight: .bold, color: UIColor.Eatery.gray06)
         addPillButton(
             title: "Log in",

@@ -80,10 +80,10 @@ class MiniSelectionView: UIView {
             .withRenderingMode(.alwaysTemplate)
 
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .Eatery.gray06
+        imageView.tintColor = UIColor.Eatery.gray06
 
         let button = UIView()
-        button.backgroundColor = .Eatery.gray00
+        button.backgroundColor = UIColor.Eatery.gray00
         button.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         button.tap { [weak self] _ in
             guard let self else { return }
@@ -110,11 +110,12 @@ class MiniSelectionView: UIView {
         guard let button = buttons[identifier] else { return }
 
         for pair in buttons.values {
-            pair.container.backgroundColor = .Eatery.gray00
-            pair.image.tintColor = .Eatery.gray06
+            pair.container.backgroundColor = UIColor.Eatery.gray00
+            pair.container.tintColor = UIColor.Eatery.gray00
+            pair.image.tintColor = UIColor.Eatery.gray06
         }
 
-        button.container.backgroundColor = .Eatery.blueLight
-        button.image.tintColor = .Eatery.blue
+        button.container.backgroundColor = UIColor.Eatery.blueLight
+        button.image.tintColor = UIColor.Eatery.blue
     }
 }

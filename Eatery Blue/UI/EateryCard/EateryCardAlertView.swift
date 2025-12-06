@@ -28,7 +28,7 @@ class EateryCardAlertView: UIView {
         insetsLayoutMarginsFromSafeArea = false
         layoutMargins = UIEdgeInsets(top: 2, left: 12, bottom: 2, right: 12)
         tintColor = UIColor.Eatery.orange
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         addSubview(stackView)
         setUpStackView()

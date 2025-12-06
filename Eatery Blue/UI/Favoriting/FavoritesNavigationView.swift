@@ -81,7 +81,7 @@ class FavoritesNavigationView: UIView {
 
     private func setUpSelf() {
         layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 4, right: 16)
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         addSubview(backButton)
         setUpBackButton()
@@ -108,9 +108,9 @@ class FavoritesNavigationView: UIView {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")
-        backButton.shadowColor = UIColor.Eatery.black
+        backButton.shadowColor = UIColor.Eatery.primaryText
         backButton.shadowOffset = CGSize(width: 0, height: 4)
-        backButton.backgroundColor = .white
+        backButton.backgroundColor = UIColor.Eatery.default00
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 16)
 
         backButton.buttonPress { [weak self] _ in
@@ -129,9 +129,9 @@ class FavoritesNavigationView: UIView {
 
     private func setUpSearchButton() {
         searchButton.content.image = UIImage(named: "Search")
-        searchButton.shadowColor = UIColor.Eatery.black
+        searchButton.shadowColor = UIColor.Eatery.primaryText
         searchButton.shadowOffset = CGSize(width: 0, height: 4)
-        searchButton.backgroundColor = .white
+        searchButton.backgroundColor = UIColor.Eatery.default00
         searchButton.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 0)
 
         searchButton.buttonPress { [weak self] _ in
@@ -167,7 +167,7 @@ class FavoritesNavigationView: UIView {
         searchBar.placeholder = "Search for faves..."
         searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = .white
+        searchBar.backgroundColor = UIColor.Eatery.default00
     }
 
     private func setUpConstraints() {

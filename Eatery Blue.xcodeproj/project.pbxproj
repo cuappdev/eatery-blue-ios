@@ -156,6 +156,7 @@
 		998F6D1D2AC31B57006B7F18 /* MenuCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */; };
 		998F6D252AC3568C006B7F18 /* MealType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D242AC3568C006B7F18 /* MealType.swift */; };
 		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
+		AD03139C2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor+Extension.swift */; };
@@ -352,6 +353,7 @@
 		998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCardTableViewCell.swift; sourceTree = "<group>"; };
 		998F6D242AC3568C006B7F18 /* MealType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealType.swift; sourceTree = "<group>"; };
 		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
+		AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDisplaySheetViewController.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerCollectionViewCell.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -733,6 +735,7 @@
 				5DBA89A52784D898002DCA6B /* Root */,
 				5D377CF327A20EE400F8DC37 /* SettingsAbout */,
 				D04FB8772BCEE74D0058F732 /* SettingsAppIcon */,
+				AD03139B2EC82921006F7E1B /* SettingsDisplay */,
 				5DA434C4278CD0DF001337FD /* SettingsMain */,
 				5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */,
 				5D377CE627A1AB7200F8DC37 /* SettingsSupport */,
@@ -946,6 +949,14 @@
 				998F6D242AC3568C006B7F18 /* MealType.swift */,
 			);
 			path = MealTypeSheet;
+			sourceTree = "<group>";
+		};
+		AD03139B2EC82921006F7E1B /* SettingsDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */,
+			);
+			path = SettingsDisplay;
 			sourceTree = "<group>";
 		};
 		D01D80752BC638A000253976 /* Onboarding */ = {
@@ -1235,6 +1246,7 @@
 				5DA434C2278B9700001337FD /* AccountPickerCell.swift in Sources */,
 				5D377CF727A20FE300F8DC37 /* SettingsAboutViewController.swift in Sources */,
 				5D0CDC4B2774F26700AD0E27 /* TimingCellView.swift in Sources */,
+				AD03139C2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift in Sources */,
 				FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */,
 				5D0B9D77279F1D73004B4AA1 /* SettingsPrivacyViewController.swift in Sources */,
 				2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */,
@@ -1471,7 +1483,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1514,7 +1526,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

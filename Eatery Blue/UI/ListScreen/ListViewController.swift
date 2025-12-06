@@ -42,7 +42,7 @@ class ListViewController: UIViewController {
     }
 
     private func setUpSelf() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(tableView)
         setUpTableView()

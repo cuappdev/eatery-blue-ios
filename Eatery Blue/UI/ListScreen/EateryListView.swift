@@ -44,7 +44,7 @@ class EateryListView: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         addSubview(tableView)
         setUpTableView()

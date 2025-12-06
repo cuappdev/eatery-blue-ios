@@ -75,7 +75,7 @@ class CompareMenusEateryViewController: UIViewController {
 
         hoursView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
-        hoursView.titleLabel.textColor = UIColor.Eatery.gray05
+        hoursView.titleLabel.textColor = UIColor.Eatery.secondaryText
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
             attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: hoursView.titleLabel.font)
@@ -116,7 +116,7 @@ class CompareMenusEateryViewController: UIViewController {
     private func setUpSpinnerView() {
         spinnerView.hidesWhenStopped = true
         spinnerView.style = .medium
-        spinnerView.backgroundColor = .white
+        spinnerView.backgroundColor = UIColor.Eatery.default00
         spinnerView.startAnimating()
     }
 
@@ -243,7 +243,7 @@ class CompareMenusEateryViewController: UIViewController {
         sorryText.text = "Sorry, there is no menu available now."
         sorryText.font = .systemFont(ofSize: 17, weight: .medium)
         sorryText.textAlignment = .center
-        sorryText.backgroundColor = .white
+        sorryText.backgroundColor = UIColor.Eatery.default00
         sorryText.clipsToBounds = true
         sorryText.layer.cornerRadius = 10
         sorryText.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -264,14 +264,14 @@ class CompareMenusEateryViewController: UIViewController {
 
         let backgroundView = UIView()
         backgroundView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        backgroundView.backgroundColor = .white
+        backgroundView.backgroundColor = UIColor.Eatery.default00
         backgroundView.layer.cornerRadius = 10
 
         let viewEateryDetails = PillButtonView()
         viewEateryDetails.backgroundColor = UIColor.Eatery.gray00
         viewEateryDetails.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
-        viewEateryDetails.imageView.tintColor = UIColor.Eatery.gray05
-        viewEateryDetails.titleLabel.textColor = UIColor.Eatery.black
+        viewEateryDetails.imageView.tintColor = UIColor.Eatery.secondaryText
+        viewEateryDetails.titleLabel.textColor = UIColor.Eatery.primaryText
         viewEateryDetails.titleLabel.text = "View Eatery Details"
         viewEateryDetails.isUserInteractionEnabled = true
         viewEateryDetails.tap { [weak self] _ in
@@ -330,7 +330,7 @@ class CompareMenusEateryViewController: UIViewController {
         let categoryView = MenuCategoryView()
         categoryView.titleLabel.text = menuCategory.category
         categoryView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        categoryView.backgroundColor = .white
+        categoryView.backgroundColor = UIColor.Eatery.default00
 
         for item in menuCategory.items {
             let itemView = MenuItemView()

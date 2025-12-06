@@ -70,7 +70,7 @@ class EateryViewController: UIViewController {
     }
 
     private func setUpStackView() {
-        stackView.backgroundColor = .white
+        stackView.backgroundColor = UIColor.Eatery.default00
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -209,8 +209,8 @@ class EateryViewController: UIViewController {
         stackView.addSubview(container)
 
         container.layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        container.cornerRadiusView.backgroundColor = .white
-        container.shadowColor = UIColor.Eatery.black
+        container.cornerRadiusView.backgroundColor = UIColor.Eatery.default00
+        container.shadowColor = UIColor.Eatery.primaryText
         container.shadowOffset = CGSize(width: 0, height: 4)
         container.shadowOpacity = 0.25
         container.shadowRadius = 4
@@ -235,10 +235,10 @@ class EateryViewController: UIViewController {
 
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor.Eatery.gray05
+        imageView.tintColor = UIColor.Eatery.secondaryText
 
         let container = ContainerView(pillContent: imageView)
-        container.cornerRadiusView.backgroundColor = .white
+        container.cornerRadiusView.backgroundColor = UIColor.Eatery.default00
         container.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
         stackView.addSubview(container)
@@ -256,7 +256,7 @@ class EateryViewController: UIViewController {
         label.numberOfLines = 0
         label.text = name
         label.font = .preferredFont(for: .largeTitle, weight: .semibold)
-        label.textColor = UIColor.Eatery.black
+        label.textColor = UIColor.Eatery.primaryText
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -268,7 +268,7 @@ class EateryViewController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.text = "\(eatery.locationDescription ?? "--") · \(eatery.menuSummary ?? "--")"
-        label.textColor = UIColor.Eatery.gray05
+        label.textColor = UIColor.Eatery.secondaryText
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
 
         let container = ContainerView(content: label)
@@ -291,8 +291,8 @@ class EateryViewController: UIViewController {
             content.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
             content.backgroundColor = UIColor.Eatery.blue
             content.imageView.image = UIImage(named: "iPhone")
-            content.imageView.tintColor = .white
-            content.titleLabel.textColor = .white
+            content.imageView.tintColor = UIColor.Eatery.default00
+            content.titleLabel.textColor = UIColor.Eatery.default00
             content.titleLabel.text = "Order online"
 
             let button = ButtonView(content: content)
@@ -307,8 +307,8 @@ class EateryViewController: UIViewController {
             content.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
             content.backgroundColor = UIColor.Eatery.gray00
             content.imageView.image = UIImage(named: "Walk")?.withRenderingMode(.alwaysTemplate)
-            content.imageView.tintColor = UIColor.Eatery.black
-            content.titleLabel.textColor = UIColor.Eatery.black
+            content.imageView.tintColor = UIColor.Eatery.primaryText
+            content.titleLabel.textColor = UIColor.Eatery.primaryText
             content.titleLabel.text = "Get directions"
 
             let button = ButtonView(content: content)
@@ -353,7 +353,7 @@ class EateryViewController: UIViewController {
         let cell = TimingCellView()
         cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
-        cell.titleLabel.textColor = UIColor.Eatery.gray05
+        cell.titleLabel.textColor = UIColor.Eatery.secondaryText
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
             attachment: NSTextAttachment(image: UIImage(named: "Clock"), scaledToMatch: cell.titleLabel.font)
@@ -382,7 +382,7 @@ class EateryViewController: UIViewController {
         convenient  place to drop off food that might otherwise be discarded––it should not be used to redirect \
         food that is already being donated.
         """
-        label.textColor = UIColor.Eatery.gray05
+        label.textColor = UIColor.Eatery.secondaryText
         label.font = .preferredFont(for: .footnote, weight: .regular)
 
         let container = ContainerView(content: label)
@@ -394,7 +394,7 @@ class EateryViewController: UIViewController {
         let cell = TimingCellView()
         cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 
-        cell.titleLabel.textColor = UIColor.Eatery.gray05
+        cell.titleLabel.textColor = UIColor.Eatery.secondaryText
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(
             attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font)
@@ -403,7 +403,7 @@ class EateryViewController: UIViewController {
         cell.titleLabel.attributedText = text
 
         if let waitTimes = eatery.waitTimesByDay[Day()], let sample = waitTimes.sample(at: Date()) {
-            cell.statusLabel.textColor = UIColor.Eatery.black
+            cell.statusLabel.textColor = UIColor.Eatery.primaryText
             let low = Int(round(sample.low / 60))
             let high = Int(round(sample.high / 60))
             cell.statusLabel.text = low < high ? "\(low)-\(high) minutes" : "\(low) minutes"
@@ -417,7 +417,7 @@ class EateryViewController: UIViewController {
             }
 
         } else {
-            cell.statusLabel.textColor = UIColor.Eatery.gray05
+            cell.statusLabel.textColor = UIColor.Eatery.secondaryText
             cell.statusLabel.text = "-- minutes"
         }
 
@@ -482,7 +482,7 @@ class EateryViewController: UIViewController {
 
             let button = UIButton()
             button.setTitle(event.description, for: .normal)
-            button.setTitleColor(isSelectedEvent ? .black : .Eatery.gray01, for: .normal)
+            button.setTitleColor(isSelectedEvent ? .Eatery.primaryText : .Eatery.gray01, for: .normal)
             button.titleLabel?.font = .preferredFont(for: .body, weight: isSelectedEvent ? .semibold : .medium)
 
             button.tap { [weak self] _ in
@@ -492,7 +492,7 @@ class EateryViewController: UIViewController {
             }
 
             let bottomBorder = UIView()
-            bottomBorder.backgroundColor = isSelectedEvent ? .black : .Eatery.gray01
+            bottomBorder.backgroundColor = isSelectedEvent ? .Eatery.primaryText : .Eatery.gray01
 
             button.addSubview(bottomBorder)
             bottomBorder.snp.makeConstraints { make in

@@ -49,13 +49,13 @@ class SettingsAboutAppDevHeaderView: UIView {
 
     private func setUpLogoView() {
         logoView.image = UIImage(named: "AppDevLogo")?.withRenderingMode(.alwaysTemplate)
-        logoView.tintColor = UIColor.Eatery.gray05
+        logoView.tintColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpSubtitleLabel() {
         subtitleLabel.text = "DESIGNED AND DEVELOPED BY"
         subtitleLabel.font = .preferredFont(for: .caption1, weight: .medium)
-        subtitleLabel.textColor = UIColor.Eatery.gray05
+        subtitleLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpTitleLabel() {
@@ -67,7 +67,7 @@ class SettingsAboutAppDevHeaderView: UIView {
             .font: UIFont.systemFont(ofSize: 36, weight: .semibold)
         ]))
         titleLabel.attributedText = attributedText
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpConstraints() {

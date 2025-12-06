@@ -73,13 +73,13 @@ class PillFilterButtonView: UIView {
         self.isHighlighted = isHighlighted
 
         if isHighlighted {
-            label.textColor = .white
-            backgroundColor = UIColor.Eatery.black
-            imageView.tintColor = .white
+            label.textColor = UIColor.Eatery.default00
+            backgroundColor = UIColor.Eatery.primaryText
+            imageView.tintColor = UIColor.Eatery.default00
         } else {
-            label.textColor = UIColor.Eatery.black
+            label.textColor = UIColor.Eatery.primaryText
             backgroundColor = UIColor.Eatery.gray00
-            imageView.tintColor = UIColor.Eatery.black
+            imageView.tintColor = UIColor.Eatery.primaryText
         }
     }
 

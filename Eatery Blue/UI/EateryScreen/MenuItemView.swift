@@ -92,7 +92,7 @@ class MenuItemView: UIView {
     private func setUpTitleLabel() {
         titleLabel.text = item?.name ?? ""
         titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpPriceLabel() {
@@ -105,7 +105,7 @@ class MenuItemView: UIView {
         }
 
         priceLabel.font = .preferredFont(for: .subheadline, weight: .regular)
-        priceLabel.textColor = UIColor.Eatery.gray05
+        priceLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpDescriptionLabel() {
@@ -117,7 +117,7 @@ class MenuItemView: UIView {
         }
 
         descriptionLabel.font = .preferredFont(for: .footnote, weight: .regular)
-        descriptionLabel.textColor = UIColor.Eatery.gray05
+        descriptionLabel.textColor = UIColor.Eatery.secondaryText
         descriptionLabel.isHidden = true
         descriptionLabel.numberOfLines = 0
     }

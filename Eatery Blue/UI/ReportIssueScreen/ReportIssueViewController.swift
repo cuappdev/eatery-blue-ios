@@ -67,7 +67,7 @@ class ReportIssueViewController: UIViewController {
             bottom: 16,
             right: 16
         )
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(stackView)
         stackView.axis = .vertical
@@ -94,7 +94,7 @@ class ReportIssueViewController: UIViewController {
         let titleLabel = UILabel()
         header.addArrangedSubview(titleLabel)
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.text = "Report an issue"
 
         let cancelButton = UIImageView()
@@ -134,7 +134,7 @@ class ReportIssueViewController: UIViewController {
     private func addHeader(title: String) {
         let label = UILabel()
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
-        label.textColor = UIColor.Eatery.black
+        label.textColor = UIColor.Eatery.primaryText
         label.text = title
         stackView.addArrangedSubview(label)
     }
@@ -163,12 +163,12 @@ class ReportIssueViewController: UIViewController {
     private func updateIssueTypeButtonFromState() {
         if let selectedIssueType = selectedIssueType {
             issueTypeButton.label.text = selectedIssueType.description
-            issueTypeButton.label.textColor = UIColor.Eatery.black
+            issueTypeButton.label.textColor = UIColor.Eatery.primaryText
             issueTypeButton.label.font = .preferredFont(for: .subheadline, weight: .medium)
 
         } else {
             issueTypeButton.label.text = "Choose an option..."
-            issueTypeButton.label.textColor = UIColor.Eatery.gray05
+            issueTypeButton.label.textColor = UIColor.Eatery.secondaryText
             issueTypeButton.label.font = .preferredFont(for: .subheadline, weight: .medium)
         }
     }
@@ -193,7 +193,7 @@ class ReportIssueViewController: UIViewController {
     private func updateSubmitButtonFromState() {
         if submitEnabled {
             submitButton.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
-            submitButton.content.textColor = .white
+            submitButton.content.textColor = UIColor.Eatery.default00
         } else {
             submitButton.cornerRadiusView.backgroundColor = UIColor.Eatery.gray00
             submitButton.content.textColor = UIColor.Eatery.gray03

@@ -26,7 +26,7 @@ class CarouselMoreEateriesCollectionViewCell: UICollectionViewCell {
     }
 
     private func setUpSelf() {
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         layer.cornerRadius = 8
         layer.shadowRadius = 4

@@ -35,13 +35,13 @@ class SettingsLogoutPillButton: UIView {
 
     private func setUpImageView() {
         imageView.image = UIImage(named: "Exit")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor.Eatery.black
+        imageView.tintColor = UIColor.Eatery.primaryText
     }
 
     private func setUpTitleLabel() {
         titleLabel.text = "Log out"
         titleLabel.font = .preferredFont(for: .caption1, weight: .semibold)
-        titleLabel.tintColor = UIColor.Eatery.black
+        titleLabel.tintColor = UIColor.Eatery.primaryText
     }
 
     private func setUpConstraints() {

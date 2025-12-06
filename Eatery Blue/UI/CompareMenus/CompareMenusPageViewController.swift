@@ -51,7 +51,7 @@ class CompareMenusPageViewController: UIViewController {
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         setUpScrollView()
         view.addSubview(scrollView)

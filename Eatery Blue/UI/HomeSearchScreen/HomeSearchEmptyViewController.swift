@@ -24,7 +24,7 @@ class HomeSearchEmptyViewController: UIViewController {
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(scrollView)
         setUpScrollView()

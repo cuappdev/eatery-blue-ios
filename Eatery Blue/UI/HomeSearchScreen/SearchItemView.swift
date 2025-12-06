@@ -29,7 +29,7 @@ class SearchItemView: UIView {
     private func setUpSelf() {
         insetsLayoutMarginsFromSafeArea = false
 
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         addSubview(stackView)
         setUpStackView()
@@ -59,17 +59,17 @@ class SearchItemView: UIView {
 
     private func setUpTitleLabel() {
         titleLabel.font = .preferredFont(for: .subheadline, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
     }
 
     private func setUpPriceLabel() {
         priceLabel.font = .preferredFont(for: .subheadline, weight: .regular)
-        priceLabel.textColor = UIColor.Eatery.gray05
+        priceLabel.textColor = UIColor.Eatery.secondaryText
     }
 
     private func setUpDescriptionLabel() {
         descriptionLabel.font = .preferredFont(for: .footnote, weight: .regular)
-        descriptionLabel.textColor = UIColor.Eatery.gray05
+        descriptionLabel.textColor = UIColor.Eatery.secondaryText
         descriptionLabel.isHidden = true
         descriptionLabel.numberOfLines = 0
     }

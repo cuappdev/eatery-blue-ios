@@ -47,11 +47,11 @@ class AccountViewController: UIViewController {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor.Eatery.blue
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
+            .foregroundColor: UIColor.Eatery.default00,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor.white,
+            .foregroundColor: UIColor.Eatery.default00,
             .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
         navigationItem.standardAppearance = appearance
@@ -64,12 +64,12 @@ class AccountViewController: UIViewController {
             target: self,
             action: #selector(didTapSettingsButton)
         )
-        settingsItem.tintColor = .white
+        settingsItem.tintColor = UIColor.Eatery.default00
         navigationItem.rightBarButtonItem = settingsItem
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(tableView)
         setUpTableView()
@@ -86,7 +86,7 @@ class AccountViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
 
-        refreshControl.tintColor = .white
+        refreshControl.tintColor = UIColor.Eatery.default00
         refreshControl.addTarget(self, action: #selector(didRefresh(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
 

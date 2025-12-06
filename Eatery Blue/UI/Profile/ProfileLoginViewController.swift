@@ -52,7 +52,7 @@ class ProfileLoginViewController: UIViewController {
     private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Eatery.black as Any,
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
@@ -76,12 +76,12 @@ class ProfileLoginViewController: UIViewController {
             target: self,
             action: #selector(didTapSettingsButton)
         )
-        settingsItem.tintColor = UIColor.Eatery.black
+        settingsItem.tintColor = UIColor.Eatery.primaryText
         navigationItem.rightBarButtonItem = settingsItem
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(loginView)
         setUpLoginView()
@@ -117,7 +117,7 @@ class ProfileLoginViewController: UIViewController {
         loginButton.content.font = .preferredFont(for: .body, weight: .semibold)
         loginButton.content.textAlignment = .center
         loginButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
-        loginButton.content.textColor = .white
+        loginButton.content.textColor = UIColor.Eatery.default00
         loginButton.backgroundColor = UIColor.Eatery.blue
 
         loginButton.buttonPress { [self] _ in
@@ -131,9 +131,9 @@ class ProfileLoginViewController: UIViewController {
 
     private func setUpBackButton() {
         backButton.content.image = UIImage(named: "ArrowLeft")
-        backButton.shadowColor = UIColor.Eatery.black
+        backButton.shadowColor = UIColor.Eatery.primaryText
         backButton.shadowOffset = CGSize(width: 0, height: 4)
-        backButton.backgroundColor = .white
+        backButton.backgroundColor = UIColor.Eatery.default00
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         backButton.buttonPress { [weak self] _ in
             guard let self else { return }

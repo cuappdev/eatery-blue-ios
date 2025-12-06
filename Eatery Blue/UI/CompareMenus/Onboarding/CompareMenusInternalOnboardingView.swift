@@ -31,7 +31,7 @@ class CompareMenusInternalOnboardingView: UIView {
     // MARK: - Setup
 
     private func setUpSelf() {
-        backgroundColor = .black.withAlphaComponent(0.75)
+        backgroundColor = UIColor.Eatery.primaryText.withAlphaComponent(0.75)
         tap { [weak self] _ in
             guard let self else { return }
             dismiss()
@@ -64,13 +64,13 @@ class CompareMenusInternalOnboardingView: UIView {
     private func setUpDismissLabel() {
         dismissLabel.text = "Tap to dismiss"
         dismissLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        dismissLabel.textColor = .white
+        dismissLabel.textColor = UIColor.Eatery.default00
     }
 
     private func setUpActionLabel() {
         actionLabel.text = "Swipe to compare menus"
         actionLabel.font = .systemFont(ofSize: 40, weight: .semibold)
-        actionLabel.textColor = .white
+        actionLabel.textColor = UIColor.Eatery.default00
         actionLabel.lineBreakMode = .byWordWrapping
         actionLabel.numberOfLines = 0
     }

@@ -30,11 +30,11 @@ class LogoView: UIView {
 
         addSubview(pin)
         pin.image = UIImage(named: "Pin")?.withRenderingMode(.alwaysTemplate)
-        pin.tintColor = .white
+        pin.tintColor = UIColor.Eatery.default00
 
         addSubview(pizza)
         pizza.image = UIImage(named: "Pizza")?.withRenderingMode(.alwaysTemplate)
-        pizza.tintColor = .white
+        pizza.tintColor = UIColor.Eatery.default00
 
         pin.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -66,7 +66,7 @@ class LogoView: UIView {
             clockwise: true
         )
 
-        UIColor.white.setStroke()
+        UIColor.Eatery.default00.setStroke()
         bezierPath.lineWidth = lineWidth
         bezierPath.lineCapStyle = .round
         bezierPath.stroke()

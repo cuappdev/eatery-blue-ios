@@ -32,7 +32,7 @@ class SearchRecentsView: UIView {
     }
 
     private func setUpTitleLabel() {
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
         titleLabel.text = "Recent Searches"
     }

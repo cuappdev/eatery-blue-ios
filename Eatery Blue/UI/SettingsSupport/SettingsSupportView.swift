@@ -82,7 +82,7 @@ struct SettingsSupportView: View {
             Section {
                 sectionHeader(title: "Make Eatery Better")
                 Text("Help us improve Eatery by letting us know what’s wrong.")
-                    .foregroundColor(Color("Gray05"))
+                    .foregroundColor(Color(UIColor.Eatery.secondaryText))
 
                 Button {
                     delegate?.openReportIssue(preselectedIssueType: nil)
@@ -100,7 +100,7 @@ struct SettingsSupportView: View {
                         Spacer()
                     }
                 }
-                .foregroundColor(.white)
+                .foregroundColor(Color(UIColor.Eatery.default00))
                 .background(Color("EateryBlue"))
                 .clipShape(Capsule())
 
@@ -143,7 +143,7 @@ struct SettingsSupportView: View {
                         } label: {
                             HStack {
                                 Text(item.title)
-                                    .foregroundColor(Color("Black"))
+                                    .foregroundColor(Color(UIColor.Eatery.primaryText))
                                     .font(Font(UIFont.preferredFont(for: .subheadline, weight: .semibold)))
                                 Spacer()
                                 Image("ChevronDown")
@@ -158,7 +158,7 @@ struct SettingsSupportView: View {
                         if item.isExpanded {
                             item.body
                                 .multilineTextAlignment(.leading)
-                                .foregroundColor(Color("Gray05"))
+                                .foregroundColor(Color(UIColor.Eatery.secondaryText))
                                 .font(Font(UIFont.preferredFont(for: .subheadline, weight: .medium)))
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -176,7 +176,7 @@ struct SettingsSupportView: View {
                                             Text("Report an issue")
                                                 .font(Font(UIFont.preferredFont(for: .footnote, weight: .semibold)))
                                         }
-                                        .foregroundColor(Color("Black"))
+                                        .foregroundColor(Color(UIColor.Eatery.primaryText))
                                         .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
                                     }
                                     .background(Color("Gray00"))
@@ -201,7 +201,7 @@ struct SettingsSupportView: View {
     private func sectionHeader(title: String) -> some View {
         Text(title)
             .font(Font(UIFont.preferredFont(for: .title2, weight: .semibold)))
-            .foregroundColor(Color("Black"))
+            .foregroundColor(Color(UIColor.Eatery.primaryText))
             .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
             .listRowSeparator(.hidden)
     }

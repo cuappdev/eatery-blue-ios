@@ -75,15 +75,15 @@ class PaymentMethodsSheetViewController: SheetViewController {
 
         mealSwipesImageView.tintColor = paymentMethods.contains(.mealSwipes)
             ? UIColor.Eatery.blue
-            : UIColor.Eatery.gray05
+            : UIColor.Eatery.secondaryText
 
         brbsImageView.tintColor = paymentMethods.contains(.brbs)
             ? UIColor.Eatery.red
-            : UIColor.Eatery.gray05
+            : UIColor.Eatery.secondaryText
 
         cashOrCardImageView.tintColor = paymentMethods.contains(.cash) || paymentMethods.contains(.credit)
             ? UIColor.Eatery.green
-            : UIColor.Eatery.gray05
+            : UIColor.Eatery.secondaryText
 
         descriptionLabel.attributedText = getAttributedString(paymentMethods)
     }

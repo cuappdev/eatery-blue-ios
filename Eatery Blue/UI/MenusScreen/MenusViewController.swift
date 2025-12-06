@@ -74,7 +74,7 @@ class MenusViewController: UIViewController {
     }
 
     private func setUpTableView() {
-        tableView.backgroundColor = .Eatery.offWhite
+        tableView.backgroundColor = UIColor.Eatery.surface
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.delegate = self
         tableView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0

@@ -32,7 +32,7 @@ class SheetViewController: UIViewController {
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
         view.layer.cornerRadius = 16
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.insetsLayoutMarginsFromSafeArea = false
@@ -64,7 +64,7 @@ class SheetViewController: UIViewController {
         let titleLabel = UILabel()
         header.addArrangedSubview(titleLabel)
         titleLabel.font = .preferredFont(for: .title2, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
 
         let attributedText = NSMutableAttributedString()
         if let image = image {
@@ -109,11 +109,11 @@ class SheetViewController: UIViewController {
 
         switch style {
         case .regular:
-            titleLabel.textColor = UIColor.Eatery.black
+            titleLabel.textColor = UIColor.Eatery.primaryText
             container.cornerRadiusView.backgroundColor = UIColor.Eatery.gray00
 
         case .prominent:
-            titleLabel.textColor = .white
+            titleLabel.textColor = UIColor.Eatery.default00
             container.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
         }
     }
@@ -122,7 +122,7 @@ class SheetViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.text = title
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .center
 
         let container = ButtonView(content: titleLabel)
@@ -141,7 +141,7 @@ class SheetViewController: UIViewController {
 
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.textColor = UIColor.Eatery.gray05
+        titleLabel.textColor = UIColor.Eatery.secondaryText
         titleLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         stack.addArrangedSubview(titleLabel)
 
@@ -156,7 +156,7 @@ class SheetViewController: UIViewController {
 
         let descriptionLabel = UILabel()
         descriptionLabel.attributedText = attributedString
-        descriptionLabel.textColor = UIColor.Eatery.black
+        descriptionLabel.textColor = UIColor.Eatery.primaryText
         descriptionLabel.font = .preferredFont(for: .body, weight: .semibold)
         descriptionLabel.numberOfLines = 0
         stack.addArrangedSubview(descriptionLabel)

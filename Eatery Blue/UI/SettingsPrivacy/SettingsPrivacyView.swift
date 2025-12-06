@@ -40,10 +40,10 @@ struct SettingsPrivacyView: View {
                             Spacer(minLength: 12)
                             Text("Location Access")
                                 .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
-                                .foregroundColor(Color("Black"))
+                                .foregroundColor(Color(UIColor.Eatery.primaryText))
                             Text("Used to find eateries near you")
                                 .font(Font(UIFont.preferredFont(for: .caption1, weight: .semibold)))
-                                .foregroundColor(Color("Gray05"))
+                                .foregroundColor(Color(UIColor.Eatery.secondaryText))
                             Spacer(minLength: 12)
                         }
                         Spacer()
@@ -55,7 +55,8 @@ struct SettingsPrivacyView: View {
                                 .renderingMode(.template)
                                 .frame(width: 16, height: 16)
                         }
-                        .foregroundColor(viewModel.isLocationAllowed ? Color("EateryBlue") : Color("Gray05"))
+                        .foregroundColor(viewModel
+                            .isLocationAllowed ? Color("EateryBlue") : Color(UIColor.Eatery.secondaryText))
                     }
                 }
                 .listRowSeparator(.hidden, edges: .bottom)
@@ -68,10 +69,10 @@ struct SettingsPrivacyView: View {
                         Spacer(minLength: 12)
                         Text("Share with Cornell AppDev")
                             .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
-                            .foregroundColor(Color("Black"))
+                            .foregroundColor(Color(UIColor.Eatery.primaryText))
                         Text("Help us improve our products and services")
                             .font(Font(UIFont.preferredFont(for: .caption1, weight: .semibold)))
-                            .foregroundColor(Color("Gray05"))
+                            .foregroundColor(Color(UIColor.Eatery.secondaryText))
                         Spacer(minLength: 12)
                     }
                     Spacer(minLength: 0)
@@ -84,7 +85,7 @@ struct SettingsPrivacyView: View {
                     HStack {
                         Text("Privacy Policy")
                             .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
-                            .foregroundColor(Color("Black"))
+                            .foregroundColor(Color(UIColor.Eatery.primaryText))
                         Spacer()
                         Image("ExternalLink")
                             .resizable()
@@ -102,7 +103,7 @@ struct SettingsPrivacyView: View {
     private func sectionHeader(title: String) -> some View {
         Text(title)
             .font(Font(UIFont.preferredFont(for: .title2, weight: .semibold)))
-            .foregroundColor(Color("Black"))
+            .foregroundColor(Color(UIColor.Eatery.primaryText))
             .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
             .listRowSeparator(.hidden)
     }
