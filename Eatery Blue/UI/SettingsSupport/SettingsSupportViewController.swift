@@ -35,11 +35,11 @@ class SettingsSupportViewController: UIViewController {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
             .foregroundColor: UIColor.Eatery.primaryText as Any,
-            .font: UIFont.eateryNavigationBarTitleFont,
+            .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
             .foregroundColor: UIColor.Eatery.blue as Any,
-            .font: UIFont.eateryNavigationBarLargeTitleFont,
+            .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
 
         navigationItem.title = "Support"
