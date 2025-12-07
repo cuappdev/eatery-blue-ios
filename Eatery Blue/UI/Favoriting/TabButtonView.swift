@@ -69,7 +69,7 @@ class TabButtonView: ButtonView<UIView> {
     }
 
     private func setUpContainer() {
-        container.layer.shadowColor = UIColor.lightGray.cgColor
+        container.layer.shadowColor = UIColor.Eatery.gray02.cgColor
         container.layer.shadowRadius = 0
         container.layer.shadowOpacity = 0.4
         container.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -85,15 +85,15 @@ class TabButtonView: ButtonView<UIView> {
     }
 
     private func select() {
-        container.backgroundColor = .white
-        label.textColor = .Eatery.blue
+        container.backgroundColor = UIColor.Eatery.default00
+        label.textColor = UIColor.Eatery.blue
         container.layer.borderColor = UIColor.Eatery.blue.cgColor
         container.layer.shadowRadius = 6
     }
 
     private func deselect() {
-        container.backgroundColor = .Eatery.offWhite
-        label.textColor = .Eatery.gray05
+        container.backgroundColor = UIColor.Eatery.surface
+        label.textColor = UIColor.Eatery.secondaryText
         container.layer.borderColor = UIColor.Eatery.gray02.cgColor
         container.layer.shadowRadius = 0
     }

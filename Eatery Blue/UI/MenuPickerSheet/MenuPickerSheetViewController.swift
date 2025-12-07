@@ -130,7 +130,7 @@ class MenuPickerSheetViewController: SheetViewController {
 
             if isToday {
                 if isSelected {
-                    cell.dayLabel.content.textColor = .white
+                    cell.dayLabel.content.textColor = UIColor.Eatery.default00
                     cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
                 } else {
                     cell.dayLabel.content.textColor = UIColor.Eatery.blue
@@ -138,10 +138,10 @@ class MenuPickerSheetViewController: SheetViewController {
                 }
             } else {
                 if isSelected {
-                    cell.dayLabel.content.textColor = .white
-                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.black
+                    cell.dayLabel.content.textColor = UIColor.Eatery.default00
+                    cell.dayLabel.cornerRadiusView.backgroundColor = UIColor.Eatery.primaryText
                 } else {
-                    cell.dayLabel.content.textColor = UIColor.Eatery.black
+                    cell.dayLabel.content.textColor = UIColor.Eatery.primaryText
                     cell.dayLabel.cornerRadiusView.backgroundColor = nil
                 }
             }

@@ -40,7 +40,7 @@ class SettingsAboutViewController: UIViewController {
     private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Eatery.black as Any,
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
@@ -64,12 +64,12 @@ class SettingsAboutViewController: UIViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
-        backButton.tintColor = UIColor.Eatery.black
+        backButton.tintColor = UIColor.Eatery.primaryText
         navigationItem.leftBarButtonItem = backButton
     }
 
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         view.addSubview(subtitleLabel)
         setUpSubtitleLabel()
@@ -105,7 +105,7 @@ class SettingsAboutViewController: UIViewController {
         let pillView = websiteButton.content
         pillView.titleLabel.text = "Visit our website"
         pillView.imageView.image = UIImage(named: "Globe")?.withRenderingMode(.alwaysTemplate)
-        pillView.tintColor = UIColor.Eatery.black
+        pillView.tintColor = UIColor.Eatery.primaryText
         pillView.backgroundColor = UIColor.Eatery.gray00
         pillView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 

@@ -64,7 +64,7 @@ class SettingsAppIconCell: UICollectionViewCell {
     }
 
     private func setUpContainterView() {
-        containerView.layer.shadowColor = UIColor.Eatery.black.cgColor
+        containerView.layer.shadowColor = UIColor.Eatery.primaryText.cgColor
         containerView.layer.shadowOpacity = 0.20
         containerView.layer.shadowOffset = .zero
         containerView.layer.shadowRadius = 5
@@ -77,7 +77,7 @@ class SettingsAppIconCell: UICollectionViewCell {
     }
 
     private func setUpOverlayView() {
-        overlayView.backgroundColor = .black
+        overlayView.backgroundColor = UIColor.Eatery.primaryText
         overlayView.alpha = 0
         overlayView.layer.cornerRadius = 12
         overlayView.layer.masksToBounds = true

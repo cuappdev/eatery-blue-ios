@@ -10,7 +10,7 @@ import UIKit
 class SheetPresentationController: UIPresentationController {
     lazy var dimmingView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black.withAlphaComponent(0.5)
+        view.backgroundColor = UIColor.Eatery.primaryText.withAlphaComponent(0.5)
         view.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
             action: #selector(didTapDimmingView(_:))

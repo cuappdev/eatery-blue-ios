@@ -33,7 +33,7 @@ class CompareMenusViewController: UIViewController {
     // MARK: - Setup
 
     override func viewDidLoad() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
         view.clipsToBounds = true
 
         addChild(pageController)

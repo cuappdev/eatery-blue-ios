@@ -103,6 +103,9 @@ class HomeViewController: UIViewController {
                 trySetUpCompareMenusOnboarding()
             } catch {
                 logger.error("\(#function): \(error)")
+                stopLoading()
+                allEateries = []
+                applySnapshot(animated: true)
             }
         }
 
@@ -120,7 +123,7 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpCollectionView() {
-        collectionView.backgroundColor = .Eatery.offWhite
+        collectionView.backgroundColor = UIColor.Eatery.surface
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.delegate = self
         collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0
@@ -413,12 +416,15 @@ class HomeViewController: UIViewController {
                 cell.configure(eatery: eatery, favorited: favorited)
                 return cell
             case .loadingCard:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: EateryCardShimmerCollectionViewCell.reuse,
+                guard let cell = tableview.dequeueReusableCell(
+                    withReuseIdentifier: ClearCollectionViewCell.reuse,
                     for: indexPath
-                ) as? EateryCardShimmerCollectionViewCell else { return UICollectionViewCell() }
+                ) as? ClearCollectionViewCell else { return UICollectionViewCell() }
 
-                cell.configure()
+                let shimmerView = EateryCardShimmerView()
+                let container = ContainerView(content: shimmerView)
+                container.layoutMargins = Constants.customViewLayoutMargins
+                cell.configure(content: container)
                 return cell
             default:
                 break

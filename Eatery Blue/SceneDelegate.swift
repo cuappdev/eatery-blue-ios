@@ -18,8 +18,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         let rootViewController = RootModelController()
         window.rootViewController = rootViewController
+
+        let savedStyle: UIUserInterfaceStyle
+        switch UserDefaults.standard.string(forKey: "Settings.DisplayTheme") {
+        case "light":
+            savedStyle = .light
+        case "dark":
+            savedStyle = .dark
+        default:
+            savedStyle = .unspecified
+        }
+        window.overrideUserInterfaceStyle = savedStyle
+
         self.window = window
         window.makeKeyAndVisible()
+
+        // Also apply to any other windows in the scene
+        windowScene.windows.forEach { $0.overrideUserInterfaceStyle = savedStyle }
     }
 
     func sceneDidDisconnect(_: UIScene) {
@@ -30,9 +45,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // `application:didDiscardSceneSessions` instead).
     }
 
-    func sceneDidBecomeActive(_: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        let savedStyle: UIUserInterfaceStyle
+        switch UserDefaults.standard.string(forKey: "Settings.DisplayTheme") {
+        case "light":
+            savedStyle = .light
+        case "dark":
+            savedStyle = .dark
+        default:
+            savedStyle = .unspecified
+        }
+        windowScene.windows.forEach { $0.overrideUserInterfaceStyle = savedStyle }
     }
 
     func sceneWillResignActive(_: UIScene) {

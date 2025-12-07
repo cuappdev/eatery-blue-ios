@@ -78,8 +78,8 @@ class EateryExpandableCardDetailView: UIView {
     private func setupViewEateryDetailsButton() {
         viewEateryDetails.backgroundColor = UIColor.Eatery.gray00
         viewEateryDetails.imageView.image = UIImage(named: "EateryDetails")?.withRenderingMode(.alwaysTemplate)
-        viewEateryDetails.imageView.tintColor = UIColor.Eatery.gray05
-        viewEateryDetails.titleLabel.textColor = UIColor.Eatery.black
+        viewEateryDetails.imageView.tintColor = UIColor.Eatery.secondaryText
+        viewEateryDetails.titleLabel.textColor = UIColor.Eatery.primaryText
         viewEateryDetails.titleLabel.text = "View Eatery Details"
         viewEateryDetails.isUserInteractionEnabled = true
         viewEateryDetails.addGestureRecognizer(UITapGestureRecognizer(

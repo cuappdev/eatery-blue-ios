@@ -121,7 +121,7 @@ class CompareMenusSheetViewController: SheetViewController {
         compareNowButton.setTitle("Select at least 1 more", for: .disabled)
         compareNowButton.setTitle("Compare now", for: .normal)
         compareNowButton.setTitleColor(UIColor(named: "Gray03"), for: .disabled)
-        compareNowButton.setTitleColor(.white, for: .normal)
+        compareNowButton.setTitleColor(UIColor.Eatery.default00, for: .normal)
         compareNowButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
 
         compareNowButton.backgroundColor = UIColor(named: "Gray00")

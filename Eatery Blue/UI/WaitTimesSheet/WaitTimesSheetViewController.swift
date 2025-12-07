@@ -86,13 +86,13 @@ class WaitTimesSheetViewController: SheetViewController {
 
     private func setUpDayLabel() {
         dayLabel.text = dayFormatter.string(from: day.date())
-        dayLabel.textColor = UIColor.Eatery.gray05
+        dayLabel.textColor = UIColor.Eatery.secondaryText
         dayLabel.font = .preferredFont(for: .subheadline, weight: .medium)
         stackView.addArrangedSubview(dayLabel)
     }
 
     private func setUpVisibleTimesLabel() {
-        visibleTimesLabel.textColor = UIColor.Eatery.black
+        visibleTimesLabel.textColor = UIColor.Eatery.primaryText
         visibleTimesLabel.font = .preferredFont(for: .body, weight: .semibold)
         visibleTimesLabel.numberOfLines = 0
         stackView.addArrangedSubview(visibleTimesLabel)

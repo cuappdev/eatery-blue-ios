@@ -61,7 +61,7 @@ class LoginView: UIView {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
 
         stackView.addArrangedSubview(titleLabel)
     }

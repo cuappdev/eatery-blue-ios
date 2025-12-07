@@ -43,7 +43,7 @@ class MenuCategoryPickerView: UIView {
     // MARK: - Setup
 
     private func setUpSelf() {
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
         addSubview(menuCategoryContainer)
         menuCategoryContainer.addSubview(menuCategoryScrollView)
         setUpMenuCategoryViews()
@@ -79,9 +79,9 @@ class MenuCategoryPickerView: UIView {
 
         setUpCategoriesStackView(categoriesForeground)
         categoriesForeground.isUserInteractionEnabled = false
-        categoriesForeground.backgroundColor = UIColor.Eatery.black
+        categoriesForeground.backgroundColor = UIColor.Eatery.primaryText
 
-        foregroundMask.backgroundColor = .white
+        foregroundMask.backgroundColor = UIColor.Eatery.default00
         categoriesForeground.mask = foregroundMask
     }
 
@@ -112,8 +112,8 @@ class MenuCategoryPickerView: UIView {
         backgroundContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         foregroundContainer.layoutMargins = backgroundContainer.layoutMargins
 
-        backgroundContainer.content.textColor = UIColor.Eatery.gray05
-        foregroundContainer.content.textColor = .white
+        backgroundContainer.content.textColor = UIColor.Eatery.secondaryText
+        foregroundContainer.content.textColor = UIColor.Eatery.default00
 
         categoriesBackground.addArrangedSubview(backgroundContainer)
         categoriesForeground.addArrangedSubview(foregroundContainer)

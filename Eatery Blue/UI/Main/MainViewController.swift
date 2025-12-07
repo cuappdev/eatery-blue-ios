@@ -19,19 +19,11 @@ class MainViewController: UIViewController {
         setUpView()
     }
 
-    private func setUpView() {
-        addChild(theTabBarController)
-        view.addSubview(theTabBarController.view)
-        theTabBarController.view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        theTabBarController.didMove(toParent: self)
-        theTabBarController.delegate = self
-
+    private func configureTabBarItems() {
         let homeNavigationController = UINavigationController(rootViewController: home)
         homeNavigationController.tabBarItem = UITabBarItem(
             title: "",
-            image: UIImage(named: "Home"),
+            image: UIImage(named: "Home")?.withRenderingMode(.alwaysTemplate),
             selectedImage: UIImage(named: "HomeSelected")
         )
         homeNavigationController.setNavigationBarHidden(true, animated: false)
@@ -39,7 +31,7 @@ class MainViewController: UIViewController {
         let menusNavigationController = UINavigationController(rootViewController: menus)
         menusNavigationController.tabBarItem = UITabBarItem(
             title: "",
-            image: UIImage(named: "Calendar"),
+            image: UIImage(named: "Calendar")?.withRenderingMode(.alwaysTemplate),
             selectedImage: UIImage(named: "CalendarSelected")
         )
         menusNavigationController.setNavigationBarHidden(true, animated: false)
@@ -47,7 +39,7 @@ class MainViewController: UIViewController {
         let profileNavigationController = UINavigationController(rootViewController: profile)
         profileNavigationController.tabBarItem = UITabBarItem(
             title: "",
-            image: UIImage(named: "User"),
+            image: UIImage(named: "User")?.withRenderingMode(.alwaysTemplate),
             selectedImage: UIImage(named: "UserSelected")
         )
         profileNavigationController.setNavigationBarHidden(true, animated: false)
@@ -57,11 +49,32 @@ class MainViewController: UIViewController {
             menusNavigationController,
             profileNavigationController
         ], animated: false)
+    }
+
+    private func setUpView() {
+        addChild(theTabBarController)
+        view.addSubview(theTabBarController.view)
+        theTabBarController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        theTabBarController.didMove(toParent: self)
+        theTabBarController.delegate = self
+
+        configureTabBarItems()
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithDefaultBackground()
         theTabBarController.tabBar.standardAppearance = tabBarAppearance
         theTabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+
+        // Rebuild tab bar icons so selectedImage re-resolves
+        configureTabBarItems()
     }
 }
 

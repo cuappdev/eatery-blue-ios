@@ -41,7 +41,7 @@ class SearchResultsCountView: UIView {
         resetButton.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
         resetButton.content.font = .preferredFont(for: .footnote, weight: .semibold)
         resetButton.content.text = "Reset"
-        resetButton.content.textColor = UIColor.Eatery.black
+        resetButton.content.textColor = UIColor.Eatery.primaryText
         resetButton.backgroundColor = UIColor.Eatery.gray00
     }
 

@@ -37,7 +37,7 @@ class CompareMenusButton: UIButton {
     private func setUpSelf() {
         backgroundColor = UIColor.Eatery.blue
         layer.cornerRadius = 56 / 2
-        layer.shadowColor = UIColor.Eatery.black.cgColor
+        layer.shadowColor = UIColor.Eatery.primaryText.cgColor
         layer.shadowOpacity = 0.25
         layer.shadowOffset = .zero
         layer.shadowRadius = 2
@@ -62,7 +62,7 @@ class CompareMenusButton: UIButton {
     private func setUpTextView() {
         textView.text = "Compare menus"
         textView.font = .systemFont(ofSize: 14, weight: .semibold)
-        textView.textColor = .white
+        textView.textColor = UIColor.Eatery.default00
         textView.textAlignment = .center
         textView.layer.opacity = 0
     }

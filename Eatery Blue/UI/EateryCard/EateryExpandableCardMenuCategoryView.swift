@@ -54,7 +54,7 @@ class EateryExpandableCardMenuCategoryView: UIView {
     // MARK: - Set Up Views
 
     private func setupCategoryNameLabel() {
-        categoryNameLabel.textColor = UIColor.Eatery.black
+        categoryNameLabel.textColor = UIColor.Eatery.primaryText
         categoryNameLabel.font = UIFont.preferredFont(for: .headline, weight: .semibold)
 
         addSubview(categoryNameLabel)
@@ -65,7 +65,7 @@ class EateryExpandableCardMenuCategoryView: UIView {
     }
 
     private func setupFoodItemLabel() {
-        foodItemLabel.textColor = UIColor.Eatery.gray05
+        foodItemLabel.textColor = UIColor.Eatery.secondaryText
         foodItemLabel.font = UIFont.preferredFont(for: .footnote, weight: .regular)
         foodItemLabel.numberOfLines = 0
 

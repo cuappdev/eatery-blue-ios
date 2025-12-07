@@ -42,7 +42,7 @@ class WaitTimeCell: UIView {
     private func setUpStartTimeLabel() {
         startTimeLabel.font = .preferredFont(for: .caption2, weight: .semibold)
         startTimeLabel.textColor = UIColor.Eatery.gray02
-        startTimeLabel.backgroundColor = .white
+        startTimeLabel.backgroundColor = UIColor.Eatery.default00
     }
 
     private func setUpBar() {

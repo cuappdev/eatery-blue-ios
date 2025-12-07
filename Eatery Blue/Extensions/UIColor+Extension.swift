@@ -23,7 +23,12 @@ extension UIColor {
         static let gray05 = UIColor(named: "Gray05")!
         static let gray06 = UIColor(named: "Gray06")!
         static let black = UIColor(named: "Black")!
-        static let offWhite = UIColor(named: "OffWhite")!
+        static let surface = UIColor(named: "Surface")!
         static let shadowLight = UIColor(named: "ShadowLight")!
+        static let default00 = UIColor(named: "Default00")!
+        static let default01 = UIColor(named: "Default01")!
+        static let primaryText = UIColor(named: "PrimaryText")!
+        static let secondaryText = UIColor(named: "SecondaryText")!
+        static let card = UIColor(named: "Card")!
     }
 }
