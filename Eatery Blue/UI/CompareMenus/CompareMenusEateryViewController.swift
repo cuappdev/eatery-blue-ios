@@ -2,7 +2,7 @@
 //  CompareMenusEateryViewController.swift
 //  Eatery Blue
 //
-//  Created by Peter Bidoshi  on 3/5/24.
+//  Created by Peter Bidoshi on 3/5/24.
 //
 
 import EateryModel
@@ -177,8 +177,8 @@ class CompareMenusEateryViewController: UIViewController {
                 menuHasLoaded = true
 
                 // Determine if this eatery has no retrievable menu
-                let hasMenu = (selectedEvent?.menu?.categories.isEmpty == false)
-                if !hasMenu {
+                let noMenu = selectedEvent?.menu.isEmpty ?? true
+                if noMenu {
                     delegate?.compareMenusEateryViewControllerDidFailToLoadMenu(self)
                 }
             } else {
@@ -198,7 +198,7 @@ class CompareMenusEateryViewController: UIViewController {
     }
 
     private func setUpAnalytics(_ eatery: Eatery) {
-        if eatery.paymentMethods.contains(.mealSwipes) {
+        if eatery.paymentMethods.contains(.mealSwipe) {
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
         } else {
             AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
@@ -213,18 +213,14 @@ class CompareMenusEateryViewController: UIViewController {
             return
         }
 
-        if let menu = event.menu {
-            let sortedCategories = sortMenuCategories(categories: menu.categories)
-            if !sortedCategories.isEmpty {
-                for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
-                    addMenuCategory(menuCategory, isLast: false)
-                }
+        let sortedCategories = sortMenuCategories(categories: event.menu)
+        if !sortedCategories.isEmpty {
+            for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
+                addMenuCategory(menuCategory, isLast: false)
+            }
 
-                if let last = sortedCategories.last {
-                    addMenuCategory(last, isLast: true)
-                }
-            } else {
-                addSorryText()
+            if let last = sortedCategories.last {
+                addMenuCategory(last, isLast: true)
             }
         } else {
             addSorryText()
@@ -310,13 +306,14 @@ class CompareMenusEateryViewController: UIViewController {
         var sortedCategories: [MenuCategory] = eatery?.name == "Morrison Dining" ? categories : categories.reversed()
         for i in 0 ..< sortedCategories.count {
             let menuCategory = sortedCategories[i]
-            if menuCategory.category == "Chef's Table" {
+            // Remove hardcoded categories and use a better sorting mechanism
+            if menuCategory.name == "Chef's Table" {
                 sortedCategories.swapAt(0, i)
             }
-            if menuCategory.category == "Chef's Table - Sides" {
+            if menuCategory.name == "Chef's Table - Sides" {
                 sortedCategories.swapAt(1, i)
             }
-            if menuCategory.category == "Grill" {
+            if menuCategory.name == "Grill" {
                 sortedCategories.swapAt(2, i)
             }
         }
@@ -328,7 +325,7 @@ class CompareMenusEateryViewController: UIViewController {
         categoryContainer.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 
         let categoryView = MenuCategoryView()
-        categoryView.titleLabel.text = menuCategory.category
+        categoryView.titleLabel.text = menuCategory.name
         categoryView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         categoryView.backgroundColor = UIColor.Eatery.default00
 
@@ -357,7 +354,7 @@ class CompareMenusEateryViewController: UIViewController {
         stackView.addArrangedSubview(categoryContainer)
         categoryViews.append(categoryContainer)
 
-        menuCategoryPicker.addMenuCategory(categoryName: menuCategory.category)
+        menuCategoryPicker.addMenuCategory(categoryName: menuCategory.name)
     }
 
     private func scrollToCategoryView(at index: Int) {

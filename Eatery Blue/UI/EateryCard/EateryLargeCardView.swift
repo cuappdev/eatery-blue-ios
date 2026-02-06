@@ -150,15 +150,15 @@ class EateryLargeCardView: UICollectionViewCell {
         }
     }
 
-    private func configureImageView(imageUrl: URL?, isOpen: Bool) {
+    private func configureImageView(imageUrl: String, isOpen: Bool) {
         imageView.image = UIImage()
-        imageView.kf.setImage(with: imageUrl)
+        imageView.kf.setImage(with: URL(string: imageUrl))
         imageTintView.alpha = isOpen ? 0 : 0.5
-        imageView.hero.id = imageUrl?.absoluteString
+        imageView.hero.id = imageUrl
     }
 
     private func configureSubtitleLabels(eatery: Eatery) {
-        subtitleLabels[0].text = eatery.locationDescription
+        subtitleLabels[0].text = eatery.location.validated()
         LocationManager.shared.$userLocation
             .sink { userLocation in
                 self.subtitleLabels[1].attributedText = EateryFormatter.default.formatEatery(
@@ -182,13 +182,13 @@ class EateryLargeCardView: UICollectionViewCell {
         switch status {
         case let .closingSoon(event):
             let alert = EateryCardAlertView()
-            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
+            let minutesUntilClosed = Int(round(event.endTimestamp.timeIntervalSince(now) / 60))
             alert.titleLabel.text = "Closing in \(minutesUntilClosed) min"
             addAlertView(alert)
 
         case let .openingSoon(event):
             let alert = EateryCardAlertView()
-            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
+            let minutesUntilOpen = Int(round(event.startTimestamp.timeIntervalSince(now) / 60))
             alert.titleLabel.text = "Opening in \(minutesUntilOpen) min"
             addAlertView(alert)
 

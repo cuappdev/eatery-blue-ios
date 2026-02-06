@@ -176,12 +176,15 @@ class EateryMediumCardView: UICollectionViewCell {
         }
     }
 
-    private func configureImageView(imageUrl: URL?, isOpen: Bool) {
-        imageView.kf.setImage(
-            with: imageUrl,
-            options: [.backgroundDecode]
-        )
-        imageTintView.alpha = isOpen ? 0 : 0.5
+    private func configureImageView(imageUrl: String, isOpen: Bool) {
+        if let url = URL(string: imageUrl) {
+            imageView.kf.setImage(
+                with: url,
+                options: [.backgroundDecode]
+            )
+
+            imageTintView.alpha = isOpen ? 0 : 0.5
+        }
     }
 
     private func configureSubtitleLabels(eatery: Eatery) {
@@ -202,12 +205,12 @@ class EateryMediumCardView: UICollectionViewCell {
         let now = Date()
         switch status {
         case let .closingSoon(event):
-            let minutesUntilClosed = Int(round(event.endDate.timeIntervalSince(now) / 60))
+            let minutesUntilClosed = Int(round(event.startTimestamp.timeIntervalSince(now) / 60))
             alertView.titleLabel.text = "Closing in \(minutesUntilClosed) min"
             alertView.isHidden = false
 
         case let .openingSoon(event):
-            let minutesUntilOpen = Int(round(event.startDate.timeIntervalSince(now) / 60))
+            let minutesUntilOpen = Int(round(event.startTimestamp.timeIntervalSince(now) / 60))
             alertView.titleLabel.text = "Opening in \(minutesUntilOpen) min"
             alertView.isHidden = false
 

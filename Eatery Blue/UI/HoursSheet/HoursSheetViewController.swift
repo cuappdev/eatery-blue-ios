@@ -16,7 +16,7 @@ class HoursSheetViewController: SheetViewController {
         return formatter
     }()
 
-    func setUp(_ eateryId: Int64, _ events: [Event]) {
+    func setUp(_ eateryId: Int, _ events: [Event]) {
         addHeader(title: "Hours", image: UIImage(named: "Clock"))
         addStatusLabel(EateryFormatter.default.formatStatus(EateryStatus(events)))
         addSchedule(events)
@@ -39,7 +39,7 @@ class HoursSheetViewController: SheetViewController {
             dayToDescription[day] = EateryFormatter.default.formatEventTimes(events.filter {
                 $0.canonicalDay == day
             }.sorted(by: { lhs, rhs in
-                lhs.startDate < rhs.startDate
+                lhs.startTimestamp < rhs.startTimestamp
             }))
         }
 

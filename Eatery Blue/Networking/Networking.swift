@@ -21,14 +21,11 @@ class Networking {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
 
-    let simpleUrl: URL
-
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
         let eateryApi = EateryAPI(url: fetchUrl)
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
-        simpleUrl = URL(string: "\(baseUrl)simple/") ?? baseUrl
     }
 
     func loadAllEatery() async throws -> [Eatery] {
@@ -53,13 +50,8 @@ class Networking {
         return eatery
     }
 
-    func loadSimpleEateries() async throws -> [Eatery] {
-        let eateryApi = EateryAPI(url: simpleUrl)
-        return try await eateryApi.eateries()
-    }
-
     func loadEateryByDay(day: Int) async throws -> [Eatery] {
-        if let url = URL(string: "\(baseUrl)day/\(day)/") {
+        if let url = URL(string: "\(baseUrl)?days=\(day)") {
             let eateryApi = EateryAPI(url: url)
             return try await eateryApi.eateries()
         }

@@ -40,7 +40,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
 
     // MARK: - Configure
 
-    func configure(item: ItemMetadata, expanded: Bool, itemData: [String: Set<String>]?) {
+    func configure(item: ItemMetadata, expanded: Bool, itemData: [EventType: Set<String>]?) {
         itemNameLabel.text = item.itemName
         availableLabel.text = itemData != nil ? "Available Today" : "Not Available"
         availableLabel.textColor = itemData != nil ? .Eatery.green : .Eatery.gray03
@@ -61,18 +61,21 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             }
 
             // these categories should appear first if they are available
-            let firstKeys = ["Breakfast", "Brunch", "Lunch", "Dinner"]
+            let firstKeys: [EventType] = [.breakfast, .brunch, .lunch, .lateLunch, .dinner, .lateDinner]
 
-            for key in firstKeys {
-                if let eateries = itemData[key] {
-                    addCategory(key, eateries: eateries.sorted())
+            for category in firstKeys {
+                if let eateries = itemData[category] {
+                    addCategory(category.description, eateries: eateries.sorted())
                 }
             }
 
+            // then the rest
             for category in itemData.keys {
                 if firstKeys.contains(category) { continue }
 
-                addCategory(category, eateries: itemData[category]?.sorted() ?? [])
+                if let eateries = itemData[category] {
+                    addCategory(category.description, eateries: eateries.sorted())
+                }
             }
         }
 

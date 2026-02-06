@@ -151,22 +151,24 @@ extension HomeSearchContentViewController: UITableViewDataSource {
             view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
             view.titleLabel.text = item.name
 
-            if let price = item.price {
+            if let price = item.basePrice {
                 view.priceLabel.text = priceNumberFormatter
                     .string(from: NSNumber(value: Double(price) / 100))
             } else {
                 view.priceLabel.text = ""
             }
 
-            if let description = item.description {
-                view.descriptionLabel.isHidden = false
-                view.descriptionLabel.text = description
-            } else {
-                view.descriptionLabel.isHidden = true
-            }
+            // Item doesn't have a description as of backend refactor 01/29/2026
+
+//            if let description = item.description {
+//                view.descriptionLabel.isHidden = false
+//                view.descriptionLabel.text = description
+//            } else {
+//                view.descriptionLabel.isHidden = true
+//            }
 
             if let eatery = eatery {
-                if let locationDescription = eatery.locationDescription {
+                if let locationDescription = eatery.location.validated() {
                     view.sourceLabel.text = "\(eatery.name) · \(locationDescription)"
                 } else {
                     view.sourceLabel.text = eatery.name

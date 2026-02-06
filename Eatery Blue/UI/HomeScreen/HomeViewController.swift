@@ -98,7 +98,7 @@ class HomeViewController: UIViewController {
         Task {
             do {
                 startLoading()
-                try await updateSimpleEateriesFromNetworking()
+                try await updateAllEateriesFromNetworking()
                 stopLoading()
                 trySetUpCompareMenusOnboarding()
             } catch {
@@ -107,11 +107,6 @@ class HomeViewController: UIViewController {
                 allEateries = []
                 applySnapshot(animated: true)
             }
-        }
-
-        // For caching purposes. Although we might not need it now we will likely need it in a bit
-        Task {
-            await updateAllEateriesFromNetworking()
         }
     }
 
@@ -262,7 +257,7 @@ class HomeViewController: UIViewController {
                     guard let self else { return }
 
                     do {
-                        try await updateSimpleEateriesFromNetworking()
+                        try await updateAllEateriesFromNetworking()
                     } catch {
                         logger.error("\(#function): \(error)")
                     }
@@ -280,23 +275,9 @@ class HomeViewController: UIViewController {
         }
     }
 
-    /// Start loading all eateries in the background, will be cached if needs to be refetched
-    private func updateAllEateriesFromNetworking() async {
-        do {
-            _ = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadAllEatery()
-        } catch {
-            logger.error("\(error)")
-        }
-    }
-
-    /// Request the simple eateries from the networking layer.
-    private func updateSimpleEateriesFromNetworking() async throws {
-        let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadSimpleEateries()
-        allEateries = eateries.filter { eatery in
-            !eatery.name.isEmpty
-        }.sorted(by: {
-            $0.isOpen == $1.isOpen ? $0.name < $1.name : $0.isOpen
-        })
+    /// Load all eateries from the networking layer.
+    private func updateAllEateriesFromNetworking() async throws {
+        allEateries = Constants.isTesting ? Eatery.dummyEateries : try await Networking.default.loadAllEatery()
         HomeViewController.cachedAllEateries = allEateries
     }
 

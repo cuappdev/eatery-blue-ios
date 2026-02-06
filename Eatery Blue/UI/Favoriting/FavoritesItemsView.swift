@@ -30,7 +30,7 @@ class FavoritesItemsView: UIView {
     }
 
     private var expanded: [Int] = []
-    private var itemData: [String: [String: Set<String>]] = [:]
+    private var itemData: [String: [EventType: Set<String>]] = [:]
     private var sortedFavorites: [ItemMetadata] = []
 
     private lazy var dataSource = makeDataSource()
@@ -75,7 +75,7 @@ class FavoritesItemsView: UIView {
 
     private func findFavorites() {
         let favoriteIdsSet: Set<String> = Set(favoriteItems.compactMap { $0.itemName })
-        var favoriteItemsData = [(eateryName: String, timeOfDay: String, itemName: String)]()
+        var favoriteItemsData = [(eateryName: String, type: EventType, itemName: String)]()
 
         let today = Day()
 
@@ -84,30 +84,29 @@ class FavoritesItemsView: UIView {
 
             for event in eatery.events {
                 if event.canonicalDay != today { continue }
-                guard let timeOfDay = event.description else { continue }
 
-                let favoriteItemsInEvent = event.menu?.categories.flatMap { category in
+                let favoriteItemsInEvent = event.menu.flatMap { category in
                     category.items.filter { favoriteIdsSet.contains($0.name) }.map { item in
-                        (eateryName: eateryName, timeOfDay: timeOfDay, itemName: item.name)
+                        (eateryName: eateryName, type: event.type, itemName: item.name)
                     }
-                } ?? []
+                }
 
                 favoriteItemsData.append(contentsOf: favoriteItemsInEvent)
             }
         }
 
         for data in favoriteItemsData {
-            let (eateryName, timeOfDay, itemName) = data
+            let (eateryName, type, itemName) = data
 
             if itemData[itemName] == nil {
                 itemData[itemName] = [:]
             }
 
-            if itemData[itemName]![timeOfDay] == nil {
-                itemData[itemName]![timeOfDay] = []
+            if itemData[itemName]![type] == nil {
+                itemData[itemName]![type] = []
             }
 
-            itemData[itemName]![timeOfDay]!.insert(eateryName)
+            itemData[itemName]![type]!.insert(eateryName)
         }
 
         sortedFavorites = favoriteItems.sorted { itemData[$1.itemName ?? ""] == nil }

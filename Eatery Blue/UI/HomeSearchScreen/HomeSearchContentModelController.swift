@@ -27,16 +27,24 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                 return [
                     FuseProperty(name: eatery.name, weight: 1),
                     FuseProperty(
-                        name: eatery.locationDescription ?? "",
-                        weight: eatery.locationDescription != nil ? 0.25 : 0
+                        name: eatery.location,
+                        weight: eatery.location.validated() != nil ? 0.25 : 0
                     )
                 ]
 
             case let .menuItem(item, category, _):
                 return [
                     FuseProperty(name: item.name, weight: 1),
-                    FuseProperty(name: item.description ?? "", weight: item.description != nil ? 0.5 : 0),
-                    FuseProperty(name: category, weight: 0.5)
+//                    FuseProperty(name: item.description ?? "", weight: item.description != nil ? 0.5 : 0),
+                    FuseProperty(name: category, weight: 0.5),
+                    FuseProperty(
+                        name: item.allergens.map { $0.name }.joined(separator: ", "),
+                        weight: !item.allergens.isEmpty ? 0.25 : 0
+                    ),
+                    FuseProperty(
+                        name: item.dietaryPreferences.map { $0.name }.joined(separator: ", "),
+                        weight: !item.dietaryPreferences.isEmpty ? 0.25 : 0
+                    )
                 ]
             }
         }
@@ -122,17 +130,13 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
             searchItems.append(.eatery(eatery))
 
             let eventsTodayAfterNow = eatery.events.filter { event in
-                event.canonicalDay == today && now <= event.endDate
+                event.canonicalDay == today && now <= event.endTimestamp
             }
 
             for event in eventsTodayAfterNow {
-                guard let menu = event.menu else {
-                    continue
-                }
-
-                for category in menu.categories {
+                for category in event.menu {
                     for item in category.items {
-                        searchItems.append(.menuItem(item, category: category.category, eatery))
+                        searchItems.append(.menuItem(item, category: category.name, eatery))
                     }
                 }
             }
@@ -211,7 +215,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
         }
     }
 
-    private func addRecentSearch(eateryID: Int64?, type: String, title: String, subtitle: String?) {
+    private func addRecentSearch(eateryID: Int?, type: String, title: String, subtitle: String?) {
         let coreDataStack = AppDelegate.shared.coreDataStack
         let context = coreDataStack.context
 
@@ -234,7 +238,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
 
         let recentSearch = RecentSearch(context: context)
         recentSearch.dateAdded = Date()
-        recentSearch.eateryID = eateryID ?? 0
+        recentSearch.eateryID = Int64(eateryID ?? 0)
         recentSearch.type = type
         recentSearch.title = title
         recentSearch.subtitle = subtitle
