@@ -19,9 +19,9 @@ class MenusViewController: UIViewController {
     // MARK: - Properties (data)
 
     private var allEateries: [Int: [Eatery]] = [:]
-    private var currentMealType: String = .Eatery.mealFromTime()
+    private var currentMealType = EventType.mealFromTime()
     private let daysToShow = 7
-    private var expandedEateryIds: [Int64] = []
+    private var expandedEateryIds: [Int] = []
     private var filter = EateryFilter()
     private lazy var filterController = MenusFilterViewController(currentMealType: currentMealType)
     private var headerHeight: CGFloat = Constants.maxHeaderHeight
@@ -183,7 +183,8 @@ class MenusViewController: UIViewController {
 
     /// Load all of the eateries by the given index
     private func updateAllEateriesByDayFromNetworking(_ day: Int) async throws {
-        let eateries = Constants.isTesting ? DummyData.eateries : try await Networking.default.loadEateryByDay(day: day)
+        let eateries = Constants.isTesting ? Eatery.dummyEateries : try await Networking.default
+            .loadEateryByDay(day: day)
         allEateries[day] = eateries
     }
 
@@ -405,19 +406,19 @@ class MenusViewController: UIViewController {
             // MARK: todo - This should be an enum but good for now
 
             filteredEateries = filteredEateries.filter { eatery in
-                if !eatery.paymentMethods.contains(.mealSwipes) { return false }
+                if !eatery.paymentMethods.contains(.mealSwipe) { return false }
 
                 let events = eatery.events.filter { $0.canonicalDay == Day().advanced(by: selectedIndex) }
 
                 // Ignore Late Lunch
-                if currentMealType == "Breakfast" {
-                    return events.contains { $0.description == "Brunch" || $0.description == "Breakfast" }
-                } else if currentMealType == "Lunch" {
-                    return events.contains { $0.description == "Brunch" || $0.description == "Lunch" }
-                } else if currentMealType == "Dinner" {
-                    return events.contains { $0.description == "Dinner" }
-                } else if currentMealType == "Late Dinner" {
-                    return events.contains { $0.description == "Late Night" }
+                if currentMealType == .breakfast {
+                    return events.contains { $0.type == .brunch || $0.type == .breakfast }
+                } else if currentMealType == .lunch {
+                    return events.contains { $0.type == .brunch || $0.type == .lunch }
+                } else if currentMealType == .dinner {
+                    return events.contains { $0.type == .dinner }
+                } else if currentMealType == .lateDinner {
+                    return events.contains { $0.type == .lateDinner }
                 }
 
                 return false
@@ -428,11 +429,11 @@ class MenusViewController: UIViewController {
             var central: [Eatery] = []
 
             for eatery in filteredEateries {
-                if eatery.campusArea == "North" {
+                if eatery.campusArea == .north {
                     north.append(eatery)
-                } else if eatery.campusArea == "West" {
+                } else if eatery.campusArea == .west {
                     west.append(eatery)
-                } else if eatery.campusArea == "Central" {
+                } else if eatery.campusArea == .central {
                     central.append(eatery)
                 }
             }
@@ -527,7 +528,7 @@ extension MenusViewController {
 
     struct ExpandedEatery: Hashable {
         let eatery: Eatery
-        var selectedMealType: String?
+        var selectedMealType: EventType?
         var selectedDate: Day?
         var isExpanded: Bool
     }
@@ -558,17 +559,17 @@ extension MenusViewController: UITableViewDelegate {
             // if we are currently passed the end date of the event, do nothing
             var event: Event?
             // Ignoring Late Lunch
-            if currentMealType == "Breakfast" {
-                event = eatery.events.first { $0.description == "Brunch" || $0.description == "Breakfast" }
-            } else if currentMealType == "Lunch" {
-                event = eatery.events.first { $0.description == "Brunch" || $0.description == "Lunch" }
-            } else if currentMealType == "Dinner" {
-                event = eatery.events.first { $0.description == "Dinner" }
-            } else if currentMealType == "Late Dinner" {
-                event = eatery.events.first { $0.description == "Late Night" }
+            if currentMealType == .breakfast {
+                event = eatery.events.first { $0.type == .brunch || $0.type == .breakfast }
+            } else if currentMealType == .lunch {
+                event = eatery.events.first { $0.type == .brunch || $0.type == .lunch }
+            } else if currentMealType == .dinner {
+                event = eatery.events.first { $0.type == .dinner }
+            } else if currentMealType == .lateDinner {
+                event = eatery.events.first { $0.type == .lateDinner }
             }
 
-            guard let event, event.endDate > Date() else { return }
+            guard let event, event.endTimestamp > Date() else { return }
 
             if expandedEateryIds.contains(expandedEatery.eatery.id) {
                 expandedEateryIds.removeAll(where: { $0 == expandedEatery.eatery.id })
@@ -702,8 +703,8 @@ extension MenusViewController: MenusFilterViewControllerDelegate {
         }
     }
 
-    func menusFilterViewController(_: MenusFilterViewController, didChangeMenuType string: String) {
-        currentMealType = string
+    func menusFilterViewController(_: MenusFilterViewController, didChangeMenuType eventType: EventType) {
+        currentMealType = eventType
         if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
             applySnapshot()
         } else {
@@ -714,13 +715,13 @@ extension MenusViewController: MenusFilterViewControllerDelegate {
             }
         }
 
-        if currentMealType == "Breakfast" {
+        if currentMealType == .breakfast {
             filterController.selectedMenuIndex = 0
-        } else if currentMealType == "Lunch" {
+        } else if currentMealType == .lunch {
             filterController.selectedMenuIndex = 1
-        } else if currentMealType == "Dinner" {
+        } else if currentMealType == .dinner {
             filterController.selectedMenuIndex = 2
-        } else if currentMealType == "Late Dinner" {
+        } else if currentMealType == .lateDinner {
             filterController.selectedMenuIndex = 3
         }
     }

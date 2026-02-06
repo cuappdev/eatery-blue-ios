@@ -38,7 +38,7 @@ class CoreDataStack {
         }
     }
 
-    func metadata(eateryId: Int64) -> EateryMetadata {
+    func metadata(eateryId: Int) -> EateryMetadata {
         let fetchRequest = NSFetchRequest<EateryMetadata>()
         fetchRequest.entity = EateryMetadata.entity()
         fetchRequest.predicate = NSPredicate(format: "eateryId == %d", eateryId)
@@ -49,7 +49,7 @@ class CoreDataStack {
 
         } else {
             let metadata = EateryMetadata(context: context)
-            metadata.eateryId = eateryId
+            metadata.eateryId = Int64(eateryId)
             save()
             return metadata
         }

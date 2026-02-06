@@ -51,7 +51,7 @@ struct EateryFilter: Codable {
         if brbsEnabled || mealSwipesEnabled {
             return .or([
                 brbsEnabled ? .acceptsPaymentMethod(.brbs) : .false,
-                mealSwipesEnabled ? .acceptsPaymentMethod(.mealSwipes) : .false
+                mealSwipesEnabled ? .acceptsPaymentMethod(.mealSwipe) : .false
             ])
         } else {
             return .true
@@ -69,9 +69,9 @@ struct EateryFilter: Codable {
     func campusAreaPredicate() -> EateryPredicate {
         if north || west || central {
             return .or([
-                north ? .campusArea("North") : .false,
-                west ? .campusArea("West") : .false,
-                central ? .campusArea("Central") : .false
+                north ? .campusArea(.north) : .false,
+                west ? .campusArea(.west) : .false,
+                central ? .campusArea(.central) : .false
             ])
         } else {
             return .true

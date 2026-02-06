@@ -16,38 +16,24 @@ public struct EateryAPI {
         self.url = url
 
         decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .iso8601
     }
 
     public func eateries() async throws -> [Eatery] {
         let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
-        var schemaApiResponse: [Schema.Eatery] = []
 
-        do {
-            schemaApiResponse = try decoder.decode([Schema.Eatery].self, from: data)
-        } catch {
-            throw EateryAPIError.apiResponseError(error.localizedDescription)
-        }
-
-        return schemaApiResponse.map(SchemaToModel.convert)
+        return try decoder.decode([Eatery].self, from: data)
     }
 
     public func eatery() async throws -> Eatery {
         let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
-        var schemaApiResponse: Schema.Eatery
 
-        do {
-            schemaApiResponse = try decoder.decode(Schema.Eatery.self, from: data)
-        } catch {
-            throw EateryAPIError.apiResponseError(error.localizedDescription)
-        }
-
-        return SchemaToModel.convert(schemaApiResponse)
+        return try decoder.decode(Eatery.self, from: data)
     }
 
-    public func reportError(eatery: Int64? = nil, content: String) async {
+    public func reportError(eatery: Int? = nil, content: String) async {
         struct ReportData: Codable {
-            let eatery: Int64?
+            let eatery: Int?
             let content: String
         }
 

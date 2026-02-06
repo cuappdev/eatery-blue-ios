@@ -10,7 +10,7 @@ import UIKit
 
 protocol MenusFilterViewControllerDelegate: AnyObject {
     func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeLocation filter: EateryFilter)
-    func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeMenuType string: String)
+    func menusFilterViewController(_ viewController: MenusFilterViewController, didChangeMenuType eventType: EventType)
 }
 
 class MenusFilterViewController: UIViewController {
@@ -19,7 +19,7 @@ class MenusFilterViewController: UIViewController {
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
 
-    private let currentMealType: String?
+    private let currentMealType: EventType?
 
     var selectedMenuIndex: Int?
 
@@ -40,17 +40,15 @@ class MenusFilterViewController: UIViewController {
         updateFilterButtonsFromState(animated: false)
     }
 
-    init(currentMealType: String) {
-        // MARK: todo - This should be an enum
-
+    init(currentMealType: EventType) {
         self.currentMealType = currentMealType
-        if currentMealType == "Breakfast" {
+        if currentMealType == .breakfast {
             selectedMenuIndex = 0
-        } else if currentMealType == "Lunch" {
+        } else if currentMealType == .lunch {
             selectedMenuIndex = 1
-        } else if currentMealType == "Dinner" {
+        } else if currentMealType == .dinner {
             selectedMenuIndex = 2
-        } else if currentMealType == "Late Dinner" {
+        } else if currentMealType == .lateDinner {
             selectedMenuIndex = 3
         }
 
@@ -84,7 +82,7 @@ class MenusFilterViewController: UIViewController {
 
     private func setUpMealType() {
         if let currentMealType = currentMealType {
-            mealType.label.text = currentMealType
+            mealType.label.text = currentMealType.description
         } else {
             return mealType.label.text = "Breakfast"
         }
@@ -170,7 +168,7 @@ extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelega
         didChangeMenuChoice string: String
     ) {
         mealType.label.text = string
-        if let mealType = mealType.label.text {
+        if let mealType = currentMealType {
             delegate?.menusFilterViewController(self, didChangeMenuType: mealType)
         }
     }

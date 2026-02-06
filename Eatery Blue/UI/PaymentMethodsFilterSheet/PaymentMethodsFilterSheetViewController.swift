@@ -51,10 +51,10 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         stack.addArrangedSubview(mealSwipesView)
         mealSwipesView.label.text = "Meal swipes"
         mealSwipesView.tap { [self] _ in
-            if selectedPaymentMethods.contains(.mealSwipes) {
-                selectedPaymentMethods.remove(.mealSwipes)
+            if selectedPaymentMethods.contains(.mealSwipe) {
+                selectedPaymentMethods.remove(.mealSwipe)
             } else {
-                selectedPaymentMethods.insert(.mealSwipes)
+                selectedPaymentMethods.insert(.mealSwipe)
             }
 
             updatePaymentMethodViewsFromState(animated: true)
@@ -75,12 +75,12 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
         stack.addArrangedSubview(cashOrCreditView)
         cashOrCreditView.label.text = "Cash or credit"
         cashOrCreditView.tap { [self] _ in
-            if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
+            if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.card) {
                 selectedPaymentMethods.remove(.cash)
-                selectedPaymentMethods.remove(.credit)
+                selectedPaymentMethods.remove(.card)
             } else {
                 selectedPaymentMethods.insert(.cash)
-                selectedPaymentMethods.insert(.credit)
+                selectedPaymentMethods.insert(.card)
             }
 
             updatePaymentMethodViewsFromState(animated: true)
@@ -119,7 +119,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             return
         }
 
-        if selectedPaymentMethods.contains(.mealSwipes) {
+        if selectedPaymentMethods.contains(.mealSwipe) {
             mealSwipesView.imageView.image = UIImage(named: "MealSwipesSelected")
             mealSwipesView.label.textColor = UIColor.Eatery.blue
         } else {
@@ -135,7 +135,7 @@ class PaymentMethodsFilterSheetViewController: SheetViewController {
             brbsView.label.textColor = UIColor.Eatery.secondaryText
         }
 
-        if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.credit) {
+        if selectedPaymentMethods.contains(.cash), selectedPaymentMethods.contains(.card) {
             cashOrCreditView.imageView.image = UIImage(named: "CashSelected")
             cashOrCreditView.label.textColor = UIColor.Eatery.green
         } else {

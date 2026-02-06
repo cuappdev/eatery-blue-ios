@@ -48,7 +48,7 @@ class EateryExpandableCardMenuCategoryView: UIView {
         )
 
         foodItemLabel.attributedText = attrString
-        categoryNameLabel.text = menuCategory.category
+        categoryNameLabel.text = menuCategory.name
     }
 
     // MARK: - Set Up Views
