@@ -135,7 +135,8 @@ class EateryViewController: UIViewController {
         spinner.removeFromSuperview()
     }
 
-    func addHeaderImageView(imageUrl: URL?) {
+    func addHeaderImageView(url: String) {
+        let imageUrl = URL(string: url)
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -152,7 +153,7 @@ class EateryViewController: UIViewController {
         headerView = imageView
     }
 
-    func addPaymentMethodsView(headerView: UIView?, paymentMethods: Set<PaymentMethod>) {
+    func addPaymentMethodsView(headerView: UIView?, paymentMethods: [PaymentMethod]) {
         guard let headerView = headerView, !paymentMethods.isEmpty else {
             return
         }
@@ -163,7 +164,7 @@ class EateryViewController: UIViewController {
         stack.distribution = .fill
         stack.alignment = .fill
 
-        if paymentMethods.contains(.mealSwipes) {
+        if paymentMethods.contains(.mealSwipe) {
             let imageView = UIImageView()
             imageView.image = UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor.Eatery.blue
@@ -189,7 +190,7 @@ class EateryViewController: UIViewController {
             stack.addArrangedSubview(imageView)
         }
 
-        if paymentMethods.contains(.cash) || paymentMethods.contains(.credit) {
+        if paymentMethods.contains(.cash) || paymentMethods.contains(.card) {
             let imageView = UIImageView()
             imageView.image = UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor.Eatery.green
@@ -223,7 +224,7 @@ class EateryViewController: UIViewController {
         container.tap { [self] _ in
             let viewController = PaymentMethodsSheetViewController()
             viewController.setUpSheetPresentation()
-            viewController.setPaymentMethods(paymentMethods)
+            viewController.setPaymentMethods(Set(paymentMethods))
             tabBarController?.present(viewController, animated: true)
         }
     }
@@ -267,7 +268,7 @@ class EateryViewController: UIViewController {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.text = "\(eatery.locationDescription ?? "--") · \(eatery.menuSummary ?? "--")"
+        label.text = "\(eatery.location.validated() ?? "--") · \(eatery.menuSummary.validated() ?? "--")"
         label.textColor = UIColor.Eatery.secondaryText
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
 
@@ -390,39 +391,41 @@ class EateryViewController: UIViewController {
         stackView.addArrangedSubview(container)
     }
 
-    private func createWaitTimeCell(_ eatery: Eatery) -> TimingCellView {
-        let cell = TimingCellView()
-        cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+    // Wait times not supported as of 1/29/2026
 
-        cell.titleLabel.textColor = UIColor.Eatery.secondaryText
-        let text = NSMutableAttributedString()
-        text.append(NSAttributedString(
-            attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font)
-        ))
-        text.append(NSAttributedString(string: " Wait Time"))
-        cell.titleLabel.attributedText = text
-
-        if let waitTimes = eatery.waitTimesByDay[Day()], let sample = waitTimes.sample(at: Date()) {
-            cell.statusLabel.textColor = UIColor.Eatery.primaryText
-            let low = Int(round(sample.low / 60))
-            let high = Int(round(sample.high / 60))
-            cell.statusLabel.text = low < high ? "\(low)-\(high) minutes" : "\(low) minutes"
-
-            let events = eatery.events
-            cell.tap { [self] _ in
-                let viewController = WaitTimesSheetViewController()
-                viewController.setUpSheetPresentation()
-                viewController.setUp(eatery.id, waitTimes, events: events)
-                tabBarController?.present(viewController, animated: true)
-            }
-
-        } else {
-            cell.statusLabel.textColor = UIColor.Eatery.secondaryText
-            cell.statusLabel.text = "-- minutes"
-        }
-
-        return cell
-    }
+//    private func createWaitTimeCell(_ eatery: Eatery) -> TimingCellView {
+//        let cell = TimingCellView()
+//        cell.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+//
+//        cell.titleLabel.textColor = UIColor.Eatery.secondaryText
+//        let text = NSMutableAttributedString()
+//        text.append(NSAttributedString(
+//            attachment: NSTextAttachment(image: UIImage(named: "Watch"), scaledToMatch: cell.titleLabel.font)
+//        ))
+//        text.append(NSAttributedString(string: " Wait Time"))
+//        cell.titleLabel.attributedText = text
+//
+//        if let waitTimes = eatery.waitTimesByDay[Day()], let sample = waitTimes.sample(at: Date()) {
+//            cell.statusLabel.textColor = UIColor.Eatery.primaryText
+//            let low = Int(round(sample.low / 60))
+//            let high = Int(round(sample.high / 60))
+//            cell.statusLabel.text = low < high ? "\(low)-\(high) minutes" : "\(low) minutes"
+//
+//            let events = eatery.events
+//            cell.tap { [self] _ in
+//                let viewController = WaitTimesSheetViewController()
+//                viewController.setUpSheetPresentation()
+//                viewController.setUp(eatery.id, waitTimes, events: events)
+//                tabBarController?.present(viewController, animated: true)
+//            }
+//
+//        } else {
+//            cell.statusLabel.textColor = UIColor.Eatery.secondaryText
+//            cell.statusLabel.text = "-- minutes"
+//        }
+//
+//        return cell
+//    }
 
     func addSpacer(height: CGFloat, color: UIColor? = UIColor.Eatery.gray00) {
         let spacer = UIView()
@@ -443,7 +446,7 @@ class EateryViewController: UIViewController {
     }
 
     func addMenuHeaderView(
-        eateryId: Int64?,
+        eateryId: Int?,
         title: String,
         subtitle: String,
         dropDownButtonAction: (() -> Void)? = nil
@@ -475,13 +478,12 @@ class EateryViewController: UIViewController {
         for i in 0 ..< eatery.events.count {
             let event = eatery.events[i]
             if event.canonicalDay != selectedEvent.canonicalDay { continue }
-            guard let menu = event.menu else { continue }
-            if menu.categories.isEmpty { continue }
+            if event.menu.isEmpty { continue }
 
             let isSelectedEvent = eatery.events[i] == selectedEvent
 
             let button = UIButton()
-            button.setTitle(event.description, for: .normal)
+            button.setTitle(event.type.description, for: .normal)
             button.setTitleColor(isSelectedEvent ? .Eatery.primaryText : .Eatery.gray01, for: .normal)
             button.titleLabel?.font = .preferredFont(for: .body, weight: isSelectedEvent ? .semibold : .medium)
 
@@ -529,7 +531,7 @@ class EateryViewController: UIViewController {
 
     func addMenuCategory(_ menuCategory: MenuCategory) {
         let categoryView = MenuCategoryView()
-        categoryView.titleLabel.text = menuCategory.category
+        categoryView.titleLabel.text = menuCategory.name
         categoryView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
 
         for item in menuCategory.items {
@@ -542,7 +544,7 @@ class EateryViewController: UIViewController {
         stackView.addArrangedSubview(categoryView)
     }
 
-    func addReportIssueView(eateryId: Int64? = nil) {
+    func addReportIssueView(eateryId: Int? = nil) {
         let view = ReportIssueView()
         view.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         view.button.tap { [self] _ in

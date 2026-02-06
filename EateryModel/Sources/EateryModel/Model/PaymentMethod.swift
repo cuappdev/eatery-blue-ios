@@ -1,20 +1,35 @@
 //
 //  PaymentMethod.swift
-//  
 //
-//  Created by William Ma on 1/12/22.
+//
+//  Created by Peter Bidoshi on 1/28/26.
 //
 
 import Foundation
 
-public enum PaymentMethod: Codable, Hashable {
+public enum PaymentMethod: String, Codable, Hashable {
+    case mealSwipe = "MEAL_SWIPE"
 
-    case mealSwipes
+    case cash = "CASH"
 
-    case brbs
+    case card = "CARD"
 
-    case cash
+    case brbs = "BRB"
 
-    case credit
+    case free = "FREE"
 
+    public var description: String {
+        switch self {
+        case .mealSwipe:
+            return "Meal Swipe"
+        case .cash:
+            return "Cash"
+        case .card:
+            return "Card"
+        case .brbs:
+            return "BRBs"
+        case .free:
+            return "Free"
+        }
+    }
 }

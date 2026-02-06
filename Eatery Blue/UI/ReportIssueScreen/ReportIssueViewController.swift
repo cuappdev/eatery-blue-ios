@@ -41,9 +41,9 @@ class ReportIssueViewController: UIViewController {
         !isSubmitting && selectedIssueType != nil && !issueDescriptionView.textView.text.isEmpty
     }
 
-    private var eateryId: Int64?
+    private var eateryId: Int?
 
-    init(eateryId: Int64? = nil) {
+    init(eateryId: Int? = nil) {
         self.eateryId = eateryId
         super.init(nibName: nil, bundle: nil)
     }

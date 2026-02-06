@@ -229,7 +229,7 @@ extension EateryFilterViewController: PaymentMethodsFilterSheetViewControllerDel
         for paymentMethod in filter.paymentMethods {
             switch paymentMethod {
             case .brbs: AppDevAnalytics.shared.logFirebase(BRBFilterPressPayload())
-            case .mealSwipes: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
+            case .mealSwipe: AppDevAnalytics.shared.logFirebase(SwipesFilterPressPayload())
             default: break
             }
         }

@@ -127,10 +127,10 @@ class EaterySmallCardView: UICollectionViewCell {
     }
 
     private func configureImageView() {
-        guard let eatery else { return }
+        guard let eatery, let imageUrl = URL(string: eatery.imageUrl) else { return }
 
-        imageView.kf.setImage(with: eatery.imageUrl)
-        imageView.hero.id = eatery.imageUrl?.absoluteString
+        imageView.kf.setImage(with: imageUrl)
+        imageView.hero.id = eatery.imageUrl
         imageView.alpha = eatery.isOpen ? 1 : 0.5
     }
 

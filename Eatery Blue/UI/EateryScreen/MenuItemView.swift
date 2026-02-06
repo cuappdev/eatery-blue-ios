@@ -12,7 +12,7 @@ class MenuItemView: UIView {
     // MARK: - Properties (view)
 
     private let allergensLabel = UILabel()
-    private let descriptionLabel = UILabel()
+//    private let descriptionLabel = UILabel()
     private let dietaryInfoStack = UIStackView()
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
@@ -27,10 +27,10 @@ class MenuItemView: UIView {
         didSet {
             setUpTitleLabel()
             setUpPriceLabel()
-            setUpDescriptionLabel()
+//            setUpDescriptionLabel()
             setUpFavoriteButton()
-            setUpAllergensLabel(item?.allergens ?? [])
-            setUpDietaryInfoStack(item?.dietaryPreferences ?? [])
+            setUpAllergensLabel(item?.allergens)
+            setUpDietaryInfoStack(item?.dietaryPreferences)
         }
     }
 
@@ -82,8 +82,8 @@ class MenuItemView: UIView {
         favoriteButton.addSubview(favoriteButtonImage)
         setUpFavoriteButton()
 
-        stackView.addArrangedSubview(descriptionLabel)
-        setUpDescriptionLabel()
+//        stackView.addArrangedSubview(descriptionLabel)
+//        setUpDescriptionLabel()
 
         stackView.addArrangedSubview(allergensLabel)
         setUpAllergensLabel([])
@@ -96,7 +96,7 @@ class MenuItemView: UIView {
     }
 
     private func setUpPriceLabel() {
-        if let price = item?.price {
+        if let price = item?.basePrice {
             priceLabel.text = EateryViewController
                 .priceNumberFormatter
                 .string(from: NSNumber(value: Double(price) / 100))
@@ -108,19 +108,21 @@ class MenuItemView: UIView {
         priceLabel.textColor = UIColor.Eatery.secondaryText
     }
 
-    private func setUpDescriptionLabel() {
-        if let description = item?.description {
-            descriptionLabel.isHidden = false
-            descriptionLabel.text = description
-        } else {
-            descriptionLabel.isHidden = true
-        }
+    // As of refactored backend, there is no description for items yet (1/29/2026)
 
-        descriptionLabel.font = .preferredFont(for: .footnote, weight: .regular)
-        descriptionLabel.textColor = UIColor.Eatery.secondaryText
-        descriptionLabel.isHidden = true
-        descriptionLabel.numberOfLines = 0
-    }
+//    private func setUpDescriptionLabel() {
+//        if let description = item?.description {
+//            descriptionLabel.isHidden = false
+//            descriptionLabel.text = description
+//        } else {
+//            descriptionLabel.isHidden = true
+//        }
+//
+//        descriptionLabel.font = .preferredFont(for: .footnote, weight: .regular)
+//        descriptionLabel.textColor = UIColor.Eatery.secondaryText
+//        descriptionLabel.isHidden = true
+//        descriptionLabel.numberOfLines = 0
+//    }
 
     private func setUpFavoriteButton() {
         guard let item = item else { return }
@@ -142,29 +144,27 @@ class MenuItemView: UIView {
         }
     }
 
-    private func setUpAllergensLabel(_ allergens: [String]) {
-        if allergens.isEmpty {
+    private func setUpAllergensLabel(_ allergens: [Allergen]?) {
+        guard let allergens, !allergens.isEmpty else {
             allergensLabel.isHidden = true
             return
-        } else {
-            allergensLabel.isHidden = false
         }
 
-        allergensLabel.text = "Contains: \(allergens.joined(separator: ", "))"
+        allergensLabel.isHidden = false
+        allergensLabel.text = "Contains: \(allergens.map { $0.name }.joined(separator: ", "))"
         allergensLabel.font = .systemFont(ofSize: 10)
         allergensLabel.textColor = UIColor.Eatery.red
     }
 
-    private func setUpDietaryInfoStack(_ dietaryInfos: [String]) {
-        dietaryInfoStack.axis = .horizontal
-        dietaryInfoStack.spacing = 8
-
-        if dietaryInfos.isEmpty {
+    private func setUpDietaryInfoStack(_ dietaryInfos: [DietaryPreference]?) {
+        guard let dietaryInfos, !dietaryInfos.isEmpty else {
             dietaryInfoStack.isHidden = true
             return
-        } else {
-            dietaryInfoStack.isHidden = false
         }
+
+        dietaryInfoStack.isHidden = false
+        dietaryInfoStack.axis = .horizontal
+        dietaryInfoStack.spacing = 8
 
         for view in dietaryInfoStack.subviews {
             dietaryInfoStack.removeArrangedSubview(view)
@@ -174,7 +174,7 @@ class MenuItemView: UIView {
         for dietaryInfo in dietaryInfos {
             let dietaryInfoView = UIImageView()
             // see if the dietaryInfo image exists
-            if let image = UIImage(named: dietaryInfo) {
+            if let image = UIImage(named: dietaryInfo.name) {
                 dietaryInfoView.image = image
                 dietaryInfoStack.addArrangedSubview(dietaryInfoView)
                 dietaryInfoView.snp.makeConstraints { make in

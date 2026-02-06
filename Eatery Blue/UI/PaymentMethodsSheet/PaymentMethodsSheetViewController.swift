@@ -73,7 +73,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
     func setPaymentMethods(_ paymentMethods: Set<PaymentMethod>) {
         self.paymentMethods = paymentMethods
 
-        mealSwipesImageView.tintColor = paymentMethods.contains(.mealSwipes)
+        mealSwipesImageView.tintColor = paymentMethods.contains(.mealSwipe)
             ? UIColor.Eatery.blue
             : UIColor.Eatery.secondaryText
 
@@ -81,7 +81,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             ? UIColor.Eatery.red
             : UIColor.Eatery.secondaryText
 
-        cashOrCardImageView.tintColor = paymentMethods.contains(.cash) || paymentMethods.contains(.credit)
+        cashOrCardImageView.tintColor = paymentMethods.contains(.cash) || paymentMethods.contains(.card)
             ? UIColor.Eatery.green
             : UIColor.Eatery.secondaryText
 
@@ -125,7 +125,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
     private func getAttributedStrings(_ paymentMethods: Set<PaymentMethod>) -> [NSAttributedString] {
         var result: [NSAttributedString] = []
 
-        if paymentMethods.contains(.mealSwipes) {
+        if paymentMethods.contains(.mealSwipe) {
             let attributedString = NSMutableAttributedString()
             let attachment = NSTextAttachment(
                 image: UIImage(named: "MealSwipes")?.withRenderingMode(.alwaysTemplate),
@@ -155,7 +155,7 @@ class PaymentMethodsSheetViewController: SheetViewController {
             result.append(attributedString)
         }
 
-        if paymentMethods.contains(.cash) || paymentMethods.contains(.credit) {
+        if paymentMethods.contains(.cash) || paymentMethods.contains(.card) {
             let attributedString = NSMutableAttributedString()
             let attachment = NSTextAttachment(
                 image: UIImage(named: "Cash")?.withRenderingMode(.alwaysTemplate),

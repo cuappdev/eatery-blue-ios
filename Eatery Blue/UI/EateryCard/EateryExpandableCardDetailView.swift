@@ -33,27 +33,26 @@ class EateryExpandableCardDetailView: UIView {
 
     // MARK: - configure
 
-    func configure(eatery: Eatery, selectedDay: Day, selectedMealType: String, allEateries: [Eatery]) {
+    func configure(eatery: Eatery, selectedDay: Day, selectedMealType: EventType, allEateries: [Eatery]) {
         self.eatery = eatery
         self.allEateries = allEateries
 
         let selectedEvents = eatery.events.filter { $0.canonicalDay == selectedDay }
 
-        // MARK: Ideally this should be an enum but good for now
-
         // Ignore late lunch
         var event: Event?
-        if selectedMealType == "Breakfast" {
-            event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Breakfast" }
-        } else if selectedMealType == "Lunch" {
-            event = selectedEvents.first { $0.description == "Brunch" || $0.description == "Lunch" }
-        } else if selectedMealType == "Dinner" {
-            event = selectedEvents.first { $0.description == "Dinner" }
-        } else if selectedMealType == "Late Dinner" {
-            event = selectedEvents.first { $0.description == "Late Night" }
+
+        if selectedMealType == .breakfast {
+            event = selectedEvents.first { $0.type == .brunch || $0.type == .breakfast }
+        } else if selectedMealType == .lunch {
+            event = selectedEvents.first { $0.type == .brunch || $0.type == .lunch }
+        } else if selectedMealType == .dinner {
+            event = selectedEvents.first { $0.type == .dinner }
+        } else if selectedMealType == .lateDinner {
+            event = selectedEvents.first { $0.type == .lateDinner }
         }
 
-        if let event, event.endDate > Date() {
+        if let event, event.endTimestamp > Date() {
             menuCategoryStackView.addArrangedSubview(HDivider())
             addMenuCategories(event: event)
             setupViewEateryDetailsButton()
@@ -101,27 +100,26 @@ class EateryExpandableCardDetailView: UIView {
     // MARK: - Helpers
 
     private func addMenuCategories(event: Event) {
-        if let categories = event.menu?.categories {
-            var sortedCategories: [MenuCategory] = eatery?.name == "Morrison Dining" ? categories : categories
-                .reversed()
-            for i in 0 ..< sortedCategories.count {
-                let menuCategory = sortedCategories[i]
-                if menuCategory.category == "Chef's Table" {
-                    sortedCategories.swapAt(0, i)
-                }
-                if menuCategory.category == "Chef's Table - Sides" {
-                    sortedCategories.swapAt(1, i)
-                }
-                if menuCategory.category == "Grill" {
-                    sortedCategories.swapAt(2, i)
-                }
+        var sortedCategories: [MenuCategory] = eatery?.name == "Morrison Dining" ? event.menu : event.menu
+            .reversed()
+        for i in 0 ..< sortedCategories.count {
+            let menuCategory = sortedCategories[i]
+            // Remove hardcoded categories and use a better sorting mechanism
+            if menuCategory.name == "Chef's Table" {
+                sortedCategories.swapAt(0, i)
             }
+            if menuCategory.name == "Chef's Table - Sides" {
+                sortedCategories.swapAt(1, i)
+            }
+            if menuCategory.name == "Grill" {
+                sortedCategories.swapAt(2, i)
+            }
+        }
 
-            for category in sortedCategories {
-                let menuCategoryView = EateryExpandableCardMenuCategoryView()
-                menuCategoryView.configure(menuCategory: category)
-                menuCategoryStackView.addArrangedSubview(menuCategoryView)
-            }
+        for category in sortedCategories {
+            let menuCategoryView = EateryExpandableCardMenuCategoryView()
+            menuCategoryView.configure(menuCategory: category)
+            menuCategoryStackView.addArrangedSubview(menuCategoryView)
         }
     }
 

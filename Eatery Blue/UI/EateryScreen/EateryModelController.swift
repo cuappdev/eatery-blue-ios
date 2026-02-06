@@ -120,7 +120,7 @@ class EateryModelController: EateryViewController {
     }
 
     private func setUpStackView(_ eatery: Eatery) {
-        addHeaderImageView(imageUrl: eatery.imageUrl)
+        addHeaderImageView(url: eatery.imageUrl)
         addPaymentMethodsView(headerView: stackView.arrangedSubviews.last, paymentMethods: eatery.paymentMethods)
         addPlaceDecorationIcon(headerView: stackView.arrangedSubviews.last)
         addNameLabel(eatery.name)
@@ -140,7 +140,7 @@ class EateryModelController: EateryViewController {
     }
 
     func setUpAnalytics(_ eatery: Eatery) {
-        if eatery.paymentMethods.contains(.mealSwipes) {
+        if eatery.paymentMethods.contains(.mealSwipe) {
             AppDevAnalytics.shared.logFirebase(CampusDiningCellPressPayload(diningHallName: eatery.name))
         } else {
             AppDevAnalytics.shared.logFirebase(CampusCafeCellPressPayload(cafeName: eatery.name))
@@ -179,20 +179,15 @@ class EateryModelController: EateryViewController {
     private func addButtons(_ eatery: Eatery) {
         addButtons(
             orderOnlineAction: eatery.onlineOrderUrl != nil ? didPressOrderOnlineButton : nil,
-            directionsAction: eatery.latitude != nil && eatery.longitude != nil ? didPressDirectionsButton : nil
+            directionsAction: didPressDirectionsButton
         )
     }
 
     private func addAlertsIfNeeded(_ eatery: Eatery) {
         let now = Date()
-        let relevantAlerts = eatery.alerts.filter { alert in
-            alert.startDate <= now && now <= alert.endDate
-        }
 
-        for alert in relevantAlerts {
-            if let description = alert.description {
-                addAlertInfoView(description)
-            }
+        for alert in eatery.announcements {
+            addAlertInfoView(alert)
         }
     }
 
@@ -210,17 +205,17 @@ class EateryModelController: EateryViewController {
     }
 
     private func updateNavigationViewCategoriesFromState() {
-        guard let event = selectedEvent, let menu = event.menu else {
+        guard let event = selectedEvent, !event.menu.isEmpty else {
             navigationView.scrollView.isHidden = true
             return
         }
 
         navigationView.removeAllCategories()
 
-        let sortedCategories = sortMenuCategories(categories: menu.categories)
+        let sortedCategories = sortMenuCategories(categories: event.menu)
         navigationView.scrollView.isHidden = sortedCategories.isEmpty
         for (i, menuCategory) in sortedCategories.enumerated() {
-            navigationView.addCategory(menuCategory.category) { [self] in
+            navigationView.addCategory(menuCategory.name) { [self] in
                 scrollToCategoryView(at: i)
             }
         }
@@ -262,7 +257,7 @@ class EateryModelController: EateryViewController {
                     presentMenuPicker()
                 }
                 addSpacer(height: 16)
-                addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
+                addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { $0.id })
                 addViewProportionalSpacer(multiplier: 0.5)
                 return
             }
@@ -282,9 +277,9 @@ class EateryModelController: EateryViewController {
 
         let title: String
         if event.canonicalDay == Day() {
-            title = event.description ?? "Full Menu"
+            title = event.type.description
         } else {
-            title = "\(weekdayFormatter.string(from: event.canonicalDay.date())) \(event.description ?? "Menu")"
+            title = "\(weekdayFormatter.string(from: event.canonicalDay.date())) \(event.type.description)"
         }
 
         addMenuHeaderView(
@@ -300,8 +295,7 @@ class EateryModelController: EateryViewController {
 
         let events = eatery?.events
             .filter {
-                $0.canonicalDay == selectedEvent?.canonicalDay && $0
-                    .menu != nil && !($0.menu?.categories.isEmpty ?? true)
+                $0.canonicalDay == selectedEvent?.canonicalDay && !($0.menu.isEmpty)
             } ?? []
         if events.count <= 1 {
             addSpacer(height: 16)
@@ -319,29 +313,25 @@ class EateryModelController: EateryViewController {
 
         // Treat categories with no items as absent
         // If all categories are empty, show the inline error state
-        if let menu = event.menu {
-            // Filter out categories whose items are empty
-            let nonEmptyCategories = menu.categories.filter { !$0.items.isEmpty }
+        // Filter out categories whose items are empty
+        let nonEmptyCategories = event.menu.filter { !$0.items.isEmpty }
 
-            if nonEmptyCategories.isEmpty {
-                addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
-            } else {
-                let sortedCategories = sortMenuCategories(categories: nonEmptyCategories)
-                if !sortedCategories.isEmpty {
-                    for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
-                        addMenuCategory(menuCategory)
-                        addSpacer(height: 8)
-                    }
-
-                    if let last = sortedCategories.last {
-                        addMenuCategory(last)
-                    }
-                } else {
-                    addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
-                }
-            }
+        if nonEmptyCategories.isEmpty {
+            addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { $0.id })
         } else {
-            addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { Int64($0.id) })
+            let sortedCategories = sortMenuCategories(categories: nonEmptyCategories)
+            if !sortedCategories.isEmpty {
+                for menuCategory in sortedCategories[..<(sortedCategories.count - 1)] {
+                    addMenuCategory(menuCategory)
+                    addSpacer(height: 8)
+                }
+
+                if let last = sortedCategories.last {
+                    addMenuCategory(last)
+                }
+            } else {
+                addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { $0.id })
+            }
         }
     }
 
@@ -349,13 +339,16 @@ class EateryModelController: EateryViewController {
         var sortedCategories: [MenuCategory] = eatery?.name == "Morrison Dining" ? categories : categories.reversed()
         for i in 0 ..< sortedCategories.count {
             let menuCategory = sortedCategories[i]
-            if menuCategory.category == "Chef's Table" {
+            // Remove hardcoded categories and use a better sorting mechanism
+            if menuCategory.name == "Chef's Table" {
                 sortedCategories.swapAt(0, i)
             }
-            if menuCategory.category == "Chef's Table - Sides" {
+
+            if menuCategory.name == "Chef's Table - Sides" {
                 sortedCategories.swapAt(1, i)
             }
-            if menuCategory.category == "Grill" {
+
+            if menuCategory.name == "Grill" {
                 sortedCategories.swapAt(2, i)
             }
         }
@@ -371,7 +364,7 @@ class EateryModelController: EateryViewController {
         if let eatery = eatery {
             for event in eatery.events {
                 menuChoices.append(MenuPickerSheetViewController.MenuChoice(
-                    description: event.description ?? "Event",
+                    description: event.type.description,
                     event: event
                 ))
             }
@@ -387,17 +380,17 @@ class EateryModelController: EateryViewController {
     }
 
     private func didPressOrderOnlineButton() {
-        if let url = eatery?.onlineOrderUrl {
+        if let stringUrl = eatery?.onlineOrderUrl, let url = URL(string: stringUrl) {
             UIApplication.shared.open(url, options: [:])
         }
     }
 
     private func didPressDirectionsButton() {
-        guard let eatery = eatery, let latitude = eatery.latitude, let longitude = eatery.longitude else {
+        guard let eatery = eatery else {
             return
         }
 
-        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: Double(eatery.latitude), longitude: Double(eatery.longitude))
         let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
         mapItem.name = eatery.name
         mapItem.openInMaps(launchOptions: [
@@ -405,7 +398,7 @@ class EateryModelController: EateryViewController {
         ])
     }
 
-    private func addInlineErrorBlock(reportIssueEateryId: Int64?) {
+    private func addInlineErrorBlock(reportIssueEateryId: Int?) {
         let container = UIView()
         container.isUserInteractionEnabled = false
 

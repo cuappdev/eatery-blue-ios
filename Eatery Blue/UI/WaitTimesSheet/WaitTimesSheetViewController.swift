@@ -56,7 +56,7 @@ class WaitTimesSheetViewController: SheetViewController {
         updateWaitTimeLabel()
     }
 
-    func setUp(_ eateryId: Int64, _ waitTimes: WaitTimes, events: [Event], day: Day = Day()) {
+    func setUp(_ eateryId: Int, _ waitTimes: WaitTimes, events: [Event], day: Day = Day()) {
         self.waitTimes = waitTimes
         self.day = day
         self.events = events

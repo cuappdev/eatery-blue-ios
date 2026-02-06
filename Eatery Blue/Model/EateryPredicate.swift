@@ -19,7 +19,7 @@ indirect enum EateryPredicate {
     case or([EateryPredicate])
 
     case acceptsPaymentMethod(_ paymentMethod: PaymentMethod)
-    case campusArea(String)
+    case campusArea(CampusArea)
     case isFavorite
     case isOpen
     case underNMinutes(_ n: Int, userLocation: CLLocation, departureDate: Date)
@@ -53,7 +53,7 @@ indirect enum EateryPredicate {
             return predicates.contains { $0.isSatisfied(by: eatery, metadata: metadata) }
 
         case let .underNMinutes(n, userLocation, departureDate):
-            guard let totalTime = eatery.expectedTotalTime(userLocation: userLocation, departureDate: departureDate)
+            guard let totalTime = eatery.walkTime(userLocation: userLocation)
             else {
                 return false
             }
