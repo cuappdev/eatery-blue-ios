@@ -35,6 +35,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         _ application: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        // Check for updates
+        Task {
+            do {
+                let serverVersion = try await Networking.default.getAppVersion()
+                let deviceVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
+
+                if shouldForceUpdate(device: deviceVersion, server: serverVersion) {
+                    await MainActor.run {
+                        showForceUpdateAlert(
+                            appStoreURL: "https://apps.apple.com/us/app/eatery-cornell-dining/id1089672962"
+                        )
+                    }
+                }
+            } catch {
+                print("Version check failed: \(error)")
+            }
+        }
+
         FirebaseApp.configure()
 
         // Request notification permissions
@@ -125,5 +143,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     ) {
         Logger.notifications.info("Notification tapped: \(response.notification.request.content.userInfo)")
         completionHandler()
+    }
+
+    // MARK: - Helper functions
+
+    func shouldForceUpdate(device: String, server: String) -> Bool {
+        let parse = { (v: String) in v.split(separator: ".").prefix(2).compactMap { Int($0) } }
+
+        let d = parse(device)
+        let s = parse(server)
+
+        // Compare arrays: [3, 4] > [3, 3]
+        return s.lexicographicallyPrecedes(d) == false && s != d
+    }
+
+    @MainActor
+    private func showForceUpdateAlert(appStoreURL: String) {
+        let alert = UIAlertController(
+            title: "Update Required",
+            message: "A new version of Eatery is available.",
+            preferredStyle: .alert
+        )
+
+        let updateAction = UIAlertAction(title: "Update Now", style: .default) { _ in
+            if let url = URL(string: appStoreURL) {
+                UIApplication.shared.open(url)
+            }
+
+            self.showForceUpdateAlert(appStoreURL: appStoreURL)
+        }
+
+        alert.addAction(updateAction)
+
+        // Find the current active window's rootViewController
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            // Find the top-most controller (in case a modal is already up)
+            var topController = rootVC
+            while let presented = topController.presentedViewController {
+                topController = presented
+            }
+            topController.present(alert, animated: true)
+        }
     }
 }

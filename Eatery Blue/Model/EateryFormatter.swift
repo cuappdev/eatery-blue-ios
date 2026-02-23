@@ -171,8 +171,8 @@ class EateryFormatter {
                     string: "Cash or credit only",
                     attributes: [.foregroundColor: UIColor.Eatery.green as Any]
                 )
-            } else if let menuSummary = eatery.menuSummary.validated() {
-                return NSAttributedString(string: menuSummary)
+            } else if let eateryTypes = eatery.eateryTypes.validated() {
+                return NSAttributedString(string: eateryTypes.formatted())
             } else {
                 return nil
             }
