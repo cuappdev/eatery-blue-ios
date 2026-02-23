@@ -16,7 +16,13 @@ public struct EateryAPI {
         self.url = url
 
         decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .fracSecondsISO8601
+    }
+
+    public func version() async throws -> VersionResponse {
+        let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
+
+        return try decoder.decode(VersionResponse.self, from: data)
     }
 
     public func eateries() async throws -> [Eatery] {

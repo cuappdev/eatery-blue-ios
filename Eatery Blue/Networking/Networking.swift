@@ -23,9 +23,15 @@ class Networking {
 
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
-        let eateryApi = EateryAPI(url: fetchUrl)
+        let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
+    }
+
+    func getAppVersion() async throws -> String {
+        let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("version"))
+
+        return try await eateryAPI.version().version
     }
 
     func loadAllEatery() async throws -> [Eatery] {

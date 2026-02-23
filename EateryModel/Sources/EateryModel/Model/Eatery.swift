@@ -21,7 +21,7 @@ public struct Eatery: Codable, Hashable {
 
     let about: String
 
-    let shortAbout: String
+    public let shortAbout: String
 
     let cornellDining: Bool
 
@@ -45,7 +45,7 @@ public struct Eatery: Codable, Hashable {
 
     public let paymentMethods: [PaymentMethod]
 
-    let eateryTypes: [EateryType]
+    public let eateryTypes: [EateryType]
 
     let createdAt: Date
 
