@@ -265,10 +265,13 @@ class EateryViewController: UIViewController {
     }
 
     func addShortDescriptionLabel(_ eatery: Eatery) {
+        let eateryTypes = eatery.eateryTypes.validated()?.formatted()
+        let location = eatery.location.validated()
+
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.text = "\(eatery.location.validated() ?? "--") · \(eatery.menuSummary.validated() ?? "--")"
+        label.text = "\(location ?? "--") · \(eateryTypes ?? "--")"
         label.textColor = UIColor.Eatery.secondaryText
         label.font = .preferredFont(for: .subheadline, weight: .semibold)
 
@@ -374,21 +377,31 @@ class EateryViewController: UIViewController {
         return cell
     }
 
-    func addFreedgeDescription() {
+    func addAboutDescription(_ eatery: Eatery) {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = """
-        The Free Food Fridge is a place on campus where all are welcome to both donate and take food at no cost, \
-        as needed, reducing food waste while improving food access. The fridge is intended to provide a \n
-        convenient  place to drop off food that might otherwise be discarded––it should not be used to redirect \
-        food that is already being donated.
-        """
+        if let shortAbout = eatery.shortAbout.validated() {
+            label.text = shortAbout
+        } else if eatery.id == 46 {
+            label.text = """
+            The Free Food Fridge is a place on campus where all are welcome to both donate and take food at no cost, \
+            as needed, reducing food waste while improving food access. The fridge is intended to provide a \n
+            convenient  place to drop off food that might otherwise be discarded––it should not be used to redirect \
+            food that is already being donated.
+            """
+        } else {
+            label.text = nil
+        }
+
         label.textColor = UIColor.Eatery.secondaryText
         label.font = .preferredFont(for: .footnote, weight: .regular)
 
         let container = ContainerView(content: label)
         container.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        stackView.addArrangedSubview(container)
+
+        if label.text != nil {
+            stackView.addArrangedSubview(container)
+        }
     }
 
     // Wait times not supported as of 1/29/2026
