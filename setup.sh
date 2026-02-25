@@ -69,6 +69,76 @@ else
 fi
 
 echo ""
+echo "☁️  Setting up DigitalOcean Spaces credentials..."
+
+# Check if AWS CLI is installed (needed for s3 commands)
+if ! command_exists aws; then
+    echo "  ❌ AWS CLI is not installed."
+    echo "  Installing AWS CLI via Homebrew..."
+    brew install awscli
+fi
+
+# Prompt for credentials
+echo ""
+echo "Please enter your DigitalOcean Spaces credentials:"
+echo "(Find these pinned in the #ios channel on Slack)"
+echo ""
+read -p "Access Key ID: " ACCESS_KEY_ID
+read -sp "Secret Access Key: " SECRET_ACCESS_KEY
+echo ""
+
+# Validate inputs
+if [ -z "$ACCESS_KEY_ID" ] || [ -z "$SECRET_ACCESS_KEY" ]; then
+    echo "❌ Both Access Key ID and Secret Access Key are required"
+    exit 1
+fi
+
+# Create target directory if it doesn't exist
+TARGET_DIR="Eatery Blue/Supporting"
+if [ ! -d "$TARGET_DIR" ]; then
+    echo "  📁 Creating directory: $TARGET_DIR"
+    mkdir -p "$TARGET_DIR"
+fi
+
+echo "  📥 Downloading files from DigitalOcean Spaces..."
+
+# Configure AWS CLI for DigitalOcean Spaces
+export AWS_ACCESS_KEY_ID="$ACCESS_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="$SECRET_ACCESS_KEY"
+
+# Snapshot files before sync
+BEFORE_FILES=$(ls -1 "$TARGET_DIR" 2>/dev/null | sort || true)
+
+# Download all files from the bucket
+aws s3 sync \
+    s3://appdev-upload/ios-secrets/eatery-blue/ \
+    "$TARGET_DIR" \
+    --endpoint-url=https://nyc3.digitaloceanspaces.com \
+    --no-progress 2>&1 | grep -v "Is a directory" || true
+
+# Snapshot files after sync
+AFTER_FILES=$(ls -1 "$TARGET_DIR" 2>/dev/null | sort || true)
+
+# Find newly downloaded files by comparing before/after
+NEW_FILES=$(comm -13 <(echo "$BEFORE_FILES") <(echo "$AFTER_FILES"))
+
+if [ -n "$NEW_FILES" ]; then
+    echo "  ✅ Files downloaded successfully to $TARGET_DIR"
+    echo "  📄 Downloaded files from DigitalOcean:"
+    echo "$NEW_FILES" | sed 's/^/     - /'
+elif [ -n "$(ls -A "$TARGET_DIR" 2>/dev/null)" ]; then
+    echo "  ✅ All files already up-to-date in $TARGET_DIR"
+else
+    echo "  ❌ Failed to download files from DigitalOcean Spaces"
+    echo "  Please check your credentials and try again"
+    exit 1
+fi
+
+# Unset credentials from environment
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+
+echo ""
 echo "🔍 Verifying setup..."
 
 # Verify tools are accessible
