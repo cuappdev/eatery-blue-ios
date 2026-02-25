@@ -17,12 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download and Copy Configuration Files
+      - name: Run post_clone
         env:
           BUCKET_URL: ${{ secrets.BUCKET_URL }}
         run: |
-          curl -o "${{ github.workspace }}/Eatery Blue/Supporting/Keys.xcconfig" "$BUCKET_URL/ios-secrets/eatery-blue/Keys.xcconfig"
-          curl -o "${{ github.workspace }}/Eatery Blue/Supporting/GoogleService-Info.plist" "$BUCKET_URL/ios-secrets/eatery-blue/GoogleService-Info.plist"
+          chmod +x ./ci_scripts/ci_post_clone.sh
+          ./ci_scripts/ci_post_clone.sh
 
       - name: Build
         env:

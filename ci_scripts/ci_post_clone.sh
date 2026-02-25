@@ -6,12 +6,16 @@
 #  Created by Vin Bui on 10/9/23.
 #
 
-echo "Downloading Secrets"
-brew install wget
-cd $CI_WORKSPACE/ci_scripts
-wget -O ../Eatery\ Blue/Supporting/GoogleService-Info.plist "$GOOGLE_SERVICE_PLIST"
-wget -O ../Eatery\ Blue/Supporting/Keys.xcconfig "$KEYS"
+brew install awscli
+
+export AWS_ACCESS_KEY_ID="$SPACES_ACCESS_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="$SPACES_SECRET_ACCESS_KEY"
+
+aws s3 sync \
+    s3://appdev-upload/ios-secrets/eatery-blue/ \
+    "$CI_WORKSPACE/Eatery Blue/Supporting" \
+    --endpoint-url=https://nyc3.digitaloceanspaces.com \
+    --no-progress 2>&1 | grep -v "Is a directory"
 
 # Trust swiftlint
 defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
-
