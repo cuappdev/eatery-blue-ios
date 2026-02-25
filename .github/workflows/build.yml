@@ -19,7 +19,9 @@ jobs:
 
       - name: Run post_clone
         env:
-          BUCKET_URL: ${{ secrets.BUCKET_URL }}
+          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          CI_WORKSPACE: ${{ github.workspace }}
         run: |
           chmod +x ./ci_scripts/ci_post_clone.sh
           ./ci_scripts/ci_post_clone.sh
