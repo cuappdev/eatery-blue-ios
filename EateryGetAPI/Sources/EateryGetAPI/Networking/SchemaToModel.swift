@@ -28,8 +28,8 @@ internal enum SchemaToModel {
 
             accounts.append(Account(
                 accountType: accountType,
-                balance: getAccount.balance,
-                transactions: transactions.filter { $0.accountType == accountType }
+                balance: getAccount.balance ?? 0
+               // transactions: transactions.filter { $0.accountType == accountType }
             ))
         }
 
@@ -50,8 +50,8 @@ internal enum SchemaToModel {
             }
 
             transactions.append(Transaction(
-                accountType: accountType,
                 amount: amount,
+                accountName: accountType.description,
                 date: date,
                 location: location
             ))
@@ -74,26 +74,7 @@ internal enum SchemaToModel {
         if name.contains("Laundry") {
             return .laundry
         }
-        if name.contains("Unlimited") {
-            return .unlimited
-        }
-        if name.contains("Traditional") {
-            return .bearTraditional
-        }
-        if name.contains("Choice") {
-            return .bearChoice
-        }
-        if name.contains("Basic") {
-            return .bearBasic
-        }
-        if name.contains("Off") {
-            return .offCampusValue
-        }
-        if name.contains("Flex") {
-            return .flex
-        }
-
+        
         return nil
     }
-
 }

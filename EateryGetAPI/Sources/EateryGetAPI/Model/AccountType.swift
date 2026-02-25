@@ -6,30 +6,28 @@
 //
 
 public enum AccountType: Codable {
-
-    case bearBasic
-
-    case bearChoice
-
-    case bearTraditional
-
+    
+    case mealPlan
     case bigRedBucks
-
     case cityBucks
-
-    case flex
-
     case laundry
 
-    case offCampusValue
-
-    case unlimited
-
-    public var isMealPlan: Bool {
+    var description: String {
         switch self {
-        case .unlimited, .bearTraditional, .bearChoice, .bearBasic, .offCampusValue, .flex: return true
-        case .cityBucks, .bigRedBucks, .laundry: return false
+        case .mealPlan: return "Meal Swipes"
+        case .bigRedBucks: return "Big Red Bucks"
+        case .cityBucks: return "City Bucks"
+        case .laundry: return "Laundry"
         }
     }
 
+    static func fromBackendName(_ name: String) -> AccountType? {
+        switch name {
+        case "Meal Swipes": return .mealPlan
+        case "Big Red Bucks": return .bigRedBucks
+        case "City Bucks": return .cityBucks
+        case "Laundry": return .laundry
+        default: return nil
+        }
+    }
 }

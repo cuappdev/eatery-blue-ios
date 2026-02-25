@@ -24,11 +24,13 @@ public struct EateryAPI {
         let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
         var schemaApiResponse: [Schema.Eatery] = []
 
+        print("hitting url: \(url)")
         do {
-            print(schemaApiResponse)
             schemaApiResponse = try decoder.decode([Schema.Eatery].self, from: data)
+            print(schemaApiResponse)
         }
         catch {
+            print("api response error")
             throw EateryAPIError.apiResponseError(error.localizedDescription)
         }
 
@@ -80,6 +82,5 @@ public struct EateryAPI {
             }
         }.resume()
     }
-
 }
 

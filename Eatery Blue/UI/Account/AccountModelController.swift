@@ -19,28 +19,33 @@ private struct EateryAccounts {
 
     init(_ accounts: [Account]) {
         mealPlan = accounts.filter({
-            $0.accountType.isMealPlan
+            $0.accountType == .mealPlan
         }).min(by: { lhs, rhs in
-            (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
+            (lhs.balance) < (rhs.balance)
         })
 
         bigRedBucks = accounts.filter({
             $0.accountType == .bigRedBucks
         }).min(by: { lhs, rhs in
-            (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
+            (lhs.balance) < (rhs.balance)
         })
 
         cityBucks = accounts.filter({
             $0.accountType == .cityBucks
         }).min(by: { lhs, rhs in
-            (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
+            (lhs.balance) < (rhs.balance)
         })
 
         laundry = accounts.filter({
             $0.accountType == .laundry
         }).min(by: { lhs, rhs in
-            (lhs.balance ?? .infinity) < (rhs.balance ?? .infinity)
+            (lhs.balance) < (rhs.balance)
         })
+    }
+    
+    init(from responseAccounts: [String : Account?]) {
+        let accounts = responseAccounts.values.compactMap { $0 }
+        self.init(accounts)
     }
 
     subscript(accountType: EateryAccountType) -> Account? {
@@ -69,7 +74,6 @@ private enum EateryAccountType: Int, CustomStringConvertible, CaseIterable {
         case .laundry: return "Laundry"
         }
     }
-
 }
 
 @MainActor
@@ -117,8 +121,8 @@ class AccountModelController: AccountViewController {
         updateTransactionsHeaderViewFromState()
 
         Task {
-            spinner.startAnimating()
-            await updateAccountsFromNetworking()
+            // spinner.startAnimating()
+            // await updateAccountsFromNetworking()
             updateCellsFromState()
         }
     }
@@ -145,8 +149,12 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let accounts = try await Networking.default.accounts.fetch(start: start, end: end)
-            let eateryAccounts = EateryAccounts(accounts)
+            if !Networking.default.sessionId.isEmpty {
+                try await Networking.default.updateUserAccount(sessionId: Networking.default.sessionId)
+            }
+            
+            let accountsResponse = try await Networking.default.accounts.fetch(start: start, end: end)
+            let eateryAccounts = EateryAccounts(from: accountsResponse.accounts)
             self.accounts = eateryAccounts
             
             spinner.stopAnimating()
@@ -157,44 +165,48 @@ class AccountModelController: AccountViewController {
 
     private func updateCellsFromState() {
         let balances = AccountModelController.getBalanceItems(accounts)
-        let transactions = AccountModelController.getTransactionItems(accounts[selectedAccount]?.transactions ?? [])
-        updateCells(balances: balances, transactions: transactions)
+        
+        // Filter transactions based on seleted account type
+        
+//        let transactions = AccountModelController.getTransactionItems(accounts[selectedAccount]?.transactions ?? [])
+//        updateCells(balances: balances, transactions: transactions)
     }
 
     private static func getBalanceItems(_ accounts: EateryAccounts) -> [BalanceItem] {
         var items: [BalanceItem] = []
 
-        if let mealPlan = accounts.mealPlan, let balance = mealPlan.balance {
+        if let mealPlan = accounts.mealPlan {
+            let balance = mealPlan.balance
             let remaining = Int(balance)
 
             let subtitle = NSMutableAttributedString()
-            switch mealPlan.accountType {
-            case .bearBasic, .bearChoice, .bearTraditional:
-                subtitle.append(NSAttributedString(
-                    string: "\(remaining)",
-                    attributes: [.foregroundColor: UIColor.Eatery.black as Any]
-                ))
-                subtitle.append(NSAttributedString(
-                    string: " remaining this week",
-                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
-                ))
-
-            case .unlimited:
-                subtitle.append(NSAttributedString(string: "Unlimited"))
-
-            case .offCampusValue, .flex:
-                subtitle.append(NSAttributedString(
-                    string: "\(remaining)",
-                    attributes: [.foregroundColor: UIColor.Eatery.black as Any]
-                ))
-                subtitle.append(NSAttributedString(
-                    string: " remaining this semester",
-                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
-                ))
-
-            default:
-                break
-            }
+//            switch mealPlan.accountType {
+//            case .bearBasic, .bearChoice, .bearTraditional:
+//                subtitle.append(NSAttributedString(
+//                    string: "\(remaining)",
+//                    attributes: [.foregroundColor: UIColor.Eatery.black as Any]
+//                ))
+//                subtitle.append(NSAttributedString(
+//                    string: " remaining this week",
+//                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
+//                ))
+//
+//            case .unlimited:
+//                subtitle.append(NSAttributedString(string: "Unlimited"))
+//
+//            case .offCampusValue, .flex:
+//                subtitle.append(NSAttributedString(
+//                    string: "\(remaining)",
+//                    attributes: [.foregroundColor: UIColor.Eatery.black as Any]
+//                ))
+//                subtitle.append(NSAttributedString(
+//                    string: " remaining this semester",
+//                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
+//                ))
+//
+//            default:
+//                break
+//            }
 
             items.append(BalanceItem(title: "Meal Swipes", subtitle: subtitle))
         } else {
@@ -230,18 +242,22 @@ class AccountModelController: AccountViewController {
 
         for transaction in transactions {
             let amount = NSMutableAttributedString()
-            if transaction.accountType.isMealPlan {
-                amount.append(NSAttributedString(string: "1"))
-                amount.append(NSAttributedString(
-                    string: " swipe",
-                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
-                ))
-            } else {
-                amount.append(NSAttributedString(
-                    string: priceFormatter.string(from: NSNumber(value: transaction.amount)) ?? ""
-                ))
-            }
+//            if transaction.accountType.isMealPlan {
+//                amount.append(NSAttributedString(string: "1"))
+//                amount.append(NSAttributedString(
+//                    string: " swipe",
+//                    attributes: [.foregroundColor: UIColor.Eatery.gray05 as Any]
+//                ))
+//            } else {
+//                amount.append(NSAttributedString(
+//                    string: priceFormatter.string(from: NSNumber(value: transaction.amount)) ?? ""
+//                ))
+//            }
 
+            amount.append(NSAttributedString(
+                string: priceFormatter.string(from: NSNumber(value: transaction.amount)) ?? ""
+            ))
+            
             let cell = TransactionItem(
                 title: transaction.location,
                 time: timeFormatter.string(from: transaction.date),

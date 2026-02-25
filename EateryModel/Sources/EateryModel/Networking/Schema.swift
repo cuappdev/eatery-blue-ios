@@ -21,54 +21,98 @@ internal enum Schema {
 
     }
 
+//    internal struct Eatery: Codable {
+//
+//        internal let alerts: [Alert]?
+//
+//        internal let campusArea: String?
+//
+//        internal let events: [Schema.Event]?
+//        
+//        internal let id: Int64
+//        
+//        internal let imageUrl: String?
+//
+//        internal let latitude: Double?
+//
+//        internal let location: String?
+//
+//        internal let longitude: Double?
+//
+//        internal let menuSummary: String?
+//
+//        internal let name: String?
+//
+//        internal let onlineOrderUrl: URL?
+//
+//        internal let paymentAcceptsCash: Bool?
+//
+//        internal let paymentAcceptsBrbs: Bool?
+//
+//        internal let paymentAcceptsMealSwipes: Bool?
+//
+//        internal let waitTime: [Schema.WaitTime]?
+//
+//    }
+
     internal struct Eatery: Codable {
-
-        internal let alerts: [Alert]?
-
-        internal let campusArea: String?
-
-        internal let events: [Schema.Event]?
+        let id: Int64
+        let cornellId: Int?
+        let announcements: [String]?
+        let name: String
+        let shortName: String?
+        let about: String?
+        let shortAbout: String?
+        let cornellDining: Bool
+        let menuSummary: String?
+        let imageUrl: String?
+        let campusArea: String?
+        let onlineOrderUrl: URL?
+        let contactPhone: String?
+        let contactEmail: String?
+        let latitude: Double?
+        let longitude: Double?
+        let location: String?
+        let paymentMethods: [String]?
+        let eateryTypes: [String]?
+        let createdAt: String?
+        let events: [Event]?
         
-        internal let id: Int64
-        
-        internal let imageUrl: String?
-
-        internal let latitude: Double?
-
-        internal let location: String?
-
-        internal let longitude: Double?
-
-        internal let menuSummary: String?
-
-        internal let name: String?
-
-        internal let onlineOrderUrl: URL?
-
-        internal let paymentAcceptsCash: Bool?
-
-        internal let paymentAcceptsBrbs: Bool?
-
-        internal let paymentAcceptsMealSwipes: Bool?
-
-        internal let waitTime: [Schema.WaitTime]?
-
+        // might exclude
+        let alerts: [Alert]?
+        let paymentAcceptsCash: Bool?
+        let paymentAcceptsBrbs: Bool?
+        let paymentAcceptsMealSwipes: Bool?
+        let waitTime: [Schema.WaitTime]?
     }
-
+    
+//    internal struct Event: Codable {
+//        
+//        internal let eatery: Int? // Need to communicate with backend about purpose of this var
+//
+//        internal let end: Int?
+//
+//        internal let eventDescription: String?
+//
+//        internal let id: Int?
+//
+//        internal let start: Int?
+//
+//        internal let menu: [Schema.MenuCategory]?
+//
+//    }
+    
     internal struct Event: Codable {
-        
-        internal let eatery: Int? // Need to communicate with backend about purpose of this var
-
-        internal let end: Int?
-
-        internal let eventDescription: String?
-
-        internal let id: Int?
-
-        internal let start: Int?
-
-        internal let menu: [Schema.MenuCategory]?
-
+        let id: Int
+        let type: String?
+        let startTimestamp: String?
+        let endTimestamp: String?
+        let upvotes: Int?
+        let downvotes: Int?
+        let createdAt: String?
+        let eateryId: Int?
+        let menu: [Schema.MenuCategory]?
+        let eventDescription: String?
     }
 
     internal struct MenuCategory: Codable {

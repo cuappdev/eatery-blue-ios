@@ -99,7 +99,6 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 }
 
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
-
     func setSessionId(_ sessionId: String, _ completion: @escaping (() -> Void)) {
         KeychainAccess.shared.saveToken(sessionId: sessionId)
         
@@ -108,7 +107,6 @@ extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
                 defer {
                     // Always dismiss the WebView at the end of this async block
                     self.tabBarController?.dismiss(animated: true)
-                    
                 }
                 
                 do {

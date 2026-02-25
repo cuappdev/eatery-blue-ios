@@ -83,7 +83,7 @@ internal enum SchemaToModel {
     }
 
     internal static func convert(_ schemaEvent: Schema.Event) -> Event? {
-        guard let start = schemaEvent.start, let end = schemaEvent.end else {
+        guard let start = schemaEvent.startTimestamp, let end = schemaEvent.endTimestamp else {
             return nil
         }
 
@@ -94,12 +94,13 @@ internal enum SchemaToModel {
             menu = nil
         }
 
+        // TODO: check if default values make sense
         return Event(
-            canonicalDay: Day(date: Date(timeIntervalSince1970: TimeInterval(start))),
+            canonicalDay: Day(date: Date(timeIntervalSince1970: TimeInterval(start) ?? 0)),
             description: schemaEvent.eventDescription,
-            endTimestamp: TimeInterval(end),
+            endTimestamp: TimeInterval(end) ?? 0,
             menu: menu,
-            startTimestamp: TimeInterval(start)
+            startTimestamp: TimeInterval(start) ?? 0
         )
     }
 
