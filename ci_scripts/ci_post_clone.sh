@@ -7,7 +7,7 @@
 #
 
 # Install Minio Client
-wget https://dl.min.io/client/mc/release/linux-amd64/mc
+curl -O https://dl.min.io/client/mc/release/linux-amd64/mc
 chmod +x mc
 
 # Sync secrets from DigitalOcean Spaces
