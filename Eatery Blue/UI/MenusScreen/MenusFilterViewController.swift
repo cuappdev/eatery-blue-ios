@@ -19,9 +19,7 @@ class MenusFilterViewController: UIViewController {
     let west = PillFilterButtonView()
     let central = PillFilterButtonView()
 
-    private let currentMealType: EventType?
-
-    var selectedMenuIndex: Int?
+    private var currentMealType: EventType?
 
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()
@@ -42,16 +40,6 @@ class MenusFilterViewController: UIViewController {
 
     init(currentMealType: EventType) {
         self.currentMealType = currentMealType
-        if currentMealType == .breakfast {
-            selectedMenuIndex = 0
-        } else if currentMealType == .lunch {
-            selectedMenuIndex = 1
-        } else if currentMealType == .dinner {
-            selectedMenuIndex = 2
-        } else if currentMealType == .lateDinner {
-            selectedMenuIndex = 3
-        }
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -89,9 +77,9 @@ class MenusFilterViewController: UIViewController {
         mealType.imageView.isHidden = false
         mealType.tap { [self] _ in
             let viewController = UpcomingMenuPickerSheetViewController()
+
             viewController.setUpSheetPresentation()
-            viewController.selectedMenuIndex = selectedMenuIndex
-            viewController.setUp()
+            viewController.setUp(currentEventType: currentMealType)
             viewController.delegate = self
             tabBarController?.present(viewController, animated: true)
         }
@@ -165,14 +153,10 @@ class MenusFilterViewController: UIViewController {
 extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelegate {
     func upcomingMenuPickerSheetViewController(
         _: UpcomingMenuPickerSheetViewController,
-        didChangeMenuChoice string: String
+        didChangeMenuChoice eventType: EventType
     ) {
-        mealType.label.text = string
-        if let mealType = currentMealType {
-            delegate?.menusFilterViewController(self, didChangeMenuType: mealType)
-        }
+        mealType.label.text = eventType.description
+        currentMealType = eventType
+        delegate?.menusFilterViewController(self, didChangeMenuType: eventType)
     }
-
-    func upcomingMenuPickerSheetViewController(_: UpcomingMenuPickerSheetViewController,
-                                               didSelectMenuChoiceAt _: Int) {}
 }

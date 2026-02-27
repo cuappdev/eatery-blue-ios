@@ -57,7 +57,8 @@ class EateryExpandableCardContentView: UIView {
         }
 
         if let event {
-            if event.canonicalDay == Day() {
+            let isCurrentMealTime = event.canonicalDay == Day() && selectedMealType == EventType.mealFromTime()
+            if isCurrentMealTime {
                 eateryStatusLabel.attributedText = EateryFormatter.default.formatStatusSimple(
                     expandedEatery.eatery.status,
                     followedBy: EateryFormatter.default.formatEventTime(event)
@@ -66,9 +67,7 @@ class EateryExpandableCardContentView: UIView {
                 eateryStatusLabel.text = EateryFormatter.default.formatEventTime(event)
             }
 
-            if event.endTimestamp > Date() {
-                setupChevronArrow()
-            }
+            setupChevronArrow()
         }
     }
 
@@ -84,7 +83,7 @@ class EateryExpandableCardContentView: UIView {
 
         eateryStackView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview()
-            make.trailing.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(32)
         }
     }
 

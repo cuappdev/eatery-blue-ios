@@ -57,14 +57,14 @@ class Networking {
     }
 
     func loadEateryByDay(day: Int) async throws -> [Eatery] {
-        if let url = URL(string: "\(baseUrl)?days=\(day)") {
-            let eateryApi = EateryAPI(url: url)
-            return try await eateryApi.eateries()
-        }
-        return []
+        let dayURL = baseUrl.appendingPathComponent("eateries")
+            .appending(queryItems: [URLQueryItem(name: "days", value: "\(day)")])
+        let eateryAPI = EateryAPI(url: dayURL)
+
+        return try await eateryAPI.eateries()
     }
 
-    // Computes the time until the end of the day previous cache policy
+    /// Computes the time until the end of the day previous cache policy
     private func endOfDay() -> TimeInterval {
         return Calendar.current.date(
             bySettingHour: 0,
@@ -74,7 +74,7 @@ class Networking {
         )?.timeIntervalSince(Date()) ?? 0
     }
 
-    // Computes the time until 5 minutes into the next hour
+    /// Computes the time until 5 minutes into the next hour
     private func timeUntilFiveMinutesIntoNextHour() -> TimeInterval {
         let calendar = Calendar.current
         let now = Date()

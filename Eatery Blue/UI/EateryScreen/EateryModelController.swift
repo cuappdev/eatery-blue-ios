@@ -46,7 +46,7 @@ class EateryModelController: EateryViewController {
 
     func setUpMenu(eatery: Eatery) {
         Task {
-            self.eatery = await Networking.default.loadEatery(by: Int(eatery.id))
+            self.eatery = await Networking.default.loadEatery(by: eatery.id)
             if let eatery = self.eatery {
                 deleteSpinner()
                 resetSelectedEventIndex()
@@ -324,6 +324,10 @@ class EateryModelController: EateryViewController {
                 if let last = sortedCategories.last {
                     addMenuCategory(last)
                 }
+
+                addSpacer(height: 16)
+                addReportIssueView(eateryId: eatery?.id)
+                addViewProportionalSpacer(multiplier: 0.25)
             } else {
                 addInlineErrorBlock(reportIssueEateryId: eatery.flatMap { $0.id })
             }

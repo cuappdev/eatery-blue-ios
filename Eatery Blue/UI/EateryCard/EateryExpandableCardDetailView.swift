@@ -40,19 +40,7 @@ class EateryExpandableCardDetailView: UIView {
         let selectedEvents = eatery.events.filter { $0.canonicalDay == selectedDay }
 
         // Ignore late lunch
-        var event: Event?
-
-        if selectedMealType == .breakfast {
-            event = selectedEvents.first { $0.type == .brunch || $0.type == .breakfast }
-        } else if selectedMealType == .lunch {
-            event = selectedEvents.first { $0.type == .brunch || $0.type == .lunch }
-        } else if selectedMealType == .dinner {
-            event = selectedEvents.first { $0.type == .dinner }
-        } else if selectedMealType == .lateDinner {
-            event = selectedEvents.first { $0.type == .lateDinner }
-        }
-
-        if let event, event.endTimestamp > Date() {
+        if let event = selectedEvents.first(where: { $0.type == selectedMealType }) {
             menuCategoryStackView.addArrangedSubview(HDivider())
             addMenuCategories(event: event)
             setupViewEateryDetailsButton()
