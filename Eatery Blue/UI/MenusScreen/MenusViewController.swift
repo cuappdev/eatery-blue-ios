@@ -254,7 +254,7 @@ class MenusViewController: UIViewController {
 
     // MARK: - Empty State Helper
 
-    private func buildEmptyStateView() -> UIView {
+    private func buildErrorStateView() -> UIView {
         let container = UIView()
 
         let stack = UIStackView()
@@ -303,7 +303,7 @@ class MenusViewController: UIViewController {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(tableView: tableView) { [weak self] tableview, indexPath, item in
+        return DataSource(tableView: tableView) { [weak self] tableview, indexPath, item in
             guard let self else { return UITableViewCell() }
 
             switch item {
@@ -358,8 +358,8 @@ class MenusViewController: UIViewController {
                 let container = ContainerView(content: shimmerView)
                 container.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
                 cell.configure(content: container)
-            case .emptyState:
-                cell.configure(content: buildEmptyStateView())
+            case .errorState:
+                cell.configure(content: buildErrorStateView())
             default:
                 break
             }
@@ -367,15 +367,12 @@ class MenusViewController: UIViewController {
             cell.selectionStyle = .none
             return cell
         }
-
-        return dataSource
     }
 
     /// Updates the table view data source, and animates if desired
-    private func applySnapshot(animated: Bool = true) { // swiftlint:disable:this cyclomatic_complexity
+    private func applySnapshot(animated: Bool = true) {
         var snapshot = Snapshot()
 
-        let coreDataStack = AppDelegate.shared.coreDataStack
         let selectedDay = Day().advanced(by: selectedIndex)
         var days: [Day] = []
         for i in 0 ..< daysToShow {
@@ -396,107 +393,57 @@ class MenusViewController: UIViewController {
                 snapshot.appendItems([.loadingCard(index: i)], toSection: .main)
             }
         } else {
-            let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
-            var filteredEateries = (allEateries[selectedIndex] ?? []).filter {
-                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
+            if allEateries[selectedIndex]?.isEmpty ?? true {
+                snapshot.appendItems([.errorState], toSection: .main)
+                dataSource.defaultRowAnimation = .fade
+                dataSource.apply(snapshot, animatingDifferences: animated)
+                return
             }
 
             // Only display eateries based on selected meal type
-
-            // MARK: todo - This should be an enum but good for now
-
-            filteredEateries = filteredEateries.filter { eatery in
+            let filteredEateries = (allEateries[selectedIndex] ?? []).filter { eatery in
                 if !eatery.paymentMethods.contains(.mealSwipe) { return false }
 
-                let events = eatery.events.filter { $0.canonicalDay == Day().advanced(by: selectedIndex) }
+                let events = eatery.events.filter { $0.canonicalDay == selectedDay }
 
-                // Ignore Late Lunch
-                if currentMealType == .breakfast {
-                    return events.contains { $0.type == .brunch || $0.type == .breakfast }
-                } else if currentMealType == .lunch {
-                    return events.contains { $0.type == .brunch || $0.type == .lunch }
-                } else if currentMealType == .dinner {
-                    return events.contains { $0.type == .dinner }
-                } else if currentMealType == .lateDinner {
-                    return events.contains { $0.type == .lateDinner }
-                }
-
-                return false
-            }
-
-            var north: [Eatery] = []
-            var west: [Eatery] = []
-            var central: [Eatery] = []
-
-            for eatery in filteredEateries {
-                if eatery.campusArea == .north {
-                    north.append(eatery)
-                } else if eatery.campusArea == .west {
-                    west.append(eatery)
-                } else if eatery.campusArea == .central {
-                    central.append(eatery)
+                return events.contains { $0.type == currentMealType
+                    || ((currentMealType == .breakfast || currentMealType == .lunch) && $0.type == .brunch)
                 }
             }
 
-            if filter.north || !filter.central && !filter.west && !filter.north, north.count > 0 {
-                snapshot.appendItems([.titleLabel(title: "North")], toSection: .main)
-                for eatery in north {
-                    let expanded = expandedEateryIds.contains(eatery.id)
-                    snapshot.appendItems(
-                        [.expandableCard(
-                            expandedEatery: ExpandedEatery(
-                                eatery: eatery,
-                                selectedMealType: currentMealType,
-                                selectedDate: selectedDay,
-                                isExpanded: expanded
-                            ),
-                            allEateries: allEateries[selectedIndex] ?? []
-                        )],
-                        toSection: .main
-                    )
+            let showAllAreas = !filter.north && !filter.west && !filter.central
+            let eateriesByArea = Dictionary(grouping: filteredEateries, by: \.campusArea)
+            let sections: [(title: String, area: CampusArea, isVisible: Bool)] = [
+                ("North", .north, filter.north || showAllAreas),
+                ("West", .west, filter.west || showAllAreas),
+                ("Central", .central, filter.central || showAllAreas)
+            ]
+
+            var didAddAnyEateries = false
+            let currentDayAllEateries = allEateries[selectedIndex] ?? []
+
+            for section in sections where section.isVisible {
+                if let areaEateries = eateriesByArea[section.area], !areaEateries.isEmpty {
+                    snapshot.appendItems([.titleLabel(title: section.title)], toSection: .main)
+                    let cardItems: [Item] = areaEateries.map { eatery in
+                        let expanded = expandedEateryIds.contains(eatery.id)
+                        let expandedEatery = ExpandedEatery(
+                            eatery: eatery,
+                            selectedMealType: currentMealType,
+                            selectedDate: selectedDay,
+                            isExpanded: expanded
+                        )
+
+                        return .expandableCard(expandedEatery: expandedEatery, allEateries: currentDayAllEateries)
+                    }
+
+                    snapshot.appendItems(cardItems, toSection: .main)
+                    didAddAnyEateries = true
                 }
             }
 
-            if filter.west || !filter.central && !filter.west && !filter.north, west.count > 0 {
-                snapshot.appendItems([.titleLabel(title: "West")], toSection: .main)
-                for eatery in west {
-                    let expanded = expandedEateryIds.contains(eatery.id)
-                    snapshot.appendItems(
-                        [.expandableCard(
-                            expandedEatery: ExpandedEatery(
-                                eatery: eatery,
-                                selectedMealType: currentMealType,
-                                selectedDate: selectedDay,
-                                isExpanded: expanded
-                            ),
-                            allEateries: allEateries[selectedIndex] ?? []
-                        )],
-                        toSection: .main
-                    )
-                }
-            }
-
-            if filter.central || !filter.central && !filter.west && !filter.north, central.count > 0 {
-                snapshot.appendItems([.titleLabel(title: "Central")], toSection: .main)
-                for eatery in central {
-                    let expanded = expandedEateryIds.contains(eatery.id)
-                    snapshot.appendItems(
-                        [.expandableCard(
-                            expandedEatery: ExpandedEatery(
-                                eatery: eatery,
-                                selectedMealType: currentMealType,
-                                selectedDate: selectedDay,
-                                isExpanded: expanded
-                            ),
-                            allEateries: allEateries[selectedIndex] ?? []
-                        )],
-                        toSection: .main
-                    )
-                }
-            }
-
-            if north.isEmpty, west.isEmpty, central.isEmpty {
-                snapshot.appendItems([.emptyState], toSection: .main)
+            if !didAddAnyEateries {
+                snapshot.appendItems([.titleLabel(title: "No eateries match your filter...")], toSection: .main)
             }
         }
 
@@ -523,7 +470,7 @@ extension MenusViewController {
         case loadingLabel(title: String)
         case expandableCard(expandedEatery: ExpandedEatery, allEateries: [Eatery])
         case loadingCard(index: Int)
-        case emptyState
+        case errorState
     }
 
     struct ExpandedEatery: Hashable {
@@ -542,9 +489,8 @@ extension MenusViewController: UITableViewDelegate {
         switch item {
         case .dayPicker:
             return 80
-        case .emptyState:
-            let height = max(tableView.bounds.height * 0.6, 220)
-            return height
+        case .errorState:
+            return max(tableView.bounds.height * 0.6, 220)
         default:
             break
         }
@@ -555,22 +501,6 @@ extension MenusViewController: UITableViewDelegate {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
         case .expandableCard(expandedEatery: let expandedEatery, allEateries: _):
-            let eatery = expandedEatery.eatery
-            // if we are currently passed the end date of the event, do nothing
-            var event: Event?
-            // Ignoring Late Lunch
-            if currentMealType == .breakfast {
-                event = eatery.events.first { $0.type == .brunch || $0.type == .breakfast }
-            } else if currentMealType == .lunch {
-                event = eatery.events.first { $0.type == .brunch || $0.type == .lunch }
-            } else if currentMealType == .dinner {
-                event = eatery.events.first { $0.type == .dinner }
-            } else if currentMealType == .lateDinner {
-                event = eatery.events.first { $0.type == .lateDinner }
-            }
-
-            guard let event, event.endTimestamp > Date() else { return }
-
             if expandedEateryIds.contains(expandedEatery.eatery.id) {
                 expandedEateryIds.removeAll(where: { $0 == expandedEatery.eatery.id })
             } else {
@@ -713,16 +643,6 @@ extension MenusViewController: MenusFilterViewControllerDelegate {
                 await updateAllEateriesFromNetworking(withPriority: selectedIndex)
                 stopLoading()
             }
-        }
-
-        if currentMealType == .breakfast {
-            filterController.selectedMenuIndex = 0
-        } else if currentMealType == .lunch {
-            filterController.selectedMenuIndex = 1
-        } else if currentMealType == .dinner {
-            filterController.selectedMenuIndex = 2
-        } else if currentMealType == .lateDinner {
-            filterController.selectedMenuIndex = 3
         }
     }
 }
