@@ -11,33 +11,29 @@ import UIKit
 protocol UpcomingMenuPickerSheetViewControllerDelegate: AnyObject {
     func upcomingMenuPickerSheetViewController(
         _ vc: UpcomingMenuPickerSheetViewController,
-        didSelectMenuChoiceAt index: Int
-    )
-    func upcomingMenuPickerSheetViewController(
-        _ vc: UpcomingMenuPickerSheetViewController,
-        didChangeMenuChoice string: String
+        didChangeMenuChoice eventType: EventType
     )
 }
 
 class UpcomingMenuPickerSheetViewController: SheetViewController {
     weak var delegate: UpcomingMenuPickerSheetViewControllerDelegate?
 
-    private var menuChoices = ["Breakfast", "Lunch", "Dinner", "Late Dinner"]
-    private var menuTimes = ["7:00 AM - 2:30 PM", "10:30 AM - 2:30 PM", "4:30 PM - 9:00 PM", "8:30 PM - 10:30 PM"]
+    private var menuChoices: [EventType] = [.breakfast, .lunch, .dinner, .lateDinner]
 
     private var menuChoiceViews: [UpcomingMenuChoiceView] = []
     var selectedMenuIndex: Int?
 
-    func setUp() {
+    func setUp(currentEventType: EventType?) {
+        selectedMenuIndex = menuChoices.firstIndex(of: currentEventType ?? .breakfast)
         addHeader(title: "Menus")
         addMenuChoiceViews()
         addPillButton(title: "Show menu", style: .prominent) { [self] in
             if let selectedIndex = self.selectedMenuIndex {
-                delegate?.upcomingMenuPickerSheetViewController(self, didSelectMenuChoiceAt: selectedIndex)
                 delegate?.upcomingMenuPickerSheetViewController(self, didChangeMenuChoice: menuChoices[selectedIndex])
             }
             dismiss(animated: true)
         }
+
         addTextButton(title: "Reset") { [self] in
             selectedMenuIndex = nil
             updateMenuChoiceViewsFromState()
@@ -53,7 +49,7 @@ class UpcomingMenuPickerSheetViewController: SheetViewController {
             }
 
             let menuChoiceView = UpcomingMenuChoiceView()
-            menuChoiceView.setup(description: menuChoices[i], time: menuTimes[i])
+            menuChoiceView.setup(description: menuChoices[i].description)
             menuChoiceView.layoutMargins = .zero
             stackView.addArrangedSubview(menuChoiceView)
             menuChoiceView.tap { [self] _ in
@@ -78,7 +74,7 @@ class UpcomingMenuPickerSheetViewController: SheetViewController {
 
             } else {
                 view.descriptionLabel.text = " "
-                view.timeLabel.text = " "
+//                view.timeLabel.text = " "
                 view.imageView.image = nil
             }
         }
