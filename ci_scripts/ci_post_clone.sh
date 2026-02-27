@@ -6,8 +6,10 @@
 #  Created by Vin Bui on 10/9/23.
 #
 
+set -e
+
 # Install Minio Client
-curl -O https://dl.min.io/client/mc/release/linux-amd64/mc
+curl -L -O https://dl.min.io/client/mc/release/darwin-amd64/mc
 chmod +x mc
 
 # Sync secrets from DigitalOcean Spaces
