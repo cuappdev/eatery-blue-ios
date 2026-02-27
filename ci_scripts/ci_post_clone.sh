@@ -18,5 +18,5 @@ aws s3 sync \
     --no-progress 2>&1 | grep -v "Is a directory"
 
 # Trust swiftlint
-defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -bool YES
+defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
 defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
