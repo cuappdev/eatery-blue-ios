@@ -17,7 +17,7 @@ if [[ "$CI_XCODE_CLOUD" == "TRUE" ]]; then
     mc mirror my-space/appdev-upload/ios-secrets/eatery-blue/ "$CI_PRIMARY_REPOSITORY_PATH/Eatery Blue/Supporting"
 else
     mc mirror my-space/appdev-upload/ios-secrets/eatery-blue/ "$CI_WORKSPACE/Eatery Blue/Supporting"
-
+fi
 
 # Trust swiftlint
 defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
