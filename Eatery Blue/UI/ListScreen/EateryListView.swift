@@ -81,7 +81,7 @@ class EateryListView: UIView {
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             let filteredEateries = eateries.filter { eatery in
-                predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id))
+                predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.cornellId))
             }
 
             updatedEateries = filteredEateries
@@ -97,7 +97,7 @@ class EateryListView: UIView {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(tableView: tableView) { [weak self] tableview, indexPath, row in
+        return DataSource(tableView: tableView) { [weak self] tableview, indexPath, row in
             guard let self else { return UITableViewCell() }
             guard let cell = tableview.dequeueReusableCell(
                 withIdentifier: ClearTableViewCell.reuse,
@@ -127,8 +127,6 @@ class EateryListView: UIView {
             cell.selectionStyle = .none
             return cell
         }
-
-        return dataSource
     }
 
     /// Updates the table view data source, and animates if desired
@@ -143,7 +141,7 @@ class EateryListView: UIView {
             snapshot.appendItems([.label("No eateries found")])
         } else {
             for eatery in shownEateries {
-                let favorited = coreDataStack.metadata(eateryId: eatery.id).isFavorite
+                let favorited = coreDataStack.metadata(eateryId: eatery.cornellId).isFavorite
                 snapshot.appendItems([.eatery(eatery: eatery, favorited: favorited)], toSection: .main)
             }
         }

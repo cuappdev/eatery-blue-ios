@@ -20,7 +20,7 @@ class ListViewController: UIViewController {
     let headerStackView = UIStackView()
     private let tableView = UITableView()
 
-    // A view that holds the place of the filtersView in the stack view
+    /// A view that holds the place of the filtersView in the stack view
     private let filterPlaceholder = UIView()
 
     private(set) var eateries: [Eatery] = []
@@ -257,7 +257,7 @@ extension ListViewController: UITableViewDataSource {
             let eatery = eateries[indexPath.row - 1]
             let largeCardContent = EateryLargeCardView()
 
-            let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
+            let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.cornellId).isFavorite
 
             largeCardContent.configure(eatery: eatery, favorited: favorited)
             largeCardContent.layoutMargins = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

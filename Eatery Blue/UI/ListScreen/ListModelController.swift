@@ -32,7 +32,7 @@ class ListModelController: ListViewController {
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             let filteredEateries = listEateries.filter {
-                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
+                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.cornellId))
             }
 
             updateEateries(eateries: filteredEateries)

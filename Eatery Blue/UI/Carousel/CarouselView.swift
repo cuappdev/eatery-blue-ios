@@ -149,7 +149,7 @@ class CarouselView: UIView {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: collectionView) { [weak self] _, indexPath, row in
+        return DataSource(collectionView: collectionView) { [weak self] _, indexPath, row in
             guard let self else { return UICollectionViewCell() }
 
             switch row {
@@ -169,8 +169,6 @@ class CarouselView: UIView {
                 return cell
             }
         }
-
-        return dataSource
     }
 
     /// Updates the table view data source, and animates if desired
@@ -182,7 +180,7 @@ class CarouselView: UIView {
 
         let eateryCells = eateries.map { Item.eatery(
             eatery: $0,
-            favorited: coreDataStack.metadata(eateryId: $0.id).isFavorite
+            favorited: coreDataStack.metadata(eateryId: $0.cornellId).isFavorite
         ) }
 
         if truncateAfter > -1 {

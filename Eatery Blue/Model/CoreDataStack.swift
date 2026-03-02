@@ -38,7 +38,13 @@ class CoreDataStack {
         }
     }
 
-    func metadata(eateryId: Int) -> EateryMetadata {
+    func metadata(eateryId: Int?) -> EateryMetadata {
+        guard let eateryId = eateryId else {
+            let metaData = EateryMetadata(context: context)
+            metaData.isFavorite = false
+            return metaData
+        }
+
         let fetchRequest = NSFetchRequest<EateryMetadata>()
         fetchRequest.entity = EateryMetadata.entity()
         fetchRequest.predicate = NSPredicate(format: "eateryId == %d", eateryId)

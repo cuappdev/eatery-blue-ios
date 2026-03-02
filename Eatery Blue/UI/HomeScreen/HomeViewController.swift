@@ -180,7 +180,7 @@ class HomeViewController: UIViewController {
             guard let self else { return }
 
             let favoriteEateries = allEateries.filter {
-                AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
+                AppDelegate.shared.coreDataStack.metadata(eateryId: $0.cornellId).isFavorite
             }.sorted { lhs, rhs in
                 if lhs.isOpen == rhs.isOpen {
                     return lhs.name < rhs.name
@@ -289,7 +289,7 @@ class HomeViewController: UIViewController {
         favoritesCarousel.navigationController = navigationController
         favoritesCarousel.viewControllerToPush = favoritesViewController
         let favoriteEateries = allEateries.filter {
-            AppDelegate.shared.coreDataStack.metadata(eateryId: $0.id).isFavorite
+            AppDelegate.shared.coreDataStack.metadata(eateryId: $0.cornellId).isFavorite
         }.sorted { lhs, rhs in
             if lhs.isOpen == rhs.isOpen {
                 return lhs.name < rhs.name
@@ -376,7 +376,7 @@ class HomeViewController: UIViewController {
 
     /// Creates and returns the table view data source
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: collectionView) { [weak self] tableview, indexPath, item in
+        return DataSource(collectionView: collectionView) { [weak self] tableview, indexPath, item in
             guard let self else { return UICollectionViewCell() }
 
             switch item {
@@ -467,8 +467,6 @@ class HomeViewController: UIViewController {
             }
             return cell
         }
-
-        return dataSource
     }
 
     /// Updates the table view data source, and animates if desired
@@ -524,7 +522,7 @@ class HomeViewController: UIViewController {
         } else {
             let predicate = filter.predicate(userLocation: LocationManager.shared.userLocation, departureDate: Date())
             let filteredEateries = allEateries.filter {
-                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
+                predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.cornellId))
             }
 
             currentEateries = filteredEateries
@@ -600,7 +598,7 @@ class HomeViewController: UIViewController {
 
         // favorites
         let favoriteEateries = allEateries.filter {
-            coreDataStack.metadata(eateryId: $0.id).isFavorite
+            coreDataStack.metadata(eateryId: $0.cornellId).isFavorite
         }
 
         let openEateries = currentEateries.filter(\.isOpen)

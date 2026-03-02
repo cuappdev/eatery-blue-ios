@@ -39,7 +39,7 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
     private func updateFavoritesFromCoreData() {
         let coreData = AppDelegate.shared.coreDataStack
         let favorites = allEateries.filter { eatery in
-            coreData.metadata(eateryId: eatery.id).isFavorite
+            coreData.metadata(eateryId: eatery.cornellId).isFavorite
         }
 
         updateFavorites(favorites)
@@ -66,7 +66,10 @@ class HomeSearchEmptyModelController: HomeSearchEmptyViewController {
 
         for favorite in favorites {
             let cardView = EaterySmallCardView()
-            cardView.configure(eatery: favorite, favorited: coreDataStack.metadata(eateryId: favorite.id).isFavorite)
+            cardView.configure(
+                eatery: favorite,
+                favorited: coreDataStack.metadata(eateryId: favorite.cornellId).isFavorite
+            )
             cardView.tap { [self] _ in
                 let viewController = EateryModelController()
                 viewController.setUp(eatery: favorite, isTracking: false)
