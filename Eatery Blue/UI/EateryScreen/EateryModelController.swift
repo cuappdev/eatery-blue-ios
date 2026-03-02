@@ -103,7 +103,7 @@ class EateryModelController: EateryViewController {
 
         navigationView.favoriteButton.tap { [self] _ in
             let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: eatery.id)
+            let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
             metadata.isFavorite.toggle()
             coreDataStack.save()
 
@@ -191,7 +191,7 @@ class EateryModelController: EateryViewController {
             return
         }
 
-        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id)
+        let metadata = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.cornellId)
         if metadata.isFavorite {
             navigationView.favoriteButton.content.image = UIImage(named: "FavoriteSelected")
         } else {

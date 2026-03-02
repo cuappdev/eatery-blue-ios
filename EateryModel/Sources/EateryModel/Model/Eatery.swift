@@ -11,7 +11,7 @@ import Foundation
 public struct Eatery: Codable, Hashable {
     public let id: Int
 
-    let cornellId: Int?
+    public let cornellId: Int?
 
     public let announcements: [String]
 

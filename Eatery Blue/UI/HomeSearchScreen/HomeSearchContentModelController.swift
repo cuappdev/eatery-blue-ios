@@ -85,7 +85,7 @@ class HomeSearchContentModelController: HomeSearchContentViewController {
                         departureDate: Date()
                     )
                     eateries = allEateries.filter {
-                        predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.id))
+                        predicate.isSatisfied(by: $0, metadata: coreDataStack.metadata(eateryId: $0.cornellId))
                     }
                 } else {
                     eateries = allEateries

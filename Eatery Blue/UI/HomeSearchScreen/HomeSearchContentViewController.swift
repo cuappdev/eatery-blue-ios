@@ -24,7 +24,10 @@ class HomeSearchContentViewController: UIViewController {
 
     private let blurView = UIVisualEffectView()
     let filterController = EateryFilterViewController()
-    private var filterView: UIView { filterController.view }
+    private var filterView: UIView {
+        filterController.view
+    }
+
     private let separator = HDivider()
     private let tableView = UITableView()
 
@@ -135,7 +138,7 @@ extension HomeSearchContentViewController: UITableViewDataSource {
         case let .eatery(eatery):
             let largeCardContent = EateryLargeCardView()
 
-            let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
+            let favorited = AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.cornellId).isFavorite
 
             largeCardContent.configure(eatery: eatery, favorited: favorited)
 

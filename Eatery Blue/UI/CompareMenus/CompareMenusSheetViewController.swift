@@ -190,7 +190,7 @@ class CompareMenusSheetViewController: SheetViewController {
             let coreDataStack = AppDelegate.shared.coreDataStack
 
             nextShown = allEateries.filter { eatery in
-                predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.id))
+                predicate.isSatisfied(by: eatery, metadata: coreDataStack.metadata(eateryId: eatery.cornellId))
             }
 
             if filter.selected {

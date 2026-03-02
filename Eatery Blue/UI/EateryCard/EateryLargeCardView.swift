@@ -137,7 +137,7 @@ class EateryLargeCardView: UICollectionViewCell {
 
             UIView.performWithoutAnimation {
                 let coreDataStack = AppDelegate.shared.coreDataStack
-                let metadata = coreDataStack.metadata(eateryId: eatery.id)
+                let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
                 metadata.isFavorite.toggle()
                 coreDataStack.save()
 

@@ -123,7 +123,7 @@ class EateryMediumCardView: UICollectionViewCell {
 
             UIView.performWithoutAnimation {
                 let coreDataStack = AppDelegate.shared.coreDataStack
-                let metadata = coreDataStack.metadata(eateryId: eatery.id)
+                let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
                 metadata.isFavorite.toggle()
                 coreDataStack.save()
 
@@ -205,7 +205,7 @@ class EateryMediumCardView: UICollectionViewCell {
         let now = Date()
         switch status {
         case let .closingSoon(event):
-            let minutesUntilClosed = Int(round(event.startTimestamp.timeIntervalSince(now) / 60))
+            let minutesUntilClosed = Int(round(event.endTimestamp.timeIntervalSince(now) / 60))
             alertView.titleLabel.text = "Closing in \(minutesUntilClosed) min"
             alertView.isHidden = false
 

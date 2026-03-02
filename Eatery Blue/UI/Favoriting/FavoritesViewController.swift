@@ -156,7 +156,7 @@ class FavoritesViewController: UIViewController {
             let allEateries = try await Networking.default.loadAllEatery()
 
             let favoriteEateries = allEateries.filter { eatery in
-                AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.id).isFavorite
+                AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.cornellId).isFavorite
             }.sorted { lhs, rhs in
                 lhs.name < rhs.name
             }
