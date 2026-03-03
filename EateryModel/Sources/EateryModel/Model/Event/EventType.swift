@@ -68,19 +68,26 @@ public enum EventType: String, Codable, CaseIterable {
                 If it is 8:30 pm - 10:29 pm inclusive, late dinner is returned.
      */
     public static func mealFromTime() -> EventType {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH"
-        guard let hour = Int(dateFormatter.string(from: Date())) else { return .breakfast }
-        dateFormatter.dateFormat = "mm"
-        guard let minute = Int(dateFormatter.string(from: Date())) else { return .breakfast }
-        if hour < 10 || hour == 10 && minute < 30 || hour >= 23 || hour == 22 && minute >= 30 {
-            return .breakfast
-        } else if hour == 10 && minute >= 30 || hour > 10 && hour < 14 || hour == 14 && minute < 30 {
+        let calendar = Calendar.current
+        let date = Date()
+
+        let timeToday = { (hour: Int, minute: Int) -> Date in
+            return calendar.date(bySettingHour: hour, minute: minute, second: 0, of: date) ?? date
+        }
+
+        let lunchStart = timeToday(10, 30)
+        let dinnerStart = timeToday(14, 30)
+        let lateDinnerStart = timeToday(20, 30)
+        let nextBreakfastStart = timeToday(22, 30)
+
+        if date >= lunchStart && date < dinnerStart {
             return .lunch
-        } else if hour == 14 && minute >= 30 || hour > 14 && hour < 20 || hour == 20 && minute < 30 {
+        } else if date >= dinnerStart && date < lateDinnerStart {
             return .dinner
-        } else {
+        } else if date >= lateDinnerStart && date < nextBreakfastStart {
             return .lateDinner
+        } else {
+            return .breakfast
         }
     }
 }
