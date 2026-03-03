@@ -27,7 +27,12 @@ class MenusViewController: UIViewController {
     private var headerHeight: CGFloat = Constants.maxHeaderHeight
     private var isLoading = true
     private var previousScrollOffset: CGFloat = 0
-    private var selectedIndex: Int = 0
+    private var selectedIndex: Int = {
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        let isAfterNoon = currentHour >= 12
+        return (EventType.mealFromTime() == .breakfast && isAfterNoon) ? 1 : 0
+    }()
+
     private var shownEateries: [Eatery] = []
 
     private lazy var dataSource = makeDataSource()
@@ -313,7 +318,7 @@ class MenusViewController: UIViewController {
                     for: indexPath
                 ) as? MenuDayPickerTableViewCell else { return UITableViewCell() }
                 cell.updateDateDelegate = self
-                cell.configure(days: days)
+                cell.configure(days: days, withSelectedIndex: selectedIndex)
                 cell.selectionStyle = .none
                 return cell
             case let .expandableCard(expandedEatery: expandedEatery, allEateries: allEateries):

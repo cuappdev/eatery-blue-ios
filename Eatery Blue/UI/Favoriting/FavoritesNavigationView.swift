@@ -35,7 +35,6 @@ class FavoritesNavigationView: UIView {
             if !searchShown {
                 searchBar.text = ""
                 searchDelegate?.searchBar?(searchBar, textDidChange: "")
-
                 UIView.animate(withDuration: 0.1) { [weak self] in
                     guard let self else { return }
                     searchBar.snp.updateConstraints { make in
@@ -43,8 +42,15 @@ class FavoritesNavigationView: UIView {
                     }
 
                     layoutIfNeeded()
+                } completion: { [weak self] _ in
+                    guard let self else { return }
+
+                    searchBar.resignFirstResponder()
+                    searchBar.isHidden = true
                 }
             } else {
+                searchBar.becomeFirstResponder()
+                searchBar.isHidden = false
                 UIView.animate(withDuration: 0.1) { [weak self] in
                     guard let self else { return }
                     searchBar.snp.updateConstraints { make in
@@ -104,6 +110,7 @@ class FavoritesNavigationView: UIView {
         setUpSearchBar()
 
         setUpConstraints()
+        searchShown = false
     }
 
     private func setUpBackButton() {
@@ -211,7 +218,7 @@ class FavoritesNavigationView: UIView {
 
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(layoutMarginsGuide)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().priority(.low)
             make.height.equalTo(0)
         }
     }
