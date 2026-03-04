@@ -48,7 +48,7 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if KeychainAccess.shared.retrieveToken() != nil {
+        if KeychainAccess.shared.retrieveToken(account: "SessionId") != nil {
             attemptLogin()
         } else if firstView, UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasLoggedIn) {
             firstView = false
@@ -74,7 +74,7 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
         AppDevAnalytics.shared.logFirebase(AccountLoginPayload())
 
         Task {
-            if let sessionId = KeychainAccess.shared.retrieveToken() {
+            if let sessionId = KeychainAccess.shared.retrieveToken(account: "SessionId") {
                 delegate?.profileLoginModelController(self, didLogin: sessionId)
             } else {
                 let vc = GetLoginWebViewController()
@@ -95,7 +95,7 @@ class ProfileLoginModelController: ProfileLoginViewController, AttemptLogin {
 
 extension ProfileLoginModelController: GetLoginWebViewControllerDelegate {
     func setSessionId(_ sessionId: String, _ completion: () -> Void) {
-        KeychainAccess.shared.saveToken(sessionId: sessionId)
+        KeychainAccess.shared.saveToken(token: sessionId, account: "SessionId")
         if !Networking.default.sessionId.isEmpty {
             delegate?.profileLoginModelController(self, didLogin: sessionId)
             completion()

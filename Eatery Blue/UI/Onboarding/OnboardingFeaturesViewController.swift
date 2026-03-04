@@ -294,7 +294,7 @@ extension OnboardingFeaturesViewController: UIScrollViewDelegate {
 
 extension OnboardingFeaturesViewController: GetLoginWebViewControllerDelegate {
     func setSessionId(_ sessionId: String, _ completion: () -> Void) {
-        KeychainAccess.shared.saveToken(sessionId: sessionId)
+        KeychainAccess.shared.saveToken(token: sessionId, account: "SessionId")
         if !Networking.default.sessionId.isEmpty {
             completion()
         }

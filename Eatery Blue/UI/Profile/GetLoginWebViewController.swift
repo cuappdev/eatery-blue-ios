@@ -48,6 +48,7 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
                 guard let self = self else { return }
                 UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasLoggedIn)
                 self.dismiss(animated: true)
+                 print("Session ID: " + sessionId)
             }
         }
     }

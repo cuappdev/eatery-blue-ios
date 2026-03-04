@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -194,6 +194,9 @@
 		D0DAA9D32BA9123200BEDE62 /* CompareMenusFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */; };
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
+		D8709F762F50D1CA00C3F2C6 /* EateryModel in Frameworks */ = {isa = PBXBuildFile; productRef = D8709F752F50D1CA00C3F2C6 /* EateryModel */; };
+		D8709F792F50D22B00C3F2C6 /* EateryGetAPI in Frameworks */ = {isa = PBXBuildFile; productRef = D8709F782F50D22B00C3F2C6 /* EateryGetAPI */; };
+		D8E5D3A52F58F06000E9BFA2 /* AuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E5D3A42F58F06000E9BFA2 /* AuthStorage.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
@@ -390,6 +393,7 @@
 		D0C770A72B9803A900A4828F /* CompareMenusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusViewController.swift; sourceTree = "<group>"; };
 		D0DAA9D22BA9123200BEDE62 /* CompareMenusFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusFilterViewController.swift; sourceTree = "<group>"; };
 		D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusExternalOnboardingView.swift; sourceTree = "<group>"; };
+		D8E5D3A42F58F06000E9BFA2 /* AuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStorage.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAccountViewController.swift; sourceTree = "<group>"; };
@@ -411,12 +415,14 @@
 				2ED2FC162BA2DBEC00621028 /* FirebaseAnalytics in Frameworks */,
 				5D73C3C5278237240020507C /* ArgumentParser in Frameworks */,
 				5DF5F7CC2773FD09001ADCDC /* Tactile in Frameworks */,
+				D8709F792F50D22B00C3F2C6 /* EateryGetAPI in Frameworks */,
 				2E856F652B6714CB0043F350 /* AppDevAnnouncements in Frameworks */,
 				5D6C3D60278746B8000C518D /* SwiftSoup in Frameworks */,
 				5D73C38827810B160020507C /* Fuse in Frameworks */,
 				5D75D6DF278E1DF500832359 /* SnapKit in Frameworks */,
 				D053AD132BA8A92F0001E770 /* (null) in Frameworks */,
 				5DAE72D7278FC2F600284A72 /* EateryGetAPI in Frameworks */,
+				D8709F762F50D1CA00C3F2C6 /* EateryModel in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +578,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				D8E5D3A62F58F54D00E9BFA2 /* Auth */,
 				C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
@@ -746,7 +753,6 @@
 				5DBA89A02784D2ED002DCA6B /* Splash */,
 				5DF304B527797CB600E2C9A4 /* Util */,
 				5DF304C027797E4500E2C9A4 /* WaitTimesSheet */,
-				413780502AC5DFD600EE43FE /* KeychainAccess.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1017,6 +1023,15 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		D8E5D3A62F58F54D00E9BFA2 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				413780502AC5DFD600EE43FE /* KeychainAccess.swift */,
+				D8E5D3A42F58F06000E9BFA2 /* AuthStorage.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1052,6 +1067,8 @@
 				2ED2FC152BA2DBEC00621028 /* FirebaseAnalytics */,
 				2ED2FC172BA2DBEC00621028 /* FirebaseCrashlytics */,
 				C31EC93A2CF3DEBB00B2E99F /* FirebaseMessaging */,
+				D8709F752F50D1CA00C3F2C6 /* EateryModel */,
+				D8709F782F50D22B00C3F2C6 /* EateryGetAPI */,
 			);
 			productName = "Eatery Blue";
 			productReference = 5D86517B2773CBFB000338D4 /* Eatery Blue.app */;
@@ -1094,6 +1111,8 @@
 				2ED2FC112BA2D7AA00621028 /* XCRemoteSwiftPackageReference "Hero" */,
 				2ED2FC142BA2DBEC00621028 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				D01366012E70C2F800721192 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				D8709F742F50D1C900C3F2C6 /* XCLocalSwiftPackageReference "EateryModel" */,
+				D8709F772F50D22B00C3F2C6 /* XCLocalSwiftPackageReference "EateryGetAPI" */,
 			);
 			productRefGroup = 5D86517C2773CBFB000338D4 /* Products */;
 			projectDirPath = "";
@@ -1232,6 +1251,7 @@
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
 				957397B32821C50200FFB687 /* Analytics.swift in Sources */,
+				D8E5D3A52F58F06000E9BFA2 /* AuthStorage.swift in Sources */,
 				99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */,
 				5DA434B1278A04A1001337FD /* NavigationImageButton.swift in Sources */,
 				D01D80772BC638C900253976 /* CompareMenusInternalOnboardingView.swift in Sources */,
@@ -1574,6 +1594,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		D8709F742F50D1C900C3F2C6 /* XCLocalSwiftPackageReference "EateryModel" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = EateryModel;
+		};
+		D8709F772F50D22B00C3F2C6 /* XCLocalSwiftPackageReference "EateryGetAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = EateryGetAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		2E856F632B6714CB0043F350 /* XCRemoteSwiftPackageReference "appdev-announcements" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1751,6 +1782,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D01366012E70C2F800721192 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		D8709F752F50D1CA00C3F2C6 /* EateryModel */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EateryModel;
+		};
+		D8709F782F50D22B00C3F2C6 /* EateryGetAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EateryGetAPI;
 		};
 /* End XCSwiftPackageProductDependency section */
 
