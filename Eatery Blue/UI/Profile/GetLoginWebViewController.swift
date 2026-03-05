@@ -50,6 +50,16 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
                 self.dismiss(animated: true)
                  print("Session ID: " + sessionId)
             }
+             
+            // TODO: verify token, register access token and session id on backend
+             Task {
+                  do {
+                       try await Networking.default.verifyToken()
+                       try await Networking.default.linkGETAccount()
+                  } catch {
+                       logger.error("Failed to link user account and GET session to backend: \(error)")
+                  }
+             }
         }
     }
 }

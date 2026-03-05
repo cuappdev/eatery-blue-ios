@@ -26,7 +26,7 @@ class SettingsMainMenuLoginStatusView: UIView {
         addSubview(label)
         setUpLabel()
 
-        if KeychainAccess.shared.retrieveToken() != nil {
+        if KeychainAccess.shared.retrieveToken(account: "SessionId") != nil {
             addSubview(logoutButton)
             setUpLogoutButton()
         }

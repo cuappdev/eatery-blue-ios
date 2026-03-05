@@ -46,7 +46,7 @@ class NotificationButton: ButtonView<UIView> {
             guard let self else { return }
 
             var loggedIn = false
-            if KeychainAccess.shared.retrieveToken() != nil {
+            if KeychainAccess.shared.retrieveToken(account: "SessionId") != nil {
                 loggedIn = true
             }
 
@@ -59,7 +59,7 @@ class NotificationButton: ButtonView<UIView> {
     }
 
     func checkforNotifications() {
-        guard KeychainAccess.shared.retrieveToken() != nil else { return }
+        guard KeychainAccess.shared.retrieveToken(account: "SessionId") != nil else { return }
 
         // make networking call to see if there are any notis
 

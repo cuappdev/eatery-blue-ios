@@ -20,6 +20,12 @@ class Networking {
     var sessionId: String {
         KeychainAccess.shared.retrieveToken(account: "SessionId") ?? ""
     }
+    var accessToken: String {
+        KeychainAccess.shared.retrieveToken(account: "AccessToken") ?? ""
+    }
+    var refreshToken: String {
+        KeychainAccess.shared.retrieveToken(account: "RefreshToken") ?? ""
+    }
 
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
@@ -28,6 +34,39 @@ class Networking {
         accounts = FetchAccounts()
     }
 
+    func verifyToken() async throws {
+        let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/verify-token"))
+        let responseData = try await eateryAPI.verifyToken(deviceId: AuthStorage.deviceId)
+        KeychainAccess.shared.saveToken(token: responseData.accessToken, account: "AccessToken")
+        KeychainAccess.shared.saveToken(token: responseData.refreshToken, account: "RefreshToken")
+        print("Successfully verified token. Access token: \(responseData.accessToken)")
+    }
+    
+    func refreshToken() async throws {
+        let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/refresh-token"))
+        if !refreshToken.isEmpty {
+            let responseData = try await eateryAPI.refreshToken(deviceId: AuthStorage.deviceId, refreshToken: refreshToken)
+            KeychainAccess.shared.saveToken(token: responseData.accessToken, account: "AccessToken")
+            KeychainAccess.shared.saveToken(token: responseData.refreshToken, account: "RefreshToken")
+        }
+    }
+    
+    func linkGETAccount() async throws {
+        let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/get/authorize"))
+        if !accessToken.isEmpty && !sessionId.isEmpty {
+            let _ = try await eateryAPI.linkGETAccount(accessToken: accessToken, sessionId: sessionId, pin: AuthStorage.pin)
+            print("Successfully linked GET account. SessionId: \(sessionId)")
+        }
+    }
+    
+    func refreshGETSession() async throws {
+        let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/get/refresh"))
+        if !accessToken.isEmpty {
+            let responseData = try await eateryAPI.refreGETSession(accessToken: accessToken, pin: AuthStorage.pin)
+            KeychainAccess.shared.saveToken(token: responseData.sessionId, account: "SessionId")
+        }
+    }
+    
     func getAppVersion() async throws -> String {
         let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("version"))
 
