@@ -275,6 +275,23 @@ public struct EateryAPI {
         }
     }
     
+    public func getFinancials(accessToken: String, sessionId: String) async throws -> FinancialsResponse {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body: [String: String] = [
+            "sessionId": sessionId
+        ]
+        
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+
+        return try decoder.decode(FinancialsResponse.self, from: data)
+    }
+    
     public func version() async throws -> VersionResponse {
         let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
 

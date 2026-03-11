@@ -42,7 +42,7 @@ class Networking {
         print("Successfully verified token. Access token: \(responseData.accessToken)")
     }
     
-    func refreshToken() async throws {
+    func refreshAccessToken() async throws {
         let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/refresh-token"))
         if !refreshToken.isEmpty {
             let responseData = try await eateryAPI.refreshToken(deviceId: AuthStorage.deviceId, refreshToken: refreshToken)
@@ -64,6 +64,31 @@ class Networking {
         if !accessToken.isEmpty {
             let responseData = try await eateryAPI.refreGETSession(accessToken: accessToken, pin: AuthStorage.pin)
             KeychainAccess.shared.saveToken(token: responseData.sessionId, account: "SessionId")
+        }
+    }
+    
+    func getFinancials() async throws -> FinancialsResponse {
+        let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("financials"))
+        do {
+            return try await eateryAPI.getFinancials(accessToken: accessToken, sessionId: sessionId)
+        } catch let firstError {
+            logger.warning("Initial getFinancials failed: \(String(describing: firstError))")
+        }
+        
+        do {
+            try await refreshGETSession()
+            return try await eateryAPI.getFinancials(accessToken: accessToken, sessionId: sessionId)
+        } catch let secondError {
+            logger.warning("getFinancials after refreshGETSession failed: \(String(describing: secondError))")
+        }
+
+        do {
+            try await refreshAccessToken()
+            try await refreshGETSession()
+            return try await eateryAPI.getFinancials(accessToken: accessToken, sessionId: sessionId)
+        } catch let thirdError {
+            logger.error("Final getFinancials attempt failed: \(String(describing: thirdError))")
+            throw thirdError
         }
     }
     
