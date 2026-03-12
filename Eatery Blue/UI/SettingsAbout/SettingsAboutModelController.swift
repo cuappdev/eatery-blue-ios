@@ -23,7 +23,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Sergio Diaz",
             "Matthew Wong",
             "Antoinette Torres",
-            "Thomas Vignos"
+            "Thomas Vignos",
+            "Angelina Chen",
+            "Adelynn Wu"
         ]),
         Section(title: "Product Designers", members: [
             "TK Kong",
@@ -36,7 +38,8 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Dennis Quizhpi",
             "Kathleen Anderson",
             "Funmi Olukanmi",
-            "Carrie Kim"
+            "Carrie Kim",
+            "Katie Li"
         ]),
         Section(title: "iOS Developers", members: [
             "William Ma",
@@ -51,7 +54,10 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Jayson Hahn",
             "Peter Bidoshi",
             "Cassidy Xu",
-            "Charles Liggins"
+            "Charles Liggins",
+            "Adelynn Wu",
+            "Angelina Chen",
+            "Amy Yang"
         ]),
         Section(title: "Android Developers", members: [
             "Lesley Huang",
@@ -71,7 +77,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Olivia Jiang",
             "Helen Bian",
             "Amy Wang",
-            "Zach Seidner"
+            "Zach Seidner",
+            "Brian Hu",
+            "Caleb Shim"
         ]),
         Section(title: "Backend Developers", members: [
             "Conner Swenberg",
@@ -88,7 +96,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Aayush Agnihotri",
             "Daniel Weiner",
             "Skye Slattery",
-            "Cassidy Xu"
+            "Cassidy Xu",
+            "Fanhao Yu",
+            "Chris Voon"
         ]),
         Section(title: "Marketers", members: [
             "Cat Zhang",
@@ -100,7 +110,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Jane Lee",
             "Matthew Wong",
             "Candy Wu",
-            "Anvi Savant"
+            "Anvi Savant",
+            "Anna Felten",
+            "Carolyn Fu"
         ])
     ]
 
