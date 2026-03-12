@@ -118,12 +118,10 @@ class HomeViewController: UIViewController {
     }
 
     private func setUpCollectionView() {
-        collectionView.backgroundColor = UIColor.Eatery.green // .surface
+        collectionView.backgroundColor = UIColor.Eatery.surface
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.delegate = self
-        collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0 + compareMenusButton.frame
-            .height + 60
-        print(compareMenusButton.frame.height)
+        collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0
         collectionView.showsVerticalScrollIndicator = false
 
         collectionView.register(
