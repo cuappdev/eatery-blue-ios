@@ -121,7 +121,7 @@ class HomeViewController: UIViewController {
         collectionView.backgroundColor = UIColor.Eatery.surface
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.delegate = self
-        collectionView.contentInset.bottom = tabBarController?.tabBar.frame.height ?? 0
+        collectionView.contentInset.bottom = (tabBarController?.tabBar.frame.height ?? 0) + 25 // 108
         collectionView.showsVerticalScrollIndicator = false
 
         collectionView.register(
