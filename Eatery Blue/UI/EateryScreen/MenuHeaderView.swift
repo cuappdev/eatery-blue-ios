@@ -71,7 +71,7 @@ class MenuHeaderView: UIView {
 
         buttonView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(36) // or 16?
+            make.width.height.equalTo(36)
             make.leading.equalTo(buttonView.layoutMarginsGuide)
             make.centerY.equalTo(buttonView)
         }
