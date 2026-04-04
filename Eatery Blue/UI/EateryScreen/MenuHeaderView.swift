@@ -64,14 +64,14 @@ class MenuHeaderView: UIView {
     private func setUpButtonImageView() {
         buttonView.backgroundColor = UIColor.Eatery.gray00
         buttonView.layer.cornerRadius = 21
-        buttonView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 16)
+        buttonView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 14)
         let imageView = UIImageView()
         imageView.image = UIImage(named: "EateryCalendar")
         imageView.contentMode = .center
 
         buttonView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(40)
+            make.width.height.equalTo(36) // or 16?
             make.leading.equalTo(buttonView.layoutMarginsGuide)
             make.centerY.equalTo(buttonView)
         }
@@ -114,7 +114,7 @@ class MenuHeaderView: UIView {
             make.trailing.equalTo(layoutMarginsGuide)
             make.top.equalTo(layoutMarginsGuide).offset(8)
             make.height.equalTo(42)
-            make.width.equalTo(160)
+            make.width.equalTo(156)
         }
 
         menuInaccuracyLabel.snp.makeConstraints { make in
