@@ -83,7 +83,6 @@ class MenuHeaderView: UIView {
 
         buttonView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-//            make.trailing.equalTo(buttonView.layoutMarginsGuide)
             make.leading.equalTo(imageView.snp.trailing)
             make.trailing.lessThanOrEqualTo(buttonView.layoutMarginsGuide)
             make.centerY.equalTo(buttonView)
@@ -115,8 +114,7 @@ class MenuHeaderView: UIView {
             make.trailing.equalTo(layoutMarginsGuide)
             make.top.equalTo(layoutMarginsGuide).offset(8)
             make.height.equalTo(42)
-//            make.width.equalTo(156)
-            make.width.equalTo(160) // arbitrary guess
+            make.width.equalTo(160)
         }
 
         menuInaccuracyLabel.snp.makeConstraints { make in
