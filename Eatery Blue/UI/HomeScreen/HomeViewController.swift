@@ -46,6 +46,7 @@ class HomeViewController: UIViewController {
         static let loadingHeaderHeight: CGFloat = maxHeaderHeight + 52
         static let collectionViewTopPadding: CGFloat = 8
         static let collectionViewSectionPadding: CGFloat = 16
+        static let collectionViewBottomPadding: CGFloat = 25
         static let isTesting = false
     }
 
@@ -121,7 +122,8 @@ class HomeViewController: UIViewController {
         collectionView.backgroundColor = UIColor.Eatery.surface
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.delegate = self
-        collectionView.contentInset.bottom = (tabBarController?.tabBar.frame.height ?? 0) + 25 // 108
+        collectionView.contentInset.bottom = (tabBarController?.tabBar.frame.height ?? 0) + Constants
+            .collectionViewBottomPadding
         collectionView.showsVerticalScrollIndicator = false
 
         collectionView.register(
