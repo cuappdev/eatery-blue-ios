@@ -64,7 +64,17 @@ class MenuHeaderView: UIView {
     private func setUpButtonImageView() {
         buttonView.backgroundColor = UIColor.Eatery.gray00
         buttonView.layer.cornerRadius = 21
-        buttonView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 16)
+        buttonView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 14)
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "EateryCalendar")
+        imageView.contentMode = .center
+
+        buttonView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(36)
+            make.leading.equalTo(buttonView.layoutMarginsGuide)
+            make.centerY.equalTo(buttonView)
+        }
 
         let titleLabel = UILabel()
         titleLabel.text = "Change Date"
@@ -73,18 +83,8 @@ class MenuHeaderView: UIView {
 
         buttonView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(buttonView.layoutMarginsGuide)
-            make.centerY.equalTo(buttonView)
-        }
-
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "EateryCalendar")
-        imageView.contentMode = .center
-
-        buttonView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(40)
-            make.leading.equalTo(buttonView.layoutMarginsGuide)
+            make.leading.equalTo(imageView.snp.trailing)
+            make.trailing.lessThanOrEqualTo(buttonView.layoutMarginsGuide)
             make.centerY.equalTo(buttonView)
         }
 
@@ -102,6 +102,7 @@ class MenuHeaderView: UIView {
     private func setUpConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(layoutMarginsGuide)
+            make.trailing.lessThanOrEqualTo(buttonView.snp.leading)
         }
 
         subtitleLabel.snp.makeConstraints { make in
