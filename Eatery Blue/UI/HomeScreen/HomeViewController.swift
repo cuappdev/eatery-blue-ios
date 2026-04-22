@@ -145,6 +145,17 @@ class HomeViewController: UIViewController {
             navigationController?.pushViewController(searchViewController, animated: true)
         }
 
+        navigationView.notificationButton.onTap { [weak self] in
+            guard let self else { return }
+
+            let notifHubViewController = NotificationsHubViewController()
+            navigationController?.pushViewController(notifHubViewController, animated: true)
+        }
+//        navigationView.notificationButton.onTap { [self] _ in
+//            let notifHubViewController = NotificationsHubViewController()
+//            navigationController?.pushViewController(notifHubViewController, animated: true)
+//        }
+
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
     }
 

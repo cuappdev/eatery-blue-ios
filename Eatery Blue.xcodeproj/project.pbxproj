@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CDE763E2F61BA5B00D0F948 /* NotificationsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDE763D2F61BA5500D0F948 /* NotificationsHubViewController.swift */; };
+		2CDE76402F61BA9000D0F948 /* NotificationItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDE763F2F61BA8D00D0F948 /* NotificationItemCell.swift */; };
+		2CDE76422F61C0F200D0F948 /* NotificationItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDE76412F61C0EB00D0F948 /* NotificationItemTableViewCell.swift */; };
 		2E14970F2BB75B6400180A35 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */; };
 		2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */; };
 		2E6655FB2ADFB86700264391 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */; };
@@ -214,6 +217,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2CDE763D2F61BA5500D0F948 /* NotificationsHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHubViewController.swift; sourceTree = "<group>"; };
+		2CDE763F2F61BA8D00D0F948 /* NotificationItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationItemCell.swift; sourceTree = "<group>"; };
+		2CDE76412F61C0EB00D0F948 /* NotificationItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationItemTableViewCell.swift; sourceTree = "<group>"; };
 		2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Extension.swift"; sourceTree = "<group>"; };
@@ -1012,6 +1018,9 @@
 		D064656B2C8CE626001902A4 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				2CDE76412F61C0EB00D0F948 /* NotificationItemTableViewCell.swift */,
+				2CDE763F2F61BA8D00D0F948 /* NotificationItemCell.swift */,
+				2CDE763D2F61BA5500D0F948 /* NotificationsHubViewController.swift */,
 				D064656C2C8CE634001902A4 /* NotificationButton.swift */,
 			);
 			path = Notifications;
@@ -1228,6 +1237,7 @@
 				5DF304952777870F00E2C9A4 /* WaitTimesSheetViewController.swift in Sources */,
 				D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */,
 				5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */,
+				2CDE76422F61C0F200D0F948 /* NotificationItemTableViewCell.swift in Sources */,
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment+Extension.swift in Sources */,
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
@@ -1260,6 +1270,7 @@
 				5D73C38A27810F370020507C /* FuseFuture+Extension.swift in Sources */,
 				5DF3049927778FE100E2C9A4 /* WaitTimeCell.swift in Sources */,
 				5DF304D3277A6AF200E2C9A4 /* ListNavigationView.swift in Sources */,
+				2CDE763E2F61BA5B00D0F948 /* NotificationsHubViewController.swift in Sources */,
 				5D698F8327888E4B0054E1AB /* ProfileLoginViewController.swift in Sources */,
 				5D698F8A27889DE40054E1AB /* ProfileViewController.swift in Sources */,
 				2E856F692B67263A0043F350 /* EateryEnvironment.swift in Sources */,
@@ -1316,6 +1327,7 @@
 				D04FB8792BCEE7820058F732 /* SettingsAppIconSheetViewController.swift in Sources */,
 				D0B499142D6D174D0044C856 /* UIView+Extension.swift in Sources */,
 				5DCB869C2782396000134066 /* main.swift in Sources */,
+				2CDE76402F61BA9000D0F948 /* NotificationItemCell.swift in Sources */,
 				5DAE72D5278FC12600284A72 /* NetIDKeychainManager.swift in Sources */,
 				5DF938CF27764F48008ED0A1 /* SheetPresentationAnimationController.swift in Sources */,
 				5D698F922788A7FE0054E1AB /* AccountModelController.swift in Sources */,

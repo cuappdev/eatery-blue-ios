@@ -15,7 +15,8 @@ class NotificationButton: ButtonView<UIView> {
 
     // MARK: - Properties (data)
 
-    private var completion: ((UIViewController) -> Void)?
+    ///    private var completion: ((UIViewController) -> Void)?
+    private var completion: (() -> Void)?
 //    private var notifictions: [EateryNotification]
 
     // MARK: - Init
@@ -43,17 +44,22 @@ class NotificationButton: ButtonView<UIView> {
         setUpConstraints()
 
         buttonPress { [weak self] _ in
-            guard let self else { return }
-
-            var loggedIn = false
-            if KeychainAccess.shared.retrieveToken() != nil {
-                loggedIn = true
-            }
-
-            let plvc = ProfileLoginModelController(canGoBack: true)
-//            let vc = NotificationViewController(loggedIn: loggedIn)
-            completion?(loggedIn ? UIViewController() : plvc)
+            self?.completion?()
         }
+
+//        buttonPress { [weak self] _ in
+//            guard let self else { return }
+//
+//            var loggedIn = false
+//            if KeychainAccess.shared.retrieveToken() != nil {
+//                loggedIn = true
+//            }
+//
+//            let plvc = ProfileLoginModelController(canGoBack: true)
+        ////            let vc = NotificationViewController(loggedIn: loggedIn)
+        ////            completion?(loggedIn ? NotificationsHubViewController() : plvc)
+//            completion?(plvc)
+//        }
 
         checkforNotifications()
     }
@@ -67,7 +73,10 @@ class NotificationButton: ButtonView<UIView> {
         notificationDotImageView.isHidden = false
     }
 
-    func onTap(_ completion: @escaping (UIViewController) -> Void) {
+    ///    func onTap(_ completion: @escaping (UIViewController) -> Void) {
+    ///        self.completion = completion
+    ///    }
+    func onTap(_ completion: @escaping () -> Void) {
         self.completion = completion
     }
 
