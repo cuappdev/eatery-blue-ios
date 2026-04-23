@@ -33,7 +33,7 @@ class MenuDayPickerTableViewCell: UITableViewCell {
     private var selectedDayIndex: Int? = 0
 
     private var menuChoices: [MenuChoice] = []
-    private var selectedMenuIndex: Int?
+    var selectedMenuIndex: Int = 0
 
     static let reuse = "MenuDayPickerCollectionViewCellReuseId"
 
@@ -53,8 +53,9 @@ class MenuDayPickerTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(days: [Day]) {
+    func configure(days: [Day], withSelectedIndex selectedDayIndex: Int = 0) {
         self.days = days
+        self.selectedDayIndex = selectedDayIndex
 
         // Reset data
         dayPickerView.resetCells()
