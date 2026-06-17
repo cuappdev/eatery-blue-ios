@@ -39,7 +39,6 @@ class Networking {
         let responseData = try await eateryAPI.verifyToken(deviceId: AuthStorage.deviceId)
         KeychainAccess.shared.saveToken(token: responseData.accessToken, account: "AccessToken")
         KeychainAccess.shared.saveToken(token: responseData.refreshToken, account: "RefreshToken")
-        print("Successfully verified token. Access token: \(responseData.accessToken)")
     }
     
     func refreshAccessToken() async throws {
@@ -55,14 +54,13 @@ class Networking {
         let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/get/authorize"))
         if !accessToken.isEmpty && !sessionId.isEmpty {
             let _ = try await eateryAPI.linkGETAccount(accessToken: accessToken, sessionId: sessionId, pin: AuthStorage.pin)
-            print("Successfully linked GET account. SessionId: \(sessionId)")
         }
     }
     
     func refreshGETSession() async throws {
         let eateryAPI = EateryAPI(url: baseUrl.appendingPathComponent("auth/get/refresh"))
         if !accessToken.isEmpty {
-            let responseData = try await eateryAPI.refreGETSession(accessToken: accessToken, pin: AuthStorage.pin)
+            let responseData = try await eateryAPI.refreshGETSession(accessToken: accessToken, pin: AuthStorage.pin)
             KeychainAccess.shared.saveToken(token: responseData.sessionId, account: "SessionId")
         }
     }
@@ -84,11 +82,17 @@ class Networking {
 
         do {
             try await refreshAccessToken()
+        } catch let thirdError {
+            logger.warning("refresh access token failed: \(String(describing: thirdError))")
+            throw thirdError
+        }
+        
+        do {
             try await refreshGETSession()
             return try await eateryAPI.getFinancials(accessToken: accessToken, sessionId: sessionId)
-        } catch let thirdError {
-            logger.error("Final getFinancials attempt failed: \(String(describing: thirdError))")
-            throw thirdError
+        } catch let fourthError {
+            logger.error("Final getFinancials attempt failed: \(String(describing: fourthError))")
+            throw fourthError
         }
     }
     

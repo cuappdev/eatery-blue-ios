@@ -35,10 +35,8 @@ class KeychainAccess {
             kSecAttrAccount as String: account
         ]
 
-        Task {
-            let status = SecItemDelete(query as CFDictionary)
-            guard status == errSecSuccess || status == errSecItemNotFound else { return }
-        }
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else { return }
     }
 
     /// Returns token under account if it exists, nil otherwise

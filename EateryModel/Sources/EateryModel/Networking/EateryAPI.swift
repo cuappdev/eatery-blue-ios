@@ -40,7 +40,6 @@ public struct EateryAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        // request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let body: [String: String] = [
             "deviceUuid": deviceId,
@@ -78,7 +77,7 @@ public struct EateryAPI {
     }
     
     /// Refreshes GET session and returns a new session id. 
-    public func refreGETSession(accessToken: String, pin: String) async throws -> SessionIdResponse {
+    public func refreshGETSession(accessToken: String, pin: String) async throws -> SessionIdResponse {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         

@@ -51,7 +51,6 @@ class GetLoginWebViewController: UIViewController, WKUIDelegate, WKNavigationDel
                  print("Session ID: " + sessionId)
             }
              
-            // TODO: verify token, register access token and session id on backend
              Task {
                   do {
                        try await Networking.default.verifyToken()
