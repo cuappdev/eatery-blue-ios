@@ -14,8 +14,9 @@ class NotificationButton: ButtonView<UIView> {
     private let notificationDotImageView = UIImageView()
 
     // MARK: - Properties (data)
+
     var completion: (() -> Void)?
-//    private var notifictions: [EateryNotification]
+    //    private var notifictions: [EateryNotification]
 
     // MARK: - Init
 
@@ -44,15 +45,15 @@ class NotificationButton: ButtonView<UIView> {
         buttonPress { [weak self] _ in
             guard let self else { return }
             self.completion?()
-            
+
             //            var loggedIn = false
-//            if KeychainAccess.shared.retrieveToken() != nil {
-//                loggedIn = true
-//            }
-//
-//            let plvc = ProfileLoginModelController(canGoBack: true)
-////            let vc = NotificationViewController(loggedIn: loggedIn)
-//            completion?(loggedIn ? UIViewController() : plvc)
+            //            if KeychainAccess.shared.retrieveToken() != nil {
+            //                loggedIn = true
+            //            }
+            //
+            //            let plvc = ProfileLoginModelController(canGoBack: true)
+            ////            let vc = NotificationViewController(loggedIn: loggedIn)
+            //            completion?(loggedIn ? UIViewController() : plvc)
         }
 
         checkforNotifications()

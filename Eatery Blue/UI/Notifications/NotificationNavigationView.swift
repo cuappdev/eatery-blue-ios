@@ -18,8 +18,9 @@ class NotificationNavigationView: UIView {
 
     /// The controller that this view uses to pop on back button press
     var navigationController: UINavigationController?
-  
+
     // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpSelf()
