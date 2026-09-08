@@ -42,7 +42,7 @@ class NavigationView: UICollectionReusableView {
 
         // MARK: todo - NOTIFICATIONS
 
-//        addSubview(notificationButton)
+        addSubview(notificationButton)
     }
 
     private func setUpNormalNavigationBar() {
@@ -110,10 +110,10 @@ class NavigationView: UICollectionReusableView {
 
         // MARK: todo - NOTIFICATIONS
 
-//        notificationButton.snp.makeConstraints { make in
-//            make.trailing.equalTo(layoutMarginsGuide)
-//            make.centerY.equalTo(largeTitleLabel.snp.centerY)
-//        }
+        notificationButton.snp.makeConstraints { make in
+            make.trailing.equalTo(layoutMarginsGuide)
+            make.centerY.equalTo(largeTitleLabel.snp.centerY)
+        }
     }
 
     func computeExpandedHeight() -> CGFloat {
@@ -181,5 +181,9 @@ class NavigationView: UICollectionReusableView {
         for button in buttons {
             rightButtons.addArrangedSubview(button)
         }
+    }
+
+    func onNotificationTap(_ handler: @escaping () -> Void) {
+        notificationButton.completion = handler
     }
 }

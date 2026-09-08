@@ -31,7 +31,12 @@ jobs:
           scheme: ${{ 'Eatery Blue-Prod' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+          # Use the first available iPhone simulator name; fall back to iPhone Air.
+          device=$(xcrun simctl list devices available | grep "iPhone" | head -1 | sed -E 's/^[[:space:]]+//' | sed -E 's/ \([^)]*\).*//')
+          if [ -z "$device" ]; then
+            device="iPhone Air"
+          fi
+          echo "Using simulator device: $device"
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device" -skipPackagePluginValidation
