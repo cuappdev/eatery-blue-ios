@@ -491,7 +491,7 @@ class HomeViewController: UIViewController {
 
         snapshot.appendItems([
             .searchBar,
-            .customView(view: filterController.view, height: 44),
+            .customView(view: filterController.view, height: 44)
         ], toSection: .toolbar)
 
         // Carousel (favorites carousel)
@@ -500,7 +500,7 @@ class HomeViewController: UIViewController {
         if isLoading {
             snapshot.appendItems([
                 .loadingLabel(title: "Finding flavorful food..."),
-                .loadingCarousel,
+                .loadingCarousel
             ], toSection: .carousel)
         } else {
             if !filter.isEnabled {
