@@ -15,6 +15,29 @@ enum SchemaToModel {
         return dateFormatter
     }()
 
+    // GET wraps every payload like: { "response": { ...actual fields... } }
+    private struct NativeStartupResponseWrapper: Decodable {
+        let response: Schema.RawNativeStartup
+    }
+
+    // Turns GET's JSON bytes into BarcodeConfig.
+    // Used by the network call and by tests (tests pass fake JSON, not a live request).
+    // Do not log `data` — it contains barcodeSeed.
+    static func barcodeConfig(fromNativeStartupData data: Data) throws -> BarcodeConfig {
+        let wrapper = try JSONDecoder().decode(NativeStartupResponseWrapper.self, from: data)
+        return convert(wrapper.response)
+    }
+
+    // Copy the two fields we care about into the public model.
+    // Empty seed → nil. Missing offline flag → false (don't show a barcode).
+    static func convert(_ raw: Schema.RawNativeStartup) -> BarcodeConfig {
+        let seed = raw.barcodeSeed.flatMap { $0.isEmpty ? nil : $0 }
+        return BarcodeConfig(
+            barcodeSeed: seed,
+            enableOfflineBarcodeGeneration: raw.enableOfflineBarcodeGeneration ?? false
+        )
+    }
+
     static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> [Account] {
         let transactions = convert(getTransactions)
 
