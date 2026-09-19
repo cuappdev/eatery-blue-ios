@@ -142,16 +142,47 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let payload = try await Networking.default.accounts.fetch(start: start, end: end)
-            let eateryAccounts = EateryAccounts(payload.accounts)
+            let sessionId = Networking.default.sessionId
+            async let payload = Networking.default.accounts.fetch(start: start, end: end)
+            async let barcodeConfig = GetAPI().barcodeConfig(sessionId: sessionId)
+
+            let accountData = try await payload
+            let eateryAccounts = EateryAccounts(accountData.accounts)
             accounts = eateryAccounts
-            // Keep patronId in memory for barcodes. Do not show or log the id itself.
-            patronId = payload.patronId
-            logger.info("Account fetch complete, hasPatronId=\(patronId != nil)")
+            // Keep patronId in memory and Keychain. Do not show or log the id itself.
+            patronId = accountData.patronId
+            persistPatronId(accountData.patronId)
+
+            if let config = try? await barcodeConfig {
+                persistBarcodeSeed(config)
+            }
+
+            logger.info(
+                """
+                Account fetch complete, hasPatronId=\(patronId != nil), \
+                hasSeed=\(KeychainAccess.shared.retrieveBarcodeSeed() != nil)
+                """
+            )
 
             spinner.stopAnimating()
         } catch {
             logger.error("\(#function): \(error)")
+        }
+    }
+
+    private func persistPatronId(_ id: String?) {
+        if let id {
+            KeychainAccess.shared.savePatronId(id)
+        } else {
+            KeychainAccess.shared.deletePatronId()
+        }
+    }
+
+    private func persistBarcodeSeed(_ config: BarcodeConfig) {
+        if config.canGenerateOfflineBarcode, let seed = config.barcodeSeed {
+            KeychainAccess.shared.saveBarcodeSeed(seed)
+        } else {
+            KeychainAccess.shared.deleteBarcodeSeed()
         }
     }
 
