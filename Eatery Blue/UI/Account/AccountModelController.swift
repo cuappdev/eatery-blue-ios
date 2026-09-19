@@ -109,6 +109,13 @@ class AccountModelController: AccountViewController {
         super.viewDidLoad()
 
         setUpTransactionsHeaderView()
+        setUpBarcodeEntry()
+        onShowBarcode = { [weak self] in
+            self?.navigationController?.pushViewController(BarcodeViewController(), animated: true)
+        }
+        // Keychain may already have a patronId from the last session.
+        patronId = KeychainAccess.shared.retrievePatronId()
+        updateBarcodeEntryFromState()
 
         updateCellsFromState()
         updateTransactionsHeaderViewFromState()
@@ -117,6 +124,7 @@ class AccountModelController: AccountViewController {
             spinner.startAnimating()
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
         }
     }
 
@@ -183,6 +191,17 @@ class AccountModelController: AccountViewController {
             KeychainAccess.shared.saveBarcodeSeed(seed)
         } else {
             KeychainAccess.shared.deleteBarcodeSeed()
+        }
+    }
+
+    private func updateBarcodeEntryFromState() {
+        if patronId != nil {
+            updateBarcodeEntry(isEnabled: true, hint: nil)
+        } else {
+            updateBarcodeEntry(
+                isEnabled: false,
+                hint: "No payment ID yet. Use GET once, then try again."
+            )
         }
     }
 
@@ -307,6 +326,7 @@ class AccountModelController: AccountViewController {
         Task {
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
             sender.endRefreshing()
         }
     }
