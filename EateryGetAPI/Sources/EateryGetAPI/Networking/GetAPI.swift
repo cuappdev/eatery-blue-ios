@@ -8,8 +8,9 @@
 public struct GetAPI {
     public init() {}
 
+    // Balances/transactions for the UI, plus patronId for barcodes (not shown).
     @MainActor
-    public func accounts(sessionId: String, start: String, end: String) async throws -> [Account] {
+    public func accounts(sessionId: String, start: String, end: String) async throws -> AccountData {
         let sessionManager = GetSessionManager(sessionId: sessionId)
 
         let userId = try await sessionManager.userId()

@@ -38,7 +38,7 @@ enum SchemaToModel {
         )
     }
 
-    static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> [Account] {
+    static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> AccountData {
         let transactions = convert(getTransactions)
 
         var accounts: [Account] = []
@@ -55,7 +55,12 @@ enum SchemaToModel {
             ))
         }
 
-        return accounts
+        return AccountData(accounts: accounts, patronId: patronId(from: getTransactions))
+    }
+
+    // Use the first non-empty patronId on any raw row, even if that row is not shown.
+    static func patronId(from rawTransactions: [Schema.RawTransaction]) -> String? {
+        rawTransactions.lazy.compactMap { $0.patronId?.string }.first
     }
 
     static func convert(_ getTransactions: [Schema.RawTransaction]) -> [Transaction] {
