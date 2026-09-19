@@ -190,7 +190,7 @@ class Networking {
     }
 
     func logOut() {
-        KeychainAccess.shared.invalidateToken()
+        KeychainAccess.shared.invalidateAllGETSecrets()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 
@@ -633,7 +633,8 @@ private actor BackendAuthenticator {
         }
 
         if allowsInvalidRefreshToken,
-           httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+           httpResponse.statusCode == 401 || httpResponse.statusCode == 403
+        {
             throw AuthenticationError.invalidRefreshToken
         }
 
@@ -669,7 +670,7 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
-                KeychainAccess.shared.invalidateToken()
+                KeychainAccess.shared.invalidateAllGETSecrets()
                 return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
 
             } else {
@@ -699,7 +700,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "RPCC"
-            )
+            ),
         ]),
         Account(accountType: .bigRedBucks, balance: 500, transactions: [
             Transaction(
@@ -719,7 +720,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Mac's Cafe"
-            )
+            ),
         ]),
         Account(accountType: .cityBucks, balance: 0, transactions: []),
         Account(accountType: .laundry, balance: 37.54, transactions: [
@@ -740,7 +741,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Dolon 27 Dryer"
-            )
-        ])
+            ),
+        ]),
     ]
 }
