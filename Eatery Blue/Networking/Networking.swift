@@ -101,17 +101,17 @@ class Networking {
 struct FetchAccounts {
     private let getApi = GetAPI()
 
-    func fetch(start: Day, end: Day) async throws -> [Account] {
+    func fetch(start: Day, end: Day) async throws -> AccountData {
         return try await fetch(start: start, end: end, retryAttempts: 1)
     }
 
-    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
+    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> AccountData {
         logger.info("Attempting to fetch accounts start=\(start), end=\(end), retryAttempts=\(retryAttempts)")
         do {
             let sessionId = Networking.default.sessionId
             if sessionId == "App Store Testing Session ID" {
                 try await Task.sleep(nanoseconds: 1_000_000_000)
-                return AccountDummyData.accounts
+                return AccountData(accounts: AccountDummyData.accounts, patronId: nil)
             } else {
                 return try await getApi.accounts(sessionId: sessionId, start: start.rawValue, end: end.rawValue)
             }

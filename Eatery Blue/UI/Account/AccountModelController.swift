@@ -102,6 +102,8 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
+    // Cashless key for barcodes.
+    private var patronId: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,9 +142,12 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let accounts = try await Networking.default.accounts.fetch(start: start, end: end)
-            let eateryAccounts = EateryAccounts(accounts)
-            self.accounts = eateryAccounts
+            let payload = try await Networking.default.accounts.fetch(start: start, end: end)
+            let eateryAccounts = EateryAccounts(payload.accounts)
+            accounts = eateryAccounts
+            // Keep patronId in memory for barcodes. Do not show or log the id itself.
+            patronId = payload.patronId
+            logger.info("Account fetch complete, hasPatronId=\(patronId != nil)")
 
             spinner.stopAnimating()
         } catch {
