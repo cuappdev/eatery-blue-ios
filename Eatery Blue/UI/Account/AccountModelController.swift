@@ -157,9 +157,11 @@ class AccountModelController: AccountViewController {
             let accountData = try await payload
             let eateryAccounts = EateryAccounts(accountData.accounts)
             accounts = eateryAccounts
-            // Keep patronId in memory and Keychain. Do not show or log the id itself.
-            patronId = accountData.patronId
-            persistPatronId(accountData.patronId)
+            // Keep a cached patronId if this fetch had no transactions.
+            if let id = accountData.patronId {
+                patronId = id
+                persistPatronId(id)
+            }
 
             if let config = try? await barcodeConfig {
                 persistBarcodeSeed(config)
@@ -171,19 +173,15 @@ class AccountModelController: AccountViewController {
                 hasSeed=\(KeychainAccess.shared.retrieveBarcodeSeed() != nil)
                 """
             )
-
-            spinner.stopAnimating()
         } catch {
             logger.error("\(#function): \(error)")
         }
+
+        spinner.stopAnimating()
     }
 
-    private func persistPatronId(_ id: String?) {
-        if let id {
-            KeychainAccess.shared.savePatronId(id)
-        } else {
-            KeychainAccess.shared.deletePatronId()
-        }
+    private func persistPatronId(_ id: String) {
+        KeychainAccess.shared.savePatronId(id)
     }
 
     private func persistBarcodeSeed(_ config: BarcodeConfig) {
