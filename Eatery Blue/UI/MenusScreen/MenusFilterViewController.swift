@@ -20,6 +20,7 @@ class MenusFilterViewController: UIViewController {
     let central = PillFilterButtonView()
 
     private var currentMealType: EventType?
+    var availableMealTypes: [EventType] = [.breakfast, .lunch, .dinner, .lateDinner]
 
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()
@@ -79,7 +80,7 @@ class MenusFilterViewController: UIViewController {
             let viewController = UpcomingMenuPickerSheetViewController()
 
             viewController.setUpSheetPresentation()
-            viewController.setUp(currentEventType: currentMealType)
+            viewController.setUp(currentEventType: currentMealType, choices: availableMealTypes)
             viewController.delegate = self
             tabBarController?.present(viewController, animated: true)
         }

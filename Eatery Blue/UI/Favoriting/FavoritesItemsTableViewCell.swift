@@ -61,7 +61,7 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             }
 
             // these categories should appear first if they are available
-            let firstKeys: [EventType] = [.breakfast, .brunch, .lunch, .lateLunch, .dinner, .lateDinner]
+            let firstKeys: [EventType] = EventType.mealTypes
 
             for category in firstKeys {
                 if let eateries = itemData[category] {

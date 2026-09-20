@@ -46,15 +46,17 @@ class EateryExpandableCardContentView: UIView {
         var event: Event?
 
         // Ignoring Late Lunch
-        if selectedMealType == .breakfast {
-            event = selectedEvents.first { $0.type == .brunch || $0.type == .breakfast }
-        } else if selectedMealType == .lunch {
-            event = selectedEvents.first { $0.type == .brunch || $0.type == .lunch }
-        } else if selectedMealType == .dinner {
-            event = selectedEvents.first { $0.type == .dinner }
-        } else if selectedMealType == .lateDinner {
-            event = selectedEvents.first { $0.type == .lateDinner }
-        }
+//        if selectedMealType == .breakfast {
+//            event = selectedEvents.first { $0.type == .brunch || $0.type == .breakfast }
+//        } else if selectedMealType == .lunch {
+//            event = selectedEvents.first { $0.type == .brunch || $0.type == .lunch }
+//        } else if selectedMealType == .dinner {
+//            event = selectedEvents.first { $0.type == .dinner }
+//        } else if selectedMealType == .lateDinner {
+//            event = selectedEvents.first { $0.type == .lateDinner }
+//        }
+
+        event = selectedEvents.first { $0.type == selectedMealType }
 
         if let event {
             let isCurrentMealTime = event.canonicalDay == Day() && selectedMealType == EventType.mealFromTime()

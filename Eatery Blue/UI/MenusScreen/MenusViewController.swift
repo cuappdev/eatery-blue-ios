@@ -186,6 +186,28 @@ class MenusViewController: UIViewController {
         let eateries = Constants.isTesting ? Eatery.dummyEateries : try await Networking.default
             .loadEateryByDay(day: day)
         allEateries[day] = eateries
+        if day == selectedIndex {
+            updateFilterControllerAvailableMealTypes()
+        }
+    }
+
+    private static let baselineMealTypes: Set<EventType> = [.breakfast, .lunch, .dinner, .lateDinner]
+
+    /// Determine which meal types should be available for the given day
+    private func availableMealTypes(for day: Int) -> [EventType] {
+        let selectedDay = Day().advanced(by: day)
+        let typesInData = Set(
+            (allEateries[day] ?? [])
+                .flatMap(\.events)
+                .filter { $0.canonicalDay == selectedDay }
+                .map(\.type)
+        )
+        return EventType.mealTypes.filter { Self.baselineMealTypes.contains($0) || typesInData.contains($0) }
+    }
+
+    /// Update the filter controller's available meal types based currently selected day
+    private func updateFilterControllerAvailableMealTypes() {
+        filterController.availableMealTypes = availableMealTypes(for: selectedIndex)
     }
 
     private func startLoading() {
@@ -406,9 +428,7 @@ class MenusViewController: UIViewController {
 
                 let events = eatery.events.filter { $0.canonicalDay == selectedDay }
 
-                return events.contains { $0.type == currentMealType
-                    || ((currentMealType == .breakfast || currentMealType == .lunch) && $0.type == .brunch)
-                }
+                return events.contains { $0.type == currentMealType }
             }
 
             let showAllAreas = !filter.north && !filter.west && !filter.central
@@ -653,6 +673,7 @@ extension MenusViewController: UpdateDateDelegate {
     func updateMenuDay(index: Int) {
         selectedIndex = index
         expandedEateryIds = []
+        updateFilterControllerAvailableMealTypes()
         if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
             // Data already available for this day
             stopLoading()
