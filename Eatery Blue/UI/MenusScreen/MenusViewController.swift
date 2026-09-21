@@ -205,9 +205,31 @@ class MenusViewController: UIViewController {
         return EventType.mealTypes.filter { Self.baselineMealTypes.contains($0) || typesInData.contains($0) }
     }
 
-    /// Update the filter controller's available meal types based currently selected day
+    /// Update the filter controller's available meal types and selected meal for the current day
     private func updateFilterControllerAvailableMealTypes() {
-        filterController.availableMealTypes = availableMealTypes(for: selectedIndex)
+        let available = availableMealTypes(for: selectedIndex)
+        filterController.availableMealTypes = available
+
+        currentMealType = resolvedMealType(from: available)
+        filterController.setMealType(currentMealType)
+    }
+
+    /// Prefer brunch during the breakfast/lunch window; otherwise keep or fall back.
+    private func resolvedMealType(from available: [EventType]) -> EventType {
+        let fromTime = EventType.mealFromTime()
+        let shouldPreferBrunch = available.contains(.brunch)
+            && (fromTime == .breakfast || fromTime == .lunch)
+
+        if shouldPreferBrunch,
+           currentMealType == .breakfast || currentMealType == .lunch || !available.contains(currentMealType) {
+            return .brunch
+        }
+
+        if available.contains(currentMealType) {
+            return currentMealType
+        }
+
+        return available.contains(fromTime) ? fromTime : (available.first ?? .breakfast)
     }
 
     private func startLoading() {

@@ -18,7 +18,6 @@ protocol UpcomingMenuPickerSheetViewControllerDelegate: AnyObject {
 class UpcomingMenuPickerSheetViewController: SheetViewController {
     weak var delegate: UpcomingMenuPickerSheetViewControllerDelegate?
 
-    ///    private var menuChoices: [EventType] = [.breakfast, .brunch, .lunch, .dinner, .lateDinner]
     private var menuChoices: [EventType] = EventType.mealTypes
 
     private var menuChoiceViews: [UpcomingMenuChoiceView] = []

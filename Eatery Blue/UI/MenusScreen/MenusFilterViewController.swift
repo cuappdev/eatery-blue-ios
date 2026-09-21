@@ -69,6 +69,11 @@ class MenusFilterViewController: UIViewController {
         setUpCentral()
     }
 
+    func setMealType(_ eventType: EventType) {
+        currentMealType = eventType
+        mealType.label.text = eventType.description
+    }
+
     private func setUpMealType() {
         if let currentMealType = currentMealType {
             mealType.label.text = currentMealType.description
@@ -156,8 +161,7 @@ extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelega
         _: UpcomingMenuPickerSheetViewController,
         didChangeMenuChoice eventType: EventType
     ) {
-        mealType.label.text = eventType.description
-        currentMealType = eventType
+        setMealType(eventType)
         delegate?.menusFilterViewController(self, didChangeMenuType: eventType)
     }
 }
