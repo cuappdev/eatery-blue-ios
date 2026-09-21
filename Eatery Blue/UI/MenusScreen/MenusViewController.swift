@@ -225,6 +225,10 @@ class MenusViewController: UIViewController {
             return .brunch
         }
 
+        if currentMealType == .brunch, !available.contains(.brunch) {
+            return .lunch
+        }
+
         if available.contains(currentMealType) {
             return currentMealType
         }
