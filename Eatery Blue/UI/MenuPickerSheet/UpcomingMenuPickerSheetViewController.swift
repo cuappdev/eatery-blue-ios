@@ -18,12 +18,13 @@ protocol UpcomingMenuPickerSheetViewControllerDelegate: AnyObject {
 class UpcomingMenuPickerSheetViewController: SheetViewController {
     weak var delegate: UpcomingMenuPickerSheetViewControllerDelegate?
 
-    private var menuChoices: [EventType] = [.breakfast, .lunch, .dinner, .lateDinner]
+    private var menuChoices: [EventType] = EventType.mealTypes
 
     private var menuChoiceViews: [UpcomingMenuChoiceView] = []
     var selectedMenuIndex: Int?
 
-    func setUp(currentEventType: EventType?) {
+    func setUp(currentEventType: EventType?, choices: [EventType]) {
+        menuChoices = choices
         selectedMenuIndex = menuChoices.firstIndex(of: currentEventType ?? .breakfast)
         addHeader(title: "Menus")
         addMenuChoiceViews()
