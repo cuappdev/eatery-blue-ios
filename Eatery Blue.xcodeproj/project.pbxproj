@@ -1499,6 +1499,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1543,6 +1544,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
