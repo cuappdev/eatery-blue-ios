@@ -20,7 +20,7 @@ extension Logger {
     static let notifications = Logger(subsystem: subsystem, category: "notifications")
 }
 
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
     static let shared: AppDelegate = {
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             fatalError("AppDelegate not found")
@@ -29,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }()
 
     private(set) lazy var coreDataStack = CoreDataStack()
+    private var backendAuthenticationTask: Task<Void, Error>?
+    private var handledFCMTokens = Set<String>()
+    private var hasAPNSToken = false
 
     func application(
         _ application: UIApplication,
@@ -53,10 +56,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+
+        let authenticationTask = Task {
+            try await Networking.default.authenticateDevice()
+        }
+        backendAuthenticationTask = authenticationTask
 
         Task {
             do {
-                try await Networking.default.authenticateDevice()
+                try await authenticationTask.value
                 Logger.notifications.info("Eatery backend authentication succeeded")
             } catch {
                 Logger.notifications.error("Eatery backend authentication failed: \(error.localizedDescription)")
@@ -89,6 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Set APNs token for Firebase Messaging
+        hasAPNSToken = true
         let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         Logger.notifications.info("APNs device token received: \(tokenString)")
         Messaging.messaging().apnsToken = deviceToken
@@ -98,13 +108,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if let error = error {
                 Logger.notifications.error("Error fetching FCM token: \(error.localizedDescription)")
             } else if let token = token {
-                Logger.notifications.info("FCM registration token: \(token)")
+                self.registerFCMToken(token)
             }
         }
     }
 
     func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Logger.notifications.error("Failed to register for remote notifications: \(error.localizedDescription)")
+    }
+
+    func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard hasAPNSToken, let fcmToken else { return }
+
+        registerFCMToken(fcmToken)
+    }
+
+    private func registerFCMToken(_ token: String) {
+        Task { @MainActor in
+            guard handledFCMTokens.insert(token).inserted else { return }
+            Logger.notifications.info("FCM registration token received")
+
+            do {
+                if let backendAuthenticationTask {
+                    do {
+                        try await backendAuthenticationTask.value
+                    } catch {
+                        try await Networking.default.authenticateDevice()
+                    }
+                }
+
+                try await Networking.default.registerFCMToken(token)
+                Logger.notifications.info("FCM token registered with Eatery backend")
+            } catch {
+                handledFCMTokens.remove(token)
+                Logger.notifications.error(
+                    "FCM token registration failed: \(error.localizedDescription)"
+                )
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle

@@ -25,6 +25,10 @@ class Networking {
         KeychainAccess.shared.retrieveBackendAccessToken()
     }
 
+    var backendRefreshToken: String? {
+        KeychainAccess.shared.retrieveBackendRefreshToken()
+    }
+
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
         let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
@@ -55,6 +59,86 @@ class Networking {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken
         )
+    }
+
+    func registerFCMToken(_ token: String) async throws {
+        if backendAccessToken == nil {
+            try await authenticateDevice()
+        }
+
+        guard let accessToken = backendAccessToken else {
+            throw URLError(.userAuthenticationRequired)
+        }
+
+        var statusCode = try await sendFCMToken(token, accessToken: accessToken)
+        if statusCode == 401 {
+            try await refreshBackendAuthentication()
+
+            guard let refreshedAccessToken = backendAccessToken else {
+                throw URLError(.userAuthenticationRequired)
+            }
+            statusCode = try await sendFCMToken(token, accessToken: refreshedAccessToken)
+        }
+
+        guard 200 ... 299 ~= statusCode else {
+            throw URLError(.badServerResponse)
+        }
+    }
+
+    private func refreshBackendAuthentication() async throws {
+        struct RequestBody: Encodable {
+            let refreshToken: String
+        }
+
+        guard let refreshToken = backendRefreshToken else {
+            try await authenticateDevice()
+            return
+        }
+
+        let url = baseUrl.appendingPathComponent("auth/refresh-token")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(RequestBody(refreshToken: refreshToken))
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+
+        if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+            try await authenticateDevice()
+            return
+        }
+
+        guard 200 ... 299 ~= httpResponse.statusCode else {
+            throw URLError(.badServerResponse)
+        }
+
+        let tokens = try JSONDecoder().decode(BackendAuthTokens.self, from: data)
+        KeychainAccess.shared.saveBackendTokens(
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken
+        )
+    }
+
+    private func sendFCMToken(_ token: String, accessToken: String) async throws -> Int {
+        struct RequestBody: Encodable {
+            let token: String
+        }
+
+        let url = baseUrl.appendingPathComponent("users/fcm-token")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try JSONEncoder().encode(RequestBody(token: token))
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        return httpResponse.statusCode
     }
 
     func getAppVersion() async throws -> String {
