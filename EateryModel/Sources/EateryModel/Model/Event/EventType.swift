@@ -8,6 +8,8 @@
 import Foundation
 
 public enum EventType: String, Codable, CaseIterable {
+    public static let mealTypes: [EventType] = [.breakfast, .brunch, .lunch, .lateLunch, .dinner, .lateDinner]
+
     case availableAllDay = "AVAILABLE_ALL_DAY"
 
     case breakfast = "BREAKFAST"

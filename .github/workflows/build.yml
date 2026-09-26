@@ -28,15 +28,34 @@ jobs:
 
       - name: Build
         env:
-          scheme: ${{ 'Eatery Blue-Prod' }}
-          platform: ${{ 'iOS Simulator' }}
+          scheme: Eatery Blue-Prod
+          platform: iOS Simulator
         run: |
-          # Use the first available iPhone simulator name; fall back to iPhone Air.
-          device=$(xcrun simctl list devices available | grep "iPhone" | head -1 | sed -E 's/^[[:space:]]+//' | sed -E 's/ \([^)]*\).*//')
+          set -euo pipefail
+
+          device="$(
+            xcrun simctl list devices available |
+              awk -F '(' '/^[[:space:]]*iPhone/{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1); print $1; exit}'
+          )"
+
           if [ -z "$device" ]; then
-            device="iPhone Air"
+            echo "No available iPhone simulator found"
+            xcrun simctl list devices available
+            exit 1
           fi
-          echo "Using simulator device: $device"
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device" -skipPackagePluginValidation
+
+          echo "Using simulator: $device"
+
+          if ls -A | grep -qi '\.xcworkspace$'; then
+            filetype_parameter="workspace"
+            file_to_build="$(ls -A | grep -i '\.xcworkspace$' | head -n 1)"
+          else
+            filetype_parameter="project"
+            file_to_build="$(ls -A | grep -i '\.xcodeproj$' | head -n 1)"
+          fi
+
+          xcodebuild build-for-testing \
+            -scheme "$scheme" \
+            "-$filetype_parameter" "$file_to_build" \
+            -destination "platform=$platform,name=$device,OS=latest" \
+            -skipPackagePluginValidation
