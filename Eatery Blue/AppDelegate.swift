@@ -10,11 +10,10 @@ import Firebase
 import FirebaseMessaging
 import Hero
 import Kingfisher
+import OSLog
 import SnapKit
 import Tactile
 import UIKit
-
-import OSLog
 
 extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier! // Your app's bundle identifier
@@ -54,6 +53,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         FirebaseApp.configure()
+
+        Task {
+            do {
+                try await Networking.default.authenticateDevice()
+                Logger.notifications.info("Eatery backend authentication succeeded")
+            } catch {
+                Logger.notifications.error("Eatery backend authentication failed: \(error.localizedDescription)")
+            }
+        }
 
         // Request notification permissions
         UNUserNotificationCenter.current().delegate = self

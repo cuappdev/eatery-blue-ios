@@ -21,11 +21,40 @@ class Networking {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
 
+    var backendAccessToken: String? {
+        KeychainAccess.shared.retrieveBackendAccessToken()
+    }
+
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
         let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
+    }
+
+    func authenticateDevice() async throws {
+        struct RequestBody: Encodable {
+            let deviceUuid: String
+        }
+
+        let url = baseUrl.appendingPathComponent("auth/verify-token")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(RequestBody(deviceUuid: AuthStorage.deviceId))
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              200 ... 299 ~= httpResponse.statusCode
+        else {
+            throw URLError(.badServerResponse)
+        }
+
+        let tokens = try JSONDecoder().decode(BackendAuthTokens.self, from: data)
+        KeychainAccess.shared.saveBackendTokens(
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken
+        )
     }
 
     func getAppVersion() async throws -> String {
