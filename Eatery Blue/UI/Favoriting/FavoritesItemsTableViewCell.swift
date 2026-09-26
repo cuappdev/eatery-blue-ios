@@ -183,6 +183,17 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             coreDataStack.save()
 
             favoriteButtonImage.image = UIImage(named: menuItem.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
+
+            guard let itemName = menuItem.itemName else { return }
+            let isFavorite = menuItem.isFavorite
+            Task {
+                do {
+                    try await Networking.default.updateFavoriteItem(name: itemName, isFavorite: isFavorite)
+                    logger.info("Favorite item synced with Eatery backend")
+                } catch {
+                    logger.error("Failed to sync favorite item: \(error.localizedDescription)")
+                }
+            }
         }
     }
 

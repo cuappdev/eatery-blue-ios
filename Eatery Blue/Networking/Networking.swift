@@ -85,6 +85,38 @@ class Networking {
         }
     }
 
+    func updateFavoriteItem(name: String, isFavorite: Bool) async throws {
+        if backendAccessToken == nil {
+            try await authenticateDevice()
+        }
+
+        guard let accessToken = backendAccessToken else {
+            throw URLError(.userAuthenticationRequired)
+        }
+
+        var statusCode = try await sendFavoriteItemUpdate(
+            name: name,
+            isFavorite: isFavorite,
+            accessToken: accessToken
+        )
+        if statusCode == 401 {
+            try await refreshBackendAuthentication()
+
+            guard let refreshedAccessToken = backendAccessToken else {
+                throw URLError(.userAuthenticationRequired)
+            }
+            statusCode = try await sendFavoriteItemUpdate(
+                name: name,
+                isFavorite: isFavorite,
+                accessToken: refreshedAccessToken
+            )
+        }
+
+        guard 200 ... 299 ~= statusCode else {
+            throw URLError(.badServerResponse)
+        }
+    }
+
     private func refreshBackendAuthentication() async throws {
         struct RequestBody: Encodable {
             let refreshToken: String
@@ -133,6 +165,29 @@ class Networking {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.httpBody = try JSONEncoder().encode(RequestBody(token: token))
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        return httpResponse.statusCode
+    }
+
+    private func sendFavoriteItemUpdate(
+        name: String,
+        isFavorite: Bool,
+        accessToken: String
+    ) async throws -> Int {
+        struct RequestBody: Encodable {
+            let name: String
+        }
+
+        let url = baseUrl.appendingPathComponent("users/favorites/items")
+        var request = URLRequest(url: url)
+        request.httpMethod = isFavorite ? "POST" : "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try JSONEncoder().encode(RequestBody(name: name))
 
         let (_, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
