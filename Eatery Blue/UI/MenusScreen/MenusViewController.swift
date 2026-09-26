@@ -169,7 +169,9 @@ class MenusViewController: UIViewController {
                         do {
                             try await updateAllEateriesByDayFromNetworking(i)
                             let loading = await isLoading
-                            if await i == selectedIndex, loading { await stopLoading() }
+                            if await i == selectedIndex, loading {
+                                await stopLoading()
+                            }
                         } catch {
                             logger.error("\(#function): \(error)")
                         }
@@ -455,7 +457,9 @@ class MenusViewController: UIViewController {
 
             // Only display eateries based on selected meal type
             let filteredEateries = (allEateries[selectedIndex] ?? []).filter { eatery in
-                if !eatery.paymentMethods.contains(.mealSwipe) { return false }
+                if !eatery.paymentMethods.contains(.mealSwipe) {
+                    return false
+                }
 
                 let events = eatery.events.filter { $0.canonicalDay == selectedDay }
 
@@ -590,7 +594,9 @@ extension MenusViewController: UIScrollViewDelegate {
         }
 
         // we don't want to update the fade if we are refreshing
-        if navigationView.logoRefreshControl.isRefreshing { return }
+        if navigationView.logoRefreshControl.isRefreshing {
+            return
+        }
 
         if offset > (Constants.minHeaderHeight + Constants.maxHeaderHeight) / 2 - Constants.minHeaderHeight {
             navigationView.setFadeInProgress(1, animated: true)
@@ -626,7 +632,9 @@ extension MenusViewController: UIScrollViewDelegate {
         let decelerationRate = scrollView.decelerationRate.rawValue
         var offset = currentPosition + velocity.y * decelerationRate / (1 - decelerationRate) + scrollView.contentInset
             .top
-        if offset < 0 { return }
+        if offset < 0 {
+            return
+        }
 
         if offset < (Constants.maxHeaderHeight - Constants.minHeaderHeight) / 2 {
             offset = 0
