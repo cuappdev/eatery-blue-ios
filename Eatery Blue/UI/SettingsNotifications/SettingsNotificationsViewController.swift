@@ -7,15 +7,20 @@
 
 import Combine
 import SwiftUI
+import UserNotifications
 
 final class SettingsNotificationsViewController: UIViewController {
     private lazy var hostingController: UIHostingController<SettingsNotificationsView> = {
-        let hc = UIHostingController(rootView: SettingsNotificationsView())
+        let rootView = SettingsNotificationsView(onOpenSystemSettings: { [weak self] in
+            self?.openSystemSettings()
+        })
+        let hc = UIHostingController(rootView: rootView)
         hc.view.backgroundColor = UIColor.Eatery.default00
         return hc
     }()
 
     private var cancellables: Set<AnyCancellable> = []
+    private var isApplyingServerState = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +29,17 @@ final class SettingsNotificationsViewController: UIViewController {
         setUpView()
         setUpConstraints()
         bindToggles()
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                self?.refreshSettings()
+            }
+            .store(in: &cancellables)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.setStatusBarStyle(.darkContent)
-        loadInitialState()
+        refreshSettings()
     }
 
     private func setUpNavigationItem() {
@@ -82,7 +92,7 @@ final class SettingsNotificationsViewController: UIViewController {
         }
     }
 
-    // MARK: Bindings (stubs only)
+    // MARK: Bindings
 
     private func bindToggles() {
         let vm = hostingController.rootView.viewModel
@@ -109,21 +119,166 @@ final class SettingsNotificationsViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func loadInitialState() {
-        // If you later persist to UserDefaults, read them here.
+    private func refreshSettings() {
+        Task { @MainActor in
+            await refreshSystemPermission()
+            await loadSettingsFromServer()
+        }
     }
 
-    // MARK: Actions — STUBS
+    private func loadSettingsFromServer() async {
+        do {
+            let settings = try await Networking.default.fetchUserNotificationSettings()
+            apply(settings)
+        } catch {
+            logger.error("Failed to load notification settings: \(error)")
+        }
+    }
+
+    private func apply(_ settings: UserNotificationSettings) {
+        isApplyingServerState = true
+        viewModel.favoriteItems = settings.favoriteItemPushNotifications
+        viewModel.appDev = settings.cornellAppdevPushNotifications
+        viewModel.pauseAll = !settings.favoriteItemPushNotifications
+            && !settings.cornellAppdevPushNotifications
+        isApplyingServerState = false
+    }
+
+    private func refreshSystemPermission() async {
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        viewModel.systemNotificationsDenied = settings.authorizationStatus == .denied
+    }
+
+    private func ensureNotificationPermission() async -> Bool {
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        switch settings.authorizationStatus {
+        case .authorized, .provisional, .ephemeral:
+            viewModel.systemNotificationsDenied = false
+            return true
+        case .denied:
+            viewModel.systemNotificationsDenied = true
+            return false
+        case .notDetermined:
+            let granted = await withCheckedContinuation { continuation in
+                center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+                    continuation.resume(returning: granted)
+                }
+            }
+            viewModel.systemNotificationsDenied = !granted
+            return granted
+        @unknown default:
+            viewModel.systemNotificationsDenied = true
+            return false
+        }
+    }
 
     private func handlePauseAllChanged(_ isOn: Bool) {
-        print("Pause all toggled: \(isOn)")
+        guard !isApplyingServerState else { return }
+
+        let previousFavorite = viewModel.favoriteItems
+        let previousAppDev = viewModel.appDev
+        Task { @MainActor in
+            if !isOn {
+                let allowed = await self.ensureNotificationPermission()
+                if !allowed {
+                    self.restorePause(true, favorite: previousFavorite, appDev: previousAppDev)
+                    return
+                }
+            }
+
+            do {
+                let enabled = !isOn
+                let settings = try await Networking.default.updateUserNotificationSettings(
+                    favoriteItemPushNotifications: enabled,
+                    cornellAppdevPushNotifications: enabled
+                )
+                self.apply(settings)
+            } catch {
+                self.restorePause(!isOn, favorite: previousFavorite, appDev: previousAppDev)
+                logger.error("Failed to update pause setting: \(error)")
+            }
+        }
     }
 
     private func handleFavoriteItemsChanged(_ isOn: Bool) {
-        print("Favorite Item Notifications: \(isOn)")
+        guard !isApplyingServerState, !viewModel.pauseAll else { return }
+        Task { @MainActor in
+            if isOn {
+                let allowed = await self.ensureNotificationPermission()
+                if !allowed {
+                    self.setFavoriteItems(false)
+                    return
+                }
+            }
+            await self.updateFavoriteItems(isOn)
+        }
     }
 
     private func handleAppDevChanged(_ isOn: Bool) {
-        print("Cornell AppDev Notifications: \(isOn)")
+        guard !isApplyingServerState, !viewModel.pauseAll else { return }
+        Task { @MainActor in
+            if isOn {
+                let allowed = await self.ensureNotificationPermission()
+                if !allowed {
+                    self.setAppDev(false)
+                    return
+                }
+            }
+            await self.updateAppDev(isOn)
+        }
+    }
+
+    private func updateFavoriteItems(_ isOn: Bool) async {
+        do {
+            let settings = try await Networking.default.updateUserNotificationSettings(
+                favoriteItemPushNotifications: isOn
+            )
+            apply(settings)
+        } catch {
+            setFavoriteItems(!isOn)
+            logger.error("Failed to update favorite item notifications: \(error)")
+        }
+    }
+
+    private func updateAppDev(_ isOn: Bool) async {
+        do {
+            let settings = try await Networking.default.updateUserNotificationSettings(
+                cornellAppdevPushNotifications: isOn
+            )
+            apply(settings)
+        } catch {
+            setAppDev(!isOn)
+            logger.error("Failed to update AppDev notifications: \(error)")
+        }
+    }
+
+    private func setFavoriteItems(_ isOn: Bool) {
+        isApplyingServerState = true
+        viewModel.favoriteItems = isOn
+        isApplyingServerState = false
+    }
+
+    private func setAppDev(_ isOn: Bool) {
+        isApplyingServerState = true
+        viewModel.appDev = isOn
+        isApplyingServerState = false
+    }
+
+    private func restorePause(_ isOn: Bool, favorite: Bool, appDev: Bool) {
+        isApplyingServerState = true
+        viewModel.pauseAll = isOn
+        viewModel.favoriteItems = favorite
+        viewModel.appDev = appDev
+        isApplyingServerState = false
+    }
+
+    private func openSystemSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    private var viewModel: SettingsNotificationsViewModel {
+        hostingController.rootView.viewModel
     }
 }
