@@ -164,6 +164,104 @@ class Networking {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
+
+    func fetchUserNotificationSettings() async throws -> UserNotificationSettings {
+        let data = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.settingsURL)
+            request.httpMethod = "GET"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+        return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
+    }
+
+    func updateUserNotificationSettings(
+        favoriteItemPushNotifications: Bool? = nil,
+        cornellAppdevPushNotifications: Bool? = nil
+    ) async throws -> UserNotificationSettings {
+        var fields: [String: Bool] = [:]
+        if let favoriteItemPushNotifications {
+            fields["favoriteItemPushNotifications"] = favoriteItemPushNotifications
+        }
+        if let cornellAppdevPushNotifications {
+            fields["cornellAppdevPushNotifications"] = cornellAppdevPushNotifications
+        }
+        guard !fields.isEmpty else {
+            throw UserSettingsRequestError.badRequest
+        }
+
+        let body = try JSONSerialization.data(withJSONObject: fields)
+        let data = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.settingsURL)
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
+    }
+
+    private var settingsURL: URL {
+        baseUrl.appendingPathComponent("users").appendingPathComponent("settings")
+    }
+
+    private func performAuthorizedRequest(
+        makeRequest: (String) -> URLRequest
+    ) async throws -> Data {
+        if backendAccessToken == nil {
+            try await authenticateDevice()
+        }
+        guard let accessToken = backendAccessToken else {
+            throw UserSettingsRequestError.unauthorized
+        }
+
+        let first = try await send(makeRequest(accessToken))
+        if first.statusCode != 401 {
+            return try settingsResponseData(first.data, statusCode: first.statusCode)
+        }
+
+        try await refreshBackendAuthentication()
+        guard let refreshedAccessToken = backendAccessToken else {
+            throw UserSettingsRequestError.unauthorized
+        }
+        let second = try await send(makeRequest(refreshedAccessToken))
+        return try settingsResponseData(second.data, statusCode: second.statusCode)
+    }
+
+    private func send(_ request: URLRequest) async throws -> (data: Data, statusCode: Int) {
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw UserSettingsRequestError.server
+        }
+        return (data, httpResponse.statusCode)
+    }
+
+    private func settingsResponseData(_ data: Data, statusCode: Int) throws -> Data {
+        switch statusCode {
+        case 200 ... 299:
+            return data
+        case 400:
+            throw UserSettingsRequestError.badRequest
+        case 401:
+            throw UserSettingsRequestError.unauthorized
+        default:
+            throw UserSettingsRequestError.server
+        }
+    }
+}
+
+struct UserNotificationSettings: Decodable {
+    let favoriteItemPushNotifications: Bool
+    let cornellAppdevPushNotifications: Bool
+}
+
+enum UserSettingsRequestError: Error {
+    case badRequest
+    case unauthorized
+    case server
 }
 
 private actor BackendAuthenticator {
@@ -381,7 +479,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "RPCC"
-            )
+            ),
         ]),
         Account(accountType: .bigRedBucks, balance: 500, transactions: [
             Transaction(
@@ -401,7 +499,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Mac's Cafe"
-            )
+            ),
         ]),
         Account(accountType: .cityBucks, balance: 0, transactions: []),
         Account(accountType: .laundry, balance: 37.54, transactions: [
@@ -422,7 +520,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Dolon 27 Dryer"
-            )
-        ])
+            ),
+        ]),
     ]
 }

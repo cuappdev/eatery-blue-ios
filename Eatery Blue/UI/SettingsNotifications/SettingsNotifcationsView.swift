@@ -11,10 +11,12 @@ final class SettingsNotificationsViewModel: ObservableObject {
     @Published var pauseAll: Bool = false
     @Published var favoriteItems: Bool = true
     @Published var appDev: Bool = true
+    @Published var systemNotificationsDenied: Bool = false
 }
 
 struct SettingsNotificationsView: View {
     @ObservedObject var viewModel = SettingsNotificationsViewModel()
+    var onOpenSystemSettings: (() -> Void)?
 
     private var pauseAllBinding: Binding<Bool> {
         Binding(
@@ -34,6 +36,10 @@ struct SettingsNotificationsView: View {
                     .font(Font(UIFont.preferredFont(for: .body, weight: .medium)))
                     .foregroundColor(Color(UIColor.Eatery.gray06))
                     .fixedSize(horizontal: false, vertical: true)
+
+                if viewModel.systemNotificationsDenied {
+                    permissionDeniedCard
+                }
 
                 VStack(spacing: 16) {
                     pauseRow
@@ -57,10 +63,36 @@ struct SettingsNotificationsView: View {
             Toggle("Pause all notifications", isOn: pauseAllBinding)
                 .labelsHidden()
                 .tint(Color(UIColor.Eatery.blue))
+                .disabled(viewModel.systemNotificationsDenied)
         }
         .padding(16)
         .background(
             Capsule()
+                .fill(Color(UIColor.Eatery.card))
+                .shadow(color: Color.black.opacity(0.12), radius: 6)
+        )
+    }
+
+    private var permissionDeniedCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Notifications are turned off")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(Color(UIColor.Eatery.primaryText))
+            Text("Turn on notifications for Eatery in iOS Settings to get alerts when favorite items are served.")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(Color(UIColor.Eatery.gray05))
+                .fixedSize(horizontal: false, vertical: true)
+            Button("Open Settings") {
+                onOpenSystemSettings?()
+            }
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundColor(Color(UIColor.Eatery.blue))
+            .padding(.top, 4)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(Color(UIColor.Eatery.card))
                 .shadow(color: Color.black.opacity(0.12), radius: 6)
         )
@@ -105,6 +137,7 @@ struct SettingsNotificationsView: View {
             Toggle(title, isOn: isOn)
                 .labelsHidden()
                 .tint(Color(UIColor.Eatery.blue))
+                .disabled(viewModel.systemNotificationsDenied)
         }
     }
 }
