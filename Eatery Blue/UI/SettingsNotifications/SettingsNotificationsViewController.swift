@@ -10,10 +10,8 @@ import SwiftUI
 
 final class SettingsNotificationsViewController: UIViewController {
     private lazy var hostingController: UIHostingController<SettingsNotificationsView> = {
-        let view = SettingsNotificationsView(onTapPrivacy: { [weak self] in
-            self?.pushPrivacy()
-        })
-        let hc = UIHostingController(rootView: view)
+        let hc = UIHostingController(rootView: SettingsNotificationsView())
+        hc.view.backgroundColor = UIColor.Eatery.default00
         return hc
     }()
 
@@ -21,7 +19,8 @@ final class SettingsNotificationsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpNavigation()
+        view.backgroundColor = UIColor.Eatery.default00
+        setUpNavigationItem()
         setUpView()
         setUpConstraints()
         bindToggles()
@@ -33,35 +32,43 @@ final class SettingsNotificationsViewController: UIViewController {
         loadInitialState()
     }
 
-    // MARK: UI
-
-    private func setUpNavigation() {
+    private func setUpNavigationItem() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Eatery.black as Any,
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
             .font: UIFont.eateryNavigationBarTitleFont
         ]
         appearance.largeTitleTextAttributes = [
             .foregroundColor: UIColor.Eatery.blue as Any,
             .font: UIFont.eateryNavigationBarLargeTitleFont
         ]
+
         navigationItem.title = "Notifications"
+        navigationItem.largeTitleDisplayMode = .always
 
-        let standard = appearance.copy(); standard.configureWithDefaultBackground()
-        navigationItem.standardAppearance = standard
+        let standardAppearance = appearance.copy()
+        standardAppearance.configureWithDefaultBackground()
+        navigationItem.standardAppearance = standardAppearance
 
-        let scrollEdge = appearance.copy(); scrollEdge.configureWithTransparentBackground()
-        navigationItem.scrollEdgeAppearance = scrollEdge
+        let scrollEdgeAppearance = appearance.copy()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
 
-        let back = UIBarButtonItem(
+        let backButton = UIBarButtonItem(
             image: UIImage(named: "ArrowLeft"),
             style: .plain,
             target: self,
-            action: #selector(didTapBack)
+            action: #selector(didTapBackButton)
         )
-        back.tintColor = UIColor.Eatery.black
-        navigationItem.leftBarButtonItem = back
+        backButton.tintColor = UIColor.Eatery.primaryText
+        navigationItem.leftBarButtonItem = backButton
     }
+
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+
+    // MARK: UI
 
     private func setUpView() {
         addChild(hostingController)
@@ -100,64 +107,23 @@ final class SettingsNotificationsViewController: UIViewController {
                 self?.handleAppDevChanged(isOn)
             }
             .store(in: &cancellables)
-
-        vm.$dining
-            .dropFirst()
-            .sink { [weak self] isOn in
-                self?.handleDiningChanged(isOn)
-            }
-            .store(in: &cancellables)
-
-        vm.$account
-            .dropFirst()
-            .sink { [weak self] isOn in
-                self?.handleAccountChanged(isOn)
-            }
-            .store(in: &cancellables)
     }
-
-    // MARK: Load initial values (optional defaults for now)
 
     private func loadInitialState() {
         // If you later persist to UserDefaults, read them here.
-        // For now we just use the defaults from the ViewModel.
     }
 
     // MARK: Actions — STUBS
 
     private func handlePauseAllChanged(_ isOn: Bool) {
-        // Implement a global notifications pause/disable.
-        // e.g., NotificationManager.shared.setPaused(isOn)
         print("Pause all toggled: \(isOn)")
     }
 
     private func handleFavoriteItemsChanged(_ isOn: Bool) {
-        // Subscribe/unsubscribe from favorite-item topics.
         print("Favorite Item Notifications: \(isOn)")
     }
 
     private func handleAppDevChanged(_ isOn: Bool) {
-        // Subscribe/unsubscribe from AppDev topics.
         print("Cornell AppDev Notifications: \(isOn)")
-    }
-
-    private func handleDiningChanged(_ isOn: Bool) {
-        // Subscribe/unsubscribe from Dining topics.
-        print("Cornell Dining Notifications: \(isOn)")
-    }
-
-    private func handleAccountChanged(_ isOn: Bool) {
-        // Subscribe/unsubscribe from account/security topics.
-        print("Account Notifications: \(isOn)")
-    }
-
-    // MARK: Navigation
-
-    @objc private func didTapBack() {
-        navigationController?.popViewController(animated: true)
-    }
-
-    private func pushPrivacy() {
-        navigationController?.pushViewController(SettingsPrivacyViewController(), animated: true)
     }
 }
