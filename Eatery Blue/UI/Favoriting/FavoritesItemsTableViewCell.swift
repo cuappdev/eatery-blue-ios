@@ -71,7 +71,9 @@ class FavoritesItemsTableViewCell: UITableViewCell {
 
             // then the rest
             for category in itemData.keys {
-                if firstKeys.contains(category) { continue }
+                if firstKeys.contains(category) {
+                    continue
+                }
 
                 if let eateries = itemData[category] {
                     addCategory(category.description, eateries: eateries.sorted())
@@ -99,7 +101,9 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     }
 
     func addCategory(_ category: String, eateries: [String]) {
-        if eateries.isEmpty { return }
+        if eateries.isEmpty {
+            return
+        }
 
         let categoryLabel = UILabel()
         categoryLabel.text = category
