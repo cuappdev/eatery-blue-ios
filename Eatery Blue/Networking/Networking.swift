@@ -37,7 +37,7 @@ class Networking {
         }
 
         let body = try JSONEncoder().encode(RequestBody(token: token))
-        _ = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/fcm-token"))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -45,6 +45,7 @@ class Networking {
             request.httpBody = body
             return request
         }
+        _ = try validatedData(response)
     }
 
     func updateFavoriteItem(name: String, isFavorite: Bool) async throws {
@@ -53,7 +54,7 @@ class Networking {
         }
 
         let body = try JSONEncoder().encode(RequestBody(name: name))
-        _ = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/items"))
             request.httpMethod = isFavorite ? "POST" : "DELETE"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -61,22 +62,23 @@ class Networking {
             request.httpBody = body
             return request
         }
+        _ = try validatedData(response)
     }
 
     private func performAuthorizedRequest(
         makeRequest: (String) -> URLRequest
-    ) async throws -> Data {
+    ) async throws -> (data: Data, statusCode: Int) {
         let accessToken = try await backendAuthenticator.validAccessToken()
         let firstResponse = try await send(makeRequest(accessToken))
 
         guard firstResponse.statusCode == 401 else {
-            return try validatedData(firstResponse)
+            return firstResponse
         }
 
         let refreshedToken = try await backendAuthenticator.refreshAccessToken(
             rejectedToken: accessToken
         )
-        return try validatedData(await send(makeRequest(refreshedToken)))
+        return try await send(makeRequest(refreshedToken))
     }
 
     private func send(_ request: URLRequest) async throws -> (data: Data, statusCode: Int) {
@@ -166,13 +168,14 @@ class Networking {
     }
 
     func fetchUserNotificationSettings() async throws -> UserNotificationSettings {
-        let data = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.settingsURL)
             request.httpMethod = "GET"
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
             return request
         }
+        let data = try settingsResponseData(response.data, statusCode: response.statusCode)
         return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
     }
 
@@ -192,7 +195,7 @@ class Networking {
         }
 
         let body = try JSONSerialization.data(withJSONObject: fields)
-        let data = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.settingsURL)
             request.httpMethod = "PATCH"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -201,42 +204,12 @@ class Networking {
             request.httpBody = body
             return request
         }
+        let data = try settingsResponseData(response.data, statusCode: response.statusCode)
         return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
     }
 
     private var settingsURL: URL {
         baseUrl.appendingPathComponent("users").appendingPathComponent("settings")
-    }
-
-    private func performAuthorizedRequest(
-        makeRequest: (String) -> URLRequest
-    ) async throws -> Data {
-        if backendAccessToken == nil {
-            try await authenticateDevice()
-        }
-        guard let accessToken = backendAccessToken else {
-            throw UserSettingsRequestError.unauthorized
-        }
-
-        let first = try await send(makeRequest(accessToken))
-        if first.statusCode != 401 {
-            return try settingsResponseData(first.data, statusCode: first.statusCode)
-        }
-
-        try await refreshBackendAuthentication()
-        guard let refreshedAccessToken = backendAccessToken else {
-            throw UserSettingsRequestError.unauthorized
-        }
-        let second = try await send(makeRequest(refreshedAccessToken))
-        return try settingsResponseData(second.data, statusCode: second.statusCode)
-    }
-
-    private func send(_ request: URLRequest) async throws -> (data: Data, statusCode: Int) {
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserSettingsRequestError.server
-        }
-        return (data, httpResponse.statusCode)
     }
 
     private func settingsResponseData(_ data: Data, statusCode: Int) throws -> Data {
@@ -479,7 +452,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "RPCC"
-            ),
+            )
         ]),
         Account(accountType: .bigRedBucks, balance: 500, transactions: [
             Transaction(
@@ -499,7 +472,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Mac's Cafe"
-            ),
+            )
         ]),
         Account(accountType: .cityBucks, balance: 0, transactions: []),
         Account(accountType: .laundry, balance: 37.54, transactions: [
@@ -520,7 +493,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Dolon 27 Dryer"
-            ),
-        ]),
+            )
+        ])
     ]
 }
