@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BackendAuthTokens: Decodable {
+struct BackendAuthTokens: Decodable, Sendable {
     let accessToken: String
     let refreshToken: String
 }

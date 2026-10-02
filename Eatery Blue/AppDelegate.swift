@@ -16,7 +16,7 @@ import Tactile
 import UIKit
 
 extension Logger {
-    private static var subsystem = Bundle.main.bundleIdentifier! // Your app's bundle identifier
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "Eatery"
     static let notifications = Logger(subsystem: subsystem, category: "notifications")
 }
 
@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
     }()
 
     private(set) lazy var coreDataStack = CoreDataStack()
-    private var backendAuthenticationTask: Task<Void, Error>?
     private var handledFCMTokens = Set<String>()
     private var hasAPNSToken = false
 
@@ -58,28 +57,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
 
-        let authenticationTask = Task {
-            try await Networking.default.authenticateDevice()
-        }
-        backendAuthenticationTask = authenticationTask
-
+        // Request notification permissions
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         Task {
             do {
-                try await authenticationTask.value
-                Logger.notifications.info("Eatery backend authentication succeeded")
-            } catch {
-                Logger.notifications.error("Eatery backend authentication failed: \(error.localizedDescription)")
-            }
-        }
-
-        // Request notification permissions
-        UNUserNotificationCenter.current().delegate = self
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
-            if let error = error {
-                Logger.notifications.error("Failed to request notification permissions: \(error.localizedDescription)")
-            } else {
+                let granted = try await notificationCenter.requestAuthorization(options: authOptions)
                 Logger.notifications.info("Notification permissions granted: \(granted)")
+            } catch {
+                Logger.notifications.error("Failed to request notification permissions: \(error.localizedDescription)")
             }
         }
 
@@ -99,8 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
     func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Set APNs token for Firebase Messaging
         hasAPNSToken = true
-        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        Logger.notifications.info("APNs device token received: \(tokenString)")
+        Logger.notifications.info("APNs device token received")
         Messaging.messaging().apnsToken = deviceToken
 
         // Fetch FCM token once APNs token is set
@@ -129,14 +115,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
             Logger.notifications.info("FCM registration token received")
 
             do {
-                if let backendAuthenticationTask {
-                    do {
-                        try await backendAuthenticationTask.value
-                    } catch {
-                        try await Networking.default.authenticateDevice()
-                    }
-                }
-
                 try await Networking.default.registerFCMToken(token)
                 Logger.notifications.info("FCM token registered with Eatery backend")
             } catch {

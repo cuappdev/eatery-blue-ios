@@ -17,183 +17,83 @@ class Networking {
     let accounts: FetchAccounts
     let baseUrl: URL
     let eateryCache: EateryMemoryCache
+    private let backendAuthenticator: BackendAuthenticator
+
     var sessionId: String {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
 
-    var backendAccessToken: String? {
-        KeychainAccess.shared.retrieveBackendAccessToken()
-    }
-
-    var backendRefreshToken: String? {
-        KeychainAccess.shared.retrieveBackendRefreshToken()
-    }
-
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
+        backendAuthenticator = BackendAuthenticator(baseURL: fetchUrl)
         let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
     }
 
-    func authenticateDevice() async throws {
-        struct RequestBody: Encodable {
-            let deviceUuid: String
-        }
-
-        let url = baseUrl.appendingPathComponent("auth/verify-token")
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(RequestBody(deviceUuid: AuthStorage.deviceId))
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse,
-              200 ... 299 ~= httpResponse.statusCode
-        else {
-            throw URLError(.badServerResponse)
-        }
-
-        let tokens = try JSONDecoder().decode(BackendAuthTokens.self, from: data)
-        KeychainAccess.shared.saveBackendTokens(
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken
-        )
-    }
-
     func registerFCMToken(_ token: String) async throws {
-        if backendAccessToken == nil {
-            try await authenticateDevice()
-        }
-
-        guard let accessToken = backendAccessToken else {
-            throw URLError(.userAuthenticationRequired)
-        }
-
-        var statusCode = try await sendFCMToken(token, accessToken: accessToken)
-        if statusCode == 401 {
-            try await refreshBackendAuthentication()
-
-            guard let refreshedAccessToken = backendAccessToken else {
-                throw URLError(.userAuthenticationRequired)
-            }
-            statusCode = try await sendFCMToken(token, accessToken: refreshedAccessToken)
-        }
-
-        guard 200 ... 299 ~= statusCode else {
-            throw URLError(.badServerResponse)
-        }
-    }
-
-    func updateFavoriteItem(name: String, isFavorite: Bool) async throws {
-        if backendAccessToken == nil {
-            try await authenticateDevice()
-        }
-
-        guard let accessToken = backendAccessToken else {
-            throw URLError(.userAuthenticationRequired)
-        }
-
-        var statusCode = try await sendFavoriteItemUpdate(
-            name: name,
-            isFavorite: isFavorite,
-            accessToken: accessToken
-        )
-        if statusCode == 401 {
-            try await refreshBackendAuthentication()
-
-            guard let refreshedAccessToken = backendAccessToken else {
-                throw URLError(.userAuthenticationRequired)
-            }
-            statusCode = try await sendFavoriteItemUpdate(
-                name: name,
-                isFavorite: isFavorite,
-                accessToken: refreshedAccessToken
-            )
-        }
-
-        guard 200 ... 299 ~= statusCode else {
-            throw URLError(.badServerResponse)
-        }
-    }
-
-    private func refreshBackendAuthentication() async throws {
-        struct RequestBody: Encodable {
-            let refreshToken: String
-        }
-
-        guard let refreshToken = backendRefreshToken else {
-            try await authenticateDevice()
-            return
-        }
-
-        let url = baseUrl.appendingPathComponent("auth/refresh-token")
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(RequestBody(refreshToken: refreshToken))
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
-        }
-
-        if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
-            try await authenticateDevice()
-            return
-        }
-
-        guard 200 ... 299 ~= httpResponse.statusCode else {
-            throw URLError(.badServerResponse)
-        }
-
-        let tokens = try JSONDecoder().decode(BackendAuthTokens.self, from: data)
-        KeychainAccess.shared.saveBackendTokens(
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken
-        )
-    }
-
-    private func sendFCMToken(_ token: String, accessToken: String) async throws -> Int {
         struct RequestBody: Encodable {
             let token: String
         }
 
-        let url = baseUrl.appendingPathComponent("users/fcm-token")
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = try JSONEncoder().encode(RequestBody(token: token))
-
-        let (_, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
+        let body = try JSONEncoder().encode(RequestBody(token: token))
+        _ = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/fcm-token"))
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
         }
-        return httpResponse.statusCode
     }
 
-    private func sendFavoriteItemUpdate(
-        name: String,
-        isFavorite: Bool,
-        accessToken: String
-    ) async throws -> Int {
+    func updateFavoriteItem(name: String, isFavorite: Bool) async throws {
         struct RequestBody: Encodable {
             let name: String
         }
 
-        let url = baseUrl.appendingPathComponent("users/favorites/items")
-        var request = URLRequest(url: url)
-        request.httpMethod = isFavorite ? "POST" : "DELETE"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = try JSONEncoder().encode(RequestBody(name: name))
+        let body = try JSONEncoder().encode(RequestBody(name: name))
+        _ = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/items"))
+            request.httpMethod = isFavorite ? "POST" : "DELETE"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+    }
 
-        let (_, response) = try await URLSession.shared.data(for: request)
+    private func performAuthorizedRequest(
+        makeRequest: (String) -> URLRequest
+    ) async throws -> Data {
+        let accessToken = try await backendAuthenticator.validAccessToken()
+        let firstResponse = try await send(makeRequest(accessToken))
+
+        guard firstResponse.statusCode == 401 else {
+            return try validatedData(firstResponse)
+        }
+
+        let refreshedToken = try await backendAuthenticator.refreshAccessToken(
+            rejectedToken: accessToken
+        )
+        return try validatedData(await send(makeRequest(refreshedToken)))
+    }
+
+    private func send(_ request: URLRequest) async throws -> (data: Data, statusCode: Int) {
+        let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
-        return httpResponse.statusCode
+        return (data, httpResponse.statusCode)
+    }
+
+    private func validatedData(
+        _ response: (data: Data, statusCode: Int)
+    ) throws -> Data {
+        guard (200 ... 299).contains(response.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return response.data
     }
 
     func getAppVersion() async throws -> String {
@@ -263,6 +163,166 @@ class Networking {
     func logOut() {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
+    }
+}
+
+private actor BackendAuthenticator {
+    private enum AuthenticationError: Error {
+        case invalidRefreshToken
+    }
+
+    private let baseURL: URL
+    private var accessToken: String?
+    private var refreshToken: String?
+    private var authenticationTask: Task<BackendAuthTokens, Error>?
+    private var refreshTask: Task<BackendAuthTokens, Error>?
+
+    init(baseURL: URL) {
+        self.baseURL = baseURL
+        accessToken = KeychainAccess.shared.retrieveBackendAccessToken()
+        refreshToken = KeychainAccess.shared.retrieveBackendRefreshToken()
+    }
+
+    func validAccessToken() async throws -> String {
+        if let accessToken {
+            return accessToken
+        }
+        return try await authenticateDevice()
+    }
+
+    func refreshAccessToken(rejectedToken: String) async throws -> String {
+        if let accessToken, accessToken != rejectedToken {
+            return accessToken
+        }
+
+        guard let refreshToken else {
+            return try await authenticateDevice()
+        }
+
+        if let refreshTask {
+            return try await storeAndReturnAccessToken(from: refreshTask)
+        }
+
+        let baseURL = baseURL
+        let task = Task {
+            try await Self.refreshTokens(
+                baseURL: baseURL,
+                refreshToken: refreshToken
+            )
+        }
+        refreshTask = task
+
+        do {
+            let accessToken = try await storeAndReturnAccessToken(from: task)
+            refreshTask = nil
+            return accessToken
+        } catch AuthenticationError.invalidRefreshToken {
+            refreshTask = nil
+            clearTokens()
+            return try await authenticateDevice()
+        } catch {
+            refreshTask = nil
+            throw error
+        }
+    }
+
+    private func authenticateDevice() async throws -> String {
+        if let authenticationTask {
+            return try await storeAndReturnAccessToken(from: authenticationTask)
+        }
+
+        let baseURL = baseURL
+        let deviceID = AuthStorage.deviceId
+        let task = Task {
+            try await Self.verifyDevice(baseURL: baseURL, deviceID: deviceID)
+        }
+        authenticationTask = task
+
+        do {
+            let accessToken = try await storeAndReturnAccessToken(from: task)
+            authenticationTask = nil
+            return accessToken
+        } catch {
+            authenticationTask = nil
+            throw error
+        }
+    }
+
+    private func storeAndReturnAccessToken(
+        from task: Task<BackendAuthTokens, Error>
+    ) async throws -> String {
+        let tokens = try await task.value
+        accessToken = tokens.accessToken
+        refreshToken = tokens.refreshToken
+        KeychainAccess.shared.saveBackendTokens(
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken
+        )
+        return tokens.accessToken
+    }
+
+    private func clearTokens() {
+        accessToken = nil
+        refreshToken = nil
+        KeychainAccess.shared.invalidateBackendTokens()
+    }
+
+    private static func verifyDevice(
+        baseURL: URL,
+        deviceID: String
+    ) async throws -> BackendAuthTokens {
+        struct RequestBody: Encodable {
+            let deviceUuid: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(deviceUuid: deviceID))
+        return try await requestTokens(
+            url: baseURL.appendingPathComponent("auth/verify-token"),
+            body: body,
+            allowsInvalidRefreshToken: false
+        )
+    }
+
+    private static func refreshTokens(
+        baseURL: URL,
+        refreshToken: String
+    ) async throws -> BackendAuthTokens {
+        struct RequestBody: Encodable {
+            let refreshToken: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(refreshToken: refreshToken))
+        return try await requestTokens(
+            url: baseURL.appendingPathComponent("auth/refresh-token"),
+            body: body,
+            allowsInvalidRefreshToken: true
+        )
+    }
+
+    private static func requestTokens(
+        url: URL,
+        body: Data,
+        allowsInvalidRefreshToken: Bool
+    ) async throws -> BackendAuthTokens {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = body
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+
+        if allowsInvalidRefreshToken,
+           httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+            throw AuthenticationError.invalidRefreshToken
+        }
+
+        guard (200 ... 299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(BackendAuthTokens.self, from: data)
     }
 }
 
