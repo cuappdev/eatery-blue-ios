@@ -96,6 +96,36 @@ class Networking {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
+
+    private struct NotificationsResponse: Decodable {
+        let notifications: [HubNotification]
+    }
+
+    func fetchNotifications() async throws -> [HubNotification] {
+        let url = baseUrl.appendingPathComponent("users").appendingPathComponent("notifications")
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        let (data, _) = try await URLSession.shared.data(for: request)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601 // need to confirm createdAt format against real response
+        return try decoder.decode(NotificationsResponse.self, from: data).notifications
+    }
+
+    func markNotificationsRead(ids: [Int]) async throws {
+        guard !ids.isEmpty else { return } // skips PATCH when there's no unread ids
+        let url = baseUrl.appendingPathComponent("users").appendingPathComponent("notifications")
+            .appendingPathComponent("read")
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(["ids": ids])
+        _ = try await URLSession.shared.data(for: request)
+    }
+
+    var accessToken: String {
+        "" // placeholder, KeychainAccess.shared.retrieveToken is the wrong token for get?
+    }
 }
 
 struct FetchAccounts {
