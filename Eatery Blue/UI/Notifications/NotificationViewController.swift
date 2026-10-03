@@ -5,6 +5,7 @@
 //  Created by Adelynn Wu on 11/9/25.
 //
 
+import EateryModel
 import Foundation
 import UIKit
 
@@ -14,10 +15,16 @@ class NotificationViewController: UIViewController {
     private let notificationTableView = UITableView()
     private let titleLabel = UILabel()
     private let notificationNavigationView = NotificationNavigationView()
+    private enum ViewState {
+        case loading
+        case loaded([HubNotification])
+        case empty
+        case error
+    }
 
     // MARK: Properties (Data)
 
-    var notifications: [NotificationData] = NotificationData.dummyData
+    var notifications: [HubNotification] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
