@@ -12,17 +12,18 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      
+
       - name: Check line changes
         run: |
           # Get the diff excluding whitespace and scope delimiters
           LINES_CHANGED=$(git diff --ignore-all-space --ignore-blank-lines origin/main...HEAD | \
             grep -E '^[+-]' | \
-            grep -v -E '^[+-]\s*[{}()[\]]\s*$' | \
+            grep -v -E '^(---|\+\+\+)' | \
+            grep -v -E '^[+-][[:space:]]*(\{|\}|\(|\)|\[|\])[[:space:]]*$' | \
             wc -l)
-          
+
           echo "Lines changed (excluding whitespace/delimiters): $LINES_CHANGED"
-          
+
           if [ $LINES_CHANGED -gt 500 ]; then
             echo "❌ PR exceeds 500 line limit ($LINES_CHANGED lines changed)"
             exit 1

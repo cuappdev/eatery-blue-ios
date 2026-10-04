@@ -5,7 +5,6 @@
 //  Created by Adelynn Wu on 11/5/25.
 //
 
-import EateryModel
 import Foundation
 import UIKit
 
@@ -35,12 +34,12 @@ class NotificationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(notification: HubNotification) {
-        itemNameLabel.text = notification.title
+    func configure(notification: NotificationData) {
+        itemNameLabel.text = notification.itemName
 
-//        setupLocationLabelText(notification.eateries)
+        setupLocationLabelText(notification.eateries)
 
-        starImageView.image = UIImage(named: notification.isRead ? "CheckedNotif" : "UncheckedNotif")
+        starImageView.image = UIImage(named: notification.checked ? "CheckedNotif" : "UncheckedNotif")
     }
 
     // MARK: setup helpers
@@ -69,6 +68,8 @@ class NotificationTableViewCell: UITableViewCell {
             fullText = ""
         } else if locations.count == 1 {
             fullText = "At \(locations[0])."
+        } else if locations.count == 2 {
+            fullText = "At \(locations[0]) + 1 other eatery."
         } else {
             fullText = "At \(locations[0]) + \(locations.count - 1) other eateries."
         }
@@ -120,6 +121,7 @@ class NotificationTableViewCell: UITableViewCell {
 
         let circleSize: CGFloat = 40
         let circle = UIView(frame: CGRect(x: 0, y: 0, width: circleSize, height: circleSize))
+        circle.isUserInteractionEnabled = false
         circle.backgroundColor = .Eatery.gray01
         circle.layer.cornerRadius = circleSize / 2
 
