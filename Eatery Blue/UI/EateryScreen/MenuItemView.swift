@@ -141,6 +141,12 @@ class MenuItemView: UIView {
             coreDataStack.save()
 
             favoriteButtonImage.image = UIImage(named: metadata.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
+
+            let isFavorite = metadata.isFavorite
+            let itemName = item.name
+            Task {
+                await FavoriteItemSyncCoordinator.shared.setFavorite(isFavorite, itemName: itemName)
+            }
         }
     }
 

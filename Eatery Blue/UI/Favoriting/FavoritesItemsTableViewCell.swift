@@ -183,6 +183,12 @@ class FavoritesItemsTableViewCell: UITableViewCell {
             coreDataStack.save()
 
             favoriteButtonImage.image = UIImage(named: menuItem.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
+
+            guard let itemName = menuItem.itemName else { return }
+            let isFavorite = menuItem.isFavorite
+            Task {
+                await FavoriteItemSyncCoordinator.shared.setFavorite(isFavorite, itemName: itemName)
+            }
         }
     }
 
