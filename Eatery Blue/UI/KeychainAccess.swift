@@ -63,10 +63,16 @@ class KeychainAccess {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
             kSecValueData as String: data
         ]
 
-        SecItemAdd(query as CFDictionary, nil)
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard status == errSecSuccess else {
+            let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
+            logger.error("Failed to save Keychain item for \(account): \(message) (\(status))")
+            return
+        }
     }
 
     private func retrieve(account: String) -> String? {
