@@ -166,6 +166,76 @@ class Networking {
     }
 }
 
+actor FavoriteItemSyncCoordinator {
+    static let shared = FavoriteItemSyncCoordinator()
+
+    private var pendingUpdates: [String: Bool]
+    private var syncingItems = Set<String>()
+
+    private init() {
+        guard let data = UserDefaults.standard.data(forKey: UserDefaultsKeys.pendingFavoriteItemUpdates),
+              let updates = try? JSONDecoder().decode([String: Bool].self, from: data)
+        else {
+            pendingUpdates = [:]
+            return
+        }
+        pendingUpdates = updates
+    }
+
+    func setFavorite(_ isFavorite: Bool, itemName: String) {
+        pendingUpdates[itemName] = isFavorite
+        persistPendingUpdates()
+        startSyncIfNeeded(for: itemName)
+    }
+
+    func retryPendingUpdates() {
+        for itemName in pendingUpdates.keys {
+            startSyncIfNeeded(for: itemName)
+        }
+    }
+
+    private func startSyncIfNeeded(for itemName: String) {
+        guard syncingItems.insert(itemName).inserted else { return }
+
+        Task {
+            await sync(itemName: itemName)
+        }
+    }
+
+    private func sync(itemName: String) async {
+        defer {
+            syncingItems.remove(itemName)
+        }
+
+        while let desiredState = pendingUpdates[itemName] {
+            do {
+                try await Networking.default.updateFavoriteItem(
+                    name: itemName,
+                    isFavorite: desiredState
+                )
+
+                if pendingUpdates[itemName] == desiredState {
+                    pendingUpdates.removeValue(forKey: itemName)
+                    persistPendingUpdates()
+                    logger.info("Favorite item synced with Eatery backend")
+                    return
+                }
+            } catch {
+                logger.error("Failed to sync favorite item; will retry: \(error.localizedDescription)")
+                return
+            }
+        }
+    }
+
+    private func persistPendingUpdates() {
+        guard let data = try? JSONEncoder().encode(pendingUpdates) else {
+            logger.error("Failed to save pending favorite item updates")
+            return
+        }
+        UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingFavoriteItemUpdates)
+    }
+}
+
 private actor BackendAuthenticator {
     private enum AuthenticationError: Error {
         case invalidRefreshToken

@@ -145,12 +145,7 @@ class MenuItemView: UIView {
             let isFavorite = metadata.isFavorite
             let itemName = item.name
             Task {
-                do {
-                    try await Networking.default.updateFavoriteItem(name: itemName, isFavorite: isFavorite)
-                    logger.info("Favorite item synced with Eatery backend")
-                } catch {
-                    logger.error("Failed to sync favorite item: \(error.localizedDescription)")
-                }
+                await FavoriteItemSyncCoordinator.shared.setFavorite(isFavorite, itemName: itemName)
             }
         }
     }

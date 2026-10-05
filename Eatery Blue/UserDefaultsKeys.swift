@@ -16,4 +16,5 @@ enum UserDefaultsKeys {
     static let activeIcon = "activeIcon"
     static let preferedDisplayStyle = "preferedDisplayStyle"
     static let backendDeviceId = "backendDeviceId"
+    static let pendingFavoriteItemUpdates = "pendingFavoriteItemUpdates"
 }
