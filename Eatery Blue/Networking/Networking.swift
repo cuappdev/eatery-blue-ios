@@ -91,6 +91,8 @@ class Networking {
         _ response: (data: Data, statusCode: Int)
     ) throws -> Data {
         guard (200 ... 299).contains(response.statusCode) else {
+            print("Backend returned HTTP \(response.statusCode)")
+            print("Response:", String(data: response.data, encoding: .utf8) ?? "No response body") // debug
             throw URLError(.badServerResponse)
         }
         return response.data
@@ -170,29 +172,30 @@ class Networking {
     }
 
     func fetchNotifications() async throws -> [HubNotification] {
-        let url = baseUrl.appendingPathComponent("users").appendingPathComponent("notifications")
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let url = baseUrl.appendingPathComponent("users/notifications") // debug
+        print("📍 Backend base URL:", baseUrl.absoluteString) // debug
+        print("📍 Notifications URL:", url.absoluteString) // debug
+        let data = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications"))
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601 // need to confirm createdAt format against real response
+        decoder.dateDecodingStrategy = .fracSecondsISO8601
         return try decoder.decode(NotificationsResponse.self, from: data).notifications
     }
 
     func markNotificationsRead(ids: [Int]) async throws {
         guard !ids.isEmpty else { return } // skips PATCH when there's no unread ids
-        let url = baseUrl.appendingPathComponent("users").appendingPathComponent("notifications")
-            .appendingPathComponent("read")
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(["ids": ids])
-        _ = try await URLSession.shared.data(for: request)
-    }
-
-    var accessToken: String {
-        "" // placeholder, KeychainAccess.shared.retrieveToken is the wrong token for get?
+        let body = try JSONEncoder().encode(["ids": ids])
+        _ = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications/read"))
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
     }
 }
 

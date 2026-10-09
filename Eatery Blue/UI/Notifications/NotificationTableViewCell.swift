@@ -38,7 +38,7 @@ class NotificationTableViewCell: UITableViewCell {
     func configure(notification: HubNotification) {
         itemNameLabel.text = notification.title
 
-//        setupLocationLabelText(notification.eateries)
+//        setupLocationLabelText(notification.eateries) // wip
 
         starImageView.image = UIImage(named: notification.isRead ? "CheckedNotif" : "UncheckedNotif")
     }
