@@ -5,6 +5,7 @@
 //  Created by Adelynn Wu on 11/5/25.
 //
 
+import EateryModel
 import Foundation
 import UIKit
 
@@ -34,12 +35,12 @@ class NotificationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(notification: NotificationData) {
-        itemNameLabel.text = notification.itemName
+    func configure(notification: HubNotification) {
+        itemNameLabel.text = notification.title
 
-        setupLocationLabelText(notification.eateries)
+//        setupLocationLabelText(notification.eateries) // wip
 
-        starImageView.image = UIImage(named: notification.checked ? "CheckedNotif" : "UncheckedNotif")
+        starImageView.image = UIImage(named: notification.isRead ? "CheckedNotif" : "UncheckedNotif")
     }
 
     // MARK: setup helpers
