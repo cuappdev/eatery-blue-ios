@@ -10,6 +10,34 @@ import Foundation
 import UIKit
 
 class NotificationViewController: UIViewController {
+    // MARK: - Testing
+
+    private let useMockNotifications = true
+
+    private static let mockNotifications: [HubNotification] = [
+        HubNotification(
+            id: 1,
+            title: "Chicken Nuggets",
+            body: "Chicken Nuggets is being served at Keeton House, Okenshields, and Morrison Dining.",
+            isRead: false,
+            createdAt: Date()
+        ),
+        HubNotification(
+            id: 2,
+            title: "Orange Chicken",
+            body: "Orange Chicken is being served at Becker House and Okenshields.",
+            isRead: true,
+            createdAt: Date().addingTimeInterval(-3600)
+        ),
+        HubNotification(
+            id: 3,
+            title: "Scrambled Eggs",
+            body: "Scrambled Eggs is being served at Rose House.",
+            isRead: false,
+            createdAt: Date().addingTimeInterval(-7200)
+        )
+    ]
+
     // MARK: Properties (View)
 
     private let notificationTableView = UITableView()
@@ -57,7 +85,7 @@ class NotificationViewController: UIViewController {
         view.addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(notificationNavigationView.snp.bottom).offset(16)
+            make.top.equalTo(notificationNavigationView.snp.bottom).offset(26)
             make.leading.equalToSuperview().offset(23)
             make.trailing.equalToSuperview().offset(-23)
         }
@@ -77,7 +105,7 @@ class NotificationViewController: UIViewController {
         view.addSubview(notificationTableView)
 
         notificationTableView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -111,18 +139,18 @@ class NotificationViewController: UIViewController {
         let imageView = UIImageView(image: UIImage(named: "Notifications Bell"))
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(41)
+            make.width.height.equalTo(54)
         }
 
         let titleLabel = UILabel()
         titleLabel.text = "Nothing here...yet!"
-        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
         let messageLabel = UILabel()
-        messageLabel.text = "When your favorite menu items are being served in a dining hall, it will show up here."
-        messageLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        messageLabel.text = "When your favorite menu items are being\n served in a dining hall, it will show up here."
+        messageLabel.font = .systemFont(ofSize: 12, weight: .regular)
         messageLabel.textColor = .Eatery.gray05
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
@@ -148,6 +176,50 @@ class NotificationViewController: UIViewController {
         }
     }
 
+    ///    private func buildErrorStateView() -> UIView {
+    ///        let container = UIView()
+    ///
+    ///        let stack = UIStackView()
+    ///        stack.axis = .vertical
+    ///        stack.alignment = .center
+    ///        stack.spacing = 12
+    ///
+    ///        let imageView = UIImageView(image: UIImage(systemName: "xmark.octagon"))
+    ///        imageView.tintColor = UIColor.Eatery.red
+    ///        imageView.contentMode = .scaleAspectFit
+    ///        imageView.snp.makeConstraints { make in
+    ///            make.width.height.equalTo(41)
+    ///        }
+    ///
+    ///        let titleLabel = UILabel()
+    ///        titleLabel.text = "Hmm, no chow here (yet)."
+    ///        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+    ///        titleLabel.textAlignment = .center
+    ///        titleLabel.numberOfLines = 0
+    ///
+    ///        let messageLabel = UILabel()
+    ///        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+    ///        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+    ///        messageLabel.textColor = UIColor.Eatery.gray05
+    ///        messageLabel.textAlignment = .center
+    ///        messageLabel.numberOfLines = 0
+    ///
+    ///        stack.addArrangedSubview(imageView)
+    ///        stack.setCustomSpacing(12, after: imageView)
+    ///        stack.addArrangedSubview(titleLabel)
+    ///        stack.setCustomSpacing(4, after: titleLabel)
+    ///        stack.addArrangedSubview(messageLabel)
+    ///
+    ///        container.addSubview(stack)
+    ///        stack.snp.makeConstraints { make in
+    ///            make.centerX.equalToSuperview()
+    ///            make.centerY.equalToSuperview().offset(-29)
+    ///            make.leading.greaterThanOrEqualToSuperview().inset(41)
+    ///            make.trailing.lessThanOrEqualToSuperview().inset(41)
+    ///        }
+    ///
+    ///        return container
+    ///    }
     private func setupErrorView() {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -168,7 +240,7 @@ class NotificationViewController: UIViewController {
         titleLabel.numberOfLines = 0
 
         let messageLabel = UILabel()
-        messageLabel.text = "We ran into an issue loading this page. Check your connection or try again later"
+        messageLabel.text = "We ran into an issue loading this page.\nCheck your connection or try again later"
         messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         messageLabel.textColor = UIColor.Eatery.gray05
         messageLabel.textAlignment = .center
@@ -183,8 +255,8 @@ class NotificationViewController: UIViewController {
         stack.addArrangedSubview(titleLabel)
         stack.setCustomSpacing(4, after: titleLabel)
         stack.addArrangedSubview(messageLabel)
-        stack.setCustomSpacing(16, after: messageLabel)
-        stack.addArrangedSubview(retryButton)
+//        stack.setCustomSpacing(16, after: messageLabel)
+//        stack.addArrangedSubview(retryButton)
 
         errorView.addSubview(stack)
         errorView.isHidden = true
@@ -207,12 +279,18 @@ class NotificationViewController: UIViewController {
 
     private func loadNotifications() async {
         state = .loading
+
+        // testing
+        if useMockNotifications {
+            state = Self.mockNotifications.isEmpty ? .empty : .loaded(Self.mockNotifications)
+            return
+        }
+
         do {
             let notifications = try await Networking.default.fetchNotifications()
             state = notifications.isEmpty ? .empty : .loaded(notifications)
         } catch {
-            print("Failed to fetch notifications here: ", error)
-            state = .error // debug, bad HTTP response returned
+            print("Failed to fetch notifications here: ", error) // debug
             state = .error
         }
     }
@@ -251,7 +329,7 @@ class NotificationViewController: UIViewController {
 
 extension NotificationViewController: UITableViewDelegate {
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 92
+        return UITableView.automaticDimension
     }
 }
 
