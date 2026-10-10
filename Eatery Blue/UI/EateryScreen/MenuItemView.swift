@@ -141,6 +141,17 @@ class MenuItemView: UIView {
             coreDataStack.save()
 
             favoriteButtonImage.image = UIImage(named: metadata.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
+
+            let isFavorite = metadata.isFavorite
+            let itemName = item.name
+            Task {
+                do {
+                    try await Networking.default.updateFavoriteItem(name: itemName, isFavorite: isFavorite)
+                    logger.info("Favorite item synced with Eatery backend")
+                } catch {
+                    logger.error("Failed to sync favorite item: \(error.localizedDescription)")
+                }
+            }
         }
     }
 
