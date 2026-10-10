@@ -173,8 +173,8 @@ class Networking {
 
     func fetchNotifications() async throws -> [HubNotification] {
         let url = baseUrl.appendingPathComponent("users/notifications") // debug
-        print("📍 Backend base URL:", baseUrl.absoluteString) // debug
-        print("📍 Notifications URL:", url.absoluteString) // debug
+        print("Backend base URL:", baseUrl.absoluteString) // debug
+        print("Notifications URL:", url.absoluteString) // debug
         let data = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications"))
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")

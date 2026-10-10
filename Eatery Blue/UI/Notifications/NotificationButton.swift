@@ -8,6 +8,11 @@
 import UIKit
 
 class NotificationButton: ButtonView<UIView> {
+    // MARK: - Testing
+
+    private let useMockNotifications = true
+    private static let mockHasUnread = true
+
     // MARK: - Properties (view)
 
     private let notificationBellImageView = UIImageView()
@@ -16,7 +21,8 @@ class NotificationButton: ButtonView<UIView> {
     // MARK: - Properties (data)
 
     var completion: (() -> Void)?
-    //    private var notifictions: [EateryNotification]
+    ///    private var notifictions: [EateryNotification]
+    private var refreshTask: Task<Void, Never>?
 
     // MARK: - Init
 
@@ -60,12 +66,48 @@ class NotificationButton: ButtonView<UIView> {
     }
 
     func checkforNotifications() {
-        guard KeychainAccess.shared.retrieveToken() != nil else { return }
+        // testing
+        if useMockNotifications {
+            notificationDotImageView.isHidden = !Self.mockHasUnread
+            return
+        }
 
         // make networking call to see if there are any notis
 
         // if we have notis that are unread, we want to show the red dot
-        notificationDotImageView.isHidden = false
+        refreshTask?.cancel()
+        refreshTask = Task {
+            do {
+                let notifications = try await Networking.default.fetchNotifications()
+                guard !Task.isCancelled else { return }
+                let hasUnreadNotifications = notifications.contains { notification in
+                    notification.isRead == false
+                }
+                notificationDotImageView.isHidden = !hasUnreadNotifications
+            } catch {
+                guard !Task.isCancelled else { return }
+                notificationDotImageView.isHidden = true // also no dot if errors
+            }
+        }
+    }
+
+    func markAllAsRead() {
+        refreshTask?.cancel()
+        notificationDotImageView.isHidden = true
+
+        if useMockNotifications {
+            return
+        }
+
+        Task {
+            do {
+                let notifications = try await Networking.default.fetchNotifications()
+                let unreadIds = notifications.filter { !$0.isRead }.map(\.id)
+                try await Networking.default.markNotificationsRead(ids: unreadIds)
+            } catch {
+                // best-effort, next checkforNotifications() call helps reconcile the dot
+            }
+        }
     }
 
     func onTap(_ completion: @escaping () -> Void) {
