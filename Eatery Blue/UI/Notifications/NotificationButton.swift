@@ -10,7 +10,7 @@ import UIKit
 class NotificationButton: ButtonView<UIView> {
     // MARK: - Testing
 
-    private let useMockNotifications = true
+    private let useMockNotifications = false
     private static let mockHasUnread = true
 
     // MARK: - Properties (view)

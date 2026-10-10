@@ -91,8 +91,6 @@ class Networking {
         _ response: (data: Data, statusCode: Int)
     ) throws -> Data {
         guard (200 ... 299).contains(response.statusCode) else {
-            print("Backend returned HTTP \(response.statusCode)")
-            print("Response:", String(data: response.data, encoding: .utf8) ?? "No response body") // debug
             throw URLError(.badServerResponse)
         }
         return response.data
@@ -172,9 +170,6 @@ class Networking {
     }
 
     func fetchNotifications() async throws -> [HubNotification] {
-        let url = baseUrl.appendingPathComponent("users/notifications") // debug
-        print("Backend base URL:", baseUrl.absoluteString) // debug
-        print("Notifications URL:", url.absoluteString) // debug
         let data = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications"))
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
