@@ -261,6 +261,7 @@ class HomeViewController: UIViewController {
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         startLoading()
         LocationManager.shared.requestLocation()
+        navigationView.notificationButton.checkforNotifications()
 
         Task {
             await withThrowingTaskGroup(of: Void.self) { [weak self] group in

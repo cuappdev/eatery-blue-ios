@@ -12,20 +12,22 @@ import UIKit
 class NotificationViewController: UIViewController {
     // MARK: - Testing
 
-    private let useMockNotifications = true
+    private let useMockNotifications = false
 
     private static let mockNotifications: [HubNotification] = [
         HubNotification(
             id: 1,
             title: "Chicken Nuggets",
-            body: "Chicken Nuggets is being served at Keeton House, Okenshields, and Morrison Dining.",
+            body:
+            "Chicken Nuggets is being served at Keeton House, Okenshields, and Morrison Dining.",
             isRead: false,
             createdAt: Date()
         ),
         HubNotification(
             id: 2,
             title: "Orange Chicken",
-            body: "Orange Chicken is being served at Becker House and Okenshields.",
+            body:
+            "Orange Chicken is being served at Becker House and Okenshields.",
             isRead: true,
             createdAt: Date().addingTimeInterval(-3600)
         ),
@@ -102,7 +104,11 @@ class NotificationViewController: UIViewController {
         notificationTableView.separatorStyle = .none
         notificationTableView.rowHeight = UITableView.automaticDimension
         refreshControl.tintColor = .Eatery.default00
-        refreshControl.addTarget(self, action: #selector(didRefresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(
+            self,
+            action: #selector(didRefresh(_:)),
+            for: .valueChanged
+        )
         notificationTableView.refreshControl = refreshControl
         notificationTableView.alwaysBounceVertical = true
         notificationTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -115,6 +121,12 @@ class NotificationViewController: UIViewController {
     }
 
     @objc private func didRefresh(_ sender: UIRefreshControl) {
+        switch state {
+        case .error, .empty:
+            state = .loading
+        case .loading, .loaded:
+            break
+        }
         Task {
             await fetchAndUpdateState()
             sender.endRefreshing()
@@ -160,7 +172,8 @@ class NotificationViewController: UIViewController {
         titleLabel.numberOfLines = 0
 
         let messageLabel = UILabel()
-        messageLabel.text = "When your favorite menu items are being\n served in a dining hall, it will show up here."
+        messageLabel.text =
+            "When your favorite menu items are being\n served in a dining hall, it will show up here."
         messageLabel.font = .systemFont(ofSize: 12, weight: .regular)
         messageLabel.textColor = .Eatery.gray05
         messageLabel.textAlignment = .center
@@ -184,7 +197,8 @@ class NotificationViewController: UIViewController {
         }
 
         emptyView.snp.makeConstraints { make in
-            make.center.equalTo(notificationTableView)
+            make.centerX.equalTo(notificationTableView)
+            make.top.equalTo(notificationTableView).offset(80)
         }
     }
 
@@ -208,7 +222,8 @@ class NotificationViewController: UIViewController {
         titleLabel.numberOfLines = 0
 
         let messageLabel = UILabel()
-        messageLabel.text = "We ran into an issue loading this page.\nCheck your connection or try again later"
+        messageLabel.text =
+            "We ran into an issue loading this page.\nCheck your connection or try again later"
         messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         messageLabel.textColor = UIColor.Eatery.gray05
         messageLabel.textAlignment = .center
@@ -232,7 +247,8 @@ class NotificationViewController: UIViewController {
         }
 
         errorView.snp.makeConstraints { make in
-            make.center.equalTo(notificationTableView)
+            make.centerX.equalTo(notificationTableView)
+            make.top.equalTo(notificationTableView).offset(80)
         }
     }
 
@@ -244,12 +260,15 @@ class NotificationViewController: UIViewController {
     private func fetchAndUpdateState() async {
         // testing
         if useMockNotifications {
-            state = Self.mockNotifications.isEmpty ? .empty : .loaded(Self.mockNotifications)
+            state =
+                Self.mockNotifications.isEmpty
+                    ? .empty : .loaded(Self.mockNotifications)
             return
         }
 
         do {
-            let notifications = try await Networking.default.fetchNotifications()
+            let notifications = try await Networking.default
+                .fetchNotifications()
             state = notifications.isEmpty ? .empty : .loaded(notifications)
         } catch {
             state = .error
@@ -262,7 +281,7 @@ class NotificationViewController: UIViewController {
             notificationTableView.isHidden = false
             emptyView.isHidden = true
             errorView.isHidden = true
-            titleLabel.isHidden = false
+            titleLabel.isHidden = true
             loadingView.startAnimating()
         case let .loaded(notifications):
             self.notifications = notifications
@@ -273,17 +292,21 @@ class NotificationViewController: UIViewController {
             titleLabel.isHidden = false
             notificationTableView.isHidden = false
         case .empty:
-            loadingView.isHidden = true
+            notifications = [] // clears old loads
+            notificationTableView.reloadData()
+            loadingView.stopAnimating()
             notificationTableView.isHidden = false
             emptyView.isHidden = false
             errorView.isHidden = true
             titleLabel.isHidden = true
         case .error:
-            loadingView.isHidden = true
+            notifications = [] // clears old loads
+            notificationTableView.reloadData()
+            loadingView.stopAnimating()
             notificationTableView.isHidden = false
             emptyView.isHidden = true
-            titleLabel.isHidden = true
             errorView.isHidden = false
+            titleLabel.isHidden = true
         }
     }
 }
@@ -299,11 +322,14 @@ extension NotificationViewController: UITableViewDataSource {
         return notifications.count
     }
 
-    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = notificationTableView.dequeueReusableCell(
-            withIdentifier: NotificationTableViewCell.reuse,
-            for: indexPath
-        ) as? NotificationTableViewCell else {
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell {
+        guard
+            let cell = notificationTableView.dequeueReusableCell(
+                withIdentifier: NotificationTableViewCell.reuse,
+                for: indexPath
+            ) as? NotificationTableViewCell
+        else {
             return UITableViewCell()
         }
 

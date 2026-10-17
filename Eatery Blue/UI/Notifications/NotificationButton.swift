@@ -74,12 +74,15 @@ class NotificationButton: ButtonView<UIView> {
 
         // make networking call to see if there are any notis
 
-        // if we have notis that are unread, we want to show the red dot
+        // if we have notifs that are unread, we want to show the red dot
         refreshTask?.cancel()
         refreshTask = Task {
             do {
-                let notifications = try await Networking.default.fetchNotifications()
-                guard !Task.isCancelled else { return }
+                let notifications = try await Networking.default
+                    .fetchNotifications()
+                guard !Task.isCancelled else {
+                    return
+                }
                 let hasUnreadNotifications = notifications.contains { notification in
                     notification.isRead == false
                 }
@@ -95,17 +98,20 @@ class NotificationButton: ButtonView<UIView> {
         refreshTask?.cancel()
         notificationDotImageView.isHidden = true
 
-        if useMockNotifications {
+        if useMockNotifications { // testing
             return
         }
 
         Task {
             do {
-                let notifications = try await Networking.default.fetchNotifications()
+                let notifications = try await Networking.default
+                    .fetchNotifications()
                 let unreadIds = notifications.filter { !$0.isRead }.map(\.id)
-                try await Networking.default.markNotificationsRead(ids: unreadIds)
+                try await Networking.default.markNotificationsRead(
+                    ids: unreadIds
+                )
             } catch {
-                // best-effort, next checkforNotifications() call helps reconcile the dot
+                checkforNotifications()
             }
         }
     }
