@@ -194,6 +194,27 @@ actor FavoriteItemSyncCoordinator {
         }
     }
 
+    /// Uploads locally saved favorites once so existing favorites reach the backend.
+    func migrateLocalFavoritesIfNeeded() async {
+        guard !UserDefaults.standard.bool(forKey: UserDefaultsKeys.didMigrateFavoriteItemsToBackend) else {
+            return
+        }
+
+        do {
+            let itemNames = try await MainActor.run {
+                try AppDelegate.shared.coreDataStack.fetchFavoriteItems().compactMap(\.itemName)
+            }
+
+            for itemName in itemNames {
+                setFavorite(true, itemName: itemName)
+            }
+
+            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didMigrateFavoriteItemsToBackend)
+        } catch {
+            logger.error("Failed to migrate local favorites; will retry: \(error.localizedDescription)")
+        }
+    }
+
     private func startSyncIfNeeded(for itemName: String) {
         guard syncingItems.insert(itemName).inserted else { return }
 
@@ -270,7 +291,15 @@ private actor BackendAuthenticator {
         }
 
         if let refreshTask {
-            return try await storeAndReturnAccessToken(from: refreshTask)
+            do {
+                return try await storeAndReturnAccessToken(from: refreshTask)
+            } catch AuthenticationError.invalidRefreshToken {
+                // Another caller may already have cleared tokens and re-authed.
+                if let accessToken, accessToken != rejectedToken {
+                    return accessToken
+                }
+                return try await authenticateDevice()
+            }
         }
 
         let baseURL = baseURL

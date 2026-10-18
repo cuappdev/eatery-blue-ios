@@ -59,6 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         windowScene.windows.forEach { $0.overrideUserInterfaceStyle = savedStyle }
 
         Task {
+            await FavoriteItemSyncCoordinator.shared.migrateLocalFavoritesIfNeeded()
             await FavoriteItemSyncCoordinator.shared.retryPendingUpdates()
         }
     }
