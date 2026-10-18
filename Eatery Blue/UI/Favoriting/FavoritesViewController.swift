@@ -161,7 +161,7 @@ class FavoritesViewController: UIViewController {
                 lhs.name < rhs.name
             }
 
-            let favoriteItems = AppDelegate.shared.coreDataStack.fetchFavoriteItems()
+            let favoriteItems = try AppDelegate.shared.coreDataStack.fetchFavoriteItems()
 
             configure(allEateries: allEateries, favoriteItems: favoriteItems, favoriteEateries: favoriteEateries)
         } catch {

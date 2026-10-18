@@ -156,6 +156,7 @@
 		998F6D252AC3568C006B7F18 /* MealType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D242AC3568C006B7F18 /* MealType.swift */; };
 		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
 		AD03139C2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */; };
+		AD5FA91E3068422B00C835D3 /* AuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5FA91D3068421000C835D3 /* AuthStorage.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */; };
 		BC5A18A52AC540EC0096FAC1 /* GetLoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */; };
 		BFD955952900A8150049D77C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD955942900A8150049D77C /* UIColor+Extension.swift */; };
@@ -358,6 +359,7 @@
 		998F6D242AC3568C006B7F18 /* MealType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealType.swift; sourceTree = "<group>"; };
 		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
 		AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDisplaySheetViewController.swift; sourceTree = "<group>"; };
+		AD5FA91D3068421000C835D3 /* AuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStorage.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerCollectionViewCell.swift; sourceTree = "<group>"; };
 		BC5A18A42AC540EC0096FAC1 /* GetLoginWebViewController.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = GetLoginWebViewController.swift; sourceTree = "<group>"; };
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 		5D86517D2773CBFB000338D4 /* Eatery Blue */ = {
 			isa = PBXGroup;
 			children = (
+				AD5FA91D3068421000C835D3 /* AuthStorage.swift */,
 				C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */,
 				5DCB869B2782396000134066 /* main.swift */,
 				5D86517E2773CBFB000338D4 /* AppDelegate.swift */,
@@ -1216,6 +1219,7 @@
 				5D698F992788AE7E0054E1AB /* InMemoryCache.swift in Sources */,
 				BC4A94ED29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift in Sources */,
 				5D0CDC532775059500AD0E27 /* MenuCategoryView.swift in Sources */,
+				AD5FA91E3068422B00C835D3 /* AuthStorage.swift in Sources */,
 				D09D20A32B96D5D8004C72ED /* CompareMenusPageViewController.swift in Sources */,
 				5D86ED9F277EBB2B00C92A3B /* EateryFilterViewController.swift in Sources */,
 				5DF5F7E52774BEE3001ADCDC /* SearchRecentItemView.swift in Sources */,
@@ -1499,6 +1503,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1543,6 +1548,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Eatery Blue/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Eatery;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Eatery uses your location to estimate the time it takes to walk to an eatery.\n\nYour location never leaves your device.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

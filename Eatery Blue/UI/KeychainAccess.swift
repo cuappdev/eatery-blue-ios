@@ -11,56 +11,94 @@ import Security
 // https://developer.apple.com/documentation/security/keychain_services/keychain_items/adding_a_password_to_the_keychain
 
 class KeychainAccess {
-    static let shared: KeychainAccess = .init()
+    static let shared = KeychainAccess()
 
-    /// Saves session token to Keychain under "GETLogin", access with KeychainAccess.shared.retrieveToken
-    func saveToken(sessionId: String) {
-        // Invalidate old token if exists
-        invalidateToken()
-
-        // Save session token to Keychain
-        let token = sessionId
-
-        // Create the add query with the token as a password
-        let keychainQuery: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: "GETLogin",
-            kSecValueData as String: token.data(using: .utf8)!
-        ]
-        _ = SecItemAdd(keychainQuery as CFDictionary, nil)
+    private enum Account {
+        static let getSession = "GETLogin"
+        static let backendAccessToken = "BackendAccessToken"
+        static let backendRefreshToken = "BackendRefreshToken"
     }
 
-    /// Deletes token under "GETLogin" if it exists
+    // MARK: - GET Session
+
+    func saveToken(sessionId: String) {
+        save(sessionId, account: Account.getSession)
+    }
+
+    func retrieveToken() -> String? {
+        retrieve(account: Account.getSession)
+    }
+
     func invalidateToken() {
+        delete(account: Account.getSession)
+    }
+
+    // MARK: - Backend Authentication
+
+    func saveBackendTokens(accessToken: String, refreshToken: String) {
+        save(accessToken, account: Account.backendAccessToken)
+        save(refreshToken, account: Account.backendRefreshToken)
+    }
+
+    func retrieveBackendAccessToken() -> String? {
+        retrieve(account: Account.backendAccessToken)
+    }
+
+    func retrieveBackendRefreshToken() -> String? {
+        retrieve(account: Account.backendRefreshToken)
+    }
+
+    func invalidateBackendTokens() {
+        delete(account: Account.backendAccessToken)
+        delete(account: Account.backendRefreshToken)
+    }
+
+    // MARK: - Keychain Helpers
+
+    private func save(_ value: String, account: String) {
+        guard let data = value.data(using: .utf8) else { return }
+
+        delete(account: account)
+
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: "GETLogin"
+            kSecAttrAccount as String: account,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+            kSecValueData as String: data
         ]
 
-        Task {
-            let status = SecItemDelete(query as CFDictionary)
-            guard status == errSecSuccess || status == errSecItemNotFound else { return }
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard status == errSecSuccess else {
+            let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
+            logger.error("Failed to save Keychain item for \(account): \(message) (\(status))")
+            return
         }
     }
 
-    /// Returns token under "GETLogin" if it exists, nil otherwise
-    func retrieveToken() -> String? {
-        // Retrieve session token back from Keychain
+    private func retrieve(account: String) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: "GETLogin",
-            kSecReturnData as String: kCFBooleanTrue!,
+            kSecAttrAccount as String: account,
+            kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
-        var dataTypeRef: AnyObject?
-        let retrieveStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
 
-        if retrieveStatus == errSecSuccess, let data = dataTypeRef as? Data {
-            let retrievedToken = String(data: data, encoding: .utf8)
-            if let retrievedToken = retrievedToken {
-                return retrievedToken
-            }
+        var result: AnyObject?
+        guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data
+        else {
+            return nil
         }
-        return nil
+
+        return String(data: data, encoding: .utf8)
+    }
+
+    private func delete(account: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: account
+        ]
+
+        SecItemDelete(query as CFDictionary)
     }
 }

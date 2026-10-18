@@ -57,6 +57,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             savedStyle = .unspecified
         }
         windowScene.windows.forEach { $0.overrideUserInterfaceStyle = savedStyle }
+
+        Task {
+            await FavoriteItemSyncCoordinator.shared.migrateLocalFavoritesIfNeeded()
+            await FavoriteItemSyncCoordinator.shared.retryPendingUpdates()
+        }
     }
 
     func sceneWillResignActive(_: UIScene) {

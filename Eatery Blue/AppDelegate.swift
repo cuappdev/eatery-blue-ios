@@ -10,18 +10,17 @@ import Firebase
 import FirebaseMessaging
 import Hero
 import Kingfisher
+import OSLog
 import SnapKit
 import Tactile
 import UIKit
 
-import OSLog
-
 extension Logger {
-    private static var subsystem = Bundle.main.bundleIdentifier! // Your app's bundle identifier
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "Eatery"
     static let notifications = Logger(subsystem: subsystem, category: "notifications")
 }
 
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
     static let shared: AppDelegate = {
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             fatalError("AppDelegate not found")
@@ -30,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }()
 
     private(set) lazy var coreDataStack = CoreDataStack()
+    private var handledFCMTokens = Set<String>()
+    private var hasAPNSToken = false
 
     func application(
         _ application: UIApplication,
@@ -54,15 +55,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
 
         // Request notification permissions
-        UNUserNotificationCenter.current().delegate = self
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
-            if let error = error {
-                Logger.notifications.error("Failed to request notification permissions: \(error.localizedDescription)")
-            } else {
+        Task {
+            do {
+                let granted = try await notificationCenter.requestAuthorization(options: authOptions)
                 Logger.notifications.info("Notification permissions granted: \(granted)")
+            } catch {
+                Logger.notifications.error("Failed to request notification permissions: \(error.localizedDescription)")
             }
         }
 
@@ -81,8 +85,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Set APNs token for Firebase Messaging
-        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        Logger.notifications.info("APNs device token received: \(tokenString)")
+        hasAPNSToken = true
+        Logger.notifications.info("APNs device token received")
         Messaging.messaging().apnsToken = deviceToken
 
         // Fetch FCM token once APNs token is set
@@ -90,13 +94,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if let error = error {
                 Logger.notifications.error("Error fetching FCM token: \(error.localizedDescription)")
             } else if let token = token {
-                Logger.notifications.info("FCM registration token: \(token)")
+                self.registerFCMToken(token)
             }
         }
     }
 
     func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Logger.notifications.error("Failed to register for remote notifications: \(error.localizedDescription)")
+    }
+
+    func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard hasAPNSToken, let fcmToken else { return }
+
+        registerFCMToken(fcmToken)
+    }
+
+    private func registerFCMToken(_ token: String) {
+        Task { @MainActor in
+            guard handledFCMTokens.insert(token).inserted else { return }
+            Logger.notifications.info("FCM registration token received")
+
+            do {
+                try await Networking.default.registerFCMToken(token)
+                Logger.notifications.info("FCM token registered with Eatery backend")
+            } catch {
+                handledFCMTokens.remove(token)
+                Logger.notifications.error(
+                    "FCM token registration failed: \(error.localizedDescription)"
+                )
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle
