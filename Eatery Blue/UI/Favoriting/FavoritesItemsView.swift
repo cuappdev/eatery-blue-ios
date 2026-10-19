@@ -157,7 +157,7 @@ class FavoritesItemsView: UIView {
                 cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
                 cell.onUnfavorite = { [weak self] in
                     guard let self else { return }
-                    favoriteItems = AppDelegate.shared.coreDataStack.fetchFavoriteItems()
+                    favoriteItems = favoriteItems.filter(\.isFavorite)
                 }
                 cell.selectionStyle = .none
                 return cell
