@@ -11,7 +11,7 @@ import UIKit
 class FavoritesViewController: UIViewController {
     // MARK: - Properties (view)
 
-    private let favoriteEateriesView = EateryListView()
+    private let favoriteEateriesView = FavoritesEateriesView()
     private let favoriteItemsView = FavoritesItemsView()
     private let favoritesNavigationView = FavoritesNavigationView()
     private let scrollView = UIScrollView()
@@ -94,7 +94,7 @@ class FavoritesViewController: UIViewController {
     private func setUpFavoritesNavigationView() {
         favoritesNavigationView.navigationController = navigationController
         favoritesNavigationView.tabButtonsDelegate = self
-        favoritesNavigationView.searchDelegate = self
+        favoritesNavigationView.delegate = self
     }
 
     private func setUpFavoriteEateriesView() {
@@ -125,7 +125,7 @@ class FavoritesViewController: UIViewController {
     private func setUpConstraints() {
         favoritesNavigationView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(208)
+            make.height.equalTo(220)
         }
 
         scrollView.snp.makeConstraints { make in
@@ -180,20 +180,9 @@ extension FavoritesViewController: TabButtonViewDelegate {
     }
 }
 
-extension FavoritesViewController: UISearchBarDelegate {
-    func searchBar(_: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            favoriteEateriesView.eateries = favoriteEateries
-            favoriteItemsView.favoriteItems = favoriteItems
-        } else {
-            favoriteEateriesView.eateries = favoriteEateries
-                .filter { $0.name.lowercased().contains(searchText.lowercased()) }
-            favoriteItemsView.favoriteItems = favoriteItems
-                .filter { $0.itemName?.lowercased().contains(searchText.lowercased()) ?? false }
-        }
-    }
-
-    func searchBarCancelButtonClicked(_: UISearchBar) {
-        favoritesNavigationView.searchShown = false
+extension FavoritesViewController: FavoritesNavigationViewDelegate {
+    func favoritesNavigationViewDidTapAdd(_: FavoritesNavigationView) {
+        let searchVC = FavoritesAddSearchViewController()
+        navigationController?.pushViewController(searchVC, animated: true)
     }
 }

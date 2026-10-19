@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1FC47E8EFA7B451BAD9CA2E7 /* FavoritesEateriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E57467C694ED09A9B6181 /* FavoritesEateriesView.swift */; };
 		2E14970F2BB75B6400180A35 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */; };
 		2E44CC1E2ADF9D710040085C /* WKWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */; };
 		2E6655FB2ADFB86700264391 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6655FA2ADFB86700264391 /* GoogleService-Info.plist */; };
@@ -147,6 +148,7 @@
 		5DF938D1277662CC008ED0A1 /* PaymentMethodFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */; };
 		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
 		5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */; };
+		65623D66CAD74719B46FCF4C /* FavoritesEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B889EF68DEE4A2E89525648 /* FavoritesEmptyView.swift */; };
 		957397B32821C50200FFB687 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957397B22821C50200FFB687 /* Analytics.swift */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
 		998F6D082ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */; };
@@ -157,6 +159,7 @@
 		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
 		AD0313922EC82143006F7E1B /* SettingsNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0313902EC82143006F7E1B /* SettingsNotificationsViewController.swift */; };
 		AD0313932EC82143006F7E1B /* SettingsNotifcationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD03138F2EC82143006F7E1B /* SettingsNotifcationsView.swift */; };
+		ACEF7BB3966F47B2BBF437BD /* FavoritesEateryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9BDB4CA0BD417C84884B42 /* FavoritesEateryTableViewCell.swift */; };
 		AD03139C2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */; };
 		AD5FA91E3068422B00C835D3 /* AuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5FA91D3068421000C835D3 /* AuthStorage.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */; };
@@ -201,6 +204,9 @@
 		D8563EE92EC1A38100C2F045 /* NotificationNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */; };
 		D8B191E72EC176E6004E3E97 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E62EC176E6004E3E97 /* NotificationData.swift */; };
 		D8B191E92EC179E9004E3E97 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */; };
+		F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */; };
+		8B26C86976414B0DAB6E9907 /* FavoritesSearchEateryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */; };
+		487B7504E26A4C088376ADEF /* FavoritesSearchItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EE3279E5684A78A5829081 /* FavoritesSearchItemRow.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
@@ -221,6 +227,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesAddSearchViewController.swift; sourceTree = "<group>"; };
+		20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSearchEateryCell.swift; sourceTree = "<group>"; };
+		02EE3279E5684A78A5829081 /* FavoritesSearchItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSearchItemRow.swift; sourceTree = "<group>"; };
+		0D9BDB4CA0BD417C84884B42 /* FavoritesEateryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesEateryTableViewCell.swift; sourceTree = "<group>"; };
+		1B889EF68DEE4A2E89525648 /* FavoritesEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyView.swift; sourceTree = "<group>"; };
 		2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2E2DF2E02AD3D43C007A1724 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		2E44CC1D2ADF9D710040085C /* WKWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Extension.swift"; sourceTree = "<group>"; };
@@ -362,6 +373,7 @@
 		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
 		AD03138F2EC82143006F7E1B /* SettingsNotifcationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifcationsView.swift; sourceTree = "<group>"; };
 		AD0313902EC82143006F7E1B /* SettingsNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewController.swift; sourceTree = "<group>"; };
+		A87E57467C694ED09A9B6181 /* FavoritesEateriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesEateriesView.swift; sourceTree = "<group>"; };
 		AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDisplaySheetViewController.swift; sourceTree = "<group>"; };
 		AD5FA91D3068421000C835D3 /* AuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStorage.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1034,6 +1046,12 @@
 				D07A73A02CDB20CC009E380C /* FavoritesItemsView.swift */,
 				D06230E72CB9D4A70092C04A /* FavoritesViewController.swift */,
 				D053BF5F2CCDA03B0060F82C /* FavoritesNavigationView.swift */,
+				1B889EF68DEE4A2E89525648 /* FavoritesEmptyView.swift */,
+				A87E57467C694ED09A9B6181 /* FavoritesEateriesView.swift */,
+				0D9BDB4CA0BD417C84884B42 /* FavoritesEateryTableViewCell.swift */,
+				0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */,
+				20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */,
+				02EE3279E5684A78A5829081 /* FavoritesSearchItemRow.swift */,
 			);
 			path = Favoriting;
 			sourceTree = "<group>";
@@ -1256,6 +1274,12 @@
 				5D468A15277E3FDC00986AFF /* Networking.swift in Sources */,
 				5D0CDC4F2774FDAE00AD0E27 /* MenuHeaderView.swift in Sources */,
 				D07A73A32CDB223A009E380C /* FavoritesItemsTableViewCell.swift in Sources */,
+				65623D66CAD74719B46FCF4C /* FavoritesEmptyView.swift in Sources */,
+				1FC47E8EFA7B451BAD9CA2E7 /* FavoritesEateriesView.swift in Sources */,
+				ACEF7BB3966F47B2BBF437BD /* FavoritesEateryTableViewCell.swift in Sources */,
+				F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */,
+				8B26C86976414B0DAB6E9907 /* FavoritesSearchEateryCell.swift in Sources */,
+				487B7504E26A4C088376ADEF /* FavoritesSearchItemRow.swift in Sources */,
 				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
