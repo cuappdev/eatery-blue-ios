@@ -106,8 +106,12 @@ final class FavoritesSearchEateryCell: UICollectionViewCell {
     // MARK: - Set Up
 
     private func setUp() {
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         clipsToBounds = false
         contentView.clipsToBounds = false
+        isOpaque = false
+        contentView.isOpaque = false
 
         contentView.addSubview(card)
         card.backgroundColor = UIColor.Eatery.default00
@@ -178,6 +182,7 @@ final class FavoritesSearchEateryCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard card.bounds.width > 0, card.bounds.height > 0 else { return }
         card.layer.shadowPath = UIBezierPath(roundedRect: card.bounds, cornerRadius: 8).cgPath
     }
 }

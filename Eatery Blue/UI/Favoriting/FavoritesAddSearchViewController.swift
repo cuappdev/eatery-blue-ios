@@ -43,7 +43,7 @@ class FavoritesAddSearchViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 280, height: 236)
-        layout.minimumLineSpacing = 12
+        layout.minimumLineSpacing = 16
         layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         popularEateriesCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(nibName: nil, bundle: nil)
@@ -136,6 +136,7 @@ class FavoritesAddSearchViewController: UIViewController {
         popularEateriesCollection.backgroundColor = .clear
         popularEateriesCollection.showsHorizontalScrollIndicator = false
         popularEateriesCollection.clipsToBounds = false
+        popularEateriesCollection.isOpaque = false
         popularEateriesCollection.dataSource = self
         popularEateriesCollection.delegate = self
         popularEateriesCollection.register(
