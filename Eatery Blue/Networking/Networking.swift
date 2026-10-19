@@ -37,7 +37,7 @@ class Networking {
         }
 
         let body = try JSONEncoder().encode(RequestBody(token: token))
-        _ = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/fcm-token"))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -45,6 +45,7 @@ class Networking {
             request.httpBody = body
             return request
         }
+        _ = try validatedData(response)
     }
 
     func updateFavoriteItem(name: String, isFavorite: Bool) async throws {
@@ -53,7 +54,7 @@ class Networking {
         }
 
         let body = try JSONEncoder().encode(RequestBody(name: name))
-        _ = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/items"))
             request.httpMethod = isFavorite ? "POST" : "DELETE"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -61,22 +62,23 @@ class Networking {
             request.httpBody = body
             return request
         }
+        _ = try validatedData(response)
     }
 
     private func performAuthorizedRequest(
         makeRequest: (String) -> URLRequest
-    ) async throws -> Data {
+    ) async throws -> (data: Data, statusCode: Int) {
         let accessToken = try await backendAuthenticator.validAccessToken()
         let firstResponse = try await send(makeRequest(accessToken))
 
         guard firstResponse.statusCode == 401 else {
-            return try validatedData(firstResponse)
+            return firstResponse
         }
 
         let refreshedToken = try await backendAuthenticator.refreshAccessToken(
             rejectedToken: accessToken
         )
-        return try validatedData(await send(makeRequest(refreshedToken)))
+        return try await send(makeRequest(refreshedToken))
     }
 
     private func send(_ request: URLRequest) async throws -> (data: Data, statusCode: Int) {
@@ -164,6 +166,75 @@ class Networking {
         KeychainAccess.shared.invalidateToken()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
+
+    func fetchUserNotificationSettings() async throws -> UserNotificationSettings {
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.settingsURL)
+            request.httpMethod = "GET"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+        let data = try settingsResponseData(response.data, statusCode: response.statusCode)
+        return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
+    }
+
+    func updateUserNotificationSettings(
+        favoriteItemPushNotifications: Bool? = nil,
+        cornellAppdevPushNotifications: Bool? = nil
+    ) async throws -> UserNotificationSettings {
+        var fields: [String: Bool] = [:]
+        if let favoriteItemPushNotifications {
+            fields["favoriteItemPushNotifications"] = favoriteItemPushNotifications
+        }
+        if let cornellAppdevPushNotifications {
+            fields["cornellAppdevPushNotifications"] = cornellAppdevPushNotifications
+        }
+        guard !fields.isEmpty else {
+            throw UserSettingsRequestError.badRequest
+        }
+
+        let body = try JSONSerialization.data(withJSONObject: fields)
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.settingsURL)
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        let data = try settingsResponseData(response.data, statusCode: response.statusCode)
+        return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
+    }
+
+    private var settingsURL: URL {
+        baseUrl.appendingPathComponent("users").appendingPathComponent("settings")
+    }
+
+    private func settingsResponseData(_ data: Data, statusCode: Int) throws -> Data {
+        switch statusCode {
+        case 200 ... 299:
+            return data
+        case 400:
+            throw UserSettingsRequestError.badRequest
+        case 401:
+            throw UserSettingsRequestError.unauthorized
+        default:
+            throw UserSettingsRequestError.server
+        }
+    }
+}
+
+struct UserNotificationSettings: Decodable {
+    let favoriteItemPushNotifications: Bool
+    let cornellAppdevPushNotifications: Bool
+}
+
+enum UserSettingsRequestError: Error {
+    case badRequest
+    case unauthorized
+    case server
 }
 
 actor FavoriteItemSyncCoordinator {
