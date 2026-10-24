@@ -169,7 +169,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         Logger.notifications.info("Notification tapped: \(response.notification.request.content.userInfo)")
+        Task { @MainActor in
+            await openNotificationHubFromPush()
+        }
         completionHandler()
+    }
+
+    @MainActor
+    private func openNotificationHubFromPush() async {
+        if let root = keyRootViewController(), root.currentMode == .main {
+            root.main.openNotificationHub()
+            return
+        }
+
+        // Cold start may still be on splash briefly after onboarded users launch.
+        try? await Task.sleep(nanoseconds: 500_000_000)
+        guard let root = keyRootViewController(), root.currentMode == .main else { return }
+        root.main.openNotificationHub()
+    }
+
+    private func keyRootViewController() -> RootViewController? {
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        let windows = scenes.flatMap(\.windows)
+        return windows.first(where: \.isKeyWindow)?.rootViewController as? RootViewController
+            ?? windows.first?.rootViewController as? RootViewController
     }
 
     // MARK: - Helper functions

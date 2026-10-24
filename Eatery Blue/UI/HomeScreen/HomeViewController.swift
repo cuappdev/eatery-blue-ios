@@ -148,14 +148,16 @@ class HomeViewController: UIViewController {
         }
 
         navigationView.onNotificationTap { [weak self] in
-            guard let self = self else { return }
-            guard !(self.navigationController?.topViewController is NotificationViewController) else { return }
-            self.navigationView.notificationButton.markAllAsRead()
-            let vc = NotificationViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            self?.openNotificationHub()
         }
 
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+    }
+
+    func openNotificationHub(animated: Bool = true) {
+        guard !(navigationController?.topViewController is NotificationViewController) else { return }
+        navigationView.notificationButton.markAllAsRead()
+        navigationController?.pushViewController(NotificationViewController(), animated: animated)
     }
 
     private func setUpCompareMenusButton() {
@@ -496,7 +498,7 @@ class HomeViewController: UIViewController {
 
         snapshot.appendItems([
             .searchBar,
-            .customView(view: filterController.view, height: 44)
+            .customView(view: filterController.view, height: 44),
         ], toSection: .toolbar)
 
         // Carousel (favorites carousel)
@@ -505,7 +507,7 @@ class HomeViewController: UIViewController {
         if isLoading {
             snapshot.appendItems([
                 .loadingLabel(title: "Finding flavorful food..."),
-                .loadingCarousel
+                .loadingCarousel,
             ], toSection: .carousel)
         } else {
             if !filter.isEnabled {
