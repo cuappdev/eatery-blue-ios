@@ -155,6 +155,8 @@
 		998F6D1D2AC31B57006B7F18 /* MenuCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */; };
 		998F6D252AC3568C006B7F18 /* MealType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F6D242AC3568C006B7F18 /* MealType.swift */; };
 		99F320F92AB24F3000A39597 /* MenusNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F320F82AB24F3000A39597 /* MenusNavigationView.swift */; };
+		AD0313922EC82143006F7E1B /* SettingsNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0313902EC82143006F7E1B /* SettingsNotificationsViewController.swift */; };
+		AD0313932EC82143006F7E1B /* SettingsNotifcationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD03138F2EC82143006F7E1B /* SettingsNotifcationsView.swift */; };
 		AD03139C2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */; };
 		AD5FA91E3068422B00C835D3 /* AuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5FA91D3068421000C835D3 /* AuthStorage.swift */; };
 		BC4A94ED29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */; };
@@ -358,6 +360,8 @@
 		998F6D1C2AC31B57006B7F18 /* MenuCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCardTableViewCell.swift; sourceTree = "<group>"; };
 		998F6D242AC3568C006B7F18 /* MealType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealType.swift; sourceTree = "<group>"; };
 		99F320F82AB24F3000A39597 /* MenusNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenusNavigationView.swift; sourceTree = "<group>"; };
+		AD03138F2EC82143006F7E1B /* SettingsNotifcationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifcationsView.swift; sourceTree = "<group>"; };
+		AD0313902EC82143006F7E1B /* SettingsNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewController.swift; sourceTree = "<group>"; };
 		AD03139A2EC82921006F7E1B /* SettingsDisplaySheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDisplaySheetViewController.swift; sourceTree = "<group>"; };
 		AD5FA91D3068421000C835D3 /* AuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStorage.swift; sourceTree = "<group>"; };
 		BC4A94EC29F9BEB3007198BC /* EateryCardShimmerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryCardShimmerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -754,6 +758,7 @@
 				5D377CF327A20EE400F8DC37 /* SettingsAbout */,
 				D04FB8772BCEE74D0058F732 /* SettingsAppIcon */,
 				AD03139B2EC82921006F7E1B /* SettingsDisplay */,
+				AD0313912EC82143006F7E1B /* SettingsNotifications */,
 				5DA434C4278CD0DF001337FD /* SettingsMain */,
 				5D0B9D75279F1D66004B4AA1 /* SettingsPrivacy */,
 				5D377CE627A1AB7200F8DC37 /* SettingsSupport */,
@@ -967,6 +972,15 @@
 				998F6D242AC3568C006B7F18 /* MealType.swift */,
 			);
 			path = MealTypeSheet;
+			sourceTree = "<group>";
+		};
+		AD0313912EC82143006F7E1B /* SettingsNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				AD03138F2EC82143006F7E1B /* SettingsNotifcationsView.swift */,
+				AD0313902EC82143006F7E1B /* SettingsNotificationsViewController.swift */,
+			);
+			path = SettingsNotifications;
 			sourceTree = "<group>";
 		};
 		AD03139B2EC82921006F7E1B /* SettingsDisplay */ = {
@@ -1328,6 +1342,8 @@
 				D0C770A82B9803A900A4828F /* CompareMenusViewController.swift in Sources */,
 				D0730BBA2D2B55B500F9070A /* ClearCollectionViewCell.swift in Sources */,
 				5DBA89A22784D31A002DCA6B /* SplashViewController.swift in Sources */,
+				AD0313922EC82143006F7E1B /* SettingsNotificationsViewController.swift in Sources */,
+				AD0313932EC82143006F7E1B /* SettingsNotifcationsView.swift in Sources */,
 				5DBA899F2784CC03002DCA6B /* MainViewController.swift in Sources */,
 				D07A73A12CDB20D1009E380C /* FavoritesItemsView.swift in Sources */,
 				5DF5F7D02773FD60001ADCDC /* HomeSearchViewController.swift in Sources */,
