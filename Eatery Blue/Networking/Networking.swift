@@ -172,11 +172,12 @@ class Networking {
     }
 
     func fetchNotifications() async throws -> [HubNotification] {
-        let data = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications"))
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
             return request
         }
+        let data = try validatedData(response)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .fracSecondsISO8601
         return try decoder.decode(NotificationsResponse.self, from: data).notifications
@@ -185,7 +186,7 @@ class Networking {
     func markNotificationsRead(ids: [Int]) async throws {
         guard !ids.isEmpty else { return } // skips PATCH when there's no unread ids
         let body = try JSONEncoder().encode(["ids": ids])
-        _ = try await performAuthorizedRequest { accessToken in
+        let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications/read"))
             request.httpMethod = "PATCH"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -193,6 +194,7 @@ class Networking {
             request.httpBody = body
             return request
         }
+        _ = try validatedData(response)
     }
 
     func fetchUserNotificationSettings() async throws -> UserNotificationSettings {
