@@ -149,6 +149,8 @@ class HomeViewController: UIViewController {
 
         navigationView.onNotificationTap { [weak self] in
             guard let self = self else { return }
+            guard !(self.navigationController?.topViewController is NotificationViewController) else { return }
+            self.navigationView.notificationButton.markAllAsRead()
             let vc = NotificationViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -205,7 +207,9 @@ class HomeViewController: UIViewController {
     }
 
     private func trySetUpCompareMenusOnboarding() {
-        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) { return }
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) {
+            return
+        }
 
         compareMenusOnboarding.layer.opacity = 0.01
         navigationController?.tabBarController?.parent?.view.addSubview(compareMenusOnboarding)
@@ -257,6 +261,7 @@ class HomeViewController: UIViewController {
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         startLoading()
         LocationManager.shared.requestLocation()
+        navigationView.notificationButton.checkforNotifications()
 
         Task {
             await withThrowingTaskGroup(of: Void.self) { [weak self] group in
@@ -844,7 +849,9 @@ extension HomeViewController: UIScrollViewDelegate {
         }
 
         // we don't want to update the fade if we are refreshing
-        if navigationView.logoRefreshControl.isRefreshing { return }
+        if navigationView.logoRefreshControl.isRefreshing {
+            return
+        }
 
         if offset > (Constants.minHeaderHeight + Constants.maxHeaderHeight) / 2 - Constants.minHeaderHeight {
             navigationView.setFadeInProgress(1, animated: true)
@@ -890,7 +897,9 @@ extension HomeViewController: UIScrollViewDelegate {
         let decelerationRate = scrollView.decelerationRate.rawValue
         var offset = currentPosition + velocity.y * decelerationRate /
             (1 - decelerationRate) + scrollView.contentInset.top
-        if offset < 0 { return }
+        if offset < 0 {
+            return
+        }
 
         if offset < (Constants.maxHeaderHeight - Constants.minHeaderHeight) / 2 {
             offset = 0
