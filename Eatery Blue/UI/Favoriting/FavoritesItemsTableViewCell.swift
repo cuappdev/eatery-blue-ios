@@ -185,17 +185,9 @@ class FavoritesItemsTableViewCell: UITableViewCell {
     }
 
     private func unfavorite(_ menuItem: ItemMetadata) {
-        let coreDataStack = AppDelegate.shared.coreDataStack
-        menuItem.isFavorite = false
-        coreDataStack.save()
+        FavoritesStore.setItemFavorite(false, item: menuItem)
 
         favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
-
-        if let itemName = menuItem.itemName {
-            Task {
-                await FavoriteItemSyncCoordinator.shared.setFavorite(false, itemName: itemName)
-            }
-        }
 
         NotificationCenter.default.post(
             name: UIViewController.notificationName,

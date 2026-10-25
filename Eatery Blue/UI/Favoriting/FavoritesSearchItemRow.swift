@@ -39,17 +39,8 @@ final class FavoritesSearchItemRow: UIView {
             sourceLabel.text = eatery.name
         }
 
-        bindFavorite(isFavorite: AppDelegate.shared.coreDataStack.metadata(itemName: item.name).isFavorite) {
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(itemName: item.name)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
-            let isFavorite = metadata.isFavorite
-            let itemName = item.name
-            Task {
-                await FavoriteItemSyncCoordinator.shared.setFavorite(isFavorite, itemName: itemName)
-            }
-            return isFavorite
+        bindFavorite(isFavorite: FavoritesStore.isItemFavorite(itemName: item.name)) {
+            FavoritesStore.toggleItemFavorite(itemName: item.name)
         }
     }
 
@@ -57,12 +48,8 @@ final class FavoritesSearchItemRow: UIView {
         titleLabel.text = eatery.name
         sourceLabel.text = eatery.location.validated() ?? eatery.location
 
-        bindFavorite(isFavorite: AppDelegate.shared.coreDataStack.metadata(eateryId: eatery.cornellId).isFavorite) {
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
-            return metadata.isFavorite
+        bindFavorite(isFavorite: FavoritesStore.isEateryFavorite(eateryId: eatery.cornellId)) {
+            FavoritesStore.toggleEateryFavorite(eateryId: eatery.cornellId)
         }
     }
 

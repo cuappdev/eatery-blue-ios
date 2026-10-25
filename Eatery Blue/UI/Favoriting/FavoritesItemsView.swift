@@ -144,24 +144,22 @@ class FavoritesItemsView: UIView {
     // MARK: - Table View Data Source
 
     private func makeDataSource() -> DataSource {
-        return DataSource(tableView: tableView) { [weak self] tableview, indexPath, row in
-            guard let self else { return UITableViewCell() }
+        return DataSource(tableView: tableView) { [weak self] tableView, indexPath, row in
+            guard let self,
+                  case let .item(item, expanded) = row,
+                  let cell = tableView.dequeueReusableCell(
+                      withIdentifier: FavoritesItemsTableViewCell.reuse,
+                      for: indexPath
+                  ) as? FavoritesItemsTableViewCell
+            else { return UITableViewCell() }
 
-            switch row {
-            case let .item(item, expanded):
-                guard let cell = tableview.dequeueReusableCell(
-                    withIdentifier: FavoritesItemsTableViewCell.reuse,
-                    for: indexPath
-                ) as? FavoritesItemsTableViewCell else { return UITableViewCell() }
-
-                cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
-                cell.onUnfavorite = { [weak self] in
-                    guard let self else { return }
-                    favoriteItems = favoriteItems.filter(\.isFavorite)
-                }
-                cell.selectionStyle = .none
-                return cell
+            cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
+            cell.onUnfavorite = { [weak self] in
+                guard let self else { return }
+                favoriteItems = favoriteItems.filter(\.isFavorite)
             }
+            cell.selectionStyle = .none
+            return cell
         }
     }
 

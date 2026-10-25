@@ -65,7 +65,11 @@ final class FavoritesSearchEateryCell: UICollectionViewCell {
             formatter.timeStyle = .short
             statusText = "Open until \(formatter.string(from: event.endTimestamp))"
             statusColor = .Eatery.green
-        default:
+        case let .openingSoon(event):
+            let minutes = Int(round(event.startTimestamp.timeIntervalSince(Date()) / 60))
+            statusText = "Opening in \(minutes) min"
+            statusColor = .Eatery.secondaryText
+        case .closed:
             statusText = "Closed"
             statusColor = .Eatery.secondaryText
         }
@@ -88,19 +92,28 @@ final class FavoritesSearchEateryCell: UICollectionViewCell {
 
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
+            let isFavorite = FavoritesStore.toggleEateryFavorite(eateryId: eatery.cornellId)
             favoriteButton.content.image = UIImage(
-                named: metadata.isFavorite ? "FavoriteSelected" : "FavoriteUnselected"
+                named: isFavorite ? "FavoriteSelected" : "FavoriteUnselected"
             )
             NotificationCenter.default.post(
                 name: UIViewController.notificationName,
                 object: nil,
-                userInfo: [UIViewController.notificationUserInfoKey: metadata.isFavorite]
+                userInfo: [UIViewController.notificationUserInfoKey: isFavorite]
             )
         }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        eatery = nil
+        imageView.kf.cancelDownloadTask()
+        imageView.image = nil
+        favoriteButton.buttonPress(nil)
+        favoriteButton.content.image = nil
+        titleLabel.text = nil
+        locationLabel.text = nil
+        metaLabel.attributedText = nil
     }
 
     // MARK: - Set Up

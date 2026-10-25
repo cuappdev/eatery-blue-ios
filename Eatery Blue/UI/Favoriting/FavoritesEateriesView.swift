@@ -43,8 +43,6 @@ class FavoritesEateriesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Setup
-
     private func setUpSelf() {
         backgroundColor = UIColor.Eatery.default00
 
@@ -98,8 +96,6 @@ class FavoritesEateriesView: UIView {
         tableView.isHidden = sortedEateries.isEmpty
         applySnapshot(animated: true)
     }
-
-    // MARK: - Table View Data Source
 
     private func makeDataSource() -> DataSource {
         return DataSource(tableView: tableView) { [weak self] tableView, indexPath, row in

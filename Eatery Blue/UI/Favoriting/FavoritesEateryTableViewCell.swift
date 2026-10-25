@@ -183,10 +183,7 @@ class FavoritesEateryTableViewCell: UITableViewCell {
     }
 
     private func unfavorite(_ eatery: Eatery) {
-        let coreDataStack = AppDelegate.shared.coreDataStack
-        let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
-        metadata.isFavorite = false
-        coreDataStack.save()
+        FavoritesStore.setEateryFavorite(false, eateryId: eatery.cornellId)
 
         favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
 

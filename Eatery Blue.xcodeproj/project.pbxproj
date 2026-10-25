@@ -207,6 +207,7 @@
 		F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */; };
 		8B26C86976414B0DAB6E9907 /* FavoritesSearchEateryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */; };
 		487B7504E26A4C088376ADEF /* FavoritesSearchItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EE3279E5684A78A5829081 /* FavoritesSearchItemRow.swift */; };
+		D5B02F8C3A7E4B29C1F6D4E2 /* FavoritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
@@ -230,6 +231,7 @@
 		0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesAddSearchViewController.swift; sourceTree = "<group>"; };
 		20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSearchEateryCell.swift; sourceTree = "<group>"; };
 		02EE3279E5684A78A5829081 /* FavoritesSearchItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSearchItemRow.swift; sourceTree = "<group>"; };
+		C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStore.swift; sourceTree = "<group>"; };
 		0D9BDB4CA0BD417C84884B42 /* FavoritesEateryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesEateryTableViewCell.swift; sourceTree = "<group>"; };
 		1B889EF68DEE4A2E89525648 /* FavoritesEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyView.swift; sourceTree = "<group>"; };
 		2E14970E2BB75B6400180A35 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1052,6 +1054,7 @@
 				0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */,
 				20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */,
 				02EE3279E5684A78A5829081 /* FavoritesSearchItemRow.swift */,
+				C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */,
 			);
 			path = Favoriting;
 			sourceTree = "<group>";
@@ -1280,6 +1283,7 @@
 				F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */,
 				8B26C86976414B0DAB6E9907 /* FavoritesSearchEateryCell.swift in Sources */,
 				487B7504E26A4C088376ADEF /* FavoritesSearchItemRow.swift in Sources */,
+				D5B02F8C3A7E4B29C1F6D4E2 /* FavoritesStore.swift in Sources */,
 				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,
