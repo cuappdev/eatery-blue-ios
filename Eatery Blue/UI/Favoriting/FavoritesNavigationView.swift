@@ -7,61 +7,27 @@
 
 import UIKit
 
+protocol FavoritesNavigationViewDelegate: AnyObject {
+    func favoritesNavigationViewDidTapAdd(_ view: FavoritesNavigationView)
+}
+
 class FavoritesNavigationView: UIView {
     // MARK: - Properties (view)
 
+    private let addButton = ButtonView(content: UIImageView())
+    private let backButton = ButtonView(pillContent: UIImageView())
     private let eateriesTab = TabButtonView()
     private let itemsTab = TabButtonView()
-    private let navigationBar = UINavigationBar()
-    private let navigationItem = UINavigationItem()
     private let placeholderView = UIView()
-    private let searchBar = UISearchBar()
     private let titleLabel = UILabel()
 
     // MARK: - Properties (data)
 
     /// The controller that this view uses to pop on back button press
     var navigationController: UINavigationController?
-    /// Search bar delegate, called when search bar text changes
-    var searchDelegate: UISearchBarDelegate? {
-        didSet {
-            searchBar.delegate = searchDelegate
-        }
-    }
 
-    /// Whether or not the search bar should be shown
-    var searchShown = false {
-        didSet {
-            if !searchShown {
-                searchBar.text = ""
-                searchDelegate?.searchBar?(searchBar, textDidChange: "")
-                UIView.animate(withDuration: 0.1) { [weak self] in
-                    guard let self else { return }
-                    searchBar.snp.updateConstraints { make in
-                        make.height.equalTo(0)
-                    }
-
-                    layoutIfNeeded()
-                } completion: { [weak self] _ in
-                    guard let self else { return }
-
-                    searchBar.resignFirstResponder()
-                    searchBar.isHidden = true
-                }
-            } else {
-                searchBar.becomeFirstResponder()
-                searchBar.isHidden = false
-                UIView.animate(withDuration: 0.1) { [weak self] in
-                    guard let self else { return }
-                    searchBar.snp.updateConstraints { make in
-                        make.height.equalTo(36)
-                    }
-
-                    layoutIfNeeded()
-                }
-            }
-        }
-    }
+    /// Called when the add (+) button is pressed
+    weak var delegate: FavoritesNavigationViewDelegate?
 
     /// Tab buttons delegate, called when tab buttons are pressed
     var tabButtonsDelegate: TabButtonViewDelegate? {
@@ -86,11 +52,14 @@ class FavoritesNavigationView: UIView {
     // MARK: - Set Up
 
     private func setUpSelf() {
-        layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 4, right: 16)
+        layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 16)
         backgroundColor = UIColor.Eatery.default00
 
-        addSubview(navigationBar)
-        setUpNavigationBar()
+        addSubview(backButton)
+        setUpBackButton()
+
+        addSubview(addButton)
+        setUpAddButton()
 
         addSubview(titleLabel)
         setUpTitleLabel()
@@ -103,44 +72,36 @@ class FavoritesNavigationView: UIView {
 
         addSubview(placeholderView)
 
-        addSubview(searchBar)
-        setUpSearchBar()
-
         setUpConstraints()
-        searchShown = false
     }
 
-    private func setUpNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        navigationBar.standardAppearance = appearance
-        navigationBar.scrollEdgeAppearance = appearance
-        navigationBar.compactAppearance = appearance
-        navigationBar.tintColor = UIColor.Eatery.primaryText
+    private func setUpBackButton() {
+        backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
+        backButton.content.tintColor = UIColor.Eatery.primaryText
+        backButton.content.contentMode = .scaleAspectFit
+        backButton.shadowColor = UIColor.Eatery.primaryText
+        backButton.shadowOffset = CGSize(width: 0, height: 4)
+        backButton.shadowOpacity = 0.25
+        backButton.backgroundColor = UIColor.Eatery.default00
+        backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "ArrowLeft"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapBackButton)
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "Search"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapSearchButton)
-        )
-        navigationBar.setItems([navigationItem], animated: false)
+        backButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+            navigationController?.hero.isEnabled = false
+            navigationController?.popViewController(animated: true)
+        }
     }
 
-    @objc private func didTapBackButton() {
-        navigationController?.hero.isEnabled = false
-        navigationController?.popViewController(animated: true)
-    }
+    private func setUpAddButton() {
+        addButton.content.image = UIImage(systemName: "plus")
+        addButton.content.tintColor = UIColor.Eatery.primaryText
+        addButton.content.contentMode = .scaleAspectFit
+        addButton.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
 
-    @objc private func didTapSearchButton() {
-        searchShown = true
-        searchBar.becomeFirstResponder()
+        addButton.buttonPress { [weak self] _ in
+            guard let self else { return }
+            delegate?.favoritesNavigationViewDidTapAdd(self)
+        }
     }
 
     private func setUpTitleLabel() {
@@ -169,51 +130,45 @@ class FavoritesNavigationView: UIView {
         itemsTab.selected = false
     }
 
-    private func setUpSearchBar() {
-        searchBar.setShowsCancelButton(true, animated: false)
-        searchBar.placeholder = "Search for faves..."
-        searchBar.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = UIColor.Eatery.default00
-    }
-
     private func setUpConstraints() {
-        navigationBar.snp.makeConstraints { make in
+        backButton.snp.makeConstraints { make in
+            make.leading.equalTo(layoutMarginsGuide.snp.leading)
             make.top.equalTo(layoutMarginsGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(44)
+            make.width.height.equalTo(40)
+        }
+
+        addButton.snp.makeConstraints { make in
+            make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
+            make.centerY.equalTo(backButton)
+            make.width.height.equalTo(32)
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(layoutMarginsGuide.snp.leading).inset(4)
+            make.leading.equalTo(layoutMarginsGuide.snp.leading)
             make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
-            make.top.equalTo(navigationBar.snp.bottom)
-            make.height.equalTo(42)
+            make.top.equalTo(backButton.snp.bottom).offset(12)
         }
 
         placeholderView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.equalTo(8)
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.height.equalTo(34)
             make.bottom.equalTo(layoutMarginsGuide)
         }
 
         eateriesTab.snp.makeConstraints { make in
-            make.height.equalTo(36)
+            make.height.equalTo(34)
             make.trailing.equalTo(placeholderView.snp.leading)
-            make.leading.bottom.equalTo(layoutMarginsGuide)
+            make.leading.equalTo(layoutMarginsGuide)
+            make.centerY.equalTo(placeholderView)
         }
 
         itemsTab.snp.makeConstraints { make in
-            make.height.equalTo(36)
+            make.height.equalTo(34)
             make.leading.equalTo(placeholderView.snp.trailing)
-            make.trailing.bottom.equalTo(layoutMarginsGuide)
-        }
-
-        searchBar.snp.makeConstraints { make in
-            make.top.equalTo(layoutMarginsGuide)
-            make.leading.trailing.equalToSuperview().priority(.low)
-            make.height.equalTo(0)
+            make.trailing.equalTo(layoutMarginsGuide)
+            make.centerY.equalTo(placeholderView)
         }
     }
 }

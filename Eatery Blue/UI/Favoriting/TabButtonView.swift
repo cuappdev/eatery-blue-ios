@@ -74,8 +74,9 @@ class TabButtonView: ButtonView<UIView> {
         container.layer.shadowOpacity = 0.4
         container.layer.shadowOffset = CGSize(width: 0, height: 0)
 
-        container.layer.cornerRadius = 9
+        container.layer.cornerRadius = 17
         container.layer.borderWidth = 1
+        container.clipsToBounds = true
     }
 
     private func setUpConstraints() {
