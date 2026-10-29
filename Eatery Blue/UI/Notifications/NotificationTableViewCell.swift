@@ -42,6 +42,8 @@ class NotificationTableViewCell: UITableViewCell {
 
     private func setupSelf() {
         selectionStyle = .none
+        backgroundColor = UIColor.Eatery.default00
+        contentView.backgroundColor = UIColor.Eatery.default00
         setupTitleLabel()
         setupBodyLabel()
         setupStarImage()
@@ -50,14 +52,14 @@ class NotificationTableViewCell: UITableViewCell {
 
     private func setupTitleLabel() {
         titleLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        titleLabel.textColor = .Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.numberOfLines = 0
         contentView.addSubview(titleLabel)
     }
 
     private func setupBodyLabel() {
         bodyLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        bodyLabel.textColor = .Eatery.gray05
+        bodyLabel.textColor = UIColor.Eatery.gray05
         bodyLabel.numberOfLines = 0
         contentView.addSubview(bodyLabel)
     }

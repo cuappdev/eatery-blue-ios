@@ -44,7 +44,7 @@ class FavoritesEateriesView: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColor.Eatery.default00
+        backgroundColor = UIColor.Eatery.surface
 
         setUpTableView()
         addSubview(tableView)
@@ -63,7 +63,7 @@ class FavoritesEateriesView: UIView {
         )
         tableView.delegate = self
         tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColor.Eatery.default00
+        tableView.backgroundColor = UIColor.Eatery.surface
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 82
         tableView.showsVerticalScrollIndicator = false

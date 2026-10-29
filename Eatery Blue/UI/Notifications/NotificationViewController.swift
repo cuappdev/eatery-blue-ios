@@ -68,7 +68,7 @@ class NotificationViewController: UIViewController {
         super.viewDidLoad()
 
         viewRespectsSystemMinimumLayoutMargins = false
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
         setupNavigationView()
         setupTitleLabel()
@@ -82,7 +82,7 @@ class NotificationViewController: UIViewController {
     private func setupTitleLabel() {
         titleLabel.text = "Favorite Items"
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
-        titleLabel.textColor = .Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .left
 
         view.addSubview(titleLabel)
@@ -102,8 +102,9 @@ class NotificationViewController: UIViewController {
         notificationTableView.delegate = self
         notificationTableView.dataSource = self
         notificationTableView.separatorStyle = .none
+        notificationTableView.backgroundColor = UIColor.Eatery.default00
         notificationTableView.rowHeight = UITableView.automaticDimension
-        refreshControl.tintColor = .Eatery.default00
+        refreshControl.tintColor = UIColor.Eatery.gray05
         refreshControl.addTarget(
             self,
             action: #selector(didRefresh(_:)),
@@ -159,7 +160,8 @@ class NotificationViewController: UIViewController {
         stack.alignment = .center
         stack.spacing = 12
 
-        let imageView = UIImageView(image: UIImage(named: "Notifications Bell"))
+        let imageView = UIImageView(image: UIImage(named: "Notifications Bell")?.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = UIColor.Eatery.primaryText
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
             make.width.height.equalTo(54)
@@ -168,6 +170,7 @@ class NotificationViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = "Nothing here...yet!"
         titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
@@ -175,7 +178,7 @@ class NotificationViewController: UIViewController {
         messageLabel.text =
             "When your favorite menu items are being\n served in a dining hall, it will show up here."
         messageLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        messageLabel.textColor = .Eatery.gray05
+        messageLabel.textColor = UIColor.Eatery.gray05
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
 
@@ -218,6 +221,7 @@ class NotificationViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = "Hmm, no chow here (yet)."
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 

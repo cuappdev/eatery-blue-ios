@@ -53,7 +53,7 @@ class FavoritesNavigationView: UIView {
 
     private func setUpSelf() {
         layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 16)
-        backgroundColor = UIColor.Eatery.default00
+        backgroundColor = UIColor.Eatery.surface
 
         addSubview(backButton)
         setUpBackButton()
@@ -79,10 +79,10 @@ class FavoritesNavigationView: UIView {
         backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
         backButton.content.tintColor = UIColor.Eatery.primaryText
         backButton.content.contentMode = .scaleAspectFit
-        backButton.shadowColor = UIColor.Eatery.primaryText
+        backButton.shadowColor = UIColor.Eatery.shadowLight
         backButton.shadowOffset = CGSize(width: 0, height: 4)
         backButton.shadowOpacity = 0.25
-        backButton.backgroundColor = UIColor.Eatery.default00
+        backButton.backgroundColor = UIColor.Eatery.card
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
         backButton.buttonPress { [weak self] _ in

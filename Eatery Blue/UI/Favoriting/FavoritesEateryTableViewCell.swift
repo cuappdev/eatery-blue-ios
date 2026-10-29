@@ -161,15 +161,19 @@ class FavoritesEateryTableViewCell: UITableViewCell {
     }
 
     private func setUpContainer() {
+        container.backgroundColor = UIColor.Eatery.card
         container.layer.cornerRadius = 8
-        container.layer.borderWidth = 1
-        container.layer.borderColor = UIColor.Eatery.gray00.cgColor
-        container.layer.shadowColor = UIColor.Eatery.gray03.cgColor
-        container.layer.shadowRadius = 16
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        container.layer.shadowRadius = 6
         container.layer.shadowOpacity = 0.25
-        container.layer.shadowOffset = CGSize(width: 0, height: 4)
-        container.layer.backgroundColor = UIColor.Eatery.default00.cgColor
+        container.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
     }
 
     private func setUpFavoriteButton(_ eatery: Eatery) {

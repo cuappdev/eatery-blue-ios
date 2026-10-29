@@ -35,7 +35,7 @@ class NotificationNavigationView: UIView {
 
     private func setUpSelf() {
         layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 4, right: 16)
-        backgroundColor = .white
+        backgroundColor = UIColor.Eatery.default00
 
         addSubview(backButton)
         setUpBackButton()
@@ -47,10 +47,13 @@ class NotificationNavigationView: UIView {
     }
 
     private func setUpBackButton() {
-        backButton.content.image = UIImage(named: "ArrowLeft")
-        backButton.shadowColor = UIColor.Eatery.black
+        backButton.content.image = UIImage(named: "ArrowLeft")?.withRenderingMode(.alwaysTemplate)
+        backButton.content.tintColor = UIColor.Eatery.primaryText
+        backButton.content.contentMode = .scaleAspectFit
+        backButton.shadowColor = UIColor.Eatery.primaryText
         backButton.shadowOffset = CGSize(width: 0, height: 4)
-        backButton.backgroundColor = .white
+        backButton.shadowOpacity = 0.25
+        backButton.backgroundColor = UIColor.Eatery.default00
         backButton.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 16)
 
         backButton.buttonPress { [weak self] _ in
