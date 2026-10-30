@@ -13,7 +13,6 @@ class HomeSearchEmptyViewController: UIViewController {
 
     let scrollView = UIScrollView()
     let stackView = UIStackView()
-    let favoritesView = CarouselViewCompact()
     let recentsView = SearchRecentsView()
 
     override func viewDidLoad() {
@@ -50,17 +49,8 @@ class HomeSearchEmptyViewController: UIViewController {
         stackView.alignment = .fill
         stackView.spacing = 24
 
-        stackView.addArrangedSubview(favoritesView)
-        setUpFavoritesView()
-
         stackView.addArrangedSubview(recentsView)
         setUpRecentsView()
-    }
-
-    private func setUpFavoritesView() {
-        favoritesView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        favoritesView.scrollView.contentInset = favoritesView.layoutMargins
-        favoritesView.titleLabel.text = "Favorites"
     }
 
     private func setUpRecentsView() {

@@ -37,7 +37,6 @@ class HomeSearchModelController: HomeSearchViewController {
             let eateries = try await Networking.default.loadAllEatery()
             allEateries = eateries
             contentController.setUp(eateries)
-            emptyController.setUp(eateries)
         } catch {
             logger.error("\(error)")
         }
