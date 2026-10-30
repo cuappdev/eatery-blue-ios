@@ -14,11 +14,15 @@ class FavoritesEateryTableViewCell: UITableViewCell {
     private let availableLabel = UILabel()
     private let chevronImageView = UIImageView()
     private let container = UIView()
+    private let detailStackView = UIStackView()
     private let favoriteButton = ButtonView(content: UIView())
     private let favoriteButtonImage = UIImageView()
     private let headerContainer = UIView()
+    private let locationLabel = UILabel()
     private let nameLabel = UILabel()
-    private let stackView = UIStackView()
+    private let rootStackView = UIStackView()
+    private let spacer = UIView()
+    private let statusLabel = UILabel()
 
     // MARK: - Properties (data)
 
@@ -52,59 +56,19 @@ class FavoritesEateryTableViewCell: UITableViewCell {
         chevronImageView.isHidden = !availableToday
         setUpFavoriteButton(eatery)
 
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        locationLabel.text = eatery.location.validated() ?? eatery.location
 
-        if availableToday {
-            let spacer = UIView()
-            spacer.backgroundColor = .Eatery.gray01
-            stackView.addArrangedSubview(spacer)
-            spacer.snp.makeConstraints { make in
-                make.height.equalTo(1)
-                make.width.equalToSuperview()
-            }
-
-            let locationLabel = UILabel()
-            locationLabel.text = eatery.location.validated() ?? eatery.location
-            locationLabel.font = .systemFont(ofSize: 13, weight: .regular)
-            locationLabel.textColor = .Eatery.secondaryText
-            locationLabel.numberOfLines = 0
-            stackView.addArrangedSubview(locationLabel)
-
-            if let statusText = statusDetail(for: eatery) {
-                let statusLabel = UILabel()
-                statusLabel.text = statusText
-                statusLabel.font = .systemFont(ofSize: 13, weight: .medium)
-                statusLabel.textColor = eatery.isOpen ? .Eatery.green : .Eatery.secondaryText
-                stackView.addArrangedSubview(statusLabel)
-            }
-        }
-
-        if expanded, availableToday {
-            chevronImageView.transform = CGAffineTransform(rotationAngle: .pi)
-            stackView.isHidden = false
-            headerContainer.snp.remakeConstraints { make in
-                make.top.leading.trailing.equalTo(container.layoutMarginsGuide)
-            }
-            stackView.snp.remakeConstraints { make in
-                make.top.equalTo(headerContainer.snp.bottom).offset(12)
-                make.leading.trailing.equalTo(container.layoutMarginsGuide)
-                make.bottom.equalTo(container.layoutMarginsGuide)
-            }
+        if let statusText = statusDetail(for: eatery) {
+            statusLabel.text = statusText
+            statusLabel.textColor = eatery.isOpen ? .Eatery.green : .Eatery.secondaryText
+            statusLabel.isHidden = false
         } else {
-            chevronImageView.transform = .identity
-            stackView.isHidden = true
-            headerContainer.snp.remakeConstraints { make in
-                make.top.leading.trailing.bottom.equalTo(container.layoutMarginsGuide)
-            }
-            stackView.snp.remakeConstraints { make in
-                make.top.equalTo(headerContainer.snp.bottom)
-                make.leading.trailing.equalTo(container.layoutMarginsGuide)
-                make.height.equalTo(0)
-            }
+            statusLabel.text = nil
+            statusLabel.isHidden = true
         }
 
-        setNeedsLayout()
-        layoutIfNeeded()
+        toggleChevron(expanded: expanded && availableToday)
+        detailStackView.isHidden = !(expanded && availableToday)
     }
 
     func performUnfavorite() {
@@ -120,10 +84,11 @@ class FavoritesEateryTableViewCell: UITableViewCell {
         favoriteButtonImage.image = nil
         nameLabel.text = nil
         availableLabel.text = nil
-        chevronImageView.transform = .identity
+        locationLabel.text = nil
+        statusLabel.text = nil
         chevronImageView.isHidden = false
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        stackView.isHidden = true
+        toggleChevron(expanded: false)
+        detailStackView.isHidden = true
     }
 
     // MARK: - Set Up
@@ -131,13 +96,47 @@ class FavoritesEateryTableViewCell: UITableViewCell {
     private func setUpSelf() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
+        selectionStyle = .none
 
         setUpContainer()
         contentView.addSubview(container)
 
-        headerContainer.clipsToBounds = true
-        container.addSubview(headerContainer)
+        setUpRootStackView()
+        container.addSubview(rootStackView)
 
+        setUpHeaderContainer()
+        rootStackView.addArrangedSubview(headerContainer)
+
+        setUpDetailStackView()
+        rootStackView.addArrangedSubview(detailStackView)
+        detailStackView.isHidden = true
+
+        setUpConstraints()
+    }
+
+    private func setUpContainer() {
+        container.backgroundColor = UIColor.Eatery.card
+        container.layer.cornerRadius = 8
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        container.layer.shadowRadius = 6
+        container.layer.shadowOpacity = 0.25
+        container.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+    }
+
+    private func setUpRootStackView() {
+        rootStackView.axis = .vertical
+        rootStackView.alignment = .fill
+        rootStackView.distribution = .fill
+        rootStackView.spacing = 12
+    }
+
+    private func setUpHeaderContainer() {
         headerContainer.addSubview(favoriteButton)
         favoriteButton.addSubview(favoriteButtonImage)
 
@@ -148,32 +147,61 @@ class FavoritesEateryTableViewCell: UITableViewCell {
         availableLabel.font = .systemFont(ofSize: 12, weight: .medium)
         headerContainer.addSubview(availableLabel)
 
-        setUpChevronImageView()
+        chevronImageView.image = UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate)
+        chevronImageView.tintColor = UIColor.Eatery.secondaryText
+        chevronImageView.contentMode = .scaleAspectFit
         headerContainer.addSubview(chevronImageView)
 
-        setUpStackView()
-        container.addSubview(stackView)
+        favoriteButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.size.equalTo(20)
+        }
 
-        setUpConstraints()
+        favoriteButtonImage.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
-        stackView.layoutIfNeeded()
-        stackView.isHidden = true
+        chevronImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(favoriteButton)
+            make.size.equalTo(24)
+        }
+
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(favoriteButton.snp.trailing).offset(24)
+            make.trailing.lessThanOrEqualTo(chevronImageView.snp.leading).offset(-8)
+            make.top.equalToSuperview()
+        }
+
+        availableLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.trailing.lessThanOrEqualTo(chevronImageView.snp.leading).offset(-8)
+            make.top.equalTo(nameLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview()
+        }
     }
 
-    private func setUpContainer() {
-        container.backgroundColor = UIColor.Eatery.card
-        container.layer.cornerRadius = 8
-        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
-        container.layer.shadowRadius = 6
-        container.layer.shadowOpacity = 0.25
-        container.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        container.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    }
+    private func setUpDetailStackView() {
+        detailStackView.axis = .vertical
+        detailStackView.alignment = .fill
+        detailStackView.distribution = .fill
+        detailStackView.spacing = 10
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
+        spacer.backgroundColor = .Eatery.gray01
+        detailStackView.addArrangedSubview(spacer)
+        spacer.snp.makeConstraints { make in
+            make.height.equalTo(1)
+        }
+
+        locationLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        locationLabel.textColor = .Eatery.secondaryText
+        locationLabel.numberOfLines = 0
+        detailStackView.addArrangedSubview(locationLabel)
+
+        statusLabel.font = .systemFont(ofSize: 13, weight: .medium)
+        statusLabel.numberOfLines = 0
+        detailStackView.addArrangedSubview(statusLabel)
     }
 
     private func setUpFavoriteButton(_ eatery: Eatery) {
@@ -217,20 +245,9 @@ class FavoritesEateryTableViewCell: UITableViewCell {
         }
     }
 
-    private func setUpChevronImageView() {
-        chevronImageView.image = UIImage(systemName: "chevron.down")
-        chevronImageView.tintColor = UIColor.Eatery.secondaryText
-        chevronImageView.contentMode = .scaleAspectFit
-    }
-
-    private func setUpStackView() {
-        stackView.clipsToBounds = true
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 10
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 12, right: 0)
-        stackView.isLayoutMarginsRelativeArrangement = true
+    private func toggleChevron(expanded: Bool) {
+        let name = expanded ? "chevron.up" : "chevron.down"
+        chevronImageView.image = UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
     }
 
     private func setUpConstraints() {
@@ -238,48 +255,17 @@ class FavoritesEateryTableViewCell: UITableViewCell {
             make.edges.equalTo(contentView).inset(UIEdgeInsets(top: 0, left: 16, bottom: 12, right: 16))
         }
 
-        headerContainer.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalTo(container.layoutMarginsGuide)
-        }
-
-        favoriteButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.size.equalTo(20)
-        }
-
-        favoriteButtonImage.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-
-        chevronImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.centerY.equalTo(favoriteButton)
-            make.size.equalTo(24)
-        }
-
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(favoriteButton.snp.trailing).offset(24)
-            make.trailing.lessThanOrEqualTo(chevronImageView.snp.leading).offset(-8)
-            make.top.equalToSuperview()
-        }
-
-        availableLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel)
-            make.trailing.lessThanOrEqualTo(chevronImageView.snp.leading).offset(-8)
-            make.top.equalTo(nameLabel.snp.bottom).offset(4)
-            make.bottom.equalToSuperview()
-        }
-
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(headerContainer.snp.bottom)
-            make.leading.trailing.equalTo(container.layoutMarginsGuide)
-            make.height.equalTo(0)
+        rootStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(16)
         }
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard container.bounds.width > 0, container.bounds.height > 0 else {
+            container.layer.shadowPath = nil
+            return
+        }
         container.layer.shadowPath = UIBezierPath(roundedRect: container.bounds, cornerRadius: 8).cgPath
     }
 }

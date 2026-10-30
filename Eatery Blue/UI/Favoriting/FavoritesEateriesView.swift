@@ -18,14 +18,14 @@ class FavoritesEateriesView: UIView {
 
     var eateries: [Eatery] = [] {
         didSet {
-            expanded.removeAll()
+            expandedEateryIds.removeAll()
             sortEateries()
         }
     }
 
     var navigationController: UINavigationController?
 
-    private var expanded: Set<Int> = []
+    private var expandedEateryIds: [Int] = []
     private var sortedEateries: [Eatery] = []
 
     private lazy var dataSource = makeDataSource()
@@ -94,7 +94,11 @@ class FavoritesEateriesView: UIView {
 
         emptyView.isHidden = !sortedEateries.isEmpty
         tableView.isHidden = sortedEateries.isEmpty
-        applySnapshot(animated: true)
+        applySnapshot()
+    }
+
+    private func eateryId(_ eatery: Eatery) -> Int {
+        eatery.cornellId ?? eatery.id
     }
 
     private func makeDataSource() -> DataSource {
@@ -102,16 +106,16 @@ class FavoritesEateriesView: UIView {
             guard let self else { return UITableViewCell() }
 
             switch row {
-            case let .eatery(eatery, expanded):
+            case let .eatery(expandedEatery):
                 guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: FavoritesEateryTableViewCell.reuse,
                     for: indexPath
                 ) as? FavoritesEateryTableViewCell else { return UITableViewCell() }
 
-                cell.configure(eatery: eatery, expanded: expanded)
+                cell.configure(eatery: expandedEatery.eatery, expanded: expandedEatery.isExpanded)
                 cell.onUnfavorite = { [weak self] in
                     guard let self else { return }
-                    eateries = eateries.filter { $0.cornellId != eatery.cornellId }
+                    eateries = eateries.filter { $0.cornellId != expandedEatery.eatery.cornellId }
                 }
                 cell.selectionStyle = .none
                 return cell
@@ -123,10 +127,17 @@ class FavoritesEateriesView: UIView {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(
-            sortedEateries.enumerated().map { index, eatery in
-                .eatery(eatery, expanded.contains(index))
-            }
+            sortedEateries.map { eatery in
+                .eatery(
+                    ExpandedEatery(
+                        eatery: eatery,
+                        isExpanded: expandedEateryIds.contains(eateryId(eatery))
+                    )
+                )
+            },
+            toSection: .main
         )
+        dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
 }
@@ -138,12 +149,13 @@ extension FavoritesEateriesView: UITableViewDelegate {
         let availableToday = eatery.events.contains { $0.canonicalDay == Day() }
 
         if availableToday {
-            if expanded.contains(indexPath.row) {
-                expanded.remove(indexPath.row)
+            let id = eateryId(eatery)
+            if expandedEateryIds.contains(id) {
+                expandedEateryIds.removeAll { $0 == id }
             } else {
-                expanded.insert(indexPath.row)
+                expandedEateryIds.append(id)
             }
-            applySnapshot(animated: true)
+            applySnapshot()
         } else {
             let pageVC = EateryPageViewController(eateries: sortedEateries, index: indexPath.row)
             navigationController?.hero.isEnabled = true
@@ -179,7 +191,12 @@ extension FavoritesEateriesView {
         case main
     }
 
+    struct ExpandedEatery: Hashable {
+        let eatery: Eatery
+        var isExpanded: Bool
+    }
+
     enum Row: Hashable {
-        case eatery(Eatery, Bool)
+        case eatery(ExpandedEatery)
     }
 }
