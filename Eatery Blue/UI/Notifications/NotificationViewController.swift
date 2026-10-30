@@ -44,7 +44,6 @@ class NotificationViewController: UIViewController {
 
     private let notificationTableView = UITableView()
     private let titleLabel = UILabel()
-    private let notificationNavigationView = NotificationNavigationView()
     private let loadingView = UIActivityIndicatorView(style: .large)
     private let emptyView = UIView()
     private let errorView = UIView()
@@ -70,13 +69,65 @@ class NotificationViewController: UIViewController {
         viewRespectsSystemMinimumLayoutMargins = false
         view.backgroundColor = UIColor.Eatery.default00
 
-        setupNavigationView()
+        setUpNavigationItem()
         setupTitleLabel()
         setupTableView()
         setupLoadingView()
         setupEmptyView()
         setupErrorView()
         Task { await loadNotifications() }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        RootViewController.setStatusBarStyle(.darkContent)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isMovingFromParent {
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+    }
+
+    private func setUpNavigationItem() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
+            .font: UIFont.eateryNavigationBarTitleFont
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.Eatery.blue as Any,
+            .font: UIFont.eateryNavigationBarLargeTitleFont
+        ]
+
+        navigationItem.title = "Notifications"
+        navigationItem.largeTitleDisplayMode = .always
+
+        let standardAppearance = appearance.copy()
+        standardAppearance.configureWithDefaultBackground()
+        navigationItem.standardAppearance = standardAppearance
+
+        let scrollEdgeAppearance = appearance.copy()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+
+        let backButton = UIBarButtonItem(
+            image: UIImage(named: "ArrowLeft"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        backButton.tintColor = UIColor.Eatery.primaryText
+        navigationItem.leftBarButtonItem = backButton
+    }
+
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func setupTitleLabel() {
@@ -88,7 +139,7 @@ class NotificationViewController: UIViewController {
         view.addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(notificationNavigationView.snp.bottom).offset(26)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
             make.leading.equalToSuperview().offset(23)
             make.trailing.equalToSuperview().offset(-23)
         }
@@ -131,17 +182,6 @@ class NotificationViewController: UIViewController {
         Task {
             await fetchAndUpdateState()
             sender.endRefreshing()
-        }
-    }
-
-    private func setupNavigationView() {
-        notificationNavigationView.navigationController = navigationController
-
-        view.addSubview(notificationNavigationView)
-
-        notificationNavigationView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(140)
         }
     }
 
