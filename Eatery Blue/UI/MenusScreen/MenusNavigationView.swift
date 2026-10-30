@@ -35,6 +35,8 @@ class MenusNavigationView: NavigationView {
         largeTitleLabel.text = "Upcoming Menus"
         largeTitleLabel.textColor = UIColor.Eatery.default00
 
+        notificationButton.isHidden = true
+
         addSubview(logoRefreshControl)
         logoRefreshControl.isHidden = false
 
@@ -64,7 +66,9 @@ class MenusNavigationView: NavigationView {
     }
 
     func setFadeInProgress(_ progress: Double, animated: Bool) {
-        if progress == fadeInProgress { return }
+        if progress == fadeInProgress {
+            return
+        }
 
         let progress = max(0, min(1, progress))
         fadeInProgress = progress
