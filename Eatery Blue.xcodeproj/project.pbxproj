@@ -204,7 +204,6 @@
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
 		D5B02F8C3A7E4B29C1F6D4E2 /* FavoritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */; };
 		D8026F7A2EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */; };
-		D8563EE92EC1A38100C2F045 /* NotificationNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */; };
 		D8B191E72EC176E6004E3E97 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E62EC176E6004E3E97 /* NotificationData.swift */; };
 		D8B191E92EC179E9004E3E97 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */; };
 		F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */; };
@@ -417,7 +416,6 @@
 		D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		D8563EE62EC19BC700C2F045 /* EateryGetAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EateryGetAPI; sourceTree = "<group>"; };
 		D8563EE72EC19BC700C2F045 /* EateryModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EateryModel; sourceTree = "<group>"; };
-		D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNavigationView.swift; sourceTree = "<group>"; };
 		D8B191E62EC176E6004E3E97 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
 		D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -1066,7 +1064,6 @@
 				D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */,
 				D8B191E62EC176E6004E3E97 /* NotificationData.swift */,
 				D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */,
-				D8563EE82EC1A38100C2F045 /* NotificationNavigationView.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -1358,7 +1355,6 @@
 				5DF304C9277A345600E2C9A4 /* ReportIssueViewController.swift in Sources */,
 				5D0CDC572775256D00AD0E27 /* EateryNavigationView.swift in Sources */,
 				5D73C3812780E4F30020507C /* HomeSearchModelController.swift in Sources */,
-				D8563EE92EC1A38100C2F045 /* NotificationNavigationView.swift in Sources */,
 				5DF5F7DB27740EFB001ADCDC /* ContainerView.swift in Sources */,
 				998F6D0A2ABF2C19006B7F18 /* EateryExpandableCardContentView.swift in Sources */,
 				5DA434BE278B6EC7001337FD /* UITableViewCell+Extension.swift in Sources */,

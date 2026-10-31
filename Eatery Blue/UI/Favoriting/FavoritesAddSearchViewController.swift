@@ -58,7 +58,7 @@ class FavoritesAddSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.Eatery.default00
+        view.backgroundColor = UIColor.Eatery.surface
         navigationController?.navigationBar.isHidden = true
 
         setUpSearchContainer()
@@ -81,16 +81,16 @@ class FavoritesAddSearchViewController: UIViewController {
 
     private func setUpSearchContainer() {
         view.addSubview(searchContainer)
-        searchContainer.backgroundColor = UIColor.Eatery.default00
+        searchContainer.backgroundColor = UIColor.Eatery.surface
         searchContainer.clipsToBounds = false
 
-        searchPillBackground.backgroundColor = UIColor.Eatery.default00
+        searchPillBackground.backgroundColor = UIColor.Eatery.card
         searchPillBackground.layer.cornerRadius = 22
         searchPillBackground.layer.masksToBounds = false
-        searchPillBackground.layer.shadowColor = UIColor.Eatery.primaryText.cgColor
+        searchPillBackground.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         searchPillBackground.layer.shadowOffset = .zero
         searchPillBackground.layer.shadowRadius = 12
-        searchPillBackground.layer.shadowOpacity = 0.08
+        searchPillBackground.layer.shadowOpacity = 0.25
         searchContainer.addSubview(searchPillBackground)
 
         searchBar.placeholder = "Search for grub..."
@@ -108,11 +108,11 @@ class FavoritesAddSearchViewController: UIViewController {
         closeButton.content.image = UIImage(systemName: "xmark", withConfiguration: closeConfig)
         closeButton.content.tintColor = UIColor.Eatery.primaryText
         closeButton.content.contentMode = .scaleAspectFit
-        closeButton.shadowColor = UIColor.Eatery.primaryText
+        closeButton.shadowColor = UIColor.Eatery.shadowLight
         closeButton.shadowOffset = .zero
         closeButton.shadowRadius = 12
-        closeButton.shadowOpacity = 0.08
-        closeButton.backgroundColor = UIColor.Eatery.default00
+        closeButton.shadowOpacity = 0.25
+        closeButton.backgroundColor = UIColor.Eatery.card
         closeButton.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         closeButton.buttonPress { [weak self] _ in
             self?.dismissSearch()
@@ -159,7 +159,7 @@ class FavoritesAddSearchViewController: UIViewController {
         view.addSubview(resultsTableView)
         resultsTableView.isHidden = true
         resultsTableView.separatorStyle = .none
-        resultsTableView.backgroundColor = UIColor.Eatery.default00
+        resultsTableView.backgroundColor = UIColor.Eatery.surface
         resultsTableView.dataSource = self
         resultsTableView.delegate = self
         resultsTableView.keyboardDismissMode = .onDrag

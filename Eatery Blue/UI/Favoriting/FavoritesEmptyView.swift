@@ -32,7 +32,7 @@ class FavoritesEmptyView: UIView {
     // MARK: - Set Up
 
     private func setUpSelf() {
-        backgroundColor = UIColor.Eatery.default00
+        backgroundColor = UIColor.Eatery.surface
         isUserInteractionEnabled = false
 
         addSubview(stackView)

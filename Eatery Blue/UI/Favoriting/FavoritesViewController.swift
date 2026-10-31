@@ -57,7 +57,7 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
 
         viewRespectsSystemMinimumLayoutMargins = false
-        view.backgroundColor = UIColor.Eatery.default00
+        view.backgroundColor = UIColor.Eatery.surface
 
         setUpFavoritesNavigationView()
         view.addSubview(favoritesNavigationView)

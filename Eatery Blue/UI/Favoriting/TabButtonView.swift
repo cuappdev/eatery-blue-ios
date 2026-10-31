@@ -69,14 +69,15 @@ class TabButtonView: ButtonView<UIView> {
     }
 
     private func setUpContainer() {
-        container.layer.shadowColor = UIColor.Eatery.gray02.cgColor
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         container.layer.shadowRadius = 0
-        container.layer.shadowOpacity = 0.4
-        container.layer.shadowOffset = CGSize(width: 0, height: 0)
+        container.layer.shadowOpacity = 0.25
+        container.layer.shadowOffset = CGSize(width: 0, height: 0.5)
 
         container.layer.cornerRadius = 17
         container.layer.borderWidth = 1
         container.clipsToBounds = true
+        deselect()
     }
 
     private func setUpConstraints() {
@@ -86,9 +87,10 @@ class TabButtonView: ButtonView<UIView> {
     }
 
     private func select() {
-        container.backgroundColor = UIColor.Eatery.default00
+        container.backgroundColor = UIColor.Eatery.card
         label.textColor = UIColor.Eatery.blue
         container.layer.borderColor = UIColor.Eatery.blue.cgColor
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         container.layer.shadowRadius = 6
     }
 
@@ -96,7 +98,14 @@ class TabButtonView: ButtonView<UIView> {
         container.backgroundColor = UIColor.Eatery.surface
         label.textColor = UIColor.Eatery.secondaryText
         container.layer.borderColor = UIColor.Eatery.gray02.cgColor
+        container.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         container.layer.shadowRadius = 0
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        selected ? select() : deselect()
     }
 }
 

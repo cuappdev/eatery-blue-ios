@@ -611,7 +611,6 @@ extension MenusViewController: UIScrollViewDelegate {
         let progress = max(0, min(1, 1 - offset / fadeDistance))
         navigationView.logoRefreshControl.alpha = progress
         navigationView.largeTitleLabel.alpha = progress
-        navigationView.notificationButton.alpha = progress
     }
 
     func scrollViewWillEndDragging(
