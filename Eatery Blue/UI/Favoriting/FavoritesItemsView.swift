@@ -19,7 +19,7 @@ class FavoritesItemsView: UIView {
     /// All of the available eateries, used to find where favorite items are
     var allEateries: [Eatery] = [] {
         didSet {
-            expanded.removeAll()
+            expandedItemNames.removeAll()
             findFavorites()
         }
     }
@@ -27,12 +27,12 @@ class FavoritesItemsView: UIView {
     /// A users favorite items, taken from Core Data
     var favoriteItems: [ItemMetadata] = [] {
         didSet {
-            expanded.removeAll()
+            expandedItemNames.removeAll()
             findFavorites()
         }
     }
 
-    private var expanded: Set<Int> = []
+    private var expandedItemNames: [String] = []
     private var itemData: [String: [EventType: Set<String>]] = [:]
     private var sortedFavorites: [ItemMetadata] = []
 
@@ -54,7 +54,7 @@ class FavoritesItemsView: UIView {
     // MARK: - Setup
 
     private func setUpSelf() {
-        backgroundColor = UIColor.Eatery.default00
+        backgroundColor = UIColor.Eatery.surface
 
         setUpTableView()
         addSubview(tableView)
@@ -70,7 +70,7 @@ class FavoritesItemsView: UIView {
         tableView.register(FavoritesItemsTableViewCell.self, forCellReuseIdentifier: FavoritesItemsTableViewCell.reuse)
         tableView.delegate = self
         tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColor.Eatery.default00
+        tableView.backgroundColor = UIColor.Eatery.surface
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 82
         tableView.showsVerticalScrollIndicator = false
@@ -138,22 +138,25 @@ class FavoritesItemsView: UIView {
 
         emptyView.isHidden = !sortedFavorites.isEmpty
         tableView.isHidden = sortedFavorites.isEmpty
-        applySnapshot(animated: true, animation: .automatic)
+        applySnapshot()
     }
-
-    // MARK: - Table View Data Source
 
     private func makeDataSource() -> DataSource {
         return DataSource(tableView: tableView) { [weak self] tableView, indexPath, row in
             guard let self,
-                  case let .item(item, expanded) = row,
+                  case let .item(expandedItem) = row,
                   let cell = tableView.dequeueReusableCell(
                       withIdentifier: FavoritesItemsTableViewCell.reuse,
                       for: indexPath
                   ) as? FavoritesItemsTableViewCell
             else { return UITableViewCell() }
 
-            cell.configure(item: item, expanded: expanded, itemData: itemData[item.itemName ?? ""])
+            let name = expandedItem.item.itemName ?? ""
+            cell.configure(
+                item: expandedItem.item,
+                expanded: expandedItem.isExpanded,
+                itemData: itemData[name]
+            )
             cell.onUnfavorite = { [weak self] in
                 guard let self else { return }
                 favoriteItems = favoriteItems.filter(\.isFavorite)
@@ -163,19 +166,21 @@ class FavoritesItemsView: UIView {
         }
     }
 
-    private func applySnapshot(animated: Bool = true, animation: UITableView.RowAnimation = .fade) {
+    private func applySnapshot(animated: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(
             sortedFavorites.map { item in
                 .item(
-                    item,
-                    expanded.contains(sortedFavorites.firstIndex(of: item) ?? 0)
+                    ExpandedItem(
+                        item: item,
+                        isExpanded: expandedItemNames.contains(item.itemName ?? "")
+                    )
                 )
-            }
+            },
+            toSection: .main
         )
-
-        dataSource.defaultRowAnimation = animation
+        dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
 }
@@ -183,17 +188,15 @@ class FavoritesItemsView: UIView {
 extension FavoritesItemsView: UITableViewDelegate {
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.row < sortedFavorites.count else { return }
-        if itemData[sortedFavorites[indexPath.row].itemName ?? ""] == nil {
-            return
-        }
+        let item = sortedFavorites[indexPath.row]
+        guard let name = item.itemName, itemData[name] != nil else { return }
 
-        if expanded.contains(indexPath.row) {
-            expanded.remove(indexPath.row)
+        if expandedItemNames.contains(name) {
+            expandedItemNames.removeAll { $0 == name }
         } else {
-            expanded.insert(indexPath.row)
+            expandedItemNames.append(name)
         }
-
-        applySnapshot(animated: true)
+        applySnapshot()
     }
 
     func tableView(
@@ -223,7 +226,12 @@ extension FavoritesItemsView {
         case main
     }
 
+    struct ExpandedItem: Hashable {
+        let item: ItemMetadata
+        var isExpanded: Bool
+    }
+
     enum Row: Hashable {
-        case item(ItemMetadata, Bool)
+        case item(ExpandedItem)
     }
 }

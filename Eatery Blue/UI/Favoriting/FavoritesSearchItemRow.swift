@@ -59,14 +59,12 @@ final class FavoritesSearchItemRow: UIView {
         backgroundColor = .clear
         addSubview(card)
 
-        card.backgroundColor = UIColor.Eatery.default00
+        card.backgroundColor = UIColor.Eatery.card
         card.layer.cornerRadius = 8
-        card.layer.borderWidth = 1
-        card.layer.borderColor = UIColor.Eatery.gray00.cgColor
-        card.layer.shadowColor = UIColor.Eatery.gray03.cgColor
+        card.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
         card.layer.shadowOpacity = 0.25
-        card.layer.shadowRadius = 16
-        card.layer.shadowOffset = CGSize(width: 0, height: 4)
+        card.layer.shadowRadius = 6
+        card.layer.shadowOffset = CGSize(width: 0, height: 0.5)
 
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = UIColor.Eatery.primaryText
@@ -129,5 +127,11 @@ final class FavoritesSearchItemRow: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         card.layer.shadowPath = UIBezierPath(roundedRect: card.bounds, cornerRadius: 8).cgPath
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        card.layer.shadowColor = UIColor.Eatery.shadowLight.cgColor
     }
 }

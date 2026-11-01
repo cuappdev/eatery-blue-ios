@@ -17,7 +17,7 @@ class NotificationViewController: UIViewController {
     private static let mockNotifications: [HubNotification] = [
         HubNotification(
             id: 1,
-            title: "Chicken Nuggets",
+            title: "**Chicken** Nuggets",
             body:
             "Chicken Nuggets is being served at Keeton House, Okenshields, and Morrison Dining.",
             isRead: false,
@@ -25,7 +25,7 @@ class NotificationViewController: UIViewController {
         ),
         HubNotification(
             id: 2,
-            title: "Orange Chicken",
+            title: "Or**ange Chi**cken",
             body:
             "Orange Chicken is being served at Becker House and Okenshields.",
             isRead: true,
@@ -34,7 +34,7 @@ class NotificationViewController: UIViewController {
         HubNotification(
             id: 3,
             title: "Scrambled Eggs",
-            body: "Scrambled Eggs is being served at Rose House.",
+            body: "Scrambled Eggs is being **served at Rose House.**",
             isRead: false,
             createdAt: Date().addingTimeInterval(-7200)
         )
@@ -44,7 +44,6 @@ class NotificationViewController: UIViewController {
 
     private let notificationTableView = UITableView()
     private let titleLabel = UILabel()
-    private let notificationNavigationView = NotificationNavigationView()
     private let loadingView = UIActivityIndicatorView(style: .large)
     private let emptyView = UIView()
     private let errorView = UIView()
@@ -68,9 +67,9 @@ class NotificationViewController: UIViewController {
         super.viewDidLoad()
 
         viewRespectsSystemMinimumLayoutMargins = false
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Eatery.default00
 
-        setupNavigationView()
+        setUpNavigationItem()
         setupTitleLabel()
         setupTableView()
         setupLoadingView()
@@ -79,16 +78,68 @@ class NotificationViewController: UIViewController {
         Task { await loadNotifications() }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        RootViewController.setStatusBarStyle(.darkContent)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isMovingFromParent {
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+    }
+
+    private func setUpNavigationItem() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
+            .font: UIFont.eateryNavigationBarTitleFont
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.Eatery.blue as Any,
+            .font: UIFont.eateryNavigationBarLargeTitleFont
+        ]
+
+        navigationItem.title = "Notifications"
+        navigationItem.largeTitleDisplayMode = .always
+
+        let standardAppearance = appearance.copy()
+        standardAppearance.configureWithDefaultBackground()
+        navigationItem.standardAppearance = standardAppearance
+
+        let scrollEdgeAppearance = appearance.copy()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+
+        let backButton = UIBarButtonItem(
+            image: UIImage(named: "ArrowLeft"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        backButton.tintColor = UIColor.Eatery.primaryText
+        navigationItem.leftBarButtonItem = backButton
+    }
+
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+
     private func setupTitleLabel() {
         titleLabel.text = "Favorite Items"
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
-        titleLabel.textColor = .Eatery.black
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .left
 
         view.addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(notificationNavigationView.snp.bottom).offset(26)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
             make.leading.equalToSuperview().offset(23)
             make.trailing.equalToSuperview().offset(-23)
         }
@@ -102,8 +153,9 @@ class NotificationViewController: UIViewController {
         notificationTableView.delegate = self
         notificationTableView.dataSource = self
         notificationTableView.separatorStyle = .none
+        notificationTableView.backgroundColor = UIColor.Eatery.default00
         notificationTableView.rowHeight = UITableView.automaticDimension
-        refreshControl.tintColor = .Eatery.default00
+        refreshControl.tintColor = UIColor.Eatery.gray05
         refreshControl.addTarget(
             self,
             action: #selector(didRefresh(_:)),
@@ -133,17 +185,6 @@ class NotificationViewController: UIViewController {
         }
     }
 
-    private func setupNavigationView() {
-        notificationNavigationView.navigationController = navigationController
-
-        view.addSubview(notificationNavigationView)
-
-        notificationNavigationView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(140)
-        }
-    }
-
     private func setupLoadingView() {
         loadingView.hidesWhenStopped = true
         view.addSubview(loadingView)
@@ -159,7 +200,8 @@ class NotificationViewController: UIViewController {
         stack.alignment = .center
         stack.spacing = 12
 
-        let imageView = UIImageView(image: UIImage(named: "Notifications Bell"))
+        let imageView = UIImageView(image: UIImage(named: "NotificationsBell")?.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = UIColor.Eatery.primaryText
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
             make.width.height.equalTo(54)
@@ -168,6 +210,7 @@ class NotificationViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = "Nothing here...yet!"
         titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
@@ -175,7 +218,7 @@ class NotificationViewController: UIViewController {
         messageLabel.text =
             "When your favorite menu items are being\n served in a dining hall, it will show up here."
         messageLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        messageLabel.textColor = .Eatery.gray05
+        messageLabel.textColor = UIColor.Eatery.gray05
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
 
@@ -197,8 +240,9 @@ class NotificationViewController: UIViewController {
         }
 
         emptyView.snp.makeConstraints { make in
-            make.centerX.equalTo(notificationTableView)
-            make.top.equalTo(notificationTableView).offset(80)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.greaterThanOrEqualTo(notificationTableView).offset(16)
         }
     }
 
@@ -218,6 +262,7 @@ class NotificationViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = "Hmm, no chow here (yet)."
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
@@ -247,8 +292,9 @@ class NotificationViewController: UIViewController {
         }
 
         errorView.snp.makeConstraints { make in
-            make.centerX.equalTo(notificationTableView)
-            make.top.equalTo(notificationTableView).offset(80)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.greaterThanOrEqualTo(notificationTableView).offset(16)
         }
     }
 

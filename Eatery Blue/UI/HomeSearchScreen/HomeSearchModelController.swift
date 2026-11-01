@@ -37,7 +37,6 @@ class HomeSearchModelController: HomeSearchViewController {
             let eateries = try await Networking.default.loadAllEatery()
             allEateries = eateries
             contentController.setUp(eateries)
-            emptyController.setUp(eateries)
         } catch {
             logger.error("\(error)")
         }
@@ -46,8 +45,11 @@ class HomeSearchModelController: HomeSearchViewController {
 
 extension HomeSearchModelController: UISearchBarDelegate {
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
-        emptyController.view.alpha = searchText.isEmpty ? 1 : 0
-        contentController.view.alpha = searchText.isEmpty ? 0 : 1
+        let showingEmpty = searchText.isEmpty
+        emptyController.view.alpha = showingEmpty ? 1 : 0
+        emptyController.view.isUserInteractionEnabled = showingEmpty
+        contentController.view.alpha = showingEmpty ? 0 : 1
+        contentController.view.isUserInteractionEnabled = !showingEmpty
 
         contentController.searchTextDidChange(searchText)
     }
@@ -66,18 +68,53 @@ extension HomeSearchModelController: HomeSearchEmptyModelControllerDelegate {
         _: HomeSearchEmptyModelController,
         didSelectRecentSearch recentSearch: RecentSearch
     ) {
-        Task {
+        Task { @MainActor in
             spinner.startAnimating()
             view.isUserInteractionEnabled = false
-            if let eatery = await Networking.default.loadEatery(by: Int(recentSearch.eateryID)) {
+            defer {
                 spinner.stopAnimating()
                 view.isUserInteractionEnabled = true
-                let viewController = EateryModelController()
-                viewController.setUp(eatery: eatery, isTracking: true)
-                navigationController?.hero.isEnabled = false
-                navigationController?.pushViewController(viewController, animated: true)
-                viewController.setUpMenu(eatery: eatery)
+            }
+
+            if allEateries.isEmpty {
+                await updateEateriesFromNetworking()
+            }
+
+            guard let eatery = resolveEatery(for: recentSearch) else {
+                logger.error(
+                    "Failed to open recent search \(recentSearch.title ?? "") id=\(recentSearch.eateryID)"
+                )
+                return
+            }
+
+            let viewController = EateryModelController()
+            viewController.setUp(eatery: eatery, isTracking: true)
+            navigationController?.hero.isEnabled = false
+            navigationController?.pushViewController(viewController, animated: true)
+            viewController.setUpMenu(eatery: eatery)
+        }
+    }
+
+    private func resolveEatery(for recentSearch: RecentSearch) -> Eatery? {
+        let eateryID = Int(recentSearch.eateryID)
+
+        if eateryID != 0,
+           let eatery = allEateries.first(where: { $0.id == eateryID || $0.cornellId == eateryID }) {
+            return eatery
+        }
+
+        if let title = recentSearch.title {
+            if recentSearch.type == "item",
+               let subtitle = recentSearch.subtitle,
+               let eatery = allEateries.first(where: { $0.name == subtitle }) {
+                return eatery
+            }
+
+            if let eatery = allEateries.first(where: { $0.name == title }) {
+                return eatery
             }
         }
+
+        return nil
     }
 }

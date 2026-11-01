@@ -109,21 +109,20 @@ class Networking {
     }
 
     func loadEatery(by id: Int) async -> Eatery? {
-        var eatery: Eatery?
-        if let url = URL(string: "\(baseUrl)\(id)/") {
-            let eateryApi = EateryAPI(url: url)
-            do {
-                eatery = try await eateryCache.fetchByID(
-                    maxStaleness: timeUntilFiveMinutesIntoNextHour(),
-                    id: id,
-                    fetchByID: eateryApi.eatery
-                )
-            } catch {
-                logger.error("Failed to load eatery \(id)")
-                return nil
-            }
+        let url = baseUrl
+            .appendingPathComponent("eateries")
+            .appendingPathComponent("\(id)")
+        let eateryApi = EateryAPI(url: url)
+        do {
+            return try await eateryCache.fetchByID(
+                maxStaleness: timeUntilFiveMinutesIntoNextHour(),
+                id: id,
+                fetchByID: eateryApi.eatery
+            )
+        } catch {
+            logger.error("Failed to load eatery \(id)")
+            return nil
         }
-        return eatery
     }
 
     func loadEateryByDay(day: Int) async throws -> [Eatery] {

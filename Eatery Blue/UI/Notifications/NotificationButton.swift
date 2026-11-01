@@ -121,7 +121,8 @@ class NotificationButton: ButtonView<UIView> {
     }
 
     private func setUpNotificationBellImageView() {
-        notificationBellImageView.image = UIImage(named: "Bell")
+        notificationBellImageView.image = UIImage(named: "Bell")?.withRenderingMode(.alwaysTemplate)
+        notificationBellImageView.tintColor = UIColor.Eatery.default00
     }
 
     private func setUpNotificationDotImageView() {
