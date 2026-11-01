@@ -150,6 +150,7 @@
 		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
 		5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */; };
 		65623D66CAD74719B46FCF4C /* FavoritesEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B889EF68DEE4A2E89525648 /* FavoritesEmptyView.swift */; };
+		76EEC39A3096B1EE000430F0 /* NSAttributedString+Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EEC3993096B1E6000430F0 /* NSAttributedString+Markdown.swift */; };
 		8B26C86976414B0DAB6E9907 /* FavoritesSearchEateryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AC623C544446D1A573B643 /* FavoritesSearchEateryCell.swift */; };
 		957397B32821C50200FFB687 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957397B22821C50200FFB687 /* Analytics.swift */; };
 		9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9920725729CA10E600FFFB92 /* EateryPageViewController.swift */; };
@@ -363,6 +364,7 @@
 		5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodFilterView.swift; sourceTree = "<group>"; };
 		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
+		76EEC3993096B1E6000430F0 /* NSAttributedString+Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Markdown.swift"; sourceTree = "<group>"; };
 		957397B22821C50200FFB687 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		9920725729CA10E600FFFB92 /* EateryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryPageViewController.swift; sourceTree = "<group>"; };
 		998F6D072ABCFEC0006B7F18 /* MenuDayPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDayPickerTableViewCell.swift; sourceTree = "<group>"; };
@@ -719,6 +721,7 @@
 		5DF304B327797BD200E2C9A4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				76EEC3993096B1E6000430F0 /* NSAttributedString+Markdown.swift */,
 				D00FEC992F4BF4CF0081CEE0 /* DateDecodingStrategy+Extension.swift */,
 				D063DB772F36941C00740573 /* EateryType+Extension.swift */,
 				D0B499132D6D17460044C856 /* UIView+Extension.swift */,
@@ -1288,6 +1291,7 @@
 				D0548AD72BB5201B0064489D /* ScrollHitView.swift in Sources */,
 				5D698F902788A4FE0054E1AB /* ProfileLoginModelController.swift in Sources */,
 				5DF30491277696EF00E2C9A4 /* NSTextAttachment+Extension.swift in Sources */,
+				76EEC39A3096B1EE000430F0 /* NSAttributedString+Markdown.swift in Sources */,
 				5DF304C3277A1F5500E2C9A4 /* ReportIssueView.swift in Sources */,
 				5DF5F7DF27742273001ADCDC /* CarouselViewCompact.swift in Sources */,
 				957397B32821C50200FFB687 /* Analytics.swift in Sources */,
