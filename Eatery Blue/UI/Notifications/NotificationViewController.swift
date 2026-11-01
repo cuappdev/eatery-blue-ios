@@ -200,7 +200,7 @@ class NotificationViewController: UIViewController {
         stack.alignment = .center
         stack.spacing = 12
 
-        let imageView = UIImageView(image: UIImage(named: "Notifications Bell")?.withRenderingMode(.alwaysTemplate))
+        let imageView = UIImageView(image: UIImage(named: "NotificationsBell")?.withRenderingMode(.alwaysTemplate))
         imageView.tintColor = UIColor.Eatery.primaryText
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
@@ -240,8 +240,9 @@ class NotificationViewController: UIViewController {
         }
 
         emptyView.snp.makeConstraints { make in
-            make.centerX.equalTo(notificationTableView)
-            make.top.equalTo(notificationTableView).offset(80)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.greaterThanOrEqualTo(notificationTableView).offset(16)
         }
     }
 
@@ -291,8 +292,9 @@ class NotificationViewController: UIViewController {
         }
 
         errorView.snp.makeConstraints { make in
-            make.centerX.equalTo(notificationTableView)
-            make.top.equalTo(notificationTableView).offset(80)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.greaterThanOrEqualTo(notificationTableView).offset(16)
         }
     }
 
