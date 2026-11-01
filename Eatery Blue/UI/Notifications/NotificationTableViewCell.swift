@@ -34,8 +34,16 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     func configure(notification: HubNotification) {
-        titleLabel.text = notification.title
-        bodyLabel.text = notification.body
+        titleLabel.attributedText = .fromMarkdown(
+            notification.title,
+            baseFont: titleLabel.font,
+            baseColor: titleLabel.textColor
+        )
+        bodyLabel.attributedText = .fromMarkdown(
+            notification.body,
+            baseFont: bodyLabel.font,
+            baseColor: bodyLabel.textColor
+        )
     }
 
     // MARK: setup helpers

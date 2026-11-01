@@ -17,7 +17,7 @@ class NotificationViewController: UIViewController {
     private static let mockNotifications: [HubNotification] = [
         HubNotification(
             id: 1,
-            title: "Chicken Nuggets",
+            title: "**Chicken** Nuggets",
             body:
             "Chicken Nuggets is being served at Keeton House, Okenshields, and Morrison Dining.",
             isRead: false,
@@ -25,7 +25,7 @@ class NotificationViewController: UIViewController {
         ),
         HubNotification(
             id: 2,
-            title: "Orange Chicken",
+            title: "Or**ange Chi**cken",
             body:
             "Orange Chicken is being served at Becker House and Okenshields.",
             isRead: true,
@@ -34,7 +34,7 @@ class NotificationViewController: UIViewController {
         HubNotification(
             id: 3,
             title: "Scrambled Eggs",
-            body: "Scrambled Eggs is being served at Rose House.",
+            body: "Scrambled Eggs is being **served at Rose House.**",
             isRead: false,
             createdAt: Date().addingTimeInterval(-7200)
         )
