@@ -200,8 +200,7 @@ class NotificationViewController: UIViewController {
         stack.alignment = .center
         stack.spacing = 12
 
-        let imageView = UIImageView(image: UIImage(named: "NotificationsBell")?.withRenderingMode(.alwaysTemplate))
-        imageView.tintColor = UIColor.Eatery.primaryText
+        let imageView = UIImageView(image: UIImage(named: "NotificationsBell"))
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
             make.width.height.equalTo(54)
