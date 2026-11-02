@@ -14,6 +14,7 @@ enum FavoritesStore {
         let metadata = coreDataStack.metadata(eateryId: eateryId)
         metadata.isFavorite = isFavorite
         coreDataStack.save()
+        syncEateryFavorite(isFavorite, eateryId: eateryId)
         return metadata.isFavorite
     }
 
@@ -27,6 +28,7 @@ enum FavoritesStore {
         let metadata = coreDataStack.metadata(eateryId: eateryId)
         metadata.isFavorite.toggle()
         coreDataStack.save()
+        syncEateryFavorite(metadata.isFavorite, eateryId: eateryId)
         return metadata.isFavorite
     }
 
@@ -57,6 +59,13 @@ enum FavoritesStore {
         guard let itemName else { return }
         Task {
             await FavoriteItemSyncCoordinator.shared.setFavorite(isFavorite, itemName: itemName)
+        }
+    }
+
+    private static func syncEateryFavorite(_ isFavorite: Bool, eateryId: Int?) {
+        guard let eateryId else { return }
+        Task {
+            await FavoriteItemSyncCoordinator.shared.setEateryFavorite(isFavorite, cornellId: eateryId)
         }
     }
 }
