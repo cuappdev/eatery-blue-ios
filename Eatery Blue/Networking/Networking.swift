@@ -65,6 +65,34 @@ class Networking {
         _ = try validatedData(response)
     }
 
+    func updateFavoriteEatery(cornellId: Int, isFavorite: Bool) async throws {
+        let body = try JSONEncoder().encode(FavoriteEateryRequest(cornellId: cornellId))
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/eateries"))
+            request.httpMethod = isFavorite ? "POST" : "DELETE"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        _ = try validatedData(response)
+    }
+
+    func fetchFavorites() async throws -> BackendFavorites {
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/me"))
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+        let data = try validatedData(response)
+        let user = try JSONDecoder().decode(BackendUserResponse.self, from: data).user
+        AuthStorage.saveDeviceId(user.deviceUuid)
+        return BackendFavorites(
+            itemNames: Set(user.favoritedItemNames),
+            eateryIds: Set(user.favoritedEateries.map(\.cornellId))
+        )
+    }
+
     private func performAuthorizedRequest(
         makeRequest: (String) -> URLRequest
     ) async throws -> (data: Data, statusCode: Int) {
@@ -269,75 +297,133 @@ enum UserSettingsRequestError: Error {
 actor FavoriteItemSyncCoordinator {
     static let shared = FavoriteItemSyncCoordinator()
 
-    private var pendingUpdates: [String: Bool]
+    private var pendingItemUpdates: [String: Bool]
+    private var pendingEateryUpdates: [Int: Bool]
     private var syncingItems = Set<String>()
+    private var syncingEateries = Set<Int>()
 
     private init() {
-        guard let data = UserDefaults.standard.data(forKey: UserDefaultsKeys.pendingFavoriteItemUpdates),
-              let updates = try? JSONDecoder().decode([String: Bool].self, from: data)
-        else {
-            pendingUpdates = [:]
-            return
-        }
-        pendingUpdates = updates
+        let itemData = UserDefaults.standard.data(forKey: UserDefaultsKeys.pendingFavoriteItemUpdates)
+        pendingItemUpdates = itemData.flatMap {
+            try? JSONDecoder().decode([String: Bool].self, from: $0)
+        } ?? [:]
+
+        let eateryData = UserDefaults.standard.data(forKey: UserDefaultsKeys.pendingFavoriteEateryUpdates)
+        pendingEateryUpdates = eateryData.flatMap {
+            try? JSONDecoder().decode([Int: Bool].self, from: $0)
+        } ?? [:]
     }
 
     func setFavorite(_ isFavorite: Bool, itemName: String) {
-        pendingUpdates[itemName] = isFavorite
-        persistPendingUpdates()
-        startSyncIfNeeded(for: itemName)
+        pendingItemUpdates[itemName] = isFavorite
+        persistPendingItemUpdates()
+        startItemSyncIfNeeded(for: itemName)
+    }
+
+    func setEateryFavorite(_ isFavorite: Bool, cornellId: Int) {
+        pendingEateryUpdates[cornellId] = isFavorite
+        persistPendingEateryUpdates()
+        startEaterySyncIfNeeded(for: cornellId)
     }
 
     func retryPendingUpdates() {
-        for itemName in pendingUpdates.keys {
-            startSyncIfNeeded(for: itemName)
+        for itemName in pendingItemUpdates.keys {
+            startItemSyncIfNeeded(for: itemName)
+        }
+        for eateryId in pendingEateryUpdates.keys {
+            startEaterySyncIfNeeded(for: eateryId)
         }
     }
 
-    /// Uploads locally saved favorites once so existing favorites reach the backend.
-    func migrateLocalFavoritesIfNeeded() async {
-        guard !UserDefaults.standard.bool(forKey: UserDefaultsKeys.didMigrateFavoriteItemsToBackend) else {
-            return
+    /// Merges backend favorites into Core Data once per install and uploads any
+    /// local-only favorites so upgrades do not lose existing selections.
+    func synchronizeFavoritesIfNeeded() async -> Bool {
+        guard !UserDefaults.standard.bool(forKey: UserDefaultsKeys.didRestoreFavoritesFromBackend) else {
+            return false
         }
 
         do {
-            let itemNames = try await MainActor.run {
-                try AppDelegate.shared.coreDataStack.fetchFavoriteItems().compactMap(\.itemName)
+            let remoteFavorites = try await Networking.default.fetchFavorites()
+            var restoredItemNames = remoteFavorites.itemNames
+            var restoredEateryIds = remoteFavorites.eateryIds
+            for (itemName, isFavorite) in pendingItemUpdates {
+                if isFavorite {
+                    restoredItemNames.insert(itemName)
+                } else {
+                    restoredItemNames.remove(itemName)
+                }
+            }
+            for (eateryId, isFavorite) in pendingEateryUpdates {
+                if isFavorite {
+                    restoredEateryIds.insert(eateryId)
+                } else {
+                    restoredEateryIds.remove(eateryId)
+                }
             }
 
-            for itemName in itemNames {
+            let localFavorites = try await MainActor.run {
+                let coreData = AppDelegate.shared.coreDataStack
+                return try BackendFavorites(
+                    itemNames: Set(coreData.fetchFavoriteItems().compactMap(\.itemName)),
+                    eateryIds: coreData.fetchFavoriteEateryIds()
+                )
+            }
+            let itemNamesToRestore = restoredItemNames
+            let eateryIdsToRestore = restoredEateryIds
+
+            await MainActor.run {
+                AppDelegate.shared.coreDataStack.mergeFavorites(
+                    itemNames: itemNamesToRestore,
+                    eateryIds: eateryIdsToRestore
+                )
+            }
+
+            for itemName in localFavorites.itemNames.subtracting(restoredItemNames) {
                 setFavorite(true, itemName: itemName)
             }
+            for eateryId in localFavorites.eateryIds.subtracting(restoredEateryIds) {
+                setEateryFavorite(true, cornellId: eateryId)
+            }
 
-            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didMigrateFavoriteItemsToBackend)
+            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didRestoreFavoritesFromBackend)
+            return true
         } catch {
-            logger.error("Failed to migrate local favorites; will retry: \(error.localizedDescription)")
+            logger.error("Failed to synchronize favorites; will retry: \(error.localizedDescription)")
+            return false
         }
     }
 
-    private func startSyncIfNeeded(for itemName: String) {
+    private func startItemSyncIfNeeded(for itemName: String) {
         guard syncingItems.insert(itemName).inserted else { return }
 
         Task {
-            await sync(itemName: itemName)
+            await syncItem(itemName)
         }
     }
 
-    private func sync(itemName: String) async {
+    private func startEaterySyncIfNeeded(for eateryId: Int) {
+        guard syncingEateries.insert(eateryId).inserted else { return }
+
+        Task {
+            await syncEatery(eateryId)
+        }
+    }
+
+    private func syncItem(_ itemName: String) async {
         defer {
             syncingItems.remove(itemName)
         }
 
-        while let desiredState = pendingUpdates[itemName] {
+        while let desiredState = pendingItemUpdates[itemName] {
             do {
                 try await Networking.default.updateFavoriteItem(
                     name: itemName,
                     isFavorite: desiredState
                 )
 
-                if pendingUpdates[itemName] == desiredState {
-                    pendingUpdates.removeValue(forKey: itemName)
-                    persistPendingUpdates()
+                if pendingItemUpdates[itemName] == desiredState {
+                    pendingItemUpdates.removeValue(forKey: itemName)
+                    persistPendingItemUpdates()
                     logger.info("Favorite item synced with Eatery backend")
                     return
                 }
@@ -348,12 +434,45 @@ actor FavoriteItemSyncCoordinator {
         }
     }
 
-    private func persistPendingUpdates() {
-        guard let data = try? JSONEncoder().encode(pendingUpdates) else {
+    private func syncEatery(_ eateryId: Int) async {
+        defer {
+            syncingEateries.remove(eateryId)
+        }
+
+        while let desiredState = pendingEateryUpdates[eateryId] {
+            do {
+                try await Networking.default.updateFavoriteEatery(
+                    cornellId: eateryId,
+                    isFavorite: desiredState
+                )
+
+                if pendingEateryUpdates[eateryId] == desiredState {
+                    pendingEateryUpdates.removeValue(forKey: eateryId)
+                    persistPendingEateryUpdates()
+                    logger.info("Favorite eatery synced with Eatery backend")
+                    return
+                }
+            } catch {
+                logger.error("Failed to sync favorite eatery; will retry: \(error.localizedDescription)")
+                return
+            }
+        }
+    }
+
+    private func persistPendingItemUpdates() {
+        guard let data = try? JSONEncoder().encode(pendingItemUpdates) else {
             logger.error("Failed to save pending favorite item updates")
             return
         }
         UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingFavoriteItemUpdates)
+    }
+
+    private func persistPendingEateryUpdates() {
+        guard let data = try? JSONEncoder().encode(pendingEateryUpdates) else {
+            logger.error("Failed to save pending favorite eatery updates")
+            return
+        }
+        UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingFavoriteEateryUpdates)
     }
 }
 
