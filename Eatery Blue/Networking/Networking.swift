@@ -11,20 +11,6 @@ import EateryModel
 import Foundation
 import Logging
 
-private struct BackendUserResponse: Decodable {
-    let user: BackendUser
-}
-
-private struct BackendUser: Decodable {
-    let deviceUuid: String
-    let favoritedEateries: [BackendFavoriteEatery]
-    let favoritedItemNames: [String]
-}
-
-private struct BackendFavoriteEatery: Decodable {
-    let cornellId: Int
-}
-
 class Networking {
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
@@ -80,11 +66,7 @@ class Networking {
     }
 
     func updateFavoriteEatery(cornellId: Int, isFavorite: Bool) async throws {
-        struct RequestBody: Encodable {
-            let cornellId: Int
-        }
-
-        let body = try JSONEncoder().encode(RequestBody(cornellId: cornellId))
+        let body = try JSONEncoder().encode(FavoriteEateryRequest(cornellId: cornellId))
         let response = try await performAuthorizedRequest { accessToken in
             var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/eateries"))
             request.httpMethod = isFavorite ? "POST" : "DELETE"
@@ -304,11 +286,6 @@ class Networking {
 struct UserNotificationSettings: Decodable {
     let favoriteItemPushNotifications: Bool
     let cornellAppdevPushNotifications: Bool
-}
-
-struct BackendFavorites: Sendable {
-    let itemNames: Set<String>
-    let eateryIds: Set<Int>
 }
 
 enum UserSettingsRequestError: Error {
