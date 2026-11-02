@@ -66,8 +66,8 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     private func setupBodyLabel() {
-        bodyLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        bodyLabel.textColor = UIColor.Eatery.gray05
+        bodyLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        bodyLabel.textColor = UIColor.Eatery.primaryText
         bodyLabel.numberOfLines = 0
         contentView.addSubview(bodyLabel)
     }
