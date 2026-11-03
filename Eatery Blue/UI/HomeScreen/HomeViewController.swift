@@ -114,7 +114,12 @@ class HomeViewController: UIViewController {
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
 
-        collectionView.contentInset.top = Constants.maxHeaderHeight + view.safeAreaInsets.top
+        let wasAtTop = abs(collectionView.contentOffset.y + collectionView.contentInset.top) < 1
+        let topInset = Constants.maxHeaderHeight + view.safeAreaInsets.top
+        collectionView.contentInset.top = topInset
+        if wasAtTop {
+            collectionView.contentOffset.y = -topInset
+        }
         updateNavHeaderViewHeight()
     }
 
@@ -301,7 +306,6 @@ class HomeViewController: UIViewController {
         let favoritesViewController = FavoritesViewController()
         favoritesCarousel.title = "Favorites"
         favoritesCarousel.truncateAfter = 3
-        favoritesCarousel.navigationController = navigationController
         favoritesCarousel.viewControllerToPush = favoritesViewController
         let favoriteEateries = allEateries.filter {
             AppDelegate.shared.coreDataStack.metadata(eateryId: $0.cornellId).isFavorite

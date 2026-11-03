@@ -92,7 +92,6 @@ class FavoritesViewController: UIViewController {
     }
 
     private func setUpFavoritesNavigationView() {
-        favoritesNavigationView.navigationController = navigationController
         favoritesNavigationView.tabButtonsDelegate = self
         favoritesNavigationView.delegate = self
     }
@@ -181,6 +180,11 @@ extension FavoritesViewController: TabButtonViewDelegate {
 }
 
 extension FavoritesViewController: FavoritesNavigationViewDelegate {
+    func favoritesNavigationViewDidTapBack(_: FavoritesNavigationView) {
+        navigationController?.hero.isEnabled = false
+        navigationController?.popViewController(animated: true)
+    }
+
     func favoritesNavigationViewDidTapAdd(_: FavoritesNavigationView) {
         let searchVC = FavoritesAddSearchViewController()
         navigationController?.pushViewController(searchVC, animated: true)
