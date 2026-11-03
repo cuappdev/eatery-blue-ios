@@ -90,6 +90,7 @@ class HomeViewController: UIViewController {
         view.addSubview(compareMenusButton)
         setUpCompareMenusButton()
 
+        setUpAppLifecycleSubscription()
         setUpUserLocationSubscription()
         setUpFavNotification()
         setUpConstraints()
@@ -190,6 +191,30 @@ class HomeViewController: UIViewController {
         LocationManager.shared.userLocationDidChange.sink { [self] _ in
             applySnapshot()
         }.store(in: &cancellables)
+    }
+
+    private func setUpAppLifecycleSubscription() {
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.refreshAfterForeground()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func refreshAfterForeground() {
+        navigationView.notificationButton.checkforNotifications()
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                try await updateAllEateriesFromNetworking()
+            } catch {
+                logger.error("\(#function): \(error)")
+            }
+            applySnapshot(animated: false, reconfiguringEateryCards: true)
+        }
     }
 
     private func setUpFavNotification() {
@@ -489,7 +514,7 @@ class HomeViewController: UIViewController {
     }
 
     /// Updates the table view data source, and animates if desired
-    private func applySnapshot(animated: Bool = true) {
+    private func applySnapshot(animated: Bool = true, reconfiguringEateryCards: Bool = false) {
         var snapshot = Snapshot()
 
         let coreDataStack = AppDelegate.shared.coreDataStack
@@ -559,17 +584,14 @@ class HomeViewController: UIViewController {
             return
         }
 
-        LocationManager.shared.$userLocation
-            .sink { userLocation in
-                currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
-                    let dist1 = eatery1.walkTime(userLocation: userLocation)
-                    let dist2 = eatery2.walkTime(userLocation: userLocation)
-                    guard let dist1, let dist2 else { return true }
+        let userLocation = LocationManager.shared.userLocation
+        currentEateries = currentEateries.sorted { eatery1, eatery2 in
+            let dist1 = eatery1.walkTime(userLocation: userLocation)
+            let dist2 = eatery2.walkTime(userLocation: userLocation)
+            guard let dist1, let dist2 else { return true }
 
-                    return dist1 < dist2
-                })
-            }
-            .store(in: &cancellables)
+            return dist1 < dist2
+        }
 
         let label = UILabel()
         label.text = filter.isEnabled ? "Filtered Eateries" : "All Eateries"
@@ -649,7 +671,24 @@ class HomeViewController: UIViewController {
         }
 
         shownEateries = openEateries + closedEateries
+        reconfigureEateryCards(in: &snapshot, ifNeeded: reconfiguringEateryCards)
         dataSource.apply(snapshot, animatingDifferences: animated)
+    }
+
+    private func reconfigureEateryCards(in snapshot: inout Snapshot, ifNeeded: Bool) {
+        guard ifNeeded else { return }
+
+        let existingItems = Set(dataSource.snapshot().itemIdentifiers)
+        let eateryCards = snapshot.itemIdentifiers.filter {
+            guard existingItems.contains($0) else { return false }
+            switch $0 {
+            case .largeEateryCard, .smallEateryCard:
+                return true
+            default:
+                return false
+            }
+        }
+        snapshot.reconfigureItems(eateryCards)
     }
 
     // MARK: - Empty State Helper
