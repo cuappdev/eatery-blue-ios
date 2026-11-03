@@ -135,18 +135,8 @@ class MenuItemView: UIView {
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
 
-            let coreDataStack = AppDelegate.shared.coreDataStack
-            let metadata = coreDataStack.metadata(itemName: item.name)
-            metadata.isFavorite.toggle()
-            coreDataStack.save()
-
-            favoriteButtonImage.image = UIImage(named: metadata.isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
-
-            let isFavorite = metadata.isFavorite
-            let itemName = item.name
-            Task {
-                await FavoriteItemSyncCoordinator.shared.setFavorite(isFavorite, itemName: itemName)
-            }
+            let isFavorite = FavoritesStore.toggleItemFavorite(itemName: item.name)
+            favoriteButtonImage.image = UIImage(named: isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
         }
     }
 

@@ -8,6 +8,7 @@
 import UIKit
 
 protocol FavoritesNavigationViewDelegate: AnyObject {
+    func favoritesNavigationViewDidTapBack(_ view: FavoritesNavigationView)
     func favoritesNavigationViewDidTapAdd(_ view: FavoritesNavigationView)
 }
 
@@ -22,9 +23,6 @@ class FavoritesNavigationView: UIView {
     private let titleLabel = UILabel()
 
     // MARK: - Properties (data)
-
-    /// The controller that this view uses to pop on back button press
-    var navigationController: UINavigationController?
 
     /// Called when the add (+) button is pressed
     weak var delegate: FavoritesNavigationViewDelegate?
@@ -87,8 +85,7 @@ class FavoritesNavigationView: UIView {
 
         backButton.buttonPress { [weak self] _ in
             guard let self else { return }
-            navigationController?.hero.isEnabled = false
-            navigationController?.popViewController(animated: true)
+            delegate?.favoritesNavigationViewDidTapBack(self)
         }
     }
 

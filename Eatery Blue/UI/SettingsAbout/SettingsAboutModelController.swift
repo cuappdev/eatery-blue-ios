@@ -25,7 +25,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Antoinette Torres",
             "Thomas Vignos",
             "Angelina Chen",
-            "Adelynn Wu"
+            "Adelynn Wu",
+            "Wonjin Enum",
+            "Arielle Nudelman"
         ]),
         Section(title: "Product Designers", members: [
             "TK Kong",
@@ -39,7 +41,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Kathleen Anderson",
             "Funmi Olukanmi",
             "Carrie Kim",
-            "Katie Li"
+            "Katie Li",
+            "Selena Chen",
+            "Wonjin Enum"
         ]),
         Section(title: "iOS Developers", members: [
             "William Ma",
@@ -56,6 +60,7 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Cassidy Xu",
             "Charles Liggins",
             "Adelynn Wu",
+            "Arielle Nudelman",
             "Angelina Chen",
             "Amy Yang"
         ]),
@@ -79,7 +84,9 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Amy Wang",
             "Zach Seidner",
             "Brian Hu",
-            "Caleb Shim"
+            "Caleb Shim",
+            "Mabel Qiu",
+            "Francis Lau"
         ]),
         Section(title: "Backend Developers", members: [
             "Conner Swenberg",
@@ -98,7 +105,8 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Skye Slattery",
             "Cassidy Xu",
             "Fanhao Yu",
-            "Chris Voon"
+            "Chris Voon",
+            "Junghoon Kim"
         ]),
         Section(title: "Marketers", members: [
             "Cat Zhang",
@@ -112,7 +120,8 @@ class SettingsAboutModelController: SettingsAboutViewController {
             "Candy Wu",
             "Anvi Savant",
             "Anna Felten",
-            "Carolyn Fu"
+            "Carolyn Fu",
+            "Alma Arazi"
         ])
     ]
 

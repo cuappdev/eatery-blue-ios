@@ -107,15 +107,12 @@ class EaterySmallCardView: UICollectionViewCell {
             guard self != nil else { return }
 
             UIView.performWithoutAnimation {
-                let coreDataStack = AppDelegate.shared.coreDataStack
-                let metadata = coreDataStack.metadata(eateryId: eatery.cornellId)
-                metadata.isFavorite.toggle()
-                coreDataStack.save()
+                let isFavorite = FavoritesStore.toggleEateryFavorite(eateryId: eatery.cornellId)
 
                 NotificationCenter.default.post(
                     name: NSNotification.Name("favoriteEatery"),
                     object: nil,
-                    userInfo: ["favorited": metadata.isFavorite]
+                    userInfo: ["favorited": isFavorite]
                 )
             }
         }

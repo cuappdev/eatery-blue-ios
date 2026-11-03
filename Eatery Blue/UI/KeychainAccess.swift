@@ -17,6 +17,7 @@ class KeychainAccess {
         static let getSession = "GETLogin"
         static let backendAccessToken = "BackendAccessToken"
         static let backendRefreshToken = "BackendRefreshToken"
+        static let backendDeviceId = "BackendDeviceId"
     }
 
     // MARK: - GET Session
@@ -51,6 +52,14 @@ class KeychainAccess {
     func invalidateBackendTokens() {
         delete(account: Account.backendAccessToken)
         delete(account: Account.backendRefreshToken)
+    }
+
+    func saveBackendDeviceId(_ deviceId: String) {
+        save(deviceId, account: Account.backendDeviceId)
+    }
+
+    func retrieveBackendDeviceId() -> String? {
+        retrieve(account: Account.backendDeviceId)
     }
 
     // MARK: - Keychain Helpers
