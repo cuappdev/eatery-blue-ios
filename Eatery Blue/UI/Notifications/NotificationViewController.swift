@@ -43,7 +43,6 @@ class NotificationViewController: UIViewController {
     // MARK: Properties (View)
 
     private let notificationTableView = UITableView()
-    private let titleLabel = UILabel()
     private let loadingView = UIActivityIndicatorView(style: .large)
     private let emptyView = UIView()
     private let errorView = UIView()
@@ -70,7 +69,6 @@ class NotificationViewController: UIViewController {
         view.backgroundColor = UIColor.Eatery.default00
 
         setUpNavigationItem()
-        setupTitleLabel()
         setupTableView()
         setupLoadingView()
         setupEmptyView()
@@ -130,21 +128,6 @@ class NotificationViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
-    private func setupTitleLabel() {
-        titleLabel.text = "Favorite Items"
-        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
-        titleLabel.textColor = UIColor.Eatery.primaryText
-        titleLabel.textAlignment = .left
-
-        view.addSubview(titleLabel)
-
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
-            make.leading.equalToSuperview().offset(23)
-            make.trailing.equalToSuperview().offset(-23)
-        }
-    }
-
     private func setupTableView() {
         notificationTableView.register(
             NotificationTableViewCell.self,
@@ -167,7 +150,7 @@ class NotificationViewController: UIViewController {
         view.addSubview(notificationTableView)
 
         notificationTableView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -200,8 +183,7 @@ class NotificationViewController: UIViewController {
         stack.alignment = .center
         stack.spacing = 12
 
-        let imageView = UIImageView(image: UIImage(named: "NotificationsBell")?.withRenderingMode(.alwaysTemplate))
-        imageView.tintColor = UIColor.Eatery.primaryText
+        let imageView = UIImageView(image: UIImage(named: "NotificationsBell"))
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
             make.width.height.equalTo(54)
@@ -327,7 +309,6 @@ class NotificationViewController: UIViewController {
             notificationTableView.isHidden = false
             emptyView.isHidden = true
             errorView.isHidden = true
-            titleLabel.isHidden = true
             loadingView.startAnimating()
         case let .loaded(notifications):
             self.notifications = notifications
@@ -335,7 +316,6 @@ class NotificationViewController: UIViewController {
             loadingView.stopAnimating()
             emptyView.isHidden = true
             errorView.isHidden = true
-            titleLabel.isHidden = false
             notificationTableView.isHidden = false
         case .empty:
             notifications = [] // clears old loads
@@ -344,7 +324,6 @@ class NotificationViewController: UIViewController {
             notificationTableView.isHidden = false
             emptyView.isHidden = false
             errorView.isHidden = true
-            titleLabel.isHidden = true
         case .error:
             notifications = [] // clears old loads
             notificationTableView.reloadData()
@@ -352,7 +331,6 @@ class NotificationViewController: UIViewController {
             notificationTableView.isHidden = false
             emptyView.isHidden = true
             errorView.isHidden = false
-            titleLabel.isHidden = true
         }
     }
 }

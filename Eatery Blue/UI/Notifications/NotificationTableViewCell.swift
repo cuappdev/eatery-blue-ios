@@ -15,6 +15,8 @@ class NotificationTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let bodyLabel = UILabel()
     private let starImageView = UIImageView()
+    private let titleFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+    private let bodyFont = UIFont.systemFont(ofSize: 14, weight: .regular)
 
     // MARK: Properties (data)
 
@@ -36,12 +38,12 @@ class NotificationTableViewCell: UITableViewCell {
     func configure(notification: HubNotification) {
         titleLabel.attributedText = .fromMarkdown(
             notification.title,
-            baseFont: titleLabel.font,
+            baseFont: titleFont,
             baseColor: titleLabel.textColor
         )
         bodyLabel.attributedText = .fromMarkdown(
             notification.body,
-            baseFont: bodyLabel.font,
+            baseFont: bodyFont,
             baseColor: bodyLabel.textColor
         )
     }
@@ -59,15 +61,15 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     private func setupTitleLabel() {
-        titleLabel.font = .systemFont(ofSize: 14, weight: .semibold)
+        titleLabel.font = titleFont
         titleLabel.textColor = UIColor.Eatery.primaryText
         titleLabel.numberOfLines = 0
         contentView.addSubview(titleLabel)
     }
 
     private func setupBodyLabel() {
-        bodyLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        bodyLabel.textColor = UIColor.Eatery.gray05
+        bodyLabel.font = bodyFont
+        bodyLabel.textColor = UIColor.Eatery.primaryText
         bodyLabel.numberOfLines = 0
         contentView.addSubview(bodyLabel)
     }
