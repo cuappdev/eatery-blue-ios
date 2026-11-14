@@ -25,8 +25,6 @@ class CarouselView: UIView {
         }
     }
 
-    /// Navigation controller to push from
-    var navigationController: UINavigationController?
     /// How many eateries should show in this carousel, -1 if showing all
     var truncateAfter: Int = -1 {
         didSet {
@@ -132,17 +130,34 @@ class CarouselView: UIView {
     // MARK: - Actions
 
     private func pushViewController() {
-        navigationController?.hero.isEnabled = false
-
         if let viewControllerToPush {
-            navigationController?.pushViewController(viewControllerToPush, animated: true)
+            push(viewControllerToPush)
             return
         }
 
         let viewController = ListModelController()
         viewController.setUp(eateries, title: title, description: nil)
 
-        navigationController?.pushViewController(viewController, animated: true)
+        push(viewController)
+    }
+
+    private func push(_ viewController: UIViewController) {
+        guard let navigationController = findNavigationController() else { return }
+        guard viewController.navigationController == nil else { return }
+
+        navigationController.hero.isEnabled = false
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    private func findNavigationController() -> UINavigationController? {
+        var responder: UIResponder? = self
+        while let currentResponder = responder {
+            if let navigationController = currentResponder as? UINavigationController {
+                return navigationController
+            }
+            responder = currentResponder.next
+        }
+        return nil
     }
 
     // MARK: - Collection View Data Source
@@ -203,8 +218,7 @@ extension CarouselView: UICollectionViewDelegate {
         switch item {
         case .eatery:
             let pageVC = EateryPageViewController(eateries: eateries, index: indexPath.item)
-            navigationController?.hero.isEnabled = false
-            navigationController?.pushViewController(pageVC, animated: true)
+            push(pageVC)
         case .more:
             pushViewController()
         }

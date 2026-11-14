@@ -1,0 +1,363 @@
+//
+//  NotificationViewController.swift
+//  Eatery Blue
+//
+//  Created by Adelynn Wu on 11/9/25.
+//
+
+import EateryModel
+import Foundation
+import UIKit
+
+class NotificationViewController: UIViewController {
+    // MARK: - Testing
+
+    private let useMockNotifications = false
+
+    private static let mockNotifications: [HubNotification] = [
+        HubNotification(
+            id: 1,
+            title: "**Chicken** Nuggets",
+            body:
+            "Chicken Nuggets is being served at Keeton House, Okenshields, and Morrison Dining.",
+            isRead: false,
+            createdAt: Date()
+        ),
+        HubNotification(
+            id: 2,
+            title: "Or**ange Chi**cken",
+            body:
+            "Orange Chicken is being served at Becker House and Okenshields.",
+            isRead: true,
+            createdAt: Date().addingTimeInterval(-3600)
+        ),
+        HubNotification(
+            id: 3,
+            title: "Scrambled Eggs",
+            body: "Scrambled Eggs is being **served at Rose House.**",
+            isRead: false,
+            createdAt: Date().addingTimeInterval(-7200)
+        )
+    ]
+
+    // MARK: Properties (View)
+
+    private let notificationTableView = UITableView()
+    private let loadingView = UIActivityIndicatorView(style: .large)
+    private let emptyView = UIView()
+    private let errorView = UIView()
+    private let refreshControl = UIRefreshControl()
+
+    private enum ViewState {
+        case loading
+        case loaded([HubNotification])
+        case empty
+        case error
+    }
+
+    // MARK: Properties (Data)
+
+    var notifications: [HubNotification] = []
+    private var state: ViewState = .loading {
+        didSet { render() }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        viewRespectsSystemMinimumLayoutMargins = false
+        view.backgroundColor = UIColor.Eatery.default00
+
+        setUpNavigationItem()
+        setupTableView()
+        setupLoadingView()
+        setupEmptyView()
+        setupErrorView()
+        Task { await loadNotifications() }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        RootViewController.setStatusBarStyle(.darkContent)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isMovingFromParent {
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+    }
+
+    private func setUpNavigationItem() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.Eatery.primaryText as Any,
+            .font: UIFont.eateryNavigationBarTitleFont
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.Eatery.blue as Any,
+            .font: UIFont.eateryNavigationBarLargeTitleFont
+        ]
+
+        navigationItem.title = "Notifications"
+        navigationItem.largeTitleDisplayMode = .always
+
+        let standardAppearance = appearance.copy()
+        standardAppearance.configureWithDefaultBackground()
+        navigationItem.standardAppearance = standardAppearance
+
+        let scrollEdgeAppearance = appearance.copy()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+
+        let backButton = UIBarButtonItem(
+            image: UIImage(named: "ArrowLeft"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        backButton.tintColor = UIColor.Eatery.primaryText
+        navigationItem.leftBarButtonItem = backButton
+    }
+
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+
+    private func setupTableView() {
+        notificationTableView.register(
+            NotificationTableViewCell.self,
+            forCellReuseIdentifier: NotificationTableViewCell.reuse
+        )
+        notificationTableView.delegate = self
+        notificationTableView.dataSource = self
+        notificationTableView.separatorStyle = .none
+        notificationTableView.backgroundColor = UIColor.Eatery.default00
+        notificationTableView.rowHeight = UITableView.automaticDimension
+        refreshControl.tintColor = UIColor.Eatery.gray05
+        refreshControl.addTarget(
+            self,
+            action: #selector(didRefresh(_:)),
+            for: .valueChanged
+        )
+        notificationTableView.refreshControl = refreshControl
+        notificationTableView.alwaysBounceVertical = true
+        notificationTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(notificationTableView)
+
+        notificationTableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+
+    @objc private func didRefresh(_ sender: UIRefreshControl) {
+        switch state {
+        case .error, .empty:
+            state = .loading
+        case .loading, .loaded:
+            break
+        }
+        Task {
+            await fetchAndUpdateState()
+            sender.endRefreshing()
+        }
+    }
+
+    private func setupLoadingView() {
+        loadingView.hidesWhenStopped = true
+        view.addSubview(loadingView)
+        loadingView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(notificationTableView)
+        }
+    }
+
+    private func setupEmptyView() {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+
+        let imageView = UIImageView(image: UIImage(named: "NotificationsBell"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(54)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Nothing here...yet!"
+        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let messageLabel = UILabel()
+        messageLabel.text =
+            "When your favorite menu items are being\n served in a dining hall, it will show up here."
+        messageLabel.font = .systemFont(ofSize: 12, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+
+        stack.addArrangedSubview(imageView)
+        stack.setCustomSpacing(12, after: imageView)
+        stack.addArrangedSubview(titleLabel)
+        stack.setCustomSpacing(4, after: titleLabel)
+        stack.addArrangedSubview(messageLabel)
+
+        emptyView.addSubview(stack)
+        emptyView.isHidden = true
+        emptyView.isUserInteractionEnabled = false
+        view.addSubview(emptyView)
+
+        stack.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview().inset(41)
+            make.trailing.lessThanOrEqualToSuperview().inset(41)
+        }
+
+        emptyView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.greaterThanOrEqualTo(notificationTableView).offset(16)
+        }
+    }
+
+    private func setupErrorView() {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+
+        let imageView = UIImageView(image: UIImage(systemName: "xmark.octagon"))
+        imageView.tintColor = .Eatery.red
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(41)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Hmm, no chow here (yet)."
+        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let messageLabel = UILabel()
+        messageLabel.text =
+            "We ran into an issue loading this page.\nCheck your connection or try again later"
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        messageLabel.textColor = UIColor.Eatery.gray05
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+
+        stack.addArrangedSubview(imageView)
+        stack.setCustomSpacing(12, after: imageView)
+        stack.addArrangedSubview(titleLabel)
+        stack.setCustomSpacing(4, after: titleLabel)
+        stack.addArrangedSubview(messageLabel)
+
+        errorView.addSubview(stack)
+        errorView.isHidden = true
+        errorView.isUserInteractionEnabled = false
+        view.addSubview(errorView)
+
+        stack.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview().inset(41)
+            make.trailing.lessThanOrEqualToSuperview().inset(41)
+        }
+
+        errorView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.greaterThanOrEqualTo(notificationTableView).offset(16)
+        }
+    }
+
+    private func loadNotifications() async {
+        state = .loading
+        await fetchAndUpdateState()
+    }
+
+    private func fetchAndUpdateState() async {
+        // testing
+        if useMockNotifications {
+            state =
+                Self.mockNotifications.isEmpty
+                    ? .empty : .loaded(Self.mockNotifications)
+            return
+        }
+
+        do {
+            let notifications = try await Networking.default
+                .fetchNotifications()
+            state = notifications.isEmpty ? .empty : .loaded(notifications)
+        } catch {
+            state = .error
+        }
+    }
+
+    private func render() {
+        switch state {
+        case .loading:
+            notificationTableView.isHidden = false
+            emptyView.isHidden = true
+            errorView.isHidden = true
+            loadingView.startAnimating()
+        case let .loaded(notifications):
+            self.notifications = notifications
+            notificationTableView.reloadData()
+            loadingView.stopAnimating()
+            emptyView.isHidden = true
+            errorView.isHidden = true
+            notificationTableView.isHidden = false
+        case .empty:
+            notifications = [] // clears old loads
+            notificationTableView.reloadData()
+            loadingView.stopAnimating()
+            notificationTableView.isHidden = false
+            emptyView.isHidden = false
+            errorView.isHidden = true
+        case .error:
+            notifications = [] // clears old loads
+            notificationTableView.reloadData()
+            loadingView.stopAnimating()
+            notificationTableView.isHidden = false
+            emptyView.isHidden = true
+            errorView.isHidden = false
+        }
+    }
+}
+
+extension NotificationViewController: UITableViewDelegate {
+    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+
+extension NotificationViewController: UITableViewDataSource {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        return notifications.count
+    }
+
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell {
+        guard
+            let cell = notificationTableView.dequeueReusableCell(
+                withIdentifier: NotificationTableViewCell.reuse,
+                for: indexPath
+            ) as? NotificationTableViewCell
+        else {
+            return UITableViewCell()
+        }
+
+        cell.configure(notification: notifications[indexPath.row])
+        return cell
+    }
+}

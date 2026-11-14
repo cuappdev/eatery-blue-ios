@@ -79,16 +79,27 @@ class CoreDataStack {
         }
     }
 
-    func fetchFavoriteItems() -> [ItemMetadata] {
+    func fetchFavoriteItems() throws -> [ItemMetadata] {
         let fetchRequest = NSFetchRequest<ItemMetadata>()
         fetchRequest.entity = ItemMetadata.entity()
         fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
+        return try context.fetch(fetchRequest)
+    }
 
-        do {
-            return try context.fetch(fetchRequest)
-        } catch {
-            print("Failed to fetch favorite items: \(error)")
-            return []
+    func fetchFavoriteEateryIds() throws -> Set<Int> {
+        let fetchRequest = NSFetchRequest<EateryMetadata>()
+        fetchRequest.entity = EateryMetadata.entity()
+        fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
+        return try Set(context.fetch(fetchRequest).map { Int($0.eateryId) })
+    }
+
+    func mergeFavorites(itemNames: Set<String>, eateryIds: Set<Int>) {
+        for itemName in itemNames {
+            metadata(itemName: itemName).isFavorite = true
         }
+        for eateryId in eateryIds {
+            metadata(eateryId: eateryId).isFavorite = true
+        }
+        save()
     }
 }

@@ -9,11 +9,14 @@ import SwiftUI
 
 class SettingsPrivacyViewModel: ObservableObject {
     @Published var isLocationAllowed: Bool = false
+    @Published var isNotificationAllowed: Bool = false
     @Published var isAnalyticsEnabled: Bool = false
 }
 
 struct SettingsPrivacyView: View {
     @ObservedObject var viewModel = SettingsPrivacyViewModel()
+    var onOpenSystemSettings: (() -> Void)?
+    var onOpenNotificationSettings: (() -> Void)?
 
     var body: some View {
         List {
@@ -28,36 +31,40 @@ struct SettingsPrivacyView: View {
                 sectionHeader(title: "Permissions")
 
                 Button {
-                    guard let url = URL(string: UIApplication.openSettingsURLString) else {
-                        return
-                    }
+                    onOpenSystemSettings?()
+                } label: {
+                    permissionRow(
+                        title: "Location Access",
+                        subtitle: "Used to find eateries near you",
+                        isAllowed: viewModel.isLocationAllowed
+                    )
+                }
 
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                Button {
+                    onOpenSystemSettings?()
+                } label: {
+                    permissionRow(
+                        title: "Notification Access",
+                        subtitle: "Used to send device notifications",
+                        isAllowed: viewModel.isNotificationAllowed
+                    )
+                }
 
+                Button {
+                    onOpenNotificationSettings?()
                 } label: {
                     HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Spacer(minLength: 12)
-                            Text("Location Access")
-                                .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
-                                .foregroundColor(Color(UIColor.Eatery.primaryText))
-                            Text("Used to find eateries near you")
-                                .font(Font(UIFont.preferredFont(for: .caption1, weight: .semibold)))
-                                .foregroundColor(Color(UIColor.Eatery.secondaryText))
-                            Spacer(minLength: 12)
-                        }
+                        Text("Notification Settings")
+                            .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
+                            .foregroundColor(Color(UIColor.Eatery.primaryText))
                         Spacer()
-                        HStack(spacing: 2) {
-                            Text(viewModel.isLocationAllowed ? "Allowed" : "Denied")
-                                .font(Font(UIFont.preferredFont(for: .footnote, weight: .semibold)))
-                            Image("ExternalLink")
-                                .resizable()
-                                .renderingMode(.template)
-                                .frame(width: 16, height: 16)
-                        }
-                        .foregroundColor(viewModel
-                            .isLocationAllowed ? Color("EateryBlue") : Color(UIColor.Eatery.secondaryText))
+                        Image("ChevronRight")
+                            .resizable()
+                            .renderingMode(.template)
+                            .foregroundColor(Color(UIColor.Eatery.blue))
+                            .frame(width: 16, height: 16)
                     }
+                    .padding(.vertical, 8)
                 }
                 .listRowSeparator(.hidden, edges: .bottom)
             }
@@ -98,6 +105,32 @@ struct SettingsPrivacyView: View {
             }
         }
         .listStyle(.plain)
+    }
+
+    private func permissionRow(title: String, subtitle: String, isAllowed: Bool) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(Font(UIFont.preferredFont(for: .body, weight: .semibold)))
+                    .foregroundColor(Color(UIColor.Eatery.primaryText))
+                Text(subtitle)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(Color(UIColor.Eatery.gray05))
+            }
+            Spacer()
+            HStack(spacing: 2) {
+                Text(isAllowed ? "Allowed" : "Denied")
+                    .font(Font(UIFont.preferredFont(for: .footnote, weight: .semibold)))
+                Image("ExternalLink")
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 16, height: 16)
+            }
+            .foregroundColor(isAllowed
+                ? Color(UIColor.Eatery.blue)
+                : Color(UIColor.Eatery.secondaryText))
+        }
+        .padding(.vertical, 8)
     }
 
     private func sectionHeader(title: String) -> some View {

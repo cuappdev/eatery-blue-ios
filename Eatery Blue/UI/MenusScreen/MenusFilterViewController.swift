@@ -20,6 +20,7 @@ class MenusFilterViewController: UIViewController {
     let central = PillFilterButtonView()
 
     private var currentMealType: EventType?
+    var availableMealTypes: [EventType] = [.breakfast, .lunch, .dinner, .lateDinner]
 
     private(set) var filter = EateryFilter()
     private let filtersView = PillFiltersView()
@@ -68,6 +69,11 @@ class MenusFilterViewController: UIViewController {
         setUpCentral()
     }
 
+    func setMealType(_ eventType: EventType) {
+        currentMealType = eventType
+        mealType.label.text = eventType.description
+    }
+
     private func setUpMealType() {
         if let currentMealType = currentMealType {
             mealType.label.text = currentMealType.description
@@ -79,7 +85,7 @@ class MenusFilterViewController: UIViewController {
             let viewController = UpcomingMenuPickerSheetViewController()
 
             viewController.setUpSheetPresentation()
-            viewController.setUp(currentEventType: currentMealType)
+            viewController.setUp(currentEventType: currentMealType, choices: availableMealTypes)
             viewController.delegate = self
             tabBarController?.present(viewController, animated: true)
         }
@@ -155,8 +161,7 @@ extension MenusFilterViewController: UpcomingMenuPickerSheetViewControllerDelega
         _: UpcomingMenuPickerSheetViewController,
         didChangeMenuChoice eventType: EventType
     ) {
-        mealType.label.text = eventType.description
-        currentMealType = eventType
+        setMealType(eventType)
         delegate?.menusFilterViewController(self, didChangeMenuType: eventType)
     }
 }

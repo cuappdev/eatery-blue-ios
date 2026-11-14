@@ -62,6 +62,7 @@ class HomeSearchViewController: UIViewController {
         contentController.didMove(toParent: self)
 
         contentController.view.alpha = 0
+        contentController.view.isUserInteractionEnabled = false
     }
 
     private func setUpSearchBar() {

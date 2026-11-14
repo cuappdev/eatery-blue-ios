@@ -17,15 +17,113 @@ class Networking {
     let accounts: FetchAccounts
     let baseUrl: URL
     let eateryCache: EateryMemoryCache
+    private let backendAuthenticator: BackendAuthenticator
+
     var sessionId: String {
         KeychainAccess.shared.retrieveToken() ?? ""
     }
 
     init(fetchUrl: URL) {
         baseUrl = fetchUrl
+        backendAuthenticator = BackendAuthenticator(baseURL: fetchUrl)
         let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
+    }
+
+    func registerFCMToken(_ token: String) async throws {
+        struct RequestBody: Encodable {
+            let token: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(token: token))
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/fcm-token"))
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        _ = try validatedData(response)
+    }
+
+    func updateFavoriteItem(name: String, isFavorite: Bool) async throws {
+        struct RequestBody: Encodable {
+            let name: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(name: name))
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/items"))
+            request.httpMethod = isFavorite ? "POST" : "DELETE"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        _ = try validatedData(response)
+    }
+
+    func updateFavoriteEatery(cornellId: Int, isFavorite: Bool) async throws {
+        let body = try JSONEncoder().encode(FavoriteEateryRequest(cornellId: cornellId))
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/favorites/eateries"))
+            request.httpMethod = isFavorite ? "POST" : "DELETE"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        _ = try validatedData(response)
+    }
+
+    func fetchFavorites() async throws -> BackendFavorites {
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/me"))
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+        let data = try validatedData(response)
+        let user = try JSONDecoder().decode(BackendUserResponse.self, from: data).user
+        AuthStorage.saveDeviceId(user.deviceUuid)
+        return BackendFavorites(
+            itemNames: Set(user.favoritedItemNames),
+            eateryIds: Set(user.favoritedEateries.map(\.cornellId))
+        )
+    }
+
+    private func performAuthorizedRequest(
+        makeRequest: (String) -> URLRequest
+    ) async throws -> (data: Data, statusCode: Int) {
+        let accessToken = try await backendAuthenticator.validAccessToken()
+        let firstResponse = try await send(makeRequest(accessToken))
+
+        guard firstResponse.statusCode == 401 else {
+            return firstResponse
+        }
+
+        let refreshedToken = try await backendAuthenticator.refreshAccessToken(
+            rejectedToken: accessToken
+        )
+        return try await send(makeRequest(refreshedToken))
+    }
+
+    private func send(_ request: URLRequest) async throws -> (data: Data, statusCode: Int) {
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        return (data, httpResponse.statusCode)
+    }
+
+    private func validatedData(
+        _ response: (data: Data, statusCode: Int)
+    ) throws -> Data {
+        guard (200 ... 299).contains(response.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return response.data
     }
 
     func getAppVersion() async throws -> String {
@@ -39,21 +137,20 @@ class Networking {
     }
 
     func loadEatery(by id: Int) async -> Eatery? {
-        var eatery: Eatery?
-        if let url = URL(string: "\(baseUrl)\(id)/") {
-            let eateryApi = EateryAPI(url: url)
-            do {
-                eatery = try await eateryCache.fetchByID(
-                    maxStaleness: timeUntilFiveMinutesIntoNextHour(),
-                    id: id,
-                    fetchByID: eateryApi.eatery
-                )
-            } catch {
-                logger.error("Failed to load eatery \(id)")
-                return nil
-            }
+        let url = baseUrl
+            .appendingPathComponent("eateries")
+            .appendingPathComponent("\(id)")
+        let eateryApi = EateryAPI(url: url)
+        do {
+            return try await eateryCache.fetchByID(
+                maxStaleness: timeUntilFiveMinutesIntoNextHour(),
+                id: id,
+                fetchByID: eateryApi.eatery
+            )
+        } catch {
+            logger.error("Failed to load eatery \(id)")
+            return nil
         }
-        return eatery
     }
 
     func loadEateryByDay(day: Int) async throws -> [Eatery] {
@@ -95,6 +192,455 @@ class Networking {
     func logOut() {
         KeychainAccess.shared.invalidateAllGETSecrets()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
+    }
+
+    private struct NotificationsResponse: Decodable {
+        let notifications: [HubNotification]
+    }
+
+    func fetchNotifications() async throws -> [HubNotification] {
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications"))
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+        let data = try validatedData(response)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .fracSecondsISO8601
+        return try decoder.decode(NotificationsResponse.self, from: data).notifications
+    }
+
+    func markNotificationsRead(ids: [Int]) async throws {
+        guard !ids.isEmpty else { return } // skips PATCH when there's no unread ids
+        let body = try JSONEncoder().encode(["ids": ids])
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/notifications/read"))
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        _ = try validatedData(response)
+    }
+
+    func fetchUserNotificationSettings() async throws -> UserNotificationSettings {
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.settingsURL)
+            request.httpMethod = "GET"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+        let data = try settingsResponseData(response.data, statusCode: response.statusCode)
+        return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
+    }
+
+    func updateUserNotificationSettings(
+        favoriteItemPushNotifications: Bool? = nil,
+        cornellAppdevPushNotifications: Bool? = nil
+    ) async throws -> UserNotificationSettings {
+        var fields: [String: Bool] = [:]
+        if let favoriteItemPushNotifications {
+            fields["favoriteItemPushNotifications"] = favoriteItemPushNotifications
+        }
+        if let cornellAppdevPushNotifications {
+            fields["cornellAppdevPushNotifications"] = cornellAppdevPushNotifications
+        }
+        guard !fields.isEmpty else {
+            throw UserSettingsRequestError.badRequest
+        }
+
+        let body = try JSONSerialization.data(withJSONObject: fields)
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.settingsURL)
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        let data = try settingsResponseData(response.data, statusCode: response.statusCode)
+        return try JSONDecoder().decode(UserNotificationSettings.self, from: data)
+    }
+
+    private var settingsURL: URL {
+        baseUrl.appendingPathComponent("users").appendingPathComponent("settings")
+    }
+
+    private func settingsResponseData(_ data: Data, statusCode: Int) throws -> Data {
+        switch statusCode {
+        case 200 ... 299:
+            return data
+        case 400:
+            throw UserSettingsRequestError.badRequest
+        case 401:
+            throw UserSettingsRequestError.unauthorized
+        default:
+            throw UserSettingsRequestError.server
+        }
+    }
+}
+
+struct UserNotificationSettings: Decodable {
+    let favoriteItemPushNotifications: Bool
+    let cornellAppdevPushNotifications: Bool
+}
+
+enum UserSettingsRequestError: Error {
+    case badRequest
+    case unauthorized
+    case server
+}
+
+actor FavoriteItemSyncCoordinator {
+    static let shared = FavoriteItemSyncCoordinator()
+
+    private var pendingItemUpdates: [String: Bool]
+    private var pendingEateryUpdates: [Int: Bool]
+    private var syncingItems = Set<String>()
+    private var syncingEateries = Set<Int>()
+
+    private init() {
+        let itemData = UserDefaults.standard.data(forKey: UserDefaultsKeys.pendingFavoriteItemUpdates)
+        pendingItemUpdates = itemData.flatMap {
+            try? JSONDecoder().decode([String: Bool].self, from: $0)
+        } ?? [:]
+
+        let eateryData = UserDefaults.standard.data(forKey: UserDefaultsKeys.pendingFavoriteEateryUpdates)
+        pendingEateryUpdates = eateryData.flatMap {
+            try? JSONDecoder().decode([Int: Bool].self, from: $0)
+        } ?? [:]
+    }
+
+    func setFavorite(_ isFavorite: Bool, itemName: String) {
+        pendingItemUpdates[itemName] = isFavorite
+        persistPendingItemUpdates()
+        startItemSyncIfNeeded(for: itemName)
+    }
+
+    func setEateryFavorite(_ isFavorite: Bool, cornellId: Int) {
+        pendingEateryUpdates[cornellId] = isFavorite
+        persistPendingEateryUpdates()
+        startEaterySyncIfNeeded(for: cornellId)
+    }
+
+    func retryPendingUpdates() {
+        for itemName in pendingItemUpdates.keys {
+            startItemSyncIfNeeded(for: itemName)
+        }
+        for eateryId in pendingEateryUpdates.keys {
+            startEaterySyncIfNeeded(for: eateryId)
+        }
+    }
+
+    /// Merges backend favorites into Core Data once per install and uploads any
+    /// local-only favorites so upgrades do not lose existing selections.
+    func synchronizeFavoritesIfNeeded() async -> Bool {
+        guard !UserDefaults.standard.bool(forKey: UserDefaultsKeys.didRestoreFavoritesFromBackend) else {
+            return false
+        }
+
+        do {
+            let remoteFavorites = try await Networking.default.fetchFavorites()
+            var restoredItemNames = remoteFavorites.itemNames
+            var restoredEateryIds = remoteFavorites.eateryIds
+            for (itemName, isFavorite) in pendingItemUpdates {
+                if isFavorite {
+                    restoredItemNames.insert(itemName)
+                } else {
+                    restoredItemNames.remove(itemName)
+                }
+            }
+            for (eateryId, isFavorite) in pendingEateryUpdates {
+                if isFavorite {
+                    restoredEateryIds.insert(eateryId)
+                } else {
+                    restoredEateryIds.remove(eateryId)
+                }
+            }
+
+            let localFavorites = try await MainActor.run {
+                let coreData = AppDelegate.shared.coreDataStack
+                return try BackendFavorites(
+                    itemNames: Set(coreData.fetchFavoriteItems().compactMap(\.itemName)),
+                    eateryIds: coreData.fetchFavoriteEateryIds()
+                )
+            }
+            let itemNamesToRestore = restoredItemNames
+            let eateryIdsToRestore = restoredEateryIds
+
+            await MainActor.run {
+                AppDelegate.shared.coreDataStack.mergeFavorites(
+                    itemNames: itemNamesToRestore,
+                    eateryIds: eateryIdsToRestore
+                )
+            }
+
+            for itemName in localFavorites.itemNames.subtracting(restoredItemNames) {
+                setFavorite(true, itemName: itemName)
+            }
+            for eateryId in localFavorites.eateryIds.subtracting(restoredEateryIds) {
+                setEateryFavorite(true, cornellId: eateryId)
+            }
+
+            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.didRestoreFavoritesFromBackend)
+            return true
+        } catch {
+            logger.error("Failed to synchronize favorites; will retry: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    private func startItemSyncIfNeeded(for itemName: String) {
+        guard syncingItems.insert(itemName).inserted else { return }
+
+        Task {
+            await syncItem(itemName)
+        }
+    }
+
+    private func startEaterySyncIfNeeded(for eateryId: Int) {
+        guard syncingEateries.insert(eateryId).inserted else { return }
+
+        Task {
+            await syncEatery(eateryId)
+        }
+    }
+
+    private func syncItem(_ itemName: String) async {
+        defer {
+            syncingItems.remove(itemName)
+        }
+
+        while let desiredState = pendingItemUpdates[itemName] {
+            do {
+                try await Networking.default.updateFavoriteItem(
+                    name: itemName,
+                    isFavorite: desiredState
+                )
+
+                if pendingItemUpdates[itemName] == desiredState {
+                    pendingItemUpdates.removeValue(forKey: itemName)
+                    persistPendingItemUpdates()
+                    logger.info("Favorite item synced with Eatery backend")
+                    return
+                }
+            } catch {
+                logger.error("Failed to sync favorite item; will retry: \(error.localizedDescription)")
+                return
+            }
+        }
+    }
+
+    private func syncEatery(_ eateryId: Int) async {
+        defer {
+            syncingEateries.remove(eateryId)
+        }
+
+        while let desiredState = pendingEateryUpdates[eateryId] {
+            do {
+                try await Networking.default.updateFavoriteEatery(
+                    cornellId: eateryId,
+                    isFavorite: desiredState
+                )
+
+                if pendingEateryUpdates[eateryId] == desiredState {
+                    pendingEateryUpdates.removeValue(forKey: eateryId)
+                    persistPendingEateryUpdates()
+                    logger.info("Favorite eatery synced with Eatery backend")
+                    return
+                }
+            } catch {
+                logger.error("Failed to sync favorite eatery; will retry: \(error.localizedDescription)")
+                return
+            }
+        }
+    }
+
+    private func persistPendingItemUpdates() {
+        guard let data = try? JSONEncoder().encode(pendingItemUpdates) else {
+            logger.error("Failed to save pending favorite item updates")
+            return
+        }
+        UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingFavoriteItemUpdates)
+    }
+
+    private func persistPendingEateryUpdates() {
+        guard let data = try? JSONEncoder().encode(pendingEateryUpdates) else {
+            logger.error("Failed to save pending favorite eatery updates")
+            return
+        }
+        UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingFavoriteEateryUpdates)
+    }
+}
+
+private actor BackendAuthenticator {
+    private enum AuthenticationError: Error {
+        case invalidRefreshToken
+    }
+
+    private let baseURL: URL
+    private var accessToken: String?
+    private var refreshToken: String?
+    private var authenticationTask: Task<BackendAuthTokens, Error>?
+    private var refreshTask: Task<BackendAuthTokens, Error>?
+
+    init(baseURL: URL) {
+        self.baseURL = baseURL
+        accessToken = KeychainAccess.shared.retrieveBackendAccessToken()
+        refreshToken = KeychainAccess.shared.retrieveBackendRefreshToken()
+    }
+
+    func validAccessToken() async throws -> String {
+        if let accessToken {
+            return accessToken
+        }
+        return try await authenticateDevice()
+    }
+
+    func refreshAccessToken(rejectedToken: String) async throws -> String {
+        if let accessToken, accessToken != rejectedToken {
+            return accessToken
+        }
+
+        guard let refreshToken else {
+            return try await authenticateDevice()
+        }
+
+        if let refreshTask {
+            do {
+                return try await storeAndReturnAccessToken(from: refreshTask)
+            } catch AuthenticationError.invalidRefreshToken {
+                // Another caller may already have cleared tokens and re-authed.
+                if let accessToken, accessToken != rejectedToken {
+                    return accessToken
+                }
+                return try await authenticateDevice()
+            }
+        }
+
+        let baseURL = baseURL
+        let task = Task {
+            try await Self.refreshTokens(
+                baseURL: baseURL,
+                refreshToken: refreshToken
+            )
+        }
+        refreshTask = task
+
+        do {
+            let accessToken = try await storeAndReturnAccessToken(from: task)
+            refreshTask = nil
+            return accessToken
+        } catch AuthenticationError.invalidRefreshToken {
+            refreshTask = nil
+            clearTokens()
+            return try await authenticateDevice()
+        } catch {
+            refreshTask = nil
+            throw error
+        }
+    }
+
+    private func authenticateDevice() async throws -> String {
+        if let authenticationTask {
+            return try await storeAndReturnAccessToken(from: authenticationTask)
+        }
+
+        let baseURL = baseURL
+        let deviceID = AuthStorage.deviceId
+        let task = Task {
+            try await Self.verifyDevice(baseURL: baseURL, deviceID: deviceID)
+        }
+        authenticationTask = task
+
+        do {
+            let accessToken = try await storeAndReturnAccessToken(from: task)
+            authenticationTask = nil
+            return accessToken
+        } catch {
+            authenticationTask = nil
+            throw error
+        }
+    }
+
+    private func storeAndReturnAccessToken(
+        from task: Task<BackendAuthTokens, Error>
+    ) async throws -> String {
+        let tokens = try await task.value
+        accessToken = tokens.accessToken
+        refreshToken = tokens.refreshToken
+        KeychainAccess.shared.saveBackendTokens(
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken
+        )
+        return tokens.accessToken
+    }
+
+    private func clearTokens() {
+        accessToken = nil
+        refreshToken = nil
+        KeychainAccess.shared.invalidateBackendTokens()
+    }
+
+    private static func verifyDevice(
+        baseURL: URL,
+        deviceID: String
+    ) async throws -> BackendAuthTokens {
+        struct RequestBody: Encodable {
+            let deviceUuid: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(deviceUuid: deviceID))
+        return try await requestTokens(
+            url: baseURL.appendingPathComponent("auth/verify-token"),
+            body: body,
+            allowsInvalidRefreshToken: false
+        )
+    }
+
+    private static func refreshTokens(
+        baseURL: URL,
+        refreshToken: String
+    ) async throws -> BackendAuthTokens {
+        struct RequestBody: Encodable {
+            let refreshToken: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(refreshToken: refreshToken))
+        return try await requestTokens(
+            url: baseURL.appendingPathComponent("auth/refresh-token"),
+            body: body,
+            allowsInvalidRefreshToken: true
+        )
+    }
+
+    private static func requestTokens(
+        url: URL,
+        body: Data,
+        allowsInvalidRefreshToken: Bool
+    ) async throws -> BackendAuthTokens {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = body
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+
+        if allowsInvalidRefreshToken,
+           httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+            throw AuthenticationError.invalidRefreshToken
+        }
+
+        guard (200 ... 299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(BackendAuthTokens.self, from: data)
     }
 }
 

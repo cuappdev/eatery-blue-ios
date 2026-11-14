@@ -57,6 +57,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             savedStyle = .unspecified
         }
         windowScene.windows.forEach { $0.overrideUserInterfaceStyle = savedStyle }
+
+        Task {
+            let didRestoreFavorites = await FavoriteItemSyncCoordinator.shared.synchronizeFavoritesIfNeeded()
+            if didRestoreFavorites {
+                NotificationCenter.default.post(name: UIViewController.notificationName, object: nil)
+            }
+            await FavoriteItemSyncCoordinator.shared.retryPendingUpdates()
+        }
     }
 
     func sceneWillResignActive(_: UIScene) {

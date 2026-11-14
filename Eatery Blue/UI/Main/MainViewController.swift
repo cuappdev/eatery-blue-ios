@@ -76,6 +76,11 @@ class MainViewController: UIViewController {
         // Rebuild tab bar icons so selectedImage re-resolves
         configureTabBarItems()
     }
+
+    func openNotificationHub(animated: Bool = true) {
+        theTabBarController.selectedIndex = 0
+        home.openNotificationHub(animated: animated)
+    }
 }
 
 extension MainViewController: UITabBarControllerDelegate {

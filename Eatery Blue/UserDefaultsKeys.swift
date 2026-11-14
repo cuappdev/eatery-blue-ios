@@ -15,4 +15,8 @@ enum UserDefaultsKeys {
     static let isAnalyticsEnabled = "isAnalyticsEnabled"
     static let activeIcon = "activeIcon"
     static let preferedDisplayStyle = "preferedDisplayStyle"
+    static let backendDeviceId = "backendDeviceId"
+    static let pendingFavoriteItemUpdates = "pendingFavoriteItemUpdates"
+    static let pendingFavoriteEateryUpdates = "pendingFavoriteEateryUpdates"
+    static let didRestoreFavoritesFromBackend = "didRestoreFavoritesFromBackend"
 }

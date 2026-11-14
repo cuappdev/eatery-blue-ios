@@ -27,7 +27,12 @@ class MenusViewController: UIViewController {
     private var headerHeight: CGFloat = Constants.maxHeaderHeight
     private var isLoading = true
     private var previousScrollOffset: CGFloat = 0
-    private var selectedIndex: Int = 0
+    private var selectedIndex: Int = {
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        let isAfterNoon = currentHour >= 12
+        return (EventType.mealFromTime() == .breakfast && isAfterNoon) ? 1 : 0
+    }()
+
     private var shownEateries: [Eatery] = []
 
     private lazy var dataSource = makeDataSource()
@@ -164,7 +169,9 @@ class MenusViewController: UIViewController {
                         do {
                             try await updateAllEateriesByDayFromNetworking(i)
                             let loading = await isLoading
-                            if await i == selectedIndex, loading { await stopLoading() }
+                            if await i == selectedIndex, loading {
+                                await stopLoading()
+                            }
                         } catch {
                             logger.error("\(#function): \(error)")
                         }
@@ -186,6 +193,54 @@ class MenusViewController: UIViewController {
         let eateries = Constants.isTesting ? Eatery.dummyEateries : try await Networking.default
             .loadEateryByDay(day: day)
         allEateries[day] = eateries
+        if day == selectedIndex {
+            updateFilterControllerAvailableMealTypes()
+        }
+    }
+
+    private static let baselineMealTypes: Set<EventType> = [.breakfast, .lunch, .dinner, .lateDinner]
+
+    /// Determine which meal types should be available for the given day
+    private func availableMealTypes(for day: Int) -> [EventType] {
+        let selectedDay = Day().advanced(by: day)
+        let typesInData = Set(
+            (allEateries[day] ?? [])
+                .flatMap(\.events)
+                .filter { $0.canonicalDay == selectedDay }
+                .map(\.type)
+        )
+        return EventType.mealTypes.filter { Self.baselineMealTypes.contains($0) || typesInData.contains($0) }
+    }
+
+    /// Update the filter controller's available meal types and selected meal for the current day
+    private func updateFilterControllerAvailableMealTypes() {
+        let available = availableMealTypes(for: selectedIndex)
+        filterController.availableMealTypes = available
+
+        currentMealType = resolvedMealType(from: available)
+        filterController.setMealType(currentMealType)
+    }
+
+    /// Prefer brunch during the breakfast/lunch window; otherwise keep or fall back.
+    private func resolvedMealType(from available: [EventType]) -> EventType {
+        let fromTime = EventType.mealFromTime()
+        let shouldPreferBrunch = available.contains(.brunch)
+            && (fromTime == .breakfast || fromTime == .lunch)
+
+        if shouldPreferBrunch,
+           currentMealType == .breakfast || currentMealType == .lunch || !available.contains(currentMealType) {
+            return .brunch
+        }
+
+        if currentMealType == .brunch, !available.contains(.brunch) {
+            return .lunch
+        }
+
+        if available.contains(currentMealType) {
+            return currentMealType
+        }
+
+        return available.contains(fromTime) ? fromTime : (available.first ?? .breakfast)
     }
 
     private func startLoading() {
@@ -313,7 +368,7 @@ class MenusViewController: UIViewController {
                     for: indexPath
                 ) as? MenuDayPickerTableViewCell else { return UITableViewCell() }
                 cell.updateDateDelegate = self
-                cell.configure(days: days)
+                cell.configure(days: days, withSelectedIndex: selectedIndex)
                 cell.selectionStyle = .none
                 return cell
             case let .expandableCard(expandedEatery: expandedEatery, allEateries: allEateries):
@@ -402,13 +457,13 @@ class MenusViewController: UIViewController {
 
             // Only display eateries based on selected meal type
             let filteredEateries = (allEateries[selectedIndex] ?? []).filter { eatery in
-                if !eatery.paymentMethods.contains(.mealSwipe) { return false }
+                if !eatery.paymentMethods.contains(.mealSwipe) {
+                    return false
+                }
 
                 let events = eatery.events.filter { $0.canonicalDay == selectedDay }
 
-                return events.contains { $0.type == currentMealType
-                    || ((currentMealType == .breakfast || currentMealType == .lunch) && $0.type == .brunch)
-                }
+                return events.contains { $0.type == currentMealType }
             }
 
             let showAllAreas = !filter.north && !filter.west && !filter.central
@@ -539,7 +594,9 @@ extension MenusViewController: UIScrollViewDelegate {
         }
 
         // we don't want to update the fade if we are refreshing
-        if navigationView.logoRefreshControl.isRefreshing { return }
+        if navigationView.logoRefreshControl.isRefreshing {
+            return
+        }
 
         if offset > (Constants.minHeaderHeight + Constants.maxHeaderHeight) / 2 - Constants.minHeaderHeight {
             navigationView.setFadeInProgress(1, animated: true)
@@ -554,7 +611,6 @@ extension MenusViewController: UIScrollViewDelegate {
         let progress = max(0, min(1, 1 - offset / fadeDistance))
         navigationView.logoRefreshControl.alpha = progress
         navigationView.largeTitleLabel.alpha = progress
-        navigationView.notificationButton.alpha = progress
     }
 
     func scrollViewWillEndDragging(
@@ -575,7 +631,9 @@ extension MenusViewController: UIScrollViewDelegate {
         let decelerationRate = scrollView.decelerationRate.rawValue
         var offset = currentPosition + velocity.y * decelerationRate / (1 - decelerationRate) + scrollView.contentInset
             .top
-        if offset < 0 { return }
+        if offset < 0 {
+            return
+        }
 
         if offset < (Constants.maxHeaderHeight - Constants.minHeaderHeight) / 2 {
             offset = 0
@@ -653,6 +711,7 @@ extension MenusViewController: UpdateDateDelegate {
     func updateMenuDay(index: Int) {
         selectedIndex = index
         expandedEateryIds = []
+        updateFilterControllerAvailableMealTypes()
         if let eateries = allEateries[selectedIndex], !eateries.isEmpty {
             // Data already available for this day
             stopLoading()

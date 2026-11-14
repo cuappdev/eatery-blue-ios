@@ -90,6 +90,7 @@ class HomeViewController: UIViewController {
         view.addSubview(compareMenusButton)
         setUpCompareMenusButton()
 
+        setUpAppLifecycleSubscription()
         setUpUserLocationSubscription()
         setUpFavNotification()
         setUpConstraints()
@@ -114,7 +115,12 @@ class HomeViewController: UIViewController {
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
 
-        collectionView.contentInset.top = Constants.maxHeaderHeight + view.safeAreaInsets.top
+        let wasAtTop = abs(collectionView.contentOffset.y + collectionView.contentInset.top) < 1
+        let topInset = Constants.maxHeaderHeight + view.safeAreaInsets.top
+        collectionView.contentInset.top = topInset
+        if wasAtTop {
+            collectionView.contentOffset.y = -topInset
+        }
         updateNavHeaderViewHeight()
     }
 
@@ -147,7 +153,17 @@ class HomeViewController: UIViewController {
             navigationController?.pushViewController(searchViewController, animated: true)
         }
 
+        navigationView.onNotificationTap { [weak self] in
+            self?.openNotificationHub()
+        }
+
         navigationView.logoRefreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+    }
+
+    func openNotificationHub(animated: Bool = true) {
+        guard !(navigationController?.topViewController is NotificationViewController) else { return }
+        navigationView.notificationButton.markAllAsRead()
+        navigationController?.pushViewController(NotificationViewController(), animated: animated)
     }
 
     private func setUpCompareMenusButton() {
@@ -177,6 +193,30 @@ class HomeViewController: UIViewController {
         }.store(in: &cancellables)
     }
 
+    private func setUpAppLifecycleSubscription() {
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.refreshAfterForeground()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func refreshAfterForeground() {
+        navigationView.notificationButton.checkforNotifications()
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                try await updateAllEateriesFromNetworking()
+            } catch {
+                logger.error("\(#function): \(error)")
+            }
+            applySnapshot(animated: false, reconfiguringEateryCards: true)
+        }
+    }
+
     private func setUpFavNotification() {
         addFavoriteObservation(current: &favoritesObserver) { [weak self] _ in
             guard let self else { return }
@@ -199,7 +239,9 @@ class HomeViewController: UIViewController {
     }
 
     private func trySetUpCompareMenusOnboarding() {
-        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) { return }
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.didExternallyOnboardCompareMenus) {
+            return
+        }
 
         compareMenusOnboarding.layer.opacity = 0.01
         navigationController?.tabBarController?.parent?.view.addSubview(compareMenusOnboarding)
@@ -251,6 +293,7 @@ class HomeViewController: UIViewController {
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
         startLoading()
         LocationManager.shared.requestLocation()
+        navigationView.notificationButton.checkforNotifications()
 
         Task {
             await withThrowingTaskGroup(of: Void.self) { [weak self] group in
@@ -288,7 +331,6 @@ class HomeViewController: UIViewController {
         let favoritesViewController = FavoritesViewController()
         favoritesCarousel.title = "Favorites"
         favoritesCarousel.truncateAfter = 3
-        favoritesCarousel.navigationController = navigationController
         favoritesCarousel.viewControllerToPush = favoritesViewController
         let favoriteEateries = allEateries.filter {
             AppDelegate.shared.coreDataStack.metadata(eateryId: $0.cornellId).isFavorite
@@ -472,7 +514,7 @@ class HomeViewController: UIViewController {
     }
 
     /// Updates the table view data source, and animates if desired
-    private func applySnapshot(animated: Bool = true) {
+    private func applySnapshot(animated: Bool = true, reconfiguringEateryCards: Bool = false) {
         var snapshot = Snapshot()
 
         let coreDataStack = AppDelegate.shared.coreDataStack
@@ -542,17 +584,14 @@ class HomeViewController: UIViewController {
             return
         }
 
-        LocationManager.shared.$userLocation
-            .sink { userLocation in
-                currentEateries = currentEateries.sorted(by: { eatery1, eatery2 in
-                    let dist1 = eatery1.walkTime(userLocation: userLocation)
-                    let dist2 = eatery2.walkTime(userLocation: userLocation)
-                    guard let dist1, let dist2 else { return true }
+        let userLocation = LocationManager.shared.userLocation
+        currentEateries = currentEateries.sorted { eatery1, eatery2 in
+            let dist1 = eatery1.walkTime(userLocation: userLocation)
+            let dist2 = eatery2.walkTime(userLocation: userLocation)
+            guard let dist1, let dist2 else { return true }
 
-                    return dist1 < dist2
-                })
-            }
-            .store(in: &cancellables)
+            return dist1 < dist2
+        }
 
         let label = UILabel()
         label.text = filter.isEnabled ? "Filtered Eateries" : "All Eateries"
@@ -632,7 +671,24 @@ class HomeViewController: UIViewController {
         }
 
         shownEateries = openEateries + closedEateries
+        reconfigureEateryCards(in: &snapshot, ifNeeded: reconfiguringEateryCards)
         dataSource.apply(snapshot, animatingDifferences: animated)
+    }
+
+    private func reconfigureEateryCards(in snapshot: inout Snapshot, ifNeeded: Bool) {
+        guard ifNeeded else { return }
+
+        let existingItems = Set(dataSource.snapshot().itemIdentifiers)
+        let eateryCards = snapshot.itemIdentifiers.filter {
+            guard existingItems.contains($0) else { return false }
+            switch $0 {
+            case .largeEateryCard, .smallEateryCard:
+                return true
+            default:
+                return false
+            }
+        }
+        snapshot.reconfigureItems(eateryCards)
     }
 
     // MARK: - Empty State Helper
@@ -838,7 +894,9 @@ extension HomeViewController: UIScrollViewDelegate {
         }
 
         // we don't want to update the fade if we are refreshing
-        if navigationView.logoRefreshControl.isRefreshing { return }
+        if navigationView.logoRefreshControl.isRefreshing {
+            return
+        }
 
         if offset > (Constants.minHeaderHeight + Constants.maxHeaderHeight) / 2 - Constants.minHeaderHeight {
             navigationView.setFadeInProgress(1, animated: true)
@@ -884,7 +942,9 @@ extension HomeViewController: UIScrollViewDelegate {
         let decelerationRate = scrollView.decelerationRate.rawValue
         var offset = currentPosition + velocity.y * decelerationRate /
             (1 - decelerationRate) + scrollView.contentInset.top
-        if offset < 0 { return }
+        if offset < 0 {
+            return
+        }
 
         if offset < (Constants.maxHeaderHeight - Constants.minHeaderHeight) / 2 {
             offset = 0

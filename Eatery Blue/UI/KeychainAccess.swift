@@ -11,83 +11,132 @@ import Security
 // https://developer.apple.com/documentation/security/keychain_services/keychain_items/adding_a_password_to_the_keychain
 
 class KeychainAccess {
-    static let shared: KeychainAccess = .init()
+    static let shared = KeychainAccess()
 
-    private enum Item {
-        static let session = "GETLogin"
+    private enum Account {
+        static let getSession = "GETLogin"
         static let barcodeSeed = "GETBarcodeSeed"
         static let patronId = "GETPatronId"
+        static let backendAccessToken = "BackendAccessToken"
+        static let backendRefreshToken = "BackendRefreshToken"
+        static let backendDeviceId = "BackendDeviceId"
     }
+
+    // MARK: - GET Session
 
     /// Saves session token to Keychain under "GETLogin", access with KeychainAccess.shared.retrieveToken
     func saveToken(sessionId: String) {
         // New login must not keep the previous user's barcode secrets.
         invalidateAllGETSecrets()
-        save(sessionId, account: Item.session)
+        save(sessionId, account: Account.getSession)
     }
 
     func retrieveToken() -> String? {
-        retrieve(account: Item.session)
+        retrieve(account: Account.getSession)
     }
 
+    func invalidateToken() {
+        delete(account: Account.getSession)
+    }
+
+    // MARK: - GET Barcode
+
     func saveBarcodeSeed(_ seed: String) {
-        save(seed, account: Item.barcodeSeed)
+        save(seed, account: Account.barcodeSeed)
     }
 
     func retrieveBarcodeSeed() -> String? {
-        retrieve(account: Item.barcodeSeed)
+        retrieve(account: Account.barcodeSeed)
     }
 
     func savePatronId(_ patronId: String) {
-        save(patronId, account: Item.patronId)
+        save(patronId, account: Account.patronId)
     }
 
     func retrievePatronId() -> String? {
-        retrieve(account: Item.patronId)
+        retrieve(account: Account.patronId)
     }
 
     func deleteBarcodeSeed() {
-        delete(account: Item.barcodeSeed)
+        delete(account: Account.barcodeSeed)
     }
 
     func deletePatronId() {
-        delete(account: Item.patronId)
+        delete(account: Account.patronId)
     }
 
-    // Session + seed + patron ID. Used on logout and dead GET session.
+    /// Session + seed + patron ID. Used on logout and dead GET session.
     func invalidateAllGETSecrets() {
-        delete(account: Item.session)
-        delete(account: Item.barcodeSeed)
-        delete(account: Item.patronId)
+        delete(account: Account.getSession)
+        delete(account: Account.barcodeSeed)
+        delete(account: Account.patronId)
     }
+
+    // MARK: - Backend Authentication
+
+    func saveBackendTokens(accessToken: String, refreshToken: String) {
+        save(accessToken, account: Account.backendAccessToken)
+        save(refreshToken, account: Account.backendRefreshToken)
+    }
+
+    func retrieveBackendAccessToken() -> String? {
+        retrieve(account: Account.backendAccessToken)
+    }
+
+    func retrieveBackendRefreshToken() -> String? {
+        retrieve(account: Account.backendRefreshToken)
+    }
+
+    func invalidateBackendTokens() {
+        delete(account: Account.backendAccessToken)
+        delete(account: Account.backendRefreshToken)
+    }
+
+    func saveBackendDeviceId(_ deviceId: String) {
+        save(deviceId, account: Account.backendDeviceId)
+    }
+
+    func retrieveBackendDeviceId() -> String? {
+        retrieve(account: Account.backendDeviceId)
+    }
+
+    // MARK: - Keychain Helpers
 
     private func save(_ value: String, account: String) {
+        guard let data = value.data(using: .utf8) else { return }
+
         delete(account: account)
-        guard let data = value.data(using: .utf8) else {
-            return
-        }
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
             kSecValueData as String: data
         ]
-        _ = SecItemAdd(query as CFDictionary, nil)
+
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard status == errSecSuccess else {
+            let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
+            logger.error("Failed to save Keychain item for \(account): \(message) (\(status))")
+            return
+        }
     }
 
     private func retrieve(account: String) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
-            kSecReturnData as String: kCFBooleanTrue as Any,
+            kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
-        var dataTypeRef: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
 
-        guard status == errSecSuccess, let data = dataTypeRef as? Data else {
+        var result: AnyObject?
+        guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data
+        else {
             return nil
         }
+
         return String(data: data, encoding: .utf8)
     }
 
@@ -96,9 +145,7 @@ class KeychainAccess {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account
         ]
-        let status = SecItemDelete(query as CFDictionary)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            return
-        }
+
+        SecItemDelete(query as CFDictionary)
     }
 }

@@ -23,8 +23,8 @@ jobs:
 
           curl -L -o swiftlint.zip "https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/swiftlint_linux_amd64.zip"
           unzip swiftlint.zip
-          chmod +x swiftlint
-          sudo mv swiftlint /usr/local/bin/
+          chmod +x swiftlint-static
+          sudo mv swiftlint-static /usr/local/bin/swiftlint
 
           # Verify installation
           echo "SwiftLint installed successfully:"

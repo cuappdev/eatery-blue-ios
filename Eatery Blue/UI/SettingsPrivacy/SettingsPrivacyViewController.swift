@@ -8,11 +8,19 @@
 import Combine
 import Foundation
 import SwiftUI
+import UserNotifications
 
 class SettingsPrivacyViewController: UIViewController {
     private lazy var hostingController: UIHostingController<SettingsPrivacyView> = {
-        let hostingController = UIHostingController(rootView: SettingsPrivacyView())
-        return hostingController
+        let rootView = SettingsPrivacyView(
+            onOpenSystemSettings: { [weak self] in
+                self?.openSystemSettings()
+            },
+            onOpenNotificationSettings: { [weak self] in
+                self?.openNotificationSettings()
+            }
+        )
+        return UIHostingController(rootView: rootView)
     }()
 
     private var cancellables: Set<AnyCancellable> = []
@@ -23,6 +31,11 @@ class SettingsPrivacyViewController: UIViewController {
         setUpNavigationItem()
         setUpView()
         setUpConstraints()
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                self?.updateView()
+            }
+            .store(in: &cancellables)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -100,5 +113,25 @@ class SettingsPrivacyViewController: UIViewController {
 
         let isAnalyticsEnabled = UserDefaults.standard.bool(forKey: UserDefaultsKeys.isAnalyticsEnabled)
         hostingController.rootView.viewModel.isAnalyticsEnabled = isAnalyticsEnabled
+
+        Task { @MainActor [weak self] in
+            let settings = await UNUserNotificationCenter.current().notificationSettings()
+            self?.hostingController.rootView.viewModel.isNotificationAllowed =
+                settings.authorizationStatus == .authorized
+                    || settings.authorizationStatus == .provisional
+                    || settings.authorizationStatus == .ephemeral
+        }
+    }
+
+    private func openSystemSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    private func openNotificationSettings() {
+        navigationController?.pushViewController(
+            SettingsNotificationsViewController(),
+            animated: true
+        )
     }
 }
