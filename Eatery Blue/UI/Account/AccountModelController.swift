@@ -102,7 +102,7 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    /// Cashless key for barcodes.
+    /// Used by barcode generation in a follow-up PR.
     private var patronId: String?
 
     override func viewDidLoad() {
@@ -142,32 +142,32 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let sessionId = Networking.default.sessionId
             async let payload = Networking.default.accounts.fetch(start: start, end: end)
-            async let barcodeConfig = GetAPI().barcodeConfig(sessionId: sessionId)
+            async let barcodeConfig = Networking.default.barcodeConfig.fetch()
 
             let accountData = try await payload
             let eateryAccounts = EateryAccounts(accountData.accounts)
             accounts = eateryAccounts
-            // Keep patronId in memory and Keychain. Do not show or log the id itself.
             patronId = accountData.patronId
             persistPatronId(accountData.patronId)
 
-            if let config = try? await barcodeConfig {
+            do {
+                let config = try await barcodeConfig
                 persistBarcodeSeed(config)
+                logger.info(
+                    """
+                    Account fetch complete, hasPatronId=\(patronId != nil), \
+                    hasSeed=\(config.canGenerateOfflineBarcode)
+                    """
+                )
+            } catch {
+                logger.error("Barcode config fetch failed: \(error)")
+                logger.info("Account fetch complete, hasPatronId=\(patronId != nil), hasSeed=false")
             }
-
-            logger.info(
-                """
-                Account fetch complete, hasPatronId=\(patronId != nil), \
-                hasSeed=\(KeychainAccess.shared.retrieveBarcodeSeed() != nil)
-                """
-            )
-
-            spinner.stopAnimating()
         } catch {
             logger.error("\(#function): \(error)")
         }
+        spinner.stopAnimating()
     }
 
     private func persistPatronId(_ id: String?) {

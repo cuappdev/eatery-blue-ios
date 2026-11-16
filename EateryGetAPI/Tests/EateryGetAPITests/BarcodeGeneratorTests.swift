@@ -1,8 +1,7 @@
 @testable import EateryGetAPI
 import XCTest
 
-// Expected strings came from generate_barcode.py with fake keys, not a live GET account.
-
+/// Expected strings came from generate_barcode.py with fake keys, not a live GET account.
 final class BarcodeGeneratorTests: XCTestCase {
     func testMatchesPythonForFixedTimestamp() throws {
         let barcode = try BarcodeGenerator.generateBarcode(
@@ -15,7 +14,6 @@ final class BarcodeGeneratorTests: XCTestCase {
         XCTAssertEqual(barcode.count, 22)
     }
 
-    // Same keys, 5 seconds later — digits must change.
     func testMatchesPythonFiveSecondsLater() throws {
         let barcode = try BarcodeGenerator.generateBarcode(
             seedHex: "0123456789abcdef",
@@ -46,7 +44,6 @@ final class BarcodeGeneratorTests: XCTestCase {
         XCTAssertEqual(barcode, "1600000000106227967348")
     }
 
-    // Format: [10-digit time][version 1][10-digit payload][1 check digit]
     func testBarcodeShape() throws {
         let barcode = try BarcodeGenerator.generateBarcode(
             seedHex: "0123456789abcdef",
