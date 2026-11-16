@@ -8,7 +8,6 @@
 public struct GetAPI {
     public init() {}
 
-    // Balances/transactions for the UI, plus patronId for barcodes (not shown).
     @MainActor
     public func accounts(sessionId: String, start: String, end: String) async throws -> AccountData {
         let sessionManager = GetSessionManager(sessionId: sessionId)
@@ -21,7 +20,6 @@ public struct GetAPI {
         return try await SchemaToModel.convert(getAccounts: rawAccountInfo, getTransactions: rawTransactions)
     }
 
-    // Public entry point: ask GET for the barcode seed using the user's login session.
     @MainActor
     public func barcodeConfig(sessionId: String) async throws -> BarcodeConfig {
         let sessionManager = GetSessionManager(sessionId: sessionId)
