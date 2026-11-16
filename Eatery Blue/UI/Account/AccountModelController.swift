@@ -102,7 +102,7 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    /// Cashless key for barcodes.
+    /// Used for barcode generation / Show barcode enablement.
     private var patronId: String?
 
     override func viewDidLoad() {
@@ -113,7 +113,6 @@ class AccountModelController: AccountViewController {
         onShowBarcode = { [weak self] in
             self?.navigationController?.pushViewController(BarcodeViewController(), animated: true)
         }
-        // Keychain may already have a patronId from the last session.
         patronId = KeychainAccess.shared.retrievePatronId()
         updateBarcodeEntryFromState()
 
@@ -150,9 +149,8 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let sessionId = Networking.default.sessionId
             async let payload = Networking.default.accounts.fetch(start: start, end: end)
-            async let barcodeConfig = GetAPI().barcodeConfig(sessionId: sessionId)
+            async let barcodeConfig = Networking.default.barcodeConfig.fetch()
 
             let accountData = try await payload
             let eateryAccounts = EateryAccounts(accountData.accounts)
@@ -163,16 +161,19 @@ class AccountModelController: AccountViewController {
                 persistPatronId(id)
             }
 
-            if let config = try? await barcodeConfig {
+            do {
+                let config = try await barcodeConfig
                 persistBarcodeSeed(config)
+                logger.info(
+                    """
+                    Account fetch complete, hasPatronId=\(patronId != nil), \
+                    hasSeed=\(config.canGenerateOfflineBarcode)
+                    """
+                )
+            } catch {
+                logger.error("Barcode config fetch failed: \(error)")
+                logger.info("Account fetch complete, hasPatronId=\(patronId != nil), hasSeed=false")
             }
-
-            logger.info(
-                """
-                Account fetch complete, hasPatronId=\(patronId != nil), \
-                hasSeed=\(KeychainAccess.shared.retrieveBarcodeSeed() != nil)
-                """
-            )
         } catch {
             logger.error("\(#function): \(error)")
         }

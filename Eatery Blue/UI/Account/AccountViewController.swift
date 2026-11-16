@@ -115,21 +115,24 @@ class AccountViewController: UIViewController {
         }
     }
 
-    // Only the logged-in Account screen calls this.
     func setUpBarcodeEntry() {
         let titleLabel = showBarcodeButton.content
         titleLabel.font = .preferredFont(for: .body, weight: .semibold)
         titleLabel.textAlignment = .center
         titleLabel.text = "Show barcode"
         titleLabel.textColor = UIColor.Eatery.default00
+        titleLabel.adjustsFontForContentSizeCategory = true
 
         showBarcodeButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
         showBarcodeButton.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
+        showBarcodeButton.accessibilityLabel = "Show barcode"
+        showBarcodeButton.accessibilityTraits = .button
         showBarcodeButton.buttonPress { [weak self] _ in
             self?.onShowBarcode?()
         }
 
         barcodeHintLabel.font = .preferredFont(forTextStyle: .footnote)
+        barcodeHintLabel.adjustsFontForContentSizeCategory = true
         barcodeHintLabel.textColor = UIColor.Eatery.secondaryText
         barcodeHintLabel.numberOfLines = 0
         barcodeHintLabel.isHidden = true

@@ -10,15 +10,17 @@ import EateryModel
 import SnapKit
 import UIKit
 
-// Full-screen GET payment barcode. Refreshes about every 5 seconds.
+/// Temporary full-screen GET payment barcode. Refreshes about every 5 seconds.
 @MainActor
 class BarcodeViewController: UIViewController {
     private let spinner = UIActivityIndicatorView(style: .large)
     private let barcodeImageView = UIImageView()
     private let digitsLabel = UILabel()
     private let messageLabel = UILabel()
+    private let ciContext = CIContext()
 
     private var refreshTimer: Timer?
+    private var loadTask: Task<Void, Never>?
     private var seed: String?
     private var patronId: String?
 
@@ -39,8 +41,10 @@ class BarcodeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        Task {
+        loadTask?.cancel()
+        loadTask = Task {
             await loadSecrets()
+            guard !Task.isCancelled else { return }
             startTimer()
         }
     }
@@ -48,8 +52,13 @@ class BarcodeViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        loadTask?.cancel()
+        loadTask = nil
+        stopTimer()
+    }
+
+    deinit {
         refreshTimer?.invalidate()
-        refreshTimer = nil
     }
 
     private func setUpNavigation() {
@@ -70,6 +79,7 @@ class BarcodeViewController: UIViewController {
             action: #selector(didTapBackButton)
         )
         backButton.tintColor = UIColor.Eatery.primaryText
+        backButton.accessibilityLabel = "Back"
         navigationItem.leftBarButtonItem = backButton
     }
 
@@ -82,16 +92,23 @@ class BarcodeViewController: UIViewController {
         barcodeImageView.contentMode = .scaleAspectFit
         barcodeImageView.backgroundColor = .white
         barcodeImageView.isHidden = true
+        barcodeImageView.isAccessibilityElement = true
+        barcodeImageView.accessibilityLabel = "Payment barcode"
+        barcodeImageView.accessibilityTraits = .image
         view.addSubview(barcodeImageView)
 
-        digitsLabel.font = .monospacedDigitSystemFont(ofSize: 15, weight: .medium)
+        let digitsFont = UIFont.preferredFont(forTextStyle: .callout)
+        digitsLabel.font = .monospacedDigitSystemFont(ofSize: digitsFont.pointSize, weight: .medium)
+        digitsLabel.adjustsFontForContentSizeCategory = true
         digitsLabel.textColor = UIColor.Eatery.primaryText
         digitsLabel.textAlignment = .center
         digitsLabel.adjustsFontSizeToFitWidth = true
         digitsLabel.isHidden = true
+        digitsLabel.isAccessibilityElement = true
         view.addSubview(digitsLabel)
 
         messageLabel.font = .preferredFont(forTextStyle: .body)
+        messageLabel.adjustsFontForContentSizeCategory = true
         messageLabel.textColor = UIColor.Eatery.secondaryText
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
@@ -138,6 +155,8 @@ class BarcodeViewController: UIViewController {
             await fetchPatronId()
         }
 
+        guard !Task.isCancelled else { return }
+
         guard seed != nil, patronId != nil else {
             if patronId == nil {
                 showMessage("No payment ID yet. Use GET once, then try again.")
@@ -150,16 +169,14 @@ class BarcodeViewController: UIViewController {
         refreshBarcode()
     }
 
-    // Returns false when we already showed an error and should stop.
     private func fetchSeed() async -> Bool {
-        let sessionId = Networking.default.sessionId
-        guard !sessionId.isEmpty else {
+        guard !Networking.default.sessionId.isEmpty else {
             showMessage("Log in to GET to show a barcode.")
             return false
         }
 
         do {
-            let config = try await GetAPI().barcodeConfig(sessionId: sessionId)
+            let config = try await Networking.default.barcodeConfig.fetch()
             guard config.canGenerateOfflineBarcode, let barcodeSeed = config.barcodeSeed else {
                 showMessage("Barcode isn't available for this account.")
                 return false
@@ -189,7 +206,7 @@ class BarcodeViewController: UIViewController {
     }
 
     private func startTimer() {
-        refreshTimer?.invalidate()
+        stopTimer()
         guard seed != nil, patronId != nil else {
             return
         }
@@ -199,6 +216,11 @@ class BarcodeViewController: UIViewController {
                 self?.refreshBarcode()
             }
         }
+    }
+
+    private func stopTimer() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
     }
 
     private func refreshBarcode() {
@@ -213,7 +235,7 @@ class BarcodeViewController: UIViewController {
                 cashlessKey: patronId,
                 timestamp: timestamp
             )
-            guard let image = Self.pdf417Image(from: digits) else {
+            guard let image = pdf417Image(from: digits) else {
                 showMessage("Couldn't draw barcode.")
                 return
             }
@@ -223,8 +245,7 @@ class BarcodeViewController: UIViewController {
         }
     }
 
-    // Core Image PDF417. Input must be the 22-digit string as ASCII data.
-    static func pdf417Image(from digits: String) -> UIImage? {
+    private func pdf417Image(from digits: String) -> UIImage? {
         guard let filter = CIFilter(name: "CIPDF417BarcodeGenerator") else {
             return nil
         }
@@ -235,8 +256,7 @@ class BarcodeViewController: UIViewController {
         }
 
         let scaled = output.transformed(by: CGAffineTransform(scaleX: 8, y: 8))
-        let context = CIContext()
-        guard let cgImage = context.createCGImage(scaled, from: scaled.extent) else {
+        guard let cgImage = ciContext.createCGImage(scaled, from: scaled.extent) else {
             return nil
         }
         return UIImage(cgImage: cgImage)
@@ -247,6 +267,7 @@ class BarcodeViewController: UIViewController {
         barcodeImageView.isHidden = true
         digitsLabel.isHidden = true
         messageLabel.isHidden = true
+        UIAccessibility.post(notification: .announcement, argument: "Loading barcode")
     }
 
     private func showBarcode(image: UIImage, digits: String) {
@@ -255,6 +276,7 @@ class BarcodeViewController: UIViewController {
         barcodeImageView.image = image
         barcodeImageView.isHidden = false
         digitsLabel.text = digits
+        digitsLabel.accessibilityLabel = "Barcode digits \(digits)"
         digitsLabel.isHidden = false
     }
 
@@ -266,8 +288,8 @@ class BarcodeViewController: UIViewController {
         digitsLabel.text = nil
         messageLabel.text = text
         messageLabel.isHidden = false
-        refreshTimer?.invalidate()
-        refreshTimer = nil
+        stopTimer()
+        UIAccessibility.post(notification: .announcement, argument: text)
     }
 
     @objc private func didTapBackButton() {

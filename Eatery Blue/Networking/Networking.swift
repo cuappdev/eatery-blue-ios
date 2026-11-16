@@ -15,6 +15,7 @@ class Networking {
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
     let accounts: FetchAccounts
+    let barcodeConfig: FetchBarcodeConfig
     let baseUrl: URL
     let eateryCache: EateryMemoryCache
     private let backendAuthenticator: BackendAuthenticator
@@ -29,6 +30,7 @@ class Networking {
         let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
+        barcodeConfig = FetchBarcodeConfig()
     }
 
     func registerFCMToken(_ token: String) async throws {
@@ -633,8 +635,7 @@ private actor BackendAuthenticator {
         }
 
         if allowsInvalidRefreshToken,
-           httpResponse.statusCode == 401 || httpResponse.statusCode == 403
-        {
+           httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
             throw AuthenticationError.invalidRefreshToken
         }
 
@@ -700,7 +701,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "RPCC"
-            ),
+            )
         ]),
         Account(accountType: .bigRedBucks, balance: 500, transactions: [
             Transaction(
@@ -720,7 +721,7 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Mac's Cafe"
-            ),
+            )
         ]),
         Account(accountType: .cityBucks, balance: 0, transactions: []),
         Account(accountType: .laundry, balance: 37.54, transactions: [
@@ -741,7 +742,15 @@ private enum AccountDummyData {
                 amount: 1,
                 date: Day().advanced(by: -2).date(hour: 12, minute: 0),
                 location: "Dolon 27 Dryer"
-            ),
-        ]),
+            )
+        ])
     ]
+}
+
+struct FetchBarcodeConfig {
+    private let getApi = GetAPI()
+
+    func fetch() async throws -> BarcodeConfig {
+        try await getApi.barcodeConfig(sessionId: Networking.default.sessionId)
+    }
 }
