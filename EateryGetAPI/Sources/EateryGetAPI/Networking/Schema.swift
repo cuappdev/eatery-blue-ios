@@ -25,19 +25,18 @@ enum Schema {
 
         let transactionType: Int?
 
-        // Cashless key. GET may send a string or a number; we store a string.
+        /// GET may send patronId as a string or a number.
         let patronId: FlexibleID?
     }
 
-    // Raw JSON from GET's nativeStartup call (before we clean it up).
-    // pinSeed is also in the JSON; we skip it by not listing it here.
+    /// pinSeed is also in the JSON; we skip it by not listing it here.
     struct RawNativeStartup: Decodable {
         let barcodeSeed: String?
         let enableOfflineBarcodeGeneration: Bool?
     }
 }
 
-// Decodes a JSON string or number into a string. Empty string → nil.
+/// Decodes a JSON string or number into a string. Empty string → nil.
 struct FlexibleID: Decodable {
     let string: String?
 

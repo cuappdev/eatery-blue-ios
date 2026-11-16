@@ -8,14 +8,13 @@
 import CryptoKit
 import Foundation
 
-// Port of generate_barcode.py. Same inputs must produce the same 22-digit string.
+/// Port of generate_barcode.py. Same inputs must produce the same 22-digit string.
 public enum BarcodeGenerator {
     public enum Error: Swift.Error {
         case invalidSeedHex
         case invalidCashlessKey
     }
 
-    // seedHex = barcodeSeed, cashlessKey = patronId, timestamp = unix time
     public static func generateBarcode(
         seedHex: String,
         cashlessKey: String,
@@ -38,8 +37,8 @@ public enum BarcodeGenerator {
     }
 }
 
-// Hardcoded GET garble: base64 → ASCII hex → bytes.
-// NTBGQ0RGM0ZFNDIyQTBBNDY5RkU= → 50FCDF3FE422A0A469FE
+/// Hardcoded GET garble: base64 → ASCII hex → bytes.
+/// NTBGQ0RGM0ZFNDIyQTBBNDY5RkU= → 50FCDF3FE422A0A469FE
 private let garbleBytes: [UInt8] = [0x50, 0xFC, 0xDF, 0x3F, 0xE4, 0x22, 0xA0, 0xA4, 0x69, 0xFE]
 
 private func xorEncrypt(_ a: [UInt8], _ b: [UInt8]) -> [UInt8] {
@@ -103,7 +102,6 @@ private func deriveHmacKey(seedHex: String) throws -> [UInt8] {
 }
 
 private func generateTotp(hmacKey: [UInt8], timestamp: Int) -> String {
-    // Counter = timestamp as 8-byte big-endian
     var bigEndian = UInt64(timestamp).bigEndian
     let counter = withUnsafeBytes(of: &bigEndian) { Array($0) }
 

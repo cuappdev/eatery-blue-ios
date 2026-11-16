@@ -1,10 +1,7 @@
 @testable import EateryGetAPI
 import XCTest
 
-// These tests never call GET. They feed fake JSON into the decoder.
-
 final class PatronIdDecodingTests: XCTestCase {
-    // patronId present as a string → we keep it.
     func testDecodesPatronIdString() throws {
         let transaction = try decodeTransaction("""
         {
@@ -20,7 +17,6 @@ final class PatronIdDecodingTests: XCTestCase {
         XCTAssertEqual(transaction.patronId?.string, "12345")
     }
 
-    // GET sometimes sends patronId as a number.
     func testDecodesPatronIdNumber() throws {
         let transaction = try decodeTransaction("""
         {
@@ -31,7 +27,6 @@ final class PatronIdDecodingTests: XCTestCase {
         XCTAssertEqual(transaction.patronId?.string, "12345")
     }
 
-    // Missing patronId → nil, no crash.
     func testMissingPatronIdIsNil() throws {
         let transaction = try decodeTransaction("""
         {
@@ -43,7 +38,6 @@ final class PatronIdDecodingTests: XCTestCase {
         XCTAssertNil(transaction.patronId?.string)
     }
 
-    // Empty string is not a real id.
     func testEmptyPatronIdIsNil() throws {
         let transaction = try decodeTransaction("""
         {
@@ -54,7 +48,6 @@ final class PatronIdDecodingTests: XCTestCase {
         XCTAssertNil(transaction.patronId?.string)
     }
 
-    // No transactions → no patron id, accounts still load.
     func testEmptyTransactionListHasNoPatronId() {
         let data = SchemaToModel.convert(
             getAccounts: [Schema.RawAccount(accountDisplayName: "Flex", balance: 10)],
@@ -66,7 +59,6 @@ final class PatronIdDecodingTests: XCTestCase {
         XCTAssertTrue(data.accounts[0].transactions.isEmpty)
     }
 
-    // Take patronId from any one transaction.
     func testUsesFirstAvailablePatronId() throws {
         let withId = try decodeTransaction("""
         {
@@ -95,7 +87,7 @@ final class PatronIdDecodingTests: XCTestCase {
         XCTAssertEqual(data.accounts[0].transactions.count, 2)
     }
 
-    // Row may be skipped for the UI (no location) but we still keep its patronId.
+    /// Rows skipped for UI (e.g. missing location) can still supply patronId.
     func testKeepsPatronIdFromRowThatIsNotShown() throws {
         let hidden = try decodeTransaction("""
         {

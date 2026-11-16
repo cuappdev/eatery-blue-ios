@@ -15,6 +15,9 @@ class GetSessionManager {
 
     private let base: String = "https://services.get.cbord.com/GETServices/services/json"
 
+    /// Version string expected by GET's nativeStartup configuration API.
+    private static let getClientVersion = "4.33.27"
+
     private let sessionId: String
 
     private var session: Session
@@ -164,20 +167,18 @@ class GetSessionManager {
         return response.response.transactions
     }
 
-    // POST /configuration method nativeStartup → barcode seed for this session.
     @MainActor func nativeStartup() async throws -> BarcodeConfig {
-        // Body GET expects. Same shape as userId() / transactions, different method.
         struct Parameters: Encodable {
             let version = "1"
             let method = "nativeStartup"
             let params: [String: String]
 
-            init(sessionId: String) {
+            init(sessionId: String, clientVersion: String) {
                 params = [
                     "clientType": "ios",
-                    "clientVersion": "4.33.27",
-                    "institutionId": "73116ae4-22ad-4c71-8ffd-11ba015407b1", // Cornell GET
-                    "sessionId": sessionId // from Keychain after GET login
+                    "clientVersion": clientVersion,
+                    "institutionId": "73116ae4-22ad-4c71-8ffd-11ba015407b1",
+                    "sessionId": sessionId
                 ]
             }
         }
@@ -185,12 +186,11 @@ class GetSessionManager {
         let dataTask = session.request(
             "\(base)/configuration",
             method: .post,
-            parameters: Parameters(sessionId: sessionId),
+            parameters: Parameters(sessionId: sessionId, clientVersion: Self.getClientVersion),
             encoder: JSONParameterEncoder.default
         )
 
         let responseData = try await dataTask.serializingData().value
-        // Do not log responseData — it contains barcodeSeed.
         return try SchemaToModel.barcodeConfig(fromNativeStartupData: responseData)
     }
 }
