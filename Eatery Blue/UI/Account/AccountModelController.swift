@@ -9,7 +9,7 @@ import EateryGetAPI
 import EateryModel
 import UIKit
 
-// The accounts which are displayed on the profile page in Eatery.
+/// The accounts which are displayed on the profile page in Eatery.
 private struct EateryAccounts {
     let mealPlan: Account?
     let bigRedBucks: Account?
@@ -102,7 +102,7 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    // Cashless key for barcodes.
+    /// Held for barcode generation in a follow-up PR. Do not display or log the value.
     private var patronId: String?
 
     override func viewDidLoad() {
@@ -145,14 +145,12 @@ class AccountModelController: AccountViewController {
             let payload = try await Networking.default.accounts.fetch(start: start, end: end)
             let eateryAccounts = EateryAccounts(payload.accounts)
             accounts = eateryAccounts
-            // Keep patronId in memory for barcodes. Do not show or log the id itself.
             patronId = payload.patronId
             logger.info("Account fetch complete, hasPatronId=\(patronId != nil)")
-
-            spinner.stopAnimating()
         } catch {
             logger.error("\(#function): \(error)")
         }
+        spinner.stopAnimating()
     }
 
     private func updateCellsFromState() {

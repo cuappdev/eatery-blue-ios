@@ -15,21 +15,16 @@ enum SchemaToModel {
         return dateFormatter
     }()
 
-    // GET wraps every payload like: { "response": { ...actual fields... } }
     private struct NativeStartupResponseWrapper: Decodable {
         let response: Schema.RawNativeStartup
     }
 
-    // Turns GET's JSON bytes into BarcodeConfig.
-    // Used by the network call and by tests (tests pass fake JSON, not a live request).
-    // Do not log `data` — it contains barcodeSeed.
+    /// Decodes GET `nativeStartup` JSON. Do not log `data` — it contains barcodeSeed.
     static func barcodeConfig(fromNativeStartupData data: Data) throws -> BarcodeConfig {
         let wrapper = try JSONDecoder().decode(NativeStartupResponseWrapper.self, from: data)
         return convert(wrapper.response)
     }
 
-    // Copy the two fields we care about into the public model.
-    // Empty seed → nil. Missing offline flag → false (don't show a barcode).
     static func convert(_ raw: Schema.RawNativeStartup) -> BarcodeConfig {
         let seed = raw.barcodeSeed.flatMap { $0.isEmpty ? nil : $0 }
         return BarcodeConfig(
@@ -58,7 +53,7 @@ enum SchemaToModel {
         return AccountData(accounts: accounts, patronId: patronId(from: getTransactions))
     }
 
-    // Use the first non-empty patronId on any raw row, even if that row is not shown.
+    /// Prefer the first non-empty patronId on any raw row, even if that row is not shown in the UI.
     static func patronId(from rawTransactions: [Schema.RawTransaction]) -> String? {
         rawTransactions.lazy.compactMap { $0.patronId?.string }.first
     }
