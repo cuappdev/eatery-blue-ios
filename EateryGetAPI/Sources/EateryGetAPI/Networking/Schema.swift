@@ -25,11 +25,11 @@ enum Schema {
 
         let transactionType: Int?
 
-        /// Cashless key; GET may send a string or a number.
+        /// GET may send patronId as a string or a number.
         let patronId: FlexibleID?
     }
 
-    /// Raw `nativeStartup` payload. `pinSeed` is intentionally omitted.
+    /// pinSeed is also in the JSON; we skip it by not listing it here.
     struct RawNativeStartup: Decodable {
         let barcodeSeed: String?
         let enableOfflineBarcodeGeneration: Bool?

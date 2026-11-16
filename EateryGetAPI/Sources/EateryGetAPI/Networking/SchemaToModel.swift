@@ -19,7 +19,6 @@ enum SchemaToModel {
         let response: Schema.RawNativeStartup
     }
 
-    /// Decodes GET `nativeStartup` JSON. Do not log `data` — it contains barcodeSeed.
     static func barcodeConfig(fromNativeStartupData data: Data) throws -> BarcodeConfig {
         let wrapper = try JSONDecoder().decode(NativeStartupResponseWrapper.self, from: data)
         return convert(wrapper.response)
@@ -53,7 +52,7 @@ enum SchemaToModel {
         return AccountData(accounts: accounts, patronId: patronId(from: getTransactions))
     }
 
-    /// Prefer the first non-empty patronId on any raw row, even if that row is not shown in the UI.
+    /// Prefer the first non-empty patronId on any raw row, even if that row is not shown.
     static func patronId(from rawTransactions: [Schema.RawTransaction]) -> String? {
         rawTransactions.lazy.compactMap { $0.patronId?.string }.first
     }

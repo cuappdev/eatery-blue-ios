@@ -102,7 +102,7 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    /// Held for barcode generation in a follow-up PR. Do not display or log the value.
+    /// Used by barcode generation in a follow-up PR.
     private var patronId: String?
 
     override func viewDidLoad() {

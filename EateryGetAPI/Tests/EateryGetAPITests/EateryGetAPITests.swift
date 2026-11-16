@@ -2,7 +2,7 @@
 import XCTest
 
 final class NativeStartupDecodingTests: XCTestCase {
-    /// `pinSeed` is included to assert decoding ignores fields we do not model.
+    /// pinSeed is included to assert decoding ignores fields we do not model.
     func testDecodesSeedWhenOfflineGenerationIsEnabled() throws {
         let data = fixtureJSON("""
         {

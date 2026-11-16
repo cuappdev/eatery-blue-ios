@@ -15,7 +15,7 @@ class GetSessionManager {
 
     private let base: String = "https://services.get.cbord.com/GETServices/services/json"
 
-    /// Client version string expected by GET's nativeStartup configuration API.
+    /// Version string expected by GET's nativeStartup configuration API.
     private static let getClientVersion = "4.33.27"
 
     private let sessionId: String
@@ -191,7 +191,6 @@ class GetSessionManager {
         )
 
         let responseData = try await dataTask.serializingData().value
-        // Do not log responseData — it contains barcodeSeed.
         return try SchemaToModel.barcodeConfig(fromNativeStartupData: responseData)
     }
 }
