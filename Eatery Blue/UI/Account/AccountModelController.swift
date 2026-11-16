@@ -102,13 +102,19 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    /// Used by barcode generation in a follow-up PR.
+    /// Used for barcode generation / Show barcode enablement.
     private var patronId: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpTransactionsHeaderView()
+        setUpBarcodeEntry()
+        onShowBarcode = { [weak self] in
+            self?.navigationController?.pushViewController(BarcodeViewController(), animated: true)
+        }
+        patronId = KeychainAccess.shared.retrievePatronId()
+        updateBarcodeEntryFromState()
 
         updateCellsFromState()
         updateTransactionsHeaderViewFromState()
@@ -117,6 +123,7 @@ class AccountModelController: AccountViewController {
             spinner.startAnimating()
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
         }
     }
 
@@ -148,8 +155,11 @@ class AccountModelController: AccountViewController {
             let accountData = try await payload
             let eateryAccounts = EateryAccounts(accountData.accounts)
             accounts = eateryAccounts
-            patronId = accountData.patronId
-            persistPatronId(accountData.patronId)
+            // Keep a cached patronId if this fetch had no transactions.
+            if let id = accountData.patronId {
+                patronId = id
+                persistPatronId(id)
+            }
 
             do {
                 let config = try await barcodeConfig
@@ -167,15 +177,12 @@ class AccountModelController: AccountViewController {
         } catch {
             logger.error("\(#function): \(error)")
         }
+
         spinner.stopAnimating()
     }
 
-    private func persistPatronId(_ id: String?) {
-        if let id {
-            KeychainAccess.shared.savePatronId(id)
-        } else {
-            KeychainAccess.shared.deletePatronId()
-        }
+    private func persistPatronId(_ id: String) {
+        KeychainAccess.shared.savePatronId(id)
     }
 
     private func persistBarcodeSeed(_ config: BarcodeConfig) {
@@ -183,6 +190,17 @@ class AccountModelController: AccountViewController {
             KeychainAccess.shared.saveBarcodeSeed(seed)
         } else {
             KeychainAccess.shared.deleteBarcodeSeed()
+        }
+    }
+
+    private func updateBarcodeEntryFromState() {
+        if patronId != nil {
+            updateBarcodeEntry(isEnabled: true, hint: nil)
+        } else {
+            updateBarcodeEntry(
+                isEnabled: false,
+                hint: "No payment ID yet. Use GET once, then try again."
+            )
         }
     }
 
@@ -307,6 +325,7 @@ class AccountModelController: AccountViewController {
         Task {
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
             sender.endRefreshing()
         }
     }
