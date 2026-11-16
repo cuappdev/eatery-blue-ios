@@ -1,17 +1,15 @@
 //
 //  GetAPI.swift
-//  
+//
 //
 //  Created by William Ma on 1/12/22.
 //
 
 public struct GetAPI {
-
-    public init() {
-    }
+    public init() {}
 
     @MainActor
-    public func accounts(sessionId: String, start: String, end: String) async throws -> [Account] {
+    public func accounts(sessionId: String, start: String, end: String) async throws -> AccountData {
         let sessionManager = GetSessionManager(sessionId: sessionId)
 
         let userId = try await sessionManager.userId()
@@ -22,4 +20,9 @@ public struct GetAPI {
         return try await SchemaToModel.convert(getAccounts: rawAccountInfo, getTransactions: rawTransactions)
     }
 
+    @MainActor
+    public func barcodeConfig(sessionId: String) async throws -> BarcodeConfig {
+        let sessionManager = GetSessionManager(sessionId: sessionId)
+        return try await sessionManager.nativeStartup()
+    }
 }
