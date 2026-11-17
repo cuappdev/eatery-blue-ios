@@ -131,30 +131,34 @@ class MenusViewController: UIViewController {
     }
 
     @objc private func didRefresh(_ sender: LogoRefreshControl) {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
+
             startLoading()
-            await withThrowingTaskGroup(of: Void.self) { [weak self] group in
-                guard let self else { return }
-                group.addTask { [weak self] in
-                    guard let self else { return }
 
-                    await updateAllEateriesFromNetworking(withPriority: selectedIndex)
-                }
-
-                // Create a task to let the logo view do one complete animation cycle
-                group.addTask { [weak self] in
-                    guard self != nil else { return }
-
-                    try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
-                }
+            let networkingTask = Task { [weak self] () -> Bool in
+                guard let self else { return false }
+                return await updateAllEateriesFromNetworking(withPriority: selectedIndex)
             }
+            // Let the logo view do one complete animation cycle
+            let spinTask = Task {
+                try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+            }
+
+            let succeeded = await networkingTask.value
+            await spinTask.value
+
             stopLoading()
             sender.endRefreshing()
+            if succeeded {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            }
         }
     }
 
     /// Updates the provided day's eateries from networking first, and loads the others in the background
-    private func updateAllEateriesFromNetworking(withPriority day: Int = 0) async {
+    @discardableResult
+    private func updateAllEateriesFromNetworking(withPriority day: Int = 0) async -> Bool {
         // Start Loading low priority days
         Task.detached(priority: .low) { [weak self] in
             guard let self else { return }
@@ -183,8 +187,10 @@ class MenusViewController: UIViewController {
         // Load the high priority day
         do {
             try await updateAllEateriesByDayFromNetworking(day)
+            return true
         } catch {
             logger.error("\(#function): \(error)")
+            return false
         }
     }
 
@@ -228,7 +234,8 @@ class MenusViewController: UIViewController {
             && (fromTime == .breakfast || fromTime == .lunch)
 
         if shouldPreferBrunch,
-           currentMealType == .breakfast || currentMealType == .lunch || !available.contains(currentMealType) {
+           currentMealType == .breakfast || currentMealType == .lunch || !available.contains(currentMealType)
+        {
             return .brunch
         }
 
@@ -471,7 +478,7 @@ class MenusViewController: UIViewController {
             let sections: [(title: String, area: CampusArea, isVisible: Bool)] = [
                 ("North", .north, filter.north || showAllAreas),
                 ("West", .west, filter.west || showAllAreas),
-                ("Central", .central, filter.central || showAllAreas)
+                ("Central", .central, filter.central || showAllAreas),
             ]
 
             var didAddAnyEateries = false

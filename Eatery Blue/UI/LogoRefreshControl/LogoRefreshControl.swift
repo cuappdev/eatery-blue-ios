@@ -48,6 +48,8 @@ class LogoRefreshControl: UIControl {
     }
 
     func beginRefreshing() {
+        guard !isRefreshing else { return }
+
         CATransaction.setDisableActions(true)
         let angle: CGFloat = 6 * .pi
         let spin = CABasicAnimation(keyPath: #keyPath(CALayer.transform))
@@ -61,6 +63,7 @@ class LogoRefreshControl: UIControl {
         logoView.pizza.layer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
 
         isRefreshing = true
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         sendActions(for: .valueChanged)
 
         delegate?.logoRefreshControlDidBeginRefreshing(self)

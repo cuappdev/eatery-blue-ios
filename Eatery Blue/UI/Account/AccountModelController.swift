@@ -9,7 +9,7 @@ import EateryGetAPI
 import EateryModel
 import UIKit
 
-// The accounts which are displayed on the profile page in Eatery.
+/// The accounts which are displayed on the profile page in Eatery.
 private struct EateryAccounts {
     let mealPlan: Account?
     let bigRedBucks: Account?
@@ -129,7 +129,8 @@ class AccountModelController: AccountViewController {
         }
     }
 
-    private func updateAccountsFromNetworking() async {
+    @discardableResult
+    private func updateAccountsFromNetworking() async -> Bool {
         do {
             let end = Day()
 
@@ -145,8 +146,10 @@ class AccountModelController: AccountViewController {
             self.accounts = eateryAccounts
 
             spinner.stopAnimating()
+            return true
         } catch {
             logger.error("\(#function): \(error)")
+            return false
         }
     }
 
@@ -268,10 +271,15 @@ class AccountModelController: AccountViewController {
     override func didRefresh(_ sender: UIRefreshControl) {
         super.didRefresh(sender)
 
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+
         Task {
-            await updateAccountsFromNetworking()
+            let succeeded = await updateAccountsFromNetworking()
             updateCellsFromState()
             sender.endRefreshing()
+            if succeeded {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            }
         }
     }
 }
