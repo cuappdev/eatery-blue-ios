@@ -26,10 +26,6 @@ enum Haptics {
         softImpactGenerator.impactOccurred()
     }
 
-    static func prepareSelection() {
-        selectionGenerator.prepare()
-    }
-
     static func selectionChanged() {
         selectionGenerator.selectionChanged()
         selectionGenerator.prepare()
