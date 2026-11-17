@@ -6,8 +6,15 @@
 //
 
 import Foundation
+import UIKit
 
 enum FavoritesStore {
+    private static let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+
+    private static func playFavoriteHaptic() {
+        impactFeedbackGenerator.impactOccurred()
+    }
+
     @discardableResult
     static func setEateryFavorite(_ isFavorite: Bool, eateryId: Int?) -> Bool {
         let coreDataStack = AppDelegate.shared.coreDataStack
@@ -15,6 +22,7 @@ enum FavoritesStore {
         metadata.isFavorite = isFavorite
         coreDataStack.save()
         syncEateryFavorite(isFavorite, eateryId: eateryId)
+        playFavoriteHaptic()
         return metadata.isFavorite
     }
 
@@ -37,6 +45,7 @@ enum FavoritesStore {
         item.isFavorite = isFavorite
         AppDelegate.shared.coreDataStack.save()
         syncItemFavorite(isFavorite, itemName: item.itemName)
+        playFavoriteHaptic()
         return item.isFavorite
     }
 
@@ -48,6 +57,7 @@ enum FavoritesStore {
         coreDataStack.save()
         let isFavorite = metadata.isFavorite
         syncItemFavorite(isFavorite, itemName: itemName)
+        playFavoriteHaptic()
         return isFavorite
     }
 
