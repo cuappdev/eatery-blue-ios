@@ -10,6 +10,11 @@ import UIKit
 class SettingsAboutMembersCarouselView: UIView {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    private let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
+    private var memberViews: [UIView] = []
+
+    private var currentItemIndex: Int?
+    private var hasSettledInitialItem = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,6 +39,7 @@ class SettingsAboutMembersCarouselView: UIView {
     private func setUpScrollView() {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.delegate = self
 
         scrollView.addSubview(stackView)
         setUpStackView()
@@ -73,6 +79,7 @@ class SettingsAboutMembersCarouselView: UIView {
         container.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
         container.backgroundColor = UIColor.Eatery.gray00
 
+        memberViews.append(container)
         stackView.addArrangedSubview(container)
     }
 
@@ -91,5 +98,61 @@ class SettingsAboutMembersCarouselView: UIView {
         super.layoutMarginsDidChange()
 
         scrollView.contentInset = layoutMargins
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if !hasSettledInitialItem, memberViews.contains(where: { $0.bounds.width > 0 }) {
+            currentItemIndex = focusedItemIndex()
+            hasSettledInitialItem = true
+        }
+    }
+
+    private func focusedItemIndex() -> Int? {
+        guard !memberViews.isEmpty else { return nil }
+
+        let anchorX = scrollView.contentOffset.x + scrollView.adjustedContentInset.left
+
+        var closestIndex = 0
+        var closestDistance = CGFloat.greatestFiniteMagnitude
+
+        for (index, item) in memberViews.enumerated() {
+            let distance = abs(item.frame.minX - anchorX)
+            if distance < closestDistance {
+                closestDistance = distance
+                closestIndex = index
+            }
+        }
+
+        return closestIndex
+    }
+
+    private func updateSelectionHapticIfNeeded() {
+        guard let newIndex = focusedItemIndex() else { return }
+
+        if !hasSettledInitialItem {
+            currentItemIndex = newIndex
+            hasSettledInitialItem = true
+            return
+        }
+
+        guard currentItemIndex != newIndex else { return }
+        currentItemIndex = newIndex
+
+        guard scrollView.isDragging || scrollView.isDecelerating else { return }
+
+        selectionFeedbackGenerator.selectionChanged()
+        selectionFeedbackGenerator.prepare()
+    }
+}
+
+extension SettingsAboutMembersCarouselView: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_: UIScrollView) {
+        selectionFeedbackGenerator.prepare()
+    }
+
+    func scrollViewDidScroll(_: UIScrollView) {
+        updateSelectionHapticIfNeeded()
     }
 }
