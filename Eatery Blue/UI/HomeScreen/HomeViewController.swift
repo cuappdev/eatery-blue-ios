@@ -320,7 +320,7 @@ class HomeViewController: UIViewController {
             stopLoading()
             sender.endRefreshing()
             if succeeded {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                Haptics.soft()
             }
         }
     }

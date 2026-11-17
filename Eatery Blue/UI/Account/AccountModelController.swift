@@ -271,14 +271,14 @@ class AccountModelController: AccountViewController {
     override func didRefresh(_ sender: UIRefreshControl) {
         super.didRefresh(sender)
 
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        Haptics.light()
 
         Task {
             let succeeded = await updateAccountsFromNetworking()
             updateCellsFromState()
             sender.endRefreshing()
             if succeeded {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                Haptics.soft()
             }
         }
     }

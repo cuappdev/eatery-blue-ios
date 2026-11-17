@@ -10,7 +10,6 @@ import UIKit
 class SettingsAboutMembersCarouselView: UIView {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
-    private let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
     private var memberViews: [UIView] = []
 
     private var currentItemIndex: Int?
@@ -102,11 +101,13 @@ class SettingsAboutMembersCarouselView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        settleInitialItemIfNeeded()
+    }
 
-        if !hasSettledInitialItem, memberViews.contains(where: { $0.bounds.width > 0 }) {
-            currentItemIndex = focusedItemIndex()
-            hasSettledInitialItem = true
-        }
+    private func settleInitialItemIfNeeded() {
+        guard !hasSettledInitialItem, memberViews.contains(where: { $0.bounds.width > 0 }) else { return }
+        currentItemIndex = focusedItemIndex()
+        hasSettledInitialItem = true
     }
 
     private func focusedItemIndex() -> Int? {
@@ -129,27 +130,20 @@ class SettingsAboutMembersCarouselView: UIView {
     }
 
     private func updateSelectionHapticIfNeeded() {
-        guard let newIndex = focusedItemIndex() else { return }
-
-        if !hasSettledInitialItem {
-            currentItemIndex = newIndex
-            hasSettledInitialItem = true
-            return
-        }
-
+        settleInitialItemIfNeeded()
+        guard hasSettledInitialItem, let newIndex = focusedItemIndex() else { return }
         guard currentItemIndex != newIndex else { return }
         currentItemIndex = newIndex
 
         guard scrollView.isDragging || scrollView.isDecelerating else { return }
 
-        selectionFeedbackGenerator.selectionChanged()
-        selectionFeedbackGenerator.prepare()
+        Haptics.selectionChanged()
     }
 }
 
 extension SettingsAboutMembersCarouselView: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_: UIScrollView) {
-        selectionFeedbackGenerator.prepare()
+        Haptics.prepareSelection()
     }
 
     func scrollViewDidScroll(_: UIScrollView) {

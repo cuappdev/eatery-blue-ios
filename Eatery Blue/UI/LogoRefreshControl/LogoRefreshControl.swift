@@ -63,7 +63,7 @@ class LogoRefreshControl: UIControl {
         logoView.pizza.layer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
 
         isRefreshing = true
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        Haptics.light()
         sendActions(for: .valueChanged)
 
         delegate?.logoRefreshControlDidBeginRefreshing(self)

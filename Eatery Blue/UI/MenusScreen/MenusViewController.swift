@@ -151,7 +151,7 @@ class MenusViewController: UIViewController {
             stopLoading()
             sender.endRefreshing()
             if succeeded {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                Haptics.soft()
             }
         }
     }
@@ -234,8 +234,7 @@ class MenusViewController: UIViewController {
             && (fromTime == .breakfast || fromTime == .lunch)
 
         if shouldPreferBrunch,
-           currentMealType == .breakfast || currentMealType == .lunch || !available.contains(currentMealType)
-        {
+           currentMealType == .breakfast || currentMealType == .lunch || !available.contains(currentMealType) {
             return .brunch
         }
 
@@ -478,7 +477,7 @@ class MenusViewController: UIViewController {
             let sections: [(title: String, area: CampusArea, isVisible: Bool)] = [
                 ("North", .north, filter.north || showAllAreas),
                 ("West", .west, filter.west || showAllAreas),
-                ("Central", .central, filter.central || showAllAreas),
+                ("Central", .central, filter.central || showAllAreas)
             ]
 
             var didAddAnyEateries = false

@@ -163,13 +163,13 @@ class NotificationViewController: UIViewController {
             break
         }
 
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        Haptics.light()
 
         Task {
             let succeeded = await fetchAndUpdateState()
             sender.endRefreshing()
             if succeeded {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                Haptics.soft()
             }
         }
     }

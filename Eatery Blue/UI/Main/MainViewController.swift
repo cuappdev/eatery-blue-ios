@@ -87,7 +87,7 @@ extension MainViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
         if tabBarController.selectedViewController != viewController {
-            UISelectionFeedbackGenerator().selectionChanged()
+            Haptics.selectionChanged()
         }
 
         // If the home view controller is re-selected, scroll it to the top
