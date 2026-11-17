@@ -86,6 +86,10 @@ class MainViewController: UIViewController {
 extension MainViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
+        if tabBarController.selectedViewController != viewController {
+            UISelectionFeedbackGenerator().selectionChanged()
+        }
+
         // If the home view controller is re-selected, scroll it to the top
         if tabBarController.selectedViewController == viewController,
            let navigationController = viewController as? UINavigationController,
