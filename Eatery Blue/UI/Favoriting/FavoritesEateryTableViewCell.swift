@@ -216,6 +216,7 @@ class FavoritesEateryTableViewCell: UITableViewCell {
 
     private func unfavorite(_ eatery: Eatery) {
         FavoritesStore.setEateryFavorite(false, eateryId: eatery.cornellId)
+        Haptics.light()
 
         favoriteButtonImage.image = UIImage(named: "FavoriteUnselected")
 

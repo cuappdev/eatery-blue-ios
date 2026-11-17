@@ -136,6 +136,7 @@ class MenuItemView: UIView {
             guard let self else { return }
 
             let isFavorite = FavoritesStore.toggleItemFavorite(itemName: item.name)
+            Haptics.light()
             favoriteButtonImage.image = UIImage(named: isFavorite ? "FavoriteSelected" : "FavoriteUnselected")
         }
     }

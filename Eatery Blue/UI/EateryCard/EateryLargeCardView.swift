@@ -137,6 +137,7 @@ class EateryLargeCardView: UICollectionViewCell {
 
             UIView.performWithoutAnimation {
                 let isFavorite = FavoritesStore.toggleEateryFavorite(eateryId: eatery.cornellId)
+                Haptics.light()
 
                 NotificationCenter.default.post(
                     name: UIViewController.notificationName,

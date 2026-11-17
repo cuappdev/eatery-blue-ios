@@ -113,6 +113,7 @@ final class FavoritesSearchItemRow: UIView {
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
             let favorited = toggle()
+            Haptics.light()
             favoriteButton.content.image = UIImage(
                 named: favorited ? "FavoriteSelected" : "FavoriteUnselected"
             )
