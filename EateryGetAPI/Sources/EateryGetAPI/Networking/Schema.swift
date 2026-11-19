@@ -1,34 +1,55 @@
 //
 //  Schema.swift
-//  
+//
 //
 //  Created by William Ma on 1/12/22.
 //
 
 import Foundation
 
-internal enum Schema {
+enum Schema {
+    struct RawAccount: Decodable {
+        let accountDisplayName: String?
 
-    internal struct RawAccount: Decodable {
-
-        internal let accountDisplayName: String?
-
-        internal let balance: Double?
-
+        let balance: Double?
     }
 
-    internal struct RawTransaction: Decodable {
+    struct RawTransaction: Decodable {
+        let accountName: String?
 
-        internal let accountName: String?
+        let actualDate: String?
 
-        internal let actualDate: String?
+        let amount: Double?
 
-        internal let amount: Double?
+        let locationName: String?
 
-        internal let locationName: String?
+        let transactionType: Int?
 
-        internal let transactionType: Int?
-
+        /// GET may send patronId as a string or a number.
+        let patronId: FlexibleID?
     }
 
+    /// pinSeed is also in the JSON; we skip it by not listing it here.
+    struct RawNativeStartup: Decodable {
+        let barcodeSeed: String?
+        let enableOfflineBarcodeGeneration: Bool?
+    }
+}
+
+/// Decodes a JSON string or number into a string. Empty string → nil.
+struct FlexibleID: Decodable {
+    let string: String?
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if container.decodeNil() {
+            string = nil
+        } else if let value = try? container.decode(String.self) {
+            string = value.isEmpty ? nil : value
+        } else if let value = try? container.decode(Int.self) {
+            string = String(value)
+        } else {
+            string = nil
+        }
+    }
 }

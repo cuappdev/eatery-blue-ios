@@ -15,7 +15,24 @@ enum SchemaToModel {
         return dateFormatter
     }()
 
-    static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> [Account] {
+    private struct NativeStartupResponseWrapper: Decodable {
+        let response: Schema.RawNativeStartup
+    }
+
+    static func barcodeConfig(fromNativeStartupData data: Data) throws -> BarcodeConfig {
+        let wrapper = try JSONDecoder().decode(NativeStartupResponseWrapper.self, from: data)
+        return convert(wrapper.response)
+    }
+
+    static func convert(_ raw: Schema.RawNativeStartup) -> BarcodeConfig {
+        let seed = raw.barcodeSeed.flatMap { $0.isEmpty ? nil : $0 }
+        return BarcodeConfig(
+            barcodeSeed: seed,
+            enableOfflineBarcodeGeneration: raw.enableOfflineBarcodeGeneration ?? false
+        )
+    }
+
+    static func convert(getAccounts: [Schema.RawAccount], getTransactions: [Schema.RawTransaction]) -> AccountData {
         let transactions = convert(getTransactions)
 
         var accounts: [Account] = []
@@ -32,7 +49,12 @@ enum SchemaToModel {
             ))
         }
 
-        return accounts
+        return AccountData(accounts: accounts, patronId: patronId(from: getTransactions))
+    }
+
+    /// Prefer the first non-empty patronId on any raw row, even if that row is not shown.
+    static func patronId(from rawTransactions: [Schema.RawTransaction]) -> String? {
+        rawTransactions.lazy.compactMap { $0.patronId?.string }.first
     }
 
     static func convert(_ getTransactions: [Schema.RawTransaction]) -> [Transaction] {
