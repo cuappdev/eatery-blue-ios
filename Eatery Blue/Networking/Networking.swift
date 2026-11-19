@@ -93,6 +93,39 @@ class Networking {
         )
     }
 
+    func getProfile() async throws -> ProfileResponse {
+        struct RequestBody: Encodable {
+            let sessionId: String
+        }
+
+        let body = try JSONEncoder().encode(RequestBody(sessionId: sessionId))
+        let response = try await performAuthorizedRequest { accessToken in
+            var request = URLRequest(url: self.baseUrl.appendingPathComponent("users/get-profile"))
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            return request
+        }
+        let data = try profileResponseData(response.data, statusCode: response.statusCode)
+        return try JSONDecoder().decode(ProfileResponse.self, from: data)
+    }
+
+    private func profileResponseData(_ data: Data, statusCode: Int) throws -> Data {
+        switch statusCode {
+        case 200 ... 299:
+            return data
+        case 400:
+            throw ProfileRequestError.sessionIdMissing
+        case 401:
+            throw ProfileRequestError.unauthorized
+        case 502:
+            throw ProfileRequestError.cbordUnreachable
+        default:
+            throw ProfileRequestError.server
+        }
+    }
+
     private func performAuthorizedRequest(
         makeRequest: (String) -> URLRequest
     ) async throws -> (data: Data, statusCode: Int) {
