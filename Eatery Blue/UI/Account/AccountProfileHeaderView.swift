@@ -139,10 +139,12 @@ class AccountProfileHeaderView: UIView {
 
         if let image {
             avatarContainer.backgroundColor = .clear
+            avatarContainer.layoutMargins = .zero
             avatarContainer.content.contentMode = .scaleAspectFill
             avatarContainer.content.image = image
         } else {
             avatarContainer.backgroundColor = UIColor.Eatery.default00.withAlphaComponent(0.25)
+            avatarContainer.layoutMargins = UIEdgeInsets(top: 16, left: 15, bottom: 19, right: 12)
             avatarContainer.content.contentMode = .scaleAspectFit
             avatarContainer.content.image = UIImage(systemName: "person.fill")
         }

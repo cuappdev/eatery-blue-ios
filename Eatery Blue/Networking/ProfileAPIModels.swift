@@ -21,7 +21,8 @@ struct ProfileResponse: Decodable {
 
     var fullName: String? {
         let parts = [firstName, middleName, lastName].compactMap { $0 }
-        return parts.isEmpty ? nil : parts.joined(separator: " ")
+        guard !parts.isEmpty else { return nil }
+        return parts.joined(separator: " ").capitalized
     }
 
     var decodedImage: UIImage? {
