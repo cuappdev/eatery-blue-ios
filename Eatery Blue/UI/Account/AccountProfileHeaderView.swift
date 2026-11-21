@@ -33,7 +33,6 @@ class AccountProfileHeaderView: UIView {
     }
 
     private func setUpSelf() {
-        layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 14, right: 0)
         addSubview(cardView)
         cardView.backgroundColor = UIColor.Eatery.blue
         cardView.layer.cornerRadius = 8
