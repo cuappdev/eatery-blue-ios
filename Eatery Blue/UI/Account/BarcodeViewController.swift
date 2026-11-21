@@ -13,21 +13,35 @@ import UIKit
 /// Partial-screen GET payment barcode. Refreshes about every 5 seconds.
 @MainActor
 class BarcodeViewController: SheetViewController {
+    // MARK: - Views
+
     private let closeButton = ButtonView(pillContent: UIImageView())
+    private let titleLabel = UILabel()
+    private let profileCardView = ContainerView(content: UIView())
+    private let profileBlueView = UIView()
+    private let avatarContainer = ContainerView(pillContent: UIImageView())
+    private let nameLabel = UILabel()
+    private let emailLabel = UILabel()
     private let spinner = UIActivityIndicatorView(style: .large)
     private let barcodeImageView = UIImageView()
-    private let digitsLabel = UILabel()
     private let messageLabel = UILabel()
+
+    // MARK: - State
 
     private var refreshTimer: Timer?
     private var seed: String?
     private var patronId: String?
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpView()
         setUpCloseButton()
+        setUpTitleLabel()
+        setUpProfileCard()
+        setUpBarcodeDisplay()
         setUpConstraints()
     }
 
@@ -41,8 +55,10 @@ class BarcodeViewController: SheetViewController {
         super.viewDidAppear(animated)
 
         Task {
+            async let profileTask: Void = updateProfileFromNetworking()
             await loadSecrets()
             startTimer()
+            await profileTask
         }
     }
 
@@ -53,33 +69,18 @@ class BarcodeViewController: SheetViewController {
         refreshTimer = nil
     }
 
+    // MARK: - View setup
+
     private func setUpView() {
         view.backgroundColor = .white
+    }
 
-        spinner.hidesWhenStopped = true
-        view.addSubview(spinner)
+    private func setUpTitleLabel() {
+        titleLabel.font = .systemFont(ofSize: 24, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
+        titleLabel.text = "Dining Barcode"
 
-        barcodeImageView.contentMode = .scaleAspectFit
-//        barcodeImageView.backgroundColor = .white
-        barcodeImageView.isHidden = true
-        view.addSubview(barcodeImageView)
-
-        digitsLabel.font = .monospacedDigitSystemFont(
-            ofSize: 15,
-            weight: .medium
-        )
-        digitsLabel.textColor = UIColor.Eatery.primaryText
-        digitsLabel.textAlignment = .center
-        digitsLabel.adjustsFontSizeToFitWidth = true
-        digitsLabel.isHidden = true
-        view.addSubview(digitsLabel)
-
-        messageLabel.font = .preferredFont(forTextStyle: .body)
-        messageLabel.textColor = UIColor.Eatery.secondaryText
-        messageLabel.textAlignment = .center
-        messageLabel.numberOfLines = 0
-        messageLabel.isHidden = true
-        view.addSubview(messageLabel)
+        view.addSubview(titleLabel)
     }
 
     private func setUpCloseButton() {
@@ -96,39 +97,142 @@ class BarcodeViewController: SheetViewController {
         closeButton.buttonPress { [weak self] _ in
             self?.dismiss(animated: true)
         }
+
         view.addSubview(closeButton)
+    }
+
+    private func setUpProfileCard() {
+        profileCardView.cornerRadius = 8
+        profileCardView.shadowColor = UIColor.Eatery.shadowLight
+        profileCardView.shadowOffset = CGSize(width: 0, height: 2)
+        profileCardView.shadowRadius = 4
+        profileCardView.shadowOpacity = 0.15
+        profileCardView.content.backgroundColor = UIColor.Eatery.default00
+        view.addSubview(profileCardView)
+
+        profileBlueView.backgroundColor = UIColor.Eatery.blue
+        profileCardView.content.addSubview(profileBlueView)
+
+        avatarContainer.backgroundColor = UIColor.Eatery.default00.withAlphaComponent(0.25)
+        avatarContainer.layoutMargins = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
+        avatarContainer.content.image = UIImage(systemName: "person.fill")
+        avatarContainer.content.tintColor = UIColor.Eatery.default00
+        avatarContainer.content.contentMode = .scaleAspectFit
+        profileBlueView.addSubview(avatarContainer)
+
+        nameLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        nameLabel.textColor = UIColor.Eatery.gray00
+        nameLabel.text = "Cornell Student"
+        profileBlueView.addSubview(nameLabel)
+
+        emailLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        emailLabel.textColor = UIColor.Eatery.gray01
+        emailLabel.text = "netid@cornell.edu"
+        profileBlueView.addSubview(emailLabel)
+    }
+
+    private func setUpBarcodeDisplay() {
+        spinner.hidesWhenStopped = true
+        profileCardView.content.addSubview(spinner)
+
+        barcodeImageView.contentMode = .scaleAspectFit
+        barcodeImageView.isHidden = true
+        profileCardView.content.addSubview(barcodeImageView)
+
+        messageLabel.font = .preferredFont(forTextStyle: .body)
+        messageLabel.textColor = UIColor.Eatery.secondaryText
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.isHidden = true
+        profileCardView.content.addSubview(messageLabel)
+    }
+
+    private func setUpConstraints() {
         closeButton.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(24)
             make.trailing.equalToSuperview().inset(16)
             make.width.height.equalTo(44)
         }
-    }
 
-    private func setUpConstraints() {
-        spinner.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(16)
+            make.centerY.equalTo(closeButton)
+            make.trailing.lessThanOrEqualTo(closeButton.snp.leading).offset(-8)
+        }
+
+        profileCardView.snp.makeConstraints { make in
             make.top.equalTo(closeButton.snp.bottom).offset(24)
-            make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(26)
+            make.bottom.equalToSuperview().inset(61) // determines modal height
+        }
+
+        profileBlueView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(68)
+        }
+
+        avatarContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(45)
+        }
+
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(avatarContainer.snp.trailing).offset(12)
+            make.centerY.equalTo(avatarContainer).offset(-9)
+            make.trailing.lessThanOrEqualToSuperview().inset(12)
+        }
+
+        emailLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(2)
+            make.leading.equalTo(nameLabel)
+            make.trailing.lessThanOrEqualToSuperview().inset(12)
         }
 
         barcodeImageView.snp.makeConstraints { make in
-            make.top.equalTo(closeButton.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(160)
+            make.top.equalTo(profileBlueView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(87)
+            make.bottom.equalToSuperview().inset(7)
         }
 
-        digitsLabel.snp.makeConstraints { make in
-            make.top.equalTo(barcodeImageView.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalToSuperview().inset(24)
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(barcodeImageView)
         }
 
         messageLabel.snp.makeConstraints { make in
-            make.top.equalTo(closeButton.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview().inset(32)
-            make.bottom.lessThanOrEqualToSuperview().inset(24)
+            make.center.equalTo(barcodeImageView)
+            make.leading.trailing.equalTo(barcodeImageView)
         }
     }
+
+    // MARK: - Profile data
+
+    private func updateProfileFromNetworking() async {
+        do {
+            let profile = try await Networking.default.getProfile()
+            updateProfileLabels(name: profile.fullName, email: profile.email, image: profile.decodedImage)
+        } catch {
+            logger.error("\(#function): \(error)")
+        }
+    }
+
+    private func updateProfileLabels(name: String?, email: String?, image: UIImage?) {
+        nameLabel.text = name ?? "Cornell Student"
+        emailLabel.text = email ?? "netid@cornell.edu"
+
+        if let image {
+            avatarContainer.backgroundColor = .clear
+            avatarContainer.content.contentMode = .scaleAspectFill
+            avatarContainer.content.image = image
+        } else {
+            avatarContainer.backgroundColor = UIColor.Eatery.default00.withAlphaComponent(0.25)
+            avatarContainer.content.contentMode = .scaleAspectFit
+            avatarContainer.content.image = UIImage(systemName: "person.fill")
+        }
+    }
+
+    // MARK: - Barcode data
 
     private func loadSecrets() async {
         showLoading()
@@ -235,7 +339,7 @@ class BarcodeViewController: SheetViewController {
                 showMessage("Couldn't draw barcode.")
                 return
             }
-            showBarcode(image: image, digits: digits)
+            showBarcode(image: image)
         } catch {
             showMessage("Couldn't generate barcode.")
         }
@@ -261,28 +365,25 @@ class BarcodeViewController: SheetViewController {
         return UIImage(cgImage: cgImage)
     }
 
+    // MARK: - Barcode display state
+
     private func showLoading() {
         spinner.startAnimating()
         barcodeImageView.isHidden = true
-        digitsLabel.isHidden = true
         messageLabel.isHidden = true
     }
 
-    private func showBarcode(image: UIImage, digits: String) {
+    private func showBarcode(image: UIImage) {
         spinner.stopAnimating()
         messageLabel.isHidden = true
         barcodeImageView.image = image
         barcodeImageView.isHidden = false
-        digitsLabel.text = digits
-        digitsLabel.isHidden = false
     }
 
     private func showMessage(_ text: String) {
         spinner.stopAnimating()
         barcodeImageView.isHidden = true
         barcodeImageView.image = nil
-        digitsLabel.isHidden = true
-        digitsLabel.text = nil
         messageLabel.text = text
         messageLabel.isHidden = false
         refreshTimer?.invalidate()
