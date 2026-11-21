@@ -111,7 +111,9 @@ class AccountModelController: AccountViewController {
         setUpTransactionsHeaderView()
         setUpBarcodeEntry()
         onShowBarcode = { [weak self] in
-            self?.navigationController?.pushViewController(BarcodeViewController(), animated: true)
+            let barcodeViewController = BarcodeViewController()
+            barcodeViewController.setUpSheetPresentation()
+            self?.tabBarController?.present(barcodeViewController, animated: true)
         }
         // Keychain may already have a patronId from the last session.
         patronId = KeychainAccess.shared.retrievePatronId()

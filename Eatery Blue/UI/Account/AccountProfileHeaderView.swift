@@ -108,7 +108,7 @@ class AccountProfileHeaderView: UIView {
 
     private func setUpConstraints() {
         cardView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(24)
+            make.edges.equalTo(layoutMarginsGuide).inset(24)
         }
 
         avatarContainer.snp.makeConstraints { make in
