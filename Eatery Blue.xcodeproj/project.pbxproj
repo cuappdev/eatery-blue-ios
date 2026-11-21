@@ -556,6 +556,7 @@
 			isa = PBXGroup;
 			children = (
 				76DB120530AE62370032B2A8 /* AccountProfileHeaderView.swift */,
+				A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */,
 				5DA434B3278B5A10001337FD /* AccountBalanceTableViewCell.swift */,
 				5D698F912788A7FE0054E1AB /* AccountModelController.swift */,
 				5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */,
@@ -1341,6 +1342,7 @@
 				5DBB59E4278FA7F80028FE59 /* EateryPredicate.swift in Sources */,
 				D03A749B2B92BE9500C14083 /* CompareMenusButton.swift in Sources */,
 				5D698F8C27889F0A0054E1AB /* AccountViewController.swift in Sources */,
+				A1E5B0DF2E7D4C0100B4C0DE /* BarcodeViewController.swift in Sources */,
 				5DCB86A22783544C00134066 /* LocationManager.swift in Sources */,
 				5DBB59DF278FA3200028FE59 /* EateryFilter.swift in Sources */,
 				41240AD12ACA651A00D9E570 /* UpcomingMenuChoiceView.swift in Sources */,
