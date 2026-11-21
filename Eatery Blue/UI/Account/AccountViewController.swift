@@ -29,6 +29,9 @@ class AccountViewController: UIViewController {
     private(set) var balanceItems: [BalanceItem] = []
     private(set) var transactionItems: [TransactionItem] = []
 
+    let profileHeaderView = AccountProfileHeaderView()
+    private var isProfileHeaderInstalled = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -105,6 +108,53 @@ class AccountViewController: UIViewController {
 
         spinner.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
+        }
+    }
+
+    /// Only the logged-in Account screen calls this.
+    func setUpBarcodeEntry() {
+        profileHeaderView.showBarcodeButton.buttonPress { [weak self] _ in
+            self?.onShowBarcode?()
+        }
+
+        isProfileHeaderInstalled = true
+        tableView.tableHeaderView = profileHeaderView
+        layoutProfileHeader()
+    }
+
+    func updateProfile(name: String?, email: String?, image: UIImage?) {
+        profileHeaderView.updateProfile(name: name, email: email, image: image)
+        layoutProfileHeader()
+    }
+
+    func updateBarcodeEntry(isEnabled: Bool) {
+        profileHeaderView.showBarcodeButton.isUserInteractionEnabled = isEnabled
+        profileHeaderView.showBarcodeButton.alpha = isEnabled ? 1 : 0.4
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if isProfileHeaderInstalled {
+            layoutProfileHeader()
+        }
+    }
+
+    private func layoutProfileHeader() {
+        let width = tableView.bounds.width > 0 ? tableView.bounds.width : view.bounds.width
+        guard width > 0 else {
+            return
+        }
+
+        let size = profileHeaderView.systemLayoutSizeFitting(
+            CGSize(width: width, height: 0),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        let frame = CGRect(x: 0, y: 0, width: width, height: size.height)
+        if profileHeaderView.frame != frame {
+            profileHeaderView.frame = frame
+            tableView.tableHeaderView = profileHeaderView
         }
     }
 

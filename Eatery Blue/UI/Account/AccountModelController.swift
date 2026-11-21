@@ -102,7 +102,7 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    /// Used by barcode generation in a follow-up PR.
+    /// Cashless key for barcodes.
     private var patronId: String?
 
     override func viewDidLoad() {
@@ -117,6 +117,18 @@ class AccountModelController: AccountViewController {
             spinner.startAnimating()
             await updateAccountsFromNetworking()
             updateCellsFromState()
+        }
+        Task {
+            await updateProfileFromNetworking()
+        }
+    }
+
+    private func updateProfileFromNetworking() async {
+        do {
+            let profile = try await Networking.default.getProfile()
+            updateProfile(name: profile.fullName, email: profile.email, image: profile.decodedImage)
+        } catch {
+            logger.error("\(#function): \(error)")
         }
     }
 
@@ -151,6 +163,22 @@ class AccountModelController: AccountViewController {
             logger.error("\(#function): \(error)")
         }
         spinner.stopAnimating()
+    }
+
+    private func persistPatronId(_ id: String) {
+        KeychainAccess.shared.savePatronId(id)
+    }
+
+    private func persistBarcodeSeed(_ config: BarcodeConfig) {
+        if config.canGenerateOfflineBarcode, let seed = config.barcodeSeed {
+            KeychainAccess.shared.saveBarcodeSeed(seed)
+        } else {
+            KeychainAccess.shared.deleteBarcodeSeed()
+        }
+    }
+
+    private func updateBarcodeEntryFromState() {
+        updateBarcodeEntry(isEnabled: patronId != nil)
     }
 
     private func updateCellsFromState() {
