@@ -134,6 +134,10 @@ class AccountViewController: UIViewController {
         profileHeaderView.showBarcodeButton.alpha = isEnabled ? 1 : 0.4
     }
 
+    func setShowBarcodeLoading(_ isLoading: Bool) {
+        profileHeaderView.setBarcodeButtonLoading(isLoading)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

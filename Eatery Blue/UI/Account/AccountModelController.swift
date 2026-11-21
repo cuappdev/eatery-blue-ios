@@ -111,9 +111,20 @@ class AccountModelController: AccountViewController {
         setUpTransactionsHeaderView()
         setUpBarcodeEntry()
         onShowBarcode = { [weak self] in
-            let barcodeViewController = BarcodeViewController()
-            barcodeViewController.setUpSheetPresentation()
-            self?.tabBarController?.present(barcodeViewController, animated: true)
+            guard let self else { return }
+            let loadingIndicatorTask = Task {
+                try await Task.sleep(nanoseconds: 500_000_000)
+                self.setShowBarcodeLoading(true)
+            }
+            Task {
+                let barcodeViewController = BarcodeViewController()
+                barcodeViewController.loadViewIfNeeded()
+                await barcodeViewController.loadInitialContent()
+                loadingIndicatorTask.cancel()
+                self.setShowBarcodeLoading(false)
+                barcodeViewController.setUpSheetPresentation()
+                self.tabBarController?.present(barcodeViewController, animated: true)
+            }
         }
         // Keychain may already have a patronId from the last session.
         patronId = KeychainAccess.shared.retrievePatronId()

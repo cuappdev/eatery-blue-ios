@@ -17,6 +17,7 @@ class AccountProfileHeaderView: UIView {
     private let barcodeContainer = UIView()
     private let barcodeIconView = UIImageView()
     private let barcodeTitleLabel = UILabel()
+    private let barcodeLoadingSpinner = UIActivityIndicatorView(style: .medium)
 
     private static let avatarDiameter = 70
 
@@ -85,6 +86,10 @@ class AccountProfileHeaderView: UIView {
         barcodeTitleLabel.textColor = UIColor.Eatery.primaryText
         barcodeTitleLabel.text = "Barcode"
 
+        barcodeLoadingSpinner.color = UIColor.Eatery.primaryText
+        barcodeLoadingSpinner.hidesWhenStopped = true
+        content.addSubview(barcodeLoadingSpinner)
+
         barcodeContainer.snp.makeConstraints { make in
             make.centerX.top.bottom.equalToSuperview()
             make.leading.greaterThanOrEqualToSuperview()
@@ -100,6 +105,10 @@ class AccountProfileHeaderView: UIView {
         barcodeTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(barcodeIconView.snp.trailing).offset(8)
             make.top.trailing.bottom.equalToSuperview()
+        }
+
+        barcodeLoadingSpinner.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
 
         cardView.addSubview(showBarcodeButton)
@@ -148,5 +157,11 @@ class AccountProfileHeaderView: UIView {
             avatarContainer.content.contentMode = .scaleAspectFit
             avatarContainer.content.image = UIImage(systemName: "person.fill")
         }
+    }
+
+    func setBarcodeButtonLoading(_ isLoading: Bool) {
+        showBarcodeButton.isUserInteractionEnabled = !isLoading
+        barcodeContainer.isHidden = isLoading
+        isLoading ? barcodeLoadingSpinner.startAnimating() : barcodeLoadingSpinner.stopAnimating()
     }
 }

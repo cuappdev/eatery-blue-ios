@@ -53,13 +53,7 @@ class BarcodeViewController: SheetViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        Task {
-            async let profileTask: Void = updateProfileFromNetworking()
-            await loadSecrets()
-            startTimer()
-            await profileTask
-        }
+        startTimer()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -207,6 +201,12 @@ class BarcodeViewController: SheetViewController {
     }
 
     // MARK: - Profile data
+
+    func loadInitialContent() async {
+        async let profileTask: Void = updateProfileFromNetworking()
+        await loadSecrets()
+        await profileTask
+    }
 
     private func updateProfileFromNetworking() async {
         do {
