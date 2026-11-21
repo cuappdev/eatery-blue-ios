@@ -223,10 +223,12 @@ class BarcodeViewController: SheetViewController {
 
         if let image {
             avatarContainer.backgroundColor = .clear
+            avatarContainer.layoutMargins = .zero
             avatarContainer.content.contentMode = .scaleAspectFill
             avatarContainer.content.image = image
         } else {
             avatarContainer.backgroundColor = UIColor.Eatery.default00.withAlphaComponent(0.25)
+            avatarContainer.layoutMargins = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
             avatarContainer.content.contentMode = .scaleAspectFit
             avatarContainer.content.image = UIImage(systemName: "person.fill")
         }
