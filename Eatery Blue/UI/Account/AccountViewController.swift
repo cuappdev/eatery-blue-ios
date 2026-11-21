@@ -31,6 +31,7 @@ class AccountViewController: UIViewController {
 
     let profileHeaderView = AccountProfileHeaderView()
     private var isProfileHeaderInstalled = false
+    var onShowBarcode: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
