@@ -31,10 +31,8 @@ class AccountViewController: UIViewController {
     private(set) var balanceItems: [BalanceItem] = []
     private(set) var transactionItems: [TransactionItem] = []
 
-    private let barcodeHeaderView = UIView()
-    private let showBarcodeButton = ButtonView(pillContent: UILabel())
-    private let barcodeHintLabel = UILabel()
-    private var isBarcodeHeaderInstalled = false
+    let profileHeaderView = AccountProfileHeaderView()
+    private var isProfileHeaderInstalled = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,70 +113,50 @@ class AccountViewController: UIViewController {
         }
     }
 
-    // Only the logged-in Account screen calls this.
+    /// Only the logged-in Account screen calls this.
     func setUpBarcodeEntry() {
-        let titleLabel = showBarcodeButton.content
-        titleLabel.font = .preferredFont(for: .body, weight: .semibold)
-        titleLabel.textAlignment = .center
-        titleLabel.text = "Show barcode"
-        titleLabel.textColor = UIColor.Eatery.default00
-
-        showBarcodeButton.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
-        showBarcodeButton.cornerRadiusView.backgroundColor = UIColor.Eatery.blue
-        showBarcodeButton.buttonPress { [weak self] _ in
+        profileHeaderView.showBarcodeButton.buttonPress { [weak self] _ in
             self?.onShowBarcode?()
         }
 
-        barcodeHintLabel.font = .preferredFont(forTextStyle: .footnote)
-        barcodeHintLabel.textColor = UIColor.Eatery.secondaryText
-        barcodeHintLabel.numberOfLines = 0
-        barcodeHintLabel.isHidden = true
-
-        let stack = UIStackView(arrangedSubviews: [showBarcodeButton, barcodeHintLabel])
-        stack.axis = .vertical
-        stack.spacing = 8
-
-        barcodeHeaderView.addSubview(stack)
-        stack.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 12, left: 16, bottom: 4, right: 16))
-        }
-
-        isBarcodeHeaderInstalled = true
-        tableView.tableHeaderView = barcodeHeaderView
-        layoutBarcodeHeader()
+        isProfileHeaderInstalled = true
+        tableView.tableHeaderView = profileHeaderView
+        layoutProfileHeader()
     }
 
-    func updateBarcodeEntry(isEnabled: Bool, hint: String?) {
-        showBarcodeButton.isUserInteractionEnabled = isEnabled
-        showBarcodeButton.alpha = isEnabled ? 1 : 0.4
-        barcodeHintLabel.text = hint
-        barcodeHintLabel.isHidden = hint == nil || hint?.isEmpty == true
-        layoutBarcodeHeader()
+    func updateProfile(name: String?, email: String?, image: UIImage?) {
+        profileHeaderView.updateProfile(name: name, email: email, image: image)
+        layoutProfileHeader()
+    }
+
+    func updateBarcodeEntry(isEnabled: Bool) {
+        profileHeaderView.showBarcodeButton.isUserInteractionEnabled = isEnabled
+        profileHeaderView.showBarcodeButton.alpha = isEnabled ? 1 : 0.4
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if isBarcodeHeaderInstalled {
-            layoutBarcodeHeader()
+        if isProfileHeaderInstalled {
+            layoutProfileHeader()
         }
     }
 
-    private func layoutBarcodeHeader() {
+    private func layoutProfileHeader() {
         let width = tableView.bounds.width > 0 ? tableView.bounds.width : view.bounds.width
         guard width > 0 else {
             return
         }
 
-        let size = barcodeHeaderView.systemLayoutSizeFitting(
+        let size = profileHeaderView.systemLayoutSizeFitting(
             CGSize(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
         let frame = CGRect(x: 0, y: 0, width: width, height: size.height)
-        if barcodeHeaderView.frame != frame {
-            barcodeHeaderView.frame = frame
-            tableView.tableHeaderView = barcodeHeaderView
+        if profileHeaderView.frame != frame {
+            profileHeaderView.frame = frame
+            tableView.tableHeaderView = profileHeaderView
         }
     }
 

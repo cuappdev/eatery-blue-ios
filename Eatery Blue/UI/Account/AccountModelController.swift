@@ -9,7 +9,7 @@ import EateryGetAPI
 import EateryModel
 import UIKit
 
-// The accounts which are displayed on the profile page in Eatery.
+/// The accounts which are displayed on the profile page in Eatery.
 private struct EateryAccounts {
     let mealPlan: Account?
     let bigRedBucks: Account?
@@ -102,7 +102,7 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
-    // Cashless key for barcodes.
+    /// Cashless key for barcodes.
     private var patronId: String?
 
     override func viewDidLoad() {
@@ -125,6 +125,18 @@ class AccountModelController: AccountViewController {
             await updateAccountsFromNetworking()
             updateCellsFromState()
             updateBarcodeEntryFromState()
+        }
+        Task {
+            await updateProfileFromNetworking()
+        }
+    }
+
+    private func updateProfileFromNetworking() async {
+        do {
+            let profile = try await Networking.default.getProfile()
+            updateProfile(name: profile.fullName, email: profile.email, image: profile.decodedImage)
+        } catch {
+            logger.error("\(#function): \(error)")
         }
     }
 
@@ -193,14 +205,7 @@ class AccountModelController: AccountViewController {
     }
 
     private func updateBarcodeEntryFromState() {
-        if patronId != nil {
-            updateBarcodeEntry(isEnabled: true, hint: nil)
-        } else {
-            updateBarcodeEntry(
-                isEnabled: false,
-                hint: "No payment ID yet. Use GET once, then try again."
-            )
-        }
+        updateBarcodeEntry(isEnabled: patronId != nil)
     }
 
     private func updateCellsFromState() {

@@ -10,7 +10,7 @@ import EateryModel
 import SnapKit
 import UIKit
 
-// Full-screen GET payment barcode. Refreshes about every 5 seconds.
+/// Full-screen GET payment barcode. Refreshes about every 5 seconds.
 @MainActor
 class BarcodeViewController: UIViewController {
     private let spinner = UIActivityIndicatorView(style: .large)
@@ -84,7 +84,10 @@ class BarcodeViewController: UIViewController {
         barcodeImageView.isHidden = true
         view.addSubview(barcodeImageView)
 
-        digitsLabel.font = .monospacedDigitSystemFont(ofSize: 15, weight: .medium)
+        digitsLabel.font = .monospacedDigitSystemFont(
+            ofSize: 15,
+            weight: .medium
+        )
         digitsLabel.textColor = UIColor.Eatery.primaryText
         digitsLabel.textAlignment = .center
         digitsLabel.adjustsFontSizeToFitWidth = true
@@ -142,7 +145,9 @@ class BarcodeViewController: UIViewController {
             if patronId == nil {
                 showMessage("No payment ID yet. Use GET once, then try again.")
             } else {
-                showMessage("Couldn't load your barcode. Check your connection and try again.")
+                showMessage(
+                    "Couldn't load your barcode. Check your connection and try again."
+                )
             }
             return
         }
@@ -150,7 +155,7 @@ class BarcodeViewController: UIViewController {
         refreshBarcode()
     }
 
-    // Returns false when we already showed an error and should stop.
+    /// Returns false when we already showed an error and should stop.
     private func fetchSeed() async -> Bool {
         let sessionId = Networking.default.sessionId
         guard !sessionId.isEmpty else {
@@ -160,7 +165,9 @@ class BarcodeViewController: UIViewController {
 
         do {
             let config = try await GetAPI().barcodeConfig(sessionId: sessionId)
-            guard config.canGenerateOfflineBarcode, let barcodeSeed = config.barcodeSeed else {
+            guard config.canGenerateOfflineBarcode,
+                  let barcodeSeed = config.barcodeSeed
+            else {
                 showMessage("Barcode isn't available for this account.")
                 return false
             }
@@ -169,7 +176,9 @@ class BarcodeViewController: UIViewController {
             return true
         } catch {
             logger.error("\(#function): failed to fetch barcode seed")
-            showMessage("Couldn't load your barcode. Check your connection and try again.")
+            showMessage(
+                "Couldn't load your barcode. Check your connection and try again."
+            )
             return false
         }
     }
@@ -178,7 +187,10 @@ class BarcodeViewController: UIViewController {
         do {
             let end = Day()
             let start = end.advanced(by: -30)
-            let data = try await Networking.default.accounts.fetch(start: start, end: end)
+            let data = try await Networking.default.accounts.fetch(
+                start: start,
+                end: end
+            )
             if let id = data.patronId {
                 KeychainAccess.shared.savePatronId(id)
                 patronId = id
@@ -223,7 +235,7 @@ class BarcodeViewController: UIViewController {
         }
     }
 
-    // Core Image PDF417. Input must be the 22-digit string as ASCII data.
+    /// Core Image PDF417. Input must be the 22-digit string as ASCII data.
     static func pdf417Image(from digits: String) -> UIImage? {
         guard let filter = CIFilter(name: "CIPDF417BarcodeGenerator") else {
             return nil
@@ -236,7 +248,8 @@ class BarcodeViewController: UIViewController {
 
         let scaled = output.transformed(by: CGAffineTransform(scaleX: 8, y: 8))
         let context = CIContext()
-        guard let cgImage = context.createCGImage(scaled, from: scaled.extent) else {
+        guard let cgImage = context.createCGImage(scaled, from: scaled.extent)
+        else {
             return nil
         }
         return UIImage(cgImage: cgImage)
