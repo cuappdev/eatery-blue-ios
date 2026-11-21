@@ -10,9 +10,10 @@ import EateryModel
 import SnapKit
 import UIKit
 
-/// Full-screen GET payment barcode. Refreshes about every 5 seconds.
+/// Partial-screen GET payment barcode. Refreshes about every 5 seconds.
 @MainActor
-class BarcodeViewController: UIViewController {
+class BarcodeViewController: SheetViewController {
+    private let closeButton = ButtonView(pillContent: UIImageView())
     private let spinner = UIActivityIndicatorView(style: .large)
     private let barcodeImageView = UIImageView()
     private let digitsLabel = UILabel()
@@ -25,8 +26,8 @@ class BarcodeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpNavigation()
         setUpView()
+        setUpCloseButton()
         setUpConstraints()
     }
 
@@ -52,27 +53,6 @@ class BarcodeViewController: UIViewController {
         refreshTimer = nil
     }
 
-    private func setUpNavigation() {
-        let appearance = UINavigationBarAppearance()
-        appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Eatery.primaryText as Any,
-            .font: UIFont.eateryNavigationBarTitleFont
-        ]
-        appearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.title = "Barcode"
-
-        let backButton = UIBarButtonItem(
-            image: UIImage(named: "ArrowLeft"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapBackButton)
-        )
-        backButton.tintColor = UIColor.Eatery.primaryText
-        navigationItem.leftBarButtonItem = backButton
-    }
-
     private func setUpView() {
         view.backgroundColor = .white
 
@@ -80,7 +60,7 @@ class BarcodeViewController: UIViewController {
         view.addSubview(spinner)
 
         barcodeImageView.contentMode = .scaleAspectFit
-        barcodeImageView.backgroundColor = .white
+//        barcodeImageView.backgroundColor = .white
         barcodeImageView.isHidden = true
         view.addSubview(barcodeImageView)
 
@@ -102,25 +82,51 @@ class BarcodeViewController: UIViewController {
         view.addSubview(messageLabel)
     }
 
+    private func setUpCloseButton() {
+        let closeConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
+        closeButton.content.image = UIImage(systemName: "xmark", withConfiguration: closeConfig)
+        closeButton.content.tintColor = UIColor.Eatery.primaryText
+        closeButton.content.contentMode = .scaleAspectFit
+        closeButton.shadowColor = UIColor.Eatery.shadowLight
+        closeButton.shadowOffset = .zero
+        closeButton.shadowRadius = 12
+        closeButton.shadowOpacity = 0.25
+        closeButton.backgroundColor = UIColor.Eatery.card
+        closeButton.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        closeButton.buttonPress { [weak self] _ in
+            self?.dismiss(animated: true)
+        }
+        view.addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(24)
+            make.trailing.equalToSuperview().inset(16)
+            make.width.height.equalTo(44)
+        }
+    }
+
     private func setUpConstraints() {
         spinner.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalTo(closeButton.snp.bottom).offset(24)
+            make.centerX.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview().inset(24)
         }
 
         barcodeImageView.snp.makeConstraints { make in
+            make.top.equalTo(closeButton.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.centerY.equalToSuperview().offset(-24)
             make.height.equalTo(160)
         }
 
         digitsLabel.snp.makeConstraints { make in
             make.top.equalTo(barcodeImageView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
+            make.bottom.equalToSuperview().inset(24)
         }
 
         messageLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalTo(closeButton.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(32)
+            make.bottom.lessThanOrEqualToSuperview().inset(24)
         }
     }
 
@@ -281,9 +287,5 @@ class BarcodeViewController: UIViewController {
         messageLabel.isHidden = false
         refreshTimer?.invalidate()
         refreshTimer = nil
-    }
-
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
