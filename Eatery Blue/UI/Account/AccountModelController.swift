@@ -137,6 +137,7 @@ class AccountModelController: AccountViewController {
             spinner.startAnimating()
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
         }
         Task {
             await updateProfileFromNetworking()
@@ -174,11 +175,29 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let payload = try await Networking.default.accounts.fetch(start: start, end: end)
-            let eateryAccounts = EateryAccounts(payload.accounts)
+            let sessionId = Networking.default.sessionId
+            async let payload = Networking.default.accounts.fetch(start: start, end: end)
+            async let barcodeConfig = GetAPI().barcodeConfig(sessionId: sessionId)
+
+            let accountData = try await payload
+            let eateryAccounts = EateryAccounts(accountData.accounts)
             accounts = eateryAccounts
-            patronId = payload.patronId
-            logger.info("Account fetch complete, hasPatronId=\(patronId != nil)")
+            // Keep a cached patronId if this fetch had no transactions.
+            if let id = accountData.patronId {
+                patronId = id
+                persistPatronId(id)
+            }
+
+            if let config = try? await barcodeConfig {
+                persistBarcodeSeed(config)
+            }
+
+            logger.info(
+                """
+                Account fetch complete, hasPatronId=\(patronId != nil), \
+                hasSeed=\(KeychainAccess.shared.retrieveBarcodeSeed() != nil)
+                """
+            )
         } catch {
             logger.error("\(#function): \(error)")
         }
@@ -322,6 +341,7 @@ class AccountModelController: AccountViewController {
         Task {
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
             sender.endRefreshing()
         }
     }
