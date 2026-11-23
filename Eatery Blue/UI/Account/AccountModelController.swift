@@ -142,15 +142,48 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let payload = try await Networking.default.accounts.fetch(start: start, end: end)
-            let eateryAccounts = EateryAccounts(payload.accounts)
+            async let payload = Networking.default.accounts.fetch(start: start, end: end)
+            async let barcodeConfig = Networking.default.barcodeConfig.fetch()
+
+            let accountData = try await payload
+            let eateryAccounts = EateryAccounts(accountData.accounts)
             accounts = eateryAccounts
-            patronId = payload.patronId
-            logger.info("Account fetch complete, hasPatronId=\(patronId != nil)")
+            patronId = accountData.patronId
+            persistPatronId(accountData.patronId)
+
+            do {
+                let config = try await barcodeConfig
+                persistBarcodeSeed(config)
+                logger.info(
+                    """
+                    Account fetch complete, hasPatronId=\(patronId != nil), \
+                    hasSeed=\(config.canGenerateOfflineBarcode)
+                    """
+                )
+            } catch {
+                logger.error("Barcode config fetch failed: \(error)")
+                logger.info("Account fetch complete, hasPatronId=\(patronId != nil), hasSeed=false")
+            }
         } catch {
             logger.error("\(#function): \(error)")
         }
         spinner.stopAnimating()
+    }
+
+    private func persistPatronId(_ id: String?) {
+        if let id {
+            KeychainAccess.shared.savePatronId(id)
+        } else {
+            KeychainAccess.shared.deletePatronId()
+        }
+    }
+
+    private func persistBarcodeSeed(_ config: BarcodeConfig) {
+        if config.canGenerateOfflineBarcode, let seed = config.barcodeSeed {
+            KeychainAccess.shared.saveBarcodeSeed(seed)
+        } else {
+            KeychainAccess.shared.deleteBarcodeSeed()
+        }
     }
 
     private func updateCellsFromState() {
