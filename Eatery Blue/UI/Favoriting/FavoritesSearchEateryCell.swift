@@ -93,6 +93,7 @@ final class FavoritesSearchEateryCell: UICollectionViewCell {
         favoriteButton.buttonPress { [weak self] _ in
             guard let self else { return }
             let isFavorite = FavoritesStore.toggleEateryFavorite(eateryId: eatery.cornellId)
+            Haptics.light()
             favoriteButton.content.image = UIImage(
                 named: isFavorite ? "FavoriteSelected" : "FavoriteUnselected"
             )

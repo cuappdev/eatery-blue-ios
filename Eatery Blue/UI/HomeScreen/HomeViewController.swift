@@ -295,28 +295,33 @@ class HomeViewController: UIViewController {
         LocationManager.shared.requestLocation()
         navigationView.notificationButton.checkforNotifications()
 
-        Task {
-            await withThrowingTaskGroup(of: Void.self) { [weak self] group in
-                guard let self else { return }
-                group.addTask { [weak self] in
-                    guard let self else { return }
+        Task { [weak self] in
+            guard let self else { return }
 
-                    do {
-                        try await updateAllEateriesFromNetworking()
-                    } catch {
-                        logger.error("\(#function): \(error)")
-                    }
-                }
-                // Create a task to let the logo view do one complete animation cycle
-                group.addTask { [weak self] in
-                    guard self != nil else { return }
+            let networkingTask = Task { [weak self] () -> Bool in
+                guard let self else { return false }
 
-                    try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                do {
+                    try await updateAllEateriesFromNetworking()
+                    return true
+                } catch {
+                    logger.error("\(#function): \(error)")
+                    return false
                 }
             }
+            // Let the logo view do one complete animation cycle
+            let spinTask = Task {
+                try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+            }
+
+            let succeeded = await networkingTask.value
+            await spinTask.value
 
             stopLoading()
             sender.endRefreshing()
+            if succeeded {
+                Haptics.soft()
+            }
         }
     }
 

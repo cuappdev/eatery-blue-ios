@@ -138,7 +138,8 @@ class AccountModelController: AccountViewController {
         }
     }
 
-    private func updateAccountsFromNetworking() async {
+    @discardableResult
+    private func updateAccountsFromNetworking() async -> Bool {
         do {
             let end = Day()
 
@@ -176,9 +177,12 @@ class AccountModelController: AccountViewController {
             }
         } catch {
             logger.error("\(#function): \(error)")
+            spinner.stopAnimating()
+            return false
         }
 
         spinner.stopAnimating()
+        return true
     }
 
     private func persistPatronId(_ id: String) {
@@ -322,11 +326,16 @@ class AccountModelController: AccountViewController {
     override func didRefresh(_ sender: UIRefreshControl) {
         super.didRefresh(sender)
 
+        Haptics.light()
+
         Task {
-            await updateAccountsFromNetworking()
+            let succeeded = await updateAccountsFromNetworking()
             updateCellsFromState()
             updateBarcodeEntryFromState()
             sender.endRefreshing()
+            if succeeded {
+                Haptics.soft()
+            }
         }
     }
 }

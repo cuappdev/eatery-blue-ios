@@ -162,9 +162,15 @@ class NotificationViewController: UIViewController {
         case .loading, .loaded:
             break
         }
+
+        Haptics.light()
+
         Task {
-            await fetchAndUpdateState()
+            let succeeded = await fetchAndUpdateState()
             sender.endRefreshing()
+            if succeeded {
+                Haptics.soft()
+            }
         }
     }
 
@@ -285,21 +291,24 @@ class NotificationViewController: UIViewController {
         await fetchAndUpdateState()
     }
 
-    private func fetchAndUpdateState() async {
+    @discardableResult
+    private func fetchAndUpdateState() async -> Bool {
         // testing
         if useMockNotifications {
             state =
                 Self.mockNotifications.isEmpty
                     ? .empty : .loaded(Self.mockNotifications)
-            return
+            return true
         }
 
         do {
             let notifications = try await Networking.default
                 .fetchNotifications()
             state = notifications.isEmpty ? .empty : .loaded(notifications)
+            return true
         } catch {
             state = .error
+            return false
         }
     }
 
