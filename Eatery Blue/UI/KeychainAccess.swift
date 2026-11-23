@@ -15,6 +15,8 @@ class KeychainAccess {
 
     private enum Account {
         static let getSession = "GETLogin"
+        static let barcodeSeed = "GETBarcodeSeed"
+        static let patronId = "GETPatronId"
         static let backendAccessToken = "BackendAccessToken"
         static let backendRefreshToken = "BackendRefreshToken"
         static let backendDeviceId = "BackendDeviceId"
@@ -23,6 +25,8 @@ class KeychainAccess {
     // MARK: - GET Session
 
     func saveToken(sessionId: String) {
+        // Clear previous user's barcode secrets on new login.
+        invalidateAllGETSecrets()
         save(sessionId, account: Account.getSession)
     }
 
@@ -32,6 +36,38 @@ class KeychainAccess {
 
     func invalidateToken() {
         delete(account: Account.getSession)
+    }
+
+    // MARK: - GET Barcode
+
+    func saveBarcodeSeed(_ seed: String) {
+        save(seed, account: Account.barcodeSeed)
+    }
+
+    func retrieveBarcodeSeed() -> String? {
+        retrieve(account: Account.barcodeSeed)
+    }
+
+    func savePatronId(_ patronId: String) {
+        save(patronId, account: Account.patronId)
+    }
+
+    func retrievePatronId() -> String? {
+        retrieve(account: Account.patronId)
+    }
+
+    func deleteBarcodeSeed() {
+        delete(account: Account.barcodeSeed)
+    }
+
+    func deletePatronId() {
+        delete(account: Account.patronId)
+    }
+
+    func invalidateAllGETSecrets() {
+        delete(account: Account.getSession)
+        delete(account: Account.barcodeSeed)
+        delete(account: Account.patronId)
     }
 
     // MARK: - Backend Authentication

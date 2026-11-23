@@ -102,11 +102,19 @@ class AccountModelController: AccountViewController {
     private var accounts = EateryAccounts([])
     private var selectedAccount: EateryAccountType = .mealPlan
     private var selectedTimePeriod: TimePeriod = .past30Days
+    /// Used for barcode generation / Show barcode enablement.
+    private var patronId: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpTransactionsHeaderView()
+        setUpBarcodeEntry()
+        onShowBarcode = { [weak self] in
+            self?.navigationController?.pushViewController(BarcodeViewController(), animated: true)
+        }
+        patronId = KeychainAccess.shared.retrievePatronId()
+        updateBarcodeEntryFromState()
 
         updateCellsFromState()
         updateTransactionsHeaderViewFromState()
@@ -115,6 +123,7 @@ class AccountModelController: AccountViewController {
             spinner.startAnimating()
             await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
         }
     }
 
@@ -141,15 +150,61 @@ class AccountModelController: AccountViewController {
             case .past365Days: start = end.advanced(by: -365)
             }
 
-            let accounts = try await Networking.default.accounts.fetch(start: start, end: end)
-            let eateryAccounts = EateryAccounts(accounts)
-            self.accounts = eateryAccounts
+            async let payload = Networking.default.accounts.fetch(start: start, end: end)
+            async let barcodeConfig = Networking.default.barcodeConfig.fetch()
 
-            spinner.stopAnimating()
-            return true
+            let accountData = try await payload
+            let eateryAccounts = EateryAccounts(accountData.accounts)
+            accounts = eateryAccounts
+            // Keep a cached patronId if this fetch had no transactions.
+            if let id = accountData.patronId {
+                patronId = id
+                persistPatronId(id)
+            }
+
+            do {
+                let config = try await barcodeConfig
+                persistBarcodeSeed(config)
+                logger.info(
+                    """
+                    Account fetch complete, hasPatronId=\(patronId != nil), \
+                    hasSeed=\(config.canGenerateOfflineBarcode)
+                    """
+                )
+            } catch {
+                logger.error("Barcode config fetch failed: \(error)")
+                logger.info("Account fetch complete, hasPatronId=\(patronId != nil), hasSeed=false")
+            }
         } catch {
             logger.error("\(#function): \(error)")
+            spinner.stopAnimating()
             return false
+        }
+
+        spinner.stopAnimating()
+        return true
+    }
+
+    private func persistPatronId(_ id: String) {
+        KeychainAccess.shared.savePatronId(id)
+    }
+
+    private func persistBarcodeSeed(_ config: BarcodeConfig) {
+        if config.canGenerateOfflineBarcode, let seed = config.barcodeSeed {
+            KeychainAccess.shared.saveBarcodeSeed(seed)
+        } else {
+            KeychainAccess.shared.deleteBarcodeSeed()
+        }
+    }
+
+    private func updateBarcodeEntryFromState() {
+        if patronId != nil {
+            updateBarcodeEntry(isEnabled: true, hint: nil)
+        } else {
+            updateBarcodeEntry(
+                isEnabled: false,
+                hint: "No payment ID yet. Use GET once, then try again."
+            )
         }
     }
 
@@ -276,6 +331,7 @@ class AccountModelController: AccountViewController {
         Task {
             let succeeded = await updateAccountsFromNetworking()
             updateCellsFromState()
+            updateBarcodeEntryFromState()
             sender.endRefreshing()
             if succeeded {
                 Haptics.soft()

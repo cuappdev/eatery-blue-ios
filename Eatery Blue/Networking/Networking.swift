@@ -15,6 +15,7 @@ class Networking {
     static let didLogOutNotification = Notification.Name("Networking.didLogOutNotification")
 
     let accounts: FetchAccounts
+    let barcodeConfig: FetchBarcodeConfig
     let baseUrl: URL
     let eateryCache: EateryMemoryCache
     private let backendAuthenticator: BackendAuthenticator
@@ -29,6 +30,7 @@ class Networking {
         let eateryApi = EateryAPI(url: fetchUrl.appendingPathComponent("eateries"))
         eateryCache = EateryMemoryCache(fetchAll: eateryApi.eateries)
         accounts = FetchAccounts()
+        barcodeConfig = FetchBarcodeConfig()
     }
 
     func registerFCMToken(_ token: String) async throws {
@@ -190,7 +192,7 @@ class Networking {
     }
 
     func logOut() {
-        KeychainAccess.shared.invalidateToken()
+        KeychainAccess.shared.invalidateAllGETSecrets()
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 
@@ -647,17 +649,17 @@ private actor BackendAuthenticator {
 struct FetchAccounts {
     private let getApi = GetAPI()
 
-    func fetch(start: Day, end: Day) async throws -> [Account] {
+    func fetch(start: Day, end: Day) async throws -> AccountData {
         return try await fetch(start: start, end: end, retryAttempts: 1)
     }
 
-    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> [Account] {
+    func fetch(start: Day, end: Day, retryAttempts: Int) async throws -> AccountData {
         logger.info("Attempting to fetch accounts start=\(start), end=\(end), retryAttempts=\(retryAttempts)")
         do {
             let sessionId = Networking.default.sessionId
             if sessionId == "App Store Testing Session ID" {
                 try await Task.sleep(nanoseconds: 1_000_000_000)
-                return AccountDummyData.accounts
+                return AccountData(accounts: AccountDummyData.accounts, patronId: nil)
             } else {
                 return try await getApi.accounts(sessionId: sessionId, start: start.rawValue, end: end.rawValue)
             }
@@ -669,7 +671,7 @@ struct FetchAccounts {
                     Will invalidate sessionId and retry \(retryAttempts) more times.
                     """
                 )
-                KeychainAccess.shared.invalidateToken()
+                KeychainAccess.shared.invalidateAllGETSecrets()
                 return try await fetch(start: start, end: end, retryAttempts: retryAttempts - 1)
 
             } else {
@@ -743,4 +745,12 @@ private enum AccountDummyData {
             )
         ])
     ]
+}
+
+struct FetchBarcodeConfig {
+    private let getApi = GetAPI()
+
+    func fetch() async throws -> BarcodeConfig {
+        try await getApi.barcodeConfig(sessionId: Networking.default.sessionId)
+    }
 }
