@@ -208,12 +208,14 @@
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
 		D5B02F8C3A7E4B29C1F6D4E2 /* FavoritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */; };
+		E7A1B2C33D4E5F60718293A4 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A1B2C33D4E5F60718293A3 /* Haptics.swift */; };
 		D8026F7A2EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */; };
 		D8B191E92EC179E9004E3E97 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */; };
 		F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
+		A1E5B0DF2E7D4C0100B4C0DE /* BarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */; };
 		FDCCF9472AFB0C8E00557FED /* StayLoggedInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */; };
 /* End PBXBuildFile section */
 
@@ -390,6 +392,7 @@
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Eatery Blue.entitlements"; sourceTree = "<group>"; };
 		C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStore.swift; sourceTree = "<group>"; };
+		E7A1B2C33D4E5F60718293A3 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusTabsViewController.swift; sourceTree = "<group>"; };
 		D00FEC992F4BF4CF0081CEE0 /* DateDecodingStrategy+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateDecodingStrategy+Extension.swift"; sourceTree = "<group>"; };
 		D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusInternalOnboardingView.swift; sourceTree = "<group>"; };
@@ -429,6 +432,7 @@
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAccountViewController.swift; sourceTree = "<group>"; };
+		A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeViewController.swift; sourceTree = "<group>"; };
 		FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayLoggedInSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -564,6 +568,7 @@
 				5DA434BB278B69E1001337FD /* AccountTransactionsHeaderView.swift */,
 				5DA434B5278B5A17001337FD /* AccountTransactionTableViewCell.swift */,
 				5D698F8B27889F0A0054E1AB /* AccountViewController.swift */,
+				A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */,
 				FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */,
 			);
 			path = Account;
@@ -806,6 +811,7 @@
 				D0548AD62BB5201B0064489D /* ScrollHitView.swift */,
 				5DF5F7DA27740EFB001ADCDC /* ContainerView.swift */,
 				5D0CDC502775040800AD0E27 /* HDivider.swift */,
+				E7A1B2C33D4E5F60718293A3 /* Haptics.swift */,
 				5D0CDC582775346600AD0E27 /* PillView.swift */,
 				5D0CDC4C2774F37100AD0E27 /* VDivider.swift */,
 			);
@@ -1273,6 +1279,7 @@
 				D06230E82CB9D4A70092C04A /* FavoritesViewController.swift in Sources */,
 				D00DC9592BB370520051D3EC /* CompareMenusTabsViewController.swift in Sources */,
 				FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */,
+				A1E5B0DF2E7D4C0100B4C0DE /* BarcodeViewController.swift in Sources */,
 				5D3A14A327A30A9200768E13 /* SettingsAboutModelController.swift in Sources */,
 				5D0CDC592775346600AD0E27 /* PillView.swift in Sources */,
 				5DF5F7E32774BEAD001ADCDC /* SearchRecentsView.swift in Sources */,
@@ -1296,6 +1303,7 @@
 				8B26C86976414B0DAB6E9907 /* FavoritesSearchEateryCell.swift in Sources */,
 				487B7504E26A4C088376ADEF /* FavoritesSearchItemRow.swift in Sources */,
 				D5B02F8C3A7E4B29C1F6D4E2 /* FavoritesStore.swift in Sources */,
+				E7A1B2C33D4E5F60718293A4 /* Haptics.swift in Sources */,
 				D04FB87B2BCEE89B0058F732 /* SettingsAppIconCell.swift in Sources */,
 				5D73C3C027822CD20020507C /* CoreDataStack.swift in Sources */,
 				5DA434BA278B6779001337FD /* Locale+Extension.swift in Sources */,

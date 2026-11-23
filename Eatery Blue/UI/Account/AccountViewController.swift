@@ -26,12 +26,13 @@ class AccountViewController: UIViewController {
     let spinner = UIActivityIndicatorView(style: .large)
     let transactionsHeaderView = AccountTransactionsHeaderView()
 
+    var onShowBarcode: (() -> Void)?
+
     private(set) var balanceItems: [BalanceItem] = []
     private(set) var transactionItems: [TransactionItem] = []
 
     let profileHeaderView = AccountProfileHeaderView()
     private var isProfileHeaderInstalled = false
-    var onShowBarcode: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

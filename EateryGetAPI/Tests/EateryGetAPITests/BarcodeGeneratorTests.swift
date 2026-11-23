@@ -1,8 +1,7 @@
 @testable import EateryGetAPI
 import XCTest
 
-// Expected strings came from generate_barcode.py with fake keys, not a live GET account.
-
+/// Expected strings came from generate_barcode.py with fake keys, not a live GET account.
 final class BarcodeGeneratorTests: XCTestCase {
     func testMatchesPythonForFixedTimestamp() throws {
         let barcode = try BarcodeGenerator.generateBarcode(

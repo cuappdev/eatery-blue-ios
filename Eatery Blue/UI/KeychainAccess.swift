@@ -26,7 +26,7 @@ class KeychainAccess {
 
     /// Saves session token to Keychain under "GETLogin", access with KeychainAccess.shared.retrieveToken
     func saveToken(sessionId: String) {
-        // New login must not keep the previous user's barcode secrets.
+        // Clear previous user's barcode secrets on new login.
         invalidateAllGETSecrets()
         save(sessionId, account: Account.getSession)
     }

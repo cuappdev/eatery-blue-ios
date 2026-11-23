@@ -103,6 +103,7 @@ class EateryModelController: EateryViewController {
 
         navigationView.favoriteButton.tap { [self] _ in
             let isFavorite = FavoritesStore.toggleEateryFavorite(eateryId: eatery.cornellId)
+            Haptics.light()
 
             updateNavigationViewFavoriteButtonFromCoreData()
             NotificationCenter.default.post(

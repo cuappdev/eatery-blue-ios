@@ -269,14 +269,13 @@ class BarcodeViewController: SheetViewController {
 
     /// Returns false when we already showed an error and should stop.
     private func fetchSeed() async -> Bool {
-        let sessionId = Networking.default.sessionId
-        guard !sessionId.isEmpty else {
+        guard !Networking.default.sessionId.isEmpty else {
             showMessage("Log in to GET to show a barcode.")
             return false
         }
 
         do {
-            let config = try await GetAPI().barcodeConfig(sessionId: sessionId)
+            let config = try await Networking.default.barcodeConfig.fetch()
             guard config.canGenerateOfflineBarcode,
                   let barcodeSeed = config.barcodeSeed
             else {
