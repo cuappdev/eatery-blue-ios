@@ -95,7 +95,15 @@ class Networking {
         )
     }
 
+    private let profileCache = ProfileCache()
+
     func getProfile() async throws -> ProfileResponse {
+        try await profileCache.fetch(maxStaleness: 60) {
+            try await self.fetchProfileFromNetwork()
+        }
+    }
+
+    private func fetchProfileFromNetwork() async throws -> ProfileResponse {
         struct RequestBody: Encodable {
             let sessionId: String
         }
@@ -226,6 +234,7 @@ class Networking {
 
     func logOut() {
         KeychainAccess.shared.invalidateAllGETSecrets()
+        Task { await profileCache.invalidate() }
         NotificationCenter.default.post(name: Networking.didLogOutNotification, object: self)
     }
 

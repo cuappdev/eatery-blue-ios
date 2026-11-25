@@ -150,6 +150,7 @@
 		5DF938D327768B84008ED0A1 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D227768B84008ED0A1 /* SheetViewController.swift */; };
 		5DF938D527768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */; };
 		65623D66CAD74719B46FCF4C /* FavoritesEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B889EF68DEE4A2E89525648 /* FavoritesEmptyView.swift */; };
+		76900B5630B670E000252A24 /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76900B5530B670DD00252A24 /* ProfileCache.swift */; };
 		76DB120630AE623C0032B2A8 /* AccountProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DB120530AE62370032B2A8 /* AccountProfileHeaderView.swift */; };
 		76DB120830AE69030032B2A8 /* ProfileAPIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DB120730AE68F60032B2A8 /* ProfileAPIModels.swift */; };
 		76EEC39A3096B1EE000430F0 /* NSAttributedString+Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EEC3993096B1E6000430F0 /* NSAttributedString+Markdown.swift */; };
@@ -208,14 +209,13 @@
 		D0DC533E2BBBA48F0034D968 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 2ED2FC122BA2D7AA00621028 /* Hero */; };
 		D0EC7C362BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EC7C352BBA009E00F05F8E /* CompareMenusExternalOnboardingView.swift */; };
 		D5B02F8C3A7E4B29C1F6D4E2 /* FavoritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */; };
-		E7A1B2C33D4E5F60718293A4 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A1B2C33D4E5F60718293A3 /* Haptics.swift */; };
 		D8026F7A2EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8026F792EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift */; };
 		D8B191E92EC179E9004E3E97 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */; };
+		E7A1B2C33D4E5F60718293A4 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A1B2C33D4E5F60718293A3 /* Haptics.swift */; };
 		F6C9698113254E13B0BA1804 /* FavoritesAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C0DB1930244B9A9E6F6B1 /* FavoritesAddSearchViewController.swift */; };
 		FD78B0B32ADF6762007055B4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78B0B22ADF6762007055B4 /* String+Extension.swift */; };
 		FD88925A2AE9B33C0084EDAD /* EateryMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */; };
 		FDC50BC52DB73F9600D9D282 /* DemoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */; };
-		A1E5B0DF2E7D4C0100B4C0DE /* BarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */; };
 		FDCCF9472AFB0C8E00557FED /* StayLoggedInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */; };
 /* End PBXBuildFile section */
 
@@ -369,6 +369,7 @@
 		5DF938D0277662CC008ED0A1 /* PaymentMethodFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodFilterView.swift; sourceTree = "<group>"; };
 		5DF938D227768B84008ED0A1 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 		5DF938D427768DDC008ED0A1 /* PaymentMethodsSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSheetViewController.swift; sourceTree = "<group>"; };
+		76900B5530B670DD00252A24 /* ProfileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCache.swift; sourceTree = "<group>"; };
 		76DB120530AE62370032B2A8 /* AccountProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProfileHeaderView.swift; sourceTree = "<group>"; };
 		76DB120730AE68F60032B2A8 /* ProfileAPIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIModels.swift; sourceTree = "<group>"; };
 		76EEC3993096B1E6000430F0 /* NSAttributedString+Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Markdown.swift"; sourceTree = "<group>"; };
@@ -392,7 +393,6 @@
 		BFD955942900A8150049D77C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		C31EC9392CF3DC0800B2E99F /* Eatery Blue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Eatery Blue.entitlements"; sourceTree = "<group>"; };
 		C4A91E7B2F6D4A18B0E5C3D1 /* FavoritesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStore.swift; sourceTree = "<group>"; };
-		E7A1B2C33D4E5F60718293A3 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		D00DC9582BB370520051D3EC /* CompareMenusTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusTabsViewController.swift; sourceTree = "<group>"; };
 		D00FEC992F4BF4CF0081CEE0 /* DateDecodingStrategy+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateDecodingStrategy+Extension.swift"; sourceTree = "<group>"; };
 		D01D80762BC638C900253976 /* CompareMenusInternalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareMenusInternalOnboardingView.swift; sourceTree = "<group>"; };
@@ -429,10 +429,10 @@
 		D8563EE62EC19BC700C2F045 /* EateryGetAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EateryGetAPI; sourceTree = "<group>"; };
 		D8563EE72EC19BC700C2F045 /* EateryModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EateryModel; sourceTree = "<group>"; };
 		D8B191E82EC179E9004E3E97 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		E7A1B2C33D4E5F60718293A3 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		FD78B0B22ADF6762007055B4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		FD8892592AE9B33C0084EDAD /* EateryMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EateryMemoryCache.swift; sourceTree = "<group>"; };
 		FDC50BC42DB73F9600D9D282 /* DemoAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAccountViewController.swift; sourceTree = "<group>"; };
-		A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeViewController.swift; sourceTree = "<group>"; };
 		FDCCF9462AFB0C8E00557FED /* StayLoggedInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayLoggedInSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -538,6 +538,7 @@
 		5D468A13277E3FD300986AFF /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				76900B5530B670DD00252A24 /* ProfileCache.swift */,
 				76DB120730AE68F60032B2A8 /* ProfileAPIModels.swift */,
 				A71E00012F9A000100000001 /* FavoriteAPIModels.swift */,
 				5D698F982788AE7E0054E1AB /* InMemoryCache.swift */,
@@ -560,7 +561,6 @@
 			isa = PBXGroup;
 			children = (
 				76DB120530AE62370032B2A8 /* AccountProfileHeaderView.swift */,
-				A1E5B0DE2E7D4C0100B4C0DE /* BarcodeViewController.swift */,
 				5DA434B3278B5A10001337FD /* AccountBalanceTableViewCell.swift */,
 				5D698F912788A7FE0054E1AB /* AccountModelController.swift */,
 				5DA434BF278B9566001337FD /* AccountPickerSheetViewController.swift */,
@@ -1361,6 +1361,7 @@
 				5DF304AF277921BA00E2C9A4 /* MenuDayPickerView.swift in Sources */,
 				5D75D6D7278E0D7000832359 /* SettingsLogoutPillButton.swift in Sources */,
 				9920725829CA10E600FFFB92 /* EateryPageViewController.swift in Sources */,
+				76900B5630B670E000252A24 /* ProfileCache.swift in Sources */,
 				D8026F7A2EBBA8AF00B8C2F6 /* NotificationTableViewCell.swift in Sources */,
 				5D75D6E4278E2B9D00832359 /* EateryCardVisualEffectView.swift in Sources */,
 				D0B72AE32D32C2180041C2BA /* MiniSelectionView.swift in Sources */,
