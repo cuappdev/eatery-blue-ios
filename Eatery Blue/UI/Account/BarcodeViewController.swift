@@ -10,25 +10,38 @@ import EateryModel
 import SnapKit
 import UIKit
 
-/// Temporary full-screen GET payment barcode. Refreshes about every 5 seconds.
+/// Partial-screen GET payment barcode. Refreshes about every 5 seconds.
 @MainActor
-class BarcodeViewController: UIViewController {
+class BarcodeViewController: SheetViewController {
+    // MARK: - Views
+
+    private let closeButton = ButtonView(pillContent: UIImageView())
+    private let titleLabel = UILabel()
+    private let profileCardView = ContainerView(content: UIView())
+    private let profileBlueView = UIView()
+    private let avatarContainer = ContainerView(pillContent: UIImageView())
+    private let nameLabel = UILabel()
+    private let emailLabel = UILabel()
     private let spinner = UIActivityIndicatorView(style: .large)
     private let barcodeImageView = UIImageView()
-    private let digitsLabel = UILabel()
     private let messageLabel = UILabel()
-    private let ciContext = CIContext()
+
+    // MARK: - State
 
     private var refreshTimer: Timer?
-    private var loadTask: Task<Void, Never>?
     private var seed: String?
     private var patronId: String?
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpNavigation()
         setUpView()
+        setUpCloseButton()
+        setUpTitleLabel()
+        setUpProfileCard()
+        setUpBarcodeDisplay()
         setUpConstraints()
     }
 
@@ -40,103 +53,188 @@ class BarcodeViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        loadTask?.cancel()
-        loadTask = Task {
-            await loadSecrets()
-            guard !Task.isCancelled else { return }
-            startTimer()
-        }
+        startTimer()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        loadTask?.cancel()
-        loadTask = nil
-        stopTimer()
-    }
-
-    deinit {
         refreshTimer?.invalidate()
+        refreshTimer = nil
     }
 
-    private func setUpNavigation() {
-        let appearance = UINavigationBarAppearance()
-        appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Eatery.primaryText as Any,
-            .font: UIFont.eateryNavigationBarTitleFont
-        ]
-        appearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.title = "Barcode"
-
-        let backButton = UIBarButtonItem(
-            image: UIImage(named: "ArrowLeft"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapBackButton)
-        )
-        backButton.tintColor = UIColor.Eatery.primaryText
-        backButton.accessibilityLabel = "Back"
-        navigationItem.leftBarButtonItem = backButton
-    }
+    // MARK: - View setup
 
     private func setUpView() {
         view.backgroundColor = .white
+    }
 
+    private func setUpTitleLabel() {
+        titleLabel.font = .systemFont(ofSize: 24, weight: .semibold)
+        titleLabel.textColor = UIColor.Eatery.primaryText
+        titleLabel.text = "Dining Barcode"
+
+        view.addSubview(titleLabel)
+    }
+
+    private func setUpCloseButton() {
+        let closeConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
+        closeButton.content.image = UIImage(systemName: "xmark", withConfiguration: closeConfig)
+        closeButton.content.tintColor = UIColor.Eatery.primaryText
+        closeButton.content.contentMode = .scaleAspectFit
+        closeButton.shadowColor = UIColor.Eatery.shadowLight
+        closeButton.shadowOffset = .zero
+        closeButton.shadowRadius = 12
+        closeButton.shadowOpacity = 0.25
+        closeButton.backgroundColor = UIColor.Eatery.card
+        closeButton.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        closeButton.buttonPress { [weak self] _ in
+            self?.dismiss(animated: true)
+        }
+
+        view.addSubview(closeButton)
+    }
+
+    private func setUpProfileCard() {
+        profileCardView.cornerRadius = 8
+        profileCardView.shadowColor = UIColor.Eatery.shadowLight
+        profileCardView.shadowOffset = CGSize(width: 0, height: 2)
+        profileCardView.shadowRadius = 4
+        profileCardView.shadowOpacity = 0.15
+        profileCardView.content.backgroundColor = UIColor.Eatery.default00
+        view.addSubview(profileCardView)
+
+        profileBlueView.backgroundColor = UIColor.Eatery.blue
+        profileCardView.content.addSubview(profileBlueView)
+
+        avatarContainer.backgroundColor = UIColor.Eatery.default00.withAlphaComponent(0.25)
+        avatarContainer.layoutMargins = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
+        avatarContainer.content.image = UIImage(systemName: "person.fill")
+        avatarContainer.content.tintColor = UIColor.Eatery.default00
+        avatarContainer.content.contentMode = .scaleAspectFit
+        profileBlueView.addSubview(avatarContainer)
+
+        nameLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        nameLabel.textColor = UIColor.Eatery.gray00
+        nameLabel.text = "Cornell Student"
+        profileBlueView.addSubview(nameLabel)
+
+        emailLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        emailLabel.textColor = UIColor.Eatery.gray01
+        emailLabel.text = "netid@cornell.edu"
+        profileBlueView.addSubview(emailLabel)
+    }
+
+    private func setUpBarcodeDisplay() {
         spinner.hidesWhenStopped = true
-        view.addSubview(spinner)
+        profileCardView.content.addSubview(spinner)
 
         barcodeImageView.contentMode = .scaleAspectFit
-        barcodeImageView.backgroundColor = .white
         barcodeImageView.isHidden = true
-        barcodeImageView.isAccessibilityElement = true
-        barcodeImageView.accessibilityLabel = "Payment barcode"
-        barcodeImageView.accessibilityTraits = .image
-        view.addSubview(barcodeImageView)
-
-        let digitsFont = UIFont.preferredFont(forTextStyle: .callout)
-        digitsLabel.font = .monospacedDigitSystemFont(ofSize: digitsFont.pointSize, weight: .medium)
-        digitsLabel.adjustsFontForContentSizeCategory = true
-        digitsLabel.textColor = UIColor.Eatery.primaryText
-        digitsLabel.textAlignment = .center
-        digitsLabel.adjustsFontSizeToFitWidth = true
-        digitsLabel.isHidden = true
-        digitsLabel.isAccessibilityElement = true
-        view.addSubview(digitsLabel)
+        profileCardView.content.addSubview(barcodeImageView)
 
         messageLabel.font = .preferredFont(forTextStyle: .body)
-        messageLabel.adjustsFontForContentSizeCategory = true
         messageLabel.textColor = UIColor.Eatery.secondaryText
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
         messageLabel.isHidden = true
-        view.addSubview(messageLabel)
+        profileCardView.content.addSubview(messageLabel)
     }
 
     private func setUpConstraints() {
-        spinner.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        closeButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(24)
+            make.trailing.equalToSuperview().inset(16)
+            make.width.height.equalTo(44)
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(16)
+            make.centerY.equalTo(closeButton)
+            make.trailing.lessThanOrEqualTo(closeButton.snp.leading).offset(-8)
+        }
+
+        profileCardView.snp.makeConstraints { make in
+            make.top.equalTo(closeButton.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview().inset(26)
+            make.bottom.equalToSuperview().inset(61) // determines modal height
+        }
+
+        profileBlueView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(68)
+        }
+
+        avatarContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(45)
+        }
+
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(avatarContainer.snp.trailing).offset(12)
+            make.centerY.equalTo(avatarContainer).offset(-9)
+            make.trailing.lessThanOrEqualToSuperview().inset(12)
+        }
+
+        emailLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(2)
+            make.leading.equalTo(nameLabel)
+            make.trailing.lessThanOrEqualToSuperview().inset(12)
         }
 
         barcodeImageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.centerY.equalToSuperview().offset(-24)
-            make.height.equalTo(160)
+            make.top.equalTo(profileBlueView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(87)
+            make.bottom.equalToSuperview().inset(7)
         }
 
-        digitsLabel.snp.makeConstraints { make in
-            make.top.equalTo(barcodeImageView.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(barcodeImageView)
         }
 
         messageLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(32)
+            make.center.equalTo(barcodeImageView)
+            make.leading.trailing.equalTo(barcodeImageView)
         }
     }
+
+    // MARK: - Profile data
+
+    func loadInitialContent() async {
+        async let profileTask: Void = updateProfileFromNetworking()
+        await loadSecrets()
+        await profileTask
+    }
+
+    private func updateProfileFromNetworking() async {
+        do {
+            let profile = try await Networking.default.getProfile()
+            updateProfileLabels(name: profile.fullName, email: profile.email, image: profile.decodedImage)
+        } catch {
+            logger.error("\(#function): \(error)")
+        }
+    }
+
+    private func updateProfileLabels(name: String?, email: String?, image: UIImage?) {
+        nameLabel.text = name ?? "Cornell Student"
+        emailLabel.text = email ?? "netid@cornell.edu"
+
+        if let image {
+            avatarContainer.backgroundColor = .clear
+            avatarContainer.layoutMargins = .zero
+            avatarContainer.content.contentMode = .scaleAspectFill
+            avatarContainer.content.image = image
+        } else {
+            avatarContainer.backgroundColor = UIColor.Eatery.default00.withAlphaComponent(0.25)
+            avatarContainer.layoutMargins = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
+            avatarContainer.content.contentMode = .scaleAspectFit
+            avatarContainer.content.image = UIImage(systemName: "person.fill")
+        }
+    }
+
+    // MARK: - Barcode data
 
     private func loadSecrets() async {
         showLoading()
@@ -155,13 +253,13 @@ class BarcodeViewController: UIViewController {
             await fetchPatronId()
         }
 
-        guard !Task.isCancelled else { return }
-
         guard seed != nil, patronId != nil else {
             if patronId == nil {
                 showMessage("No payment ID yet. Use GET once, then try again.")
             } else {
-                showMessage("Couldn't load your barcode. Check your connection and try again.")
+                showMessage(
+                    "Couldn't load your barcode. Check your connection and try again."
+                )
             }
             return
         }
@@ -169,6 +267,7 @@ class BarcodeViewController: UIViewController {
         refreshBarcode()
     }
 
+    /// Returns false when we already showed an error and should stop.
     private func fetchSeed() async -> Bool {
         guard !Networking.default.sessionId.isEmpty else {
             showMessage("Log in to GET to show a barcode.")
@@ -177,7 +276,9 @@ class BarcodeViewController: UIViewController {
 
         do {
             let config = try await Networking.default.barcodeConfig.fetch()
-            guard config.canGenerateOfflineBarcode, let barcodeSeed = config.barcodeSeed else {
+            guard config.canGenerateOfflineBarcode,
+                  let barcodeSeed = config.barcodeSeed
+            else {
                 showMessage("Barcode isn't available for this account.")
                 return false
             }
@@ -186,7 +287,9 @@ class BarcodeViewController: UIViewController {
             return true
         } catch {
             logger.error("\(#function): failed to fetch barcode seed")
-            showMessage("Couldn't load your barcode. Check your connection and try again.")
+            showMessage(
+                "Couldn't load your barcode. Check your connection and try again."
+            )
             return false
         }
     }
@@ -195,7 +298,10 @@ class BarcodeViewController: UIViewController {
         do {
             let end = Day()
             let start = end.advanced(by: -30)
-            let data = try await Networking.default.accounts.fetch(start: start, end: end)
+            let data = try await Networking.default.accounts.fetch(
+                start: start,
+                end: end
+            )
             if let id = data.patronId {
                 KeychainAccess.shared.savePatronId(id)
                 patronId = id
@@ -206,7 +312,7 @@ class BarcodeViewController: UIViewController {
     }
 
     private func startTimer() {
-        stopTimer()
+        refreshTimer?.invalidate()
         guard seed != nil, patronId != nil else {
             return
         }
@@ -216,11 +322,6 @@ class BarcodeViewController: UIViewController {
                 self?.refreshBarcode()
             }
         }
-    }
-
-    private func stopTimer() {
-        refreshTimer?.invalidate()
-        refreshTimer = nil
     }
 
     private func refreshBarcode() {
@@ -235,17 +336,18 @@ class BarcodeViewController: UIViewController {
                 cashlessKey: patronId,
                 timestamp: timestamp
             )
-            guard let image = pdf417Image(from: digits) else {
+            guard let image = Self.pdf417Image(from: digits) else {
                 showMessage("Couldn't draw barcode.")
                 return
             }
-            showBarcode(image: image, digits: digits)
+            showBarcode(image: image)
         } catch {
             showMessage("Couldn't generate barcode.")
         }
     }
 
-    private func pdf417Image(from digits: String) -> UIImage? {
+    /// Core Image PDF417. Input must be the 22-digit string as ASCII data.
+    static func pdf417Image(from digits: String) -> UIImage? {
         guard let filter = CIFilter(name: "CIPDF417BarcodeGenerator") else {
             return nil
         }
@@ -256,43 +358,36 @@ class BarcodeViewController: UIViewController {
         }
 
         let scaled = output.transformed(by: CGAffineTransform(scaleX: 8, y: 8))
-        guard let cgImage = ciContext.createCGImage(scaled, from: scaled.extent) else {
+        let context = CIContext()
+        guard let cgImage = context.createCGImage(scaled, from: scaled.extent)
+        else {
             return nil
         }
         return UIImage(cgImage: cgImage)
     }
 
+    // MARK: - Barcode display state
+
     private func showLoading() {
         spinner.startAnimating()
         barcodeImageView.isHidden = true
-        digitsLabel.isHidden = true
         messageLabel.isHidden = true
-        UIAccessibility.post(notification: .announcement, argument: "Loading barcode")
     }
 
-    private func showBarcode(image: UIImage, digits: String) {
+    private func showBarcode(image: UIImage) {
         spinner.stopAnimating()
         messageLabel.isHidden = true
         barcodeImageView.image = image
         barcodeImageView.isHidden = false
-        digitsLabel.text = digits
-        digitsLabel.accessibilityLabel = "Barcode digits \(digits)"
-        digitsLabel.isHidden = false
     }
 
     private func showMessage(_ text: String) {
         spinner.stopAnimating()
         barcodeImageView.isHidden = true
         barcodeImageView.image = nil
-        digitsLabel.isHidden = true
-        digitsLabel.text = nil
         messageLabel.text = text
         messageLabel.isHidden = false
-        stopTimer()
-        UIAccessibility.post(notification: .announcement, argument: text)
-    }
-
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
+        refreshTimer?.invalidate()
+        refreshTimer = nil
     }
 }

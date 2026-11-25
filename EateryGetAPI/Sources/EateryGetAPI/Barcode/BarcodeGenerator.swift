@@ -15,6 +15,7 @@ public enum BarcodeGenerator {
         case invalidCashlessKey
     }
 
+    /// seedHex = barcodeSeed, cashlessKey = patronId, timestamp = unix time
     public static func generateBarcode(
         seedHex: String,
         cashlessKey: String,
@@ -102,6 +103,7 @@ private func deriveHmacKey(seedHex: String) throws -> [UInt8] {
 }
 
 private func generateTotp(hmacKey: [UInt8], timestamp: Int) -> String {
+    // Counter = timestamp as 8-byte big-endian
     var bigEndian = UInt64(timestamp).bigEndian
     let counter = withUnsafeBytes(of: &bigEndian) { Array($0) }
 

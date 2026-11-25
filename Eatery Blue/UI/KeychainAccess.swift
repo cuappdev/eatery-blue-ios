@@ -24,6 +24,7 @@ class KeychainAccess {
 
     // MARK: - GET Session
 
+    /// Saves session token to Keychain under "GETLogin", access with KeychainAccess.shared.retrieveToken
     func saveToken(sessionId: String) {
         // Clear previous user's barcode secrets on new login.
         invalidateAllGETSecrets()
@@ -64,6 +65,7 @@ class KeychainAccess {
         delete(account: Account.patronId)
     }
 
+    /// Session + seed + patron ID. Used on logout and dead GET session.
     func invalidateAllGETSecrets() {
         delete(account: Account.getSession)
         delete(account: Account.barcodeSeed)
